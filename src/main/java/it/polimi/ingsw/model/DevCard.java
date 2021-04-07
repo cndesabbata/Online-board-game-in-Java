@@ -6,19 +6,19 @@ public class DevCard extends Card{
     private List<Resource> productionInput;
     private List<Resource> productionOutput;
 
-    private int getLevel() {
+    public int getLevel() {
 
     }
 
-    private Colour getColour() {
+    public Colour getColour() {
 
     }
 
-    private List<Resource> getProductionInput() {
+    public List<Resource> getProductionInput() {
 
     }
 
-    private List<Resource> getProductionOutput() {
+    public List<Resource> getProductionOutput() {
 
     }
 }
