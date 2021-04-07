@@ -1,13 +1,19 @@
 package it.polimi.ingsw.model;
 
+import java.util.ArrayList;
+
 public class Chest {
-    private int[] resources;
+    private ArrayList<ResouceReq> resources;
 
-    public int getResources(int index) {
-
+    public ResouceReq getResources(int index) {
+        return resources.get(index);
     }
 
-    public void setResources(int index, int amount){
-
+    public void setResources(int index, int amount) throws NegativeAmountException {
+        if (amount < 0)
+            throw new NegativeAmountException();
+        else
+            resources.get(index).setquantity(amount);
     }
 }
+
