@@ -25,11 +25,8 @@ public class Wharehouse {
         else firstshelf.add(resource);
     }
 
-    public void deleteFirstShelf()  throws EmptyShelfException {
-        if (firstshelf == null)
-            throw new EmptyShelfException();
-        else
-            firstshelf.remove(0);
+    public void deleteFirstShelf() {
+        firstshelf.remove(0);
     }
 
     public void addSecondShelf(Resource resource)  throws FullShelfException, WrongDispositionException {
@@ -40,11 +37,8 @@ public class Wharehouse {
         else secondshelf.add(resource);
     }
 
-    public void deleteSecondShelf()  throws EmptyShelfException {
-        if (secondshelf == null)
-            throw new EmptyShelfException();
-        else
-            secondshelf.remove(0);
+    public void deleteSecondShelf() {
+        secondshelf.remove(0);
     }
 
     public void addThirdShelf(Resource resource)  throws FullShelfException, WrongDispositionException {
@@ -55,10 +49,25 @@ public class Wharehouse {
         else thirdshelf.add(resource);
     }
 
-    public void deleteThirdShelf()  throws EmptyShelfException {
-        if (thirdshelf== null)
-            throw new EmptyShelfException();
-        else
-            thirdshelf.remove(0);
+    public void deleteThirdShelf() {
+        thirdshelf.remove(0);
+    }
+
+    public boolean checkquantity(Resource resource, int quantity){        //con questo metodo non sono più necessarie le eccezioni nelle delete
+        int amount = 0;
+        if(firstshelf != null){
+            if(firstshelf.get(0) == resource) amount += 1;
+        }
+        if(secondshelf != null){
+            for(Resource r : secondshelf){
+                if(r == resource) amount += 1;
+            }
+        }
+        if(thirdshelf != null){
+            for(Resource r : thirdshelf){
+                if(r == resource) amount += 1;
+            }
+        }
+        return amount >= quantity;
     }
 }
