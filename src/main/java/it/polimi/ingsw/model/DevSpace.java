@@ -1,31 +1,54 @@
 package it.polimi.ingsw.model;
+import java.util.*;
+
 
 public class DevSpace {
-    private List<DevCard> firstDeck;
-    private List<DevCard> secondDeck;
-    private List<DevCard> thirdDeck;
+    private ArrayList<DevCard> firstDeck;
+    private ArrayList<DevCard> secondDeck;
+    private ArrayList<DevCard> thirdDeck;
 
-    private List<DevCard> getFirstDeck(){
-
+    public List<DevCard> getFirstDeck(){
+        return new ArrayList<DevCard>(firstDeck);
     }
 
-    private List<DevCard> getSecondDeck(){
-
+    public List<DevCard> getSecondDeck(){
+        return new ArrayList<DevCard>(secondDeck);
     }
 
-    private List<DevCard> getThirdDeck(){
-
+    public List<DevCard> getThirdDeck(){
+        return new ArrayList<DevCard>(thirdDeck);
     }
 
-    private void addFirstDeck(DevCard card){
-
+    public void addFirstDeck(DevCard card) throws WrongPlacementException {
+        if (!checkplace(firstDeck, card))
+            throw new WrongPlacementException();
+        else
+            firstDeck.add(0, card);
     }
 
-    private void addSecondDeck(DevCard card){
-
+    public void addSecondDeck(DevCard card){
+        if(!checkplace(secondDeck, card))
+            throw new WrongPlacementException();
+        else
+        secondDeck.add(0, card);
     }
 
-    private void addThirdDeck(DevCard card){
+    public void addThirdDeck(DevCard card){
+        if(!checkplace(thirdDeck, card))
+            throw new WrongPlacementException();
+        else
+        thirdDeck.add(0, card);
+    }
+    private boolean checkplace(ArrayList <DevCard> deck, DevCard card){
+        if(deck == null && card.getLevel() != 1)
+            return false;
+        if(deck.size() == 1 && card.getLevel() != 2)
+            return false;
+        if(deck.size() == 2 && card.getLevel() != 3)
+            return false;
+        if(deck.size() >= 3)
+            return false;
+        return true;
 
     }
 }
