@@ -1,24 +1,40 @@
 package it.polimi.ingsw.model;
+import java.util.List;
 
 public class DevCard extends Card{
-    private int level;
-    private Colour colour;
-    private List<Resource> productionInput;
-    private List<Resource> productionOutput;
+    private final int level;
+    private final Colour colour;
+    private List<ResourceReq> productionInput;
+    private List<ResourceReq> productionOutput;
 
-    private int getLevel() {
-
+    public DevCard(List<ResourceReq> resourceRequirements, int victoryPoints, int level, Colour colour,
+                   List<ResourceReq> productionInput, List<ResourceReq> productionOutput) {
+        super(resourceRequirements, victoryPoints);
+        this.level = level;
+        this.colour = colour;
+        this.productionInput = productionInput;
+        this.productionOutput = productionOutput;
     }
 
-    private Colour getColour() {
-
+    public DevCard(int level, Colour colour) {
+        super(null, 0);
+        this.level = level;
+        this.colour = colour;
     }
 
-    private List<Resource> getProductionInput() {
-
+    public int getLevel() {
+        return level;
     }
 
-    private List<Resource> getProductionOutput() {
+    public Colour getColour() {
+        return colour;
+    }
 
+    public List<ResourceReq> getProductionInput() {
+        return productionInput;
+    }
+
+    public List<ResourceReq> getProductionOutput() {
+        return productionOutput;
     }
 }
