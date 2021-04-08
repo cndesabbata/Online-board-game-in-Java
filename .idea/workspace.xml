@@ -4,32 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="61eaf27a-50c7-4688-ab94-3c864dac562e" name="Default Changelist" comment="first classes draft">
-      <change afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/controller/Action.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/controller/ActionController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/controller/BuyDevCard.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/controller/BuyResources.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/controller/DiscardLeadCard.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/controller/GameHandler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/controller/InitialLeaderDraw.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/controller/PlayLeadCard.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/controller/StartProduction.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/controller/TurnController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/controller/UserAction.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/MarketSelection.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/SecondBlue.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/SecondGreen.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/SecondPurple.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/SecondYellow.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/ThirdBlue.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/Game.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/Marble.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/Marble.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/Market.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/Market.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/Player.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/Resource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/Resource.java" afterDir="false" />
-    </list>
+    <list default="true" id="61eaf27a-50c7-4688-ab94-3c864dac562e" name="Default Changelist" comment="implemented: Game, Market, Player&#10;added: json files for Level2 DevCards" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -87,7 +62,7 @@
       <workItem from="1617633385137" duration="21403000" />
       <workItem from="1617845400306" duration="3530000" />
       <workItem from="1617874867208" duration="937000" />
-      <workItem from="1617880743309" duration="1615000" />
+      <workItem from="1617880743309" duration="2116000" />
     </task>
     <task id="LOCAL-00001" summary="first commit">
       <created>1616004594449</created>
@@ -103,7 +78,14 @@
       <option name="project" value="LOCAL" />
       <updated>1616010264333</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="implemented: Game, Market, Player&#10;added: json files for Level2 DevCards">
+      <created>1617882627359</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1617882627359</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -124,7 +106,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="first commit" />
     <MESSAGE value="first classes draft" />
-    <option name="LAST_COMMIT_MESSAGE" value="first classes draft" />
+    <MESSAGE value="implemented: Game, Market, Player&#10;added: json files for Level2 DevCards" />
+    <option name="LAST_COMMIT_MESSAGE" value="implemented: Game, Market, Player&#10;added: json files for Level2 DevCards" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
