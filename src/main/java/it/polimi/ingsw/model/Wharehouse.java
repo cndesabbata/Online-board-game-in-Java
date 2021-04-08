@@ -2,69 +2,75 @@ package it.polimi.ingsw.model;
 import java.util.*;
 
 public class Wharehouse {
-    private ArrayList<Resource> firstshelf;   //non è meglio usare un array lungo 3 i cui elementi sono dei ResourceReq?
-    private ArrayList<Resource> secondshelf;
-    private ArrayList<Resource> thirdshelf;
+    private final ArrayList<Resource> firstShelf = new ArrayList<>();   //non è meglio usare un array lungo 3 i cui elementi sono dei ResourceReq?
+    private final ArrayList<Resource> secondShelf = new ArrayList<>();
+    private final ArrayList<Resource> thirdShelf = new ArrayList<>();
 
     public ArrayList<Resource> getFirstShelf() {
-        return new ArrayList<Resource>(firstshelf);
+        return new ArrayList<Resource>(firstShelf);
     }
 
     public ArrayList<Resource> getSecondShelf() {
-        return new ArrayList<Resource>(secondshelf);
+        return new ArrayList<Resource>(secondShelf);
     }
 
     public ArrayList<Resource> getThirdShelf() {
-        return new ArrayList<Resource>(thirdshelf);
+        return new ArrayList<Resource>(thirdShelf);
     }
 
     public void addFirstShelf(Resource resource)  throws FullShelfException, WrongDispositionException {
-        if (firstshelf != null && firstshelf.size() == 1) throw new FullShelfException();
-        else if (secondshelf != null && secondshelf.get(0) == resource) throw new WrongDispositionException();
-        else if (thirdshelf != null && thirdshelf.get(0) == resource)   throw new WrongDispositionException();
-        else firstshelf.add(resource);
+        if (firstShelf != null && firstShelf.size() == 1) throw new FullShelfException();
+        else if (secondShelf != null && secondShelf.get(0) == resource) throw new WrongDispositionException();
+        else if (thirdShelf != null && thirdShelf.get(0) == resource)   throw new WrongDispositionException();
+        else firstShelf.add(resource);
     }
 
     public void deleteFirstShelf() {
-        firstshelf.remove(0);
+        firstShelf.remove(0);
+    }
+
+    public int findShelf (Resource resource){
+        if (firstShelf.size() > 0) { if (firstShelf.get(0) == resource) return 1;}
+        if (secondShelf.size() > 0) { if (secondShelf.get(0) == resource) return 2;}
+        if (thirdShelf.size() > 0) { if (thirdShelf.get(0) == resource) return 3;}
     }
 
     public void addSecondShelf(Resource resource)  throws FullShelfException, WrongDispositionException {
-        if (secondshelf != null && secondshelf.size() == 2) throw new FullShelfException();
-        else if (firstshelf != null && firstshelf.get(0) == resource) throw new WrongDispositionException();
-        else if (secondshelf != null && secondshelf.get(0) != resource) throw new WrongDispositionException();
-        else if (thirdshelf != null && thirdshelf.get(0) == resource) throw new WrongDispositionException();
-        else secondshelf.add(resource);
+        if (secondShelf != null && secondShelf.size() == 2) throw new FullShelfException();
+        else if (firstShelf != null && firstShelf.get(0) == resource) throw new WrongDispositionException();
+        else if (secondShelf != null && secondShelf.get(0) != resource) throw new WrongDispositionException();
+        else if (thirdShelf != null && thirdShelf.get(0) == resource) throw new WrongDispositionException();
+        else secondShelf.add(resource);
     }
 
     public void deleteSecondShelf() {
-        secondshelf.remove(0);
+        secondShelf.remove(0);
     }
 
     public void addThirdShelf(Resource resource)  throws FullShelfException, WrongDispositionException {
-        if (thirdshelf.size() == 3 ) throw new FullShelfException();
-        else if (firstshelf != null && firstshelf.get(0) == resource) throw new WrongDispositionException();
-        else if (secondshelf != null && secondshelf.get(0) == resource) throw new WrongDispositionException();
-        else if (thirdshelf != null && thirdshelf.get(0) != resource) throw new WrongDispositionException();
-        else thirdshelf.add(resource);
+        if (thirdShelf.size() == 3 ) throw new FullShelfException();
+        else if (firstShelf != null && firstShelf.get(0) == resource) throw new WrongDispositionException();
+        else if (secondShelf != null && secondShelf.get(0) == resource) throw new WrongDispositionException();
+        else if (thirdShelf != null && thirdShelf.get(0) != resource) throw new WrongDispositionException();
+        else thirdShelf.add(resource);
     }
 
     public void deleteThirdShelf() {
-        thirdshelf.remove(0);
+        thirdShelf.remove(0);
     }
 
     public boolean checkquantity(Resource resource, int quantity){        //con questo metodo non sono più necessarie le eccezioni nelle delete
         int amount = 0;
-        if(firstshelf != null){
-            if(firstshelf.get(0) == resource) amount += 1;
+        if(firstShelf != null){
+            if(firstShelf.get(0) == resource) amount += 1;
         }
-        if(secondshelf != null){
-            for(Resource r : secondshelf){
+        if(secondShelf != null){
+            for(Resource r : secondShelf){
                 if(r == resource) amount += 1;
             }
         }
-        if(thirdshelf != null){
-            for(Resource r : thirdshelf){
+        if(thirdShelf != null){
+            for(Resource r : thirdShelf){
                 if(r == resource) amount += 1;
             }
         }

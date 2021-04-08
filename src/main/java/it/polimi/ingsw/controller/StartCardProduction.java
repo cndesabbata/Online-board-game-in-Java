@@ -1,6 +1,6 @@
 package it.polimi.ingsw.controller;
 
-public class StartProduction implements Action {
+public class StartCardProduction implements Action {
     @Override
     public void doAction() {
 
