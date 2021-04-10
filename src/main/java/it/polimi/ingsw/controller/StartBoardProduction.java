@@ -7,7 +7,7 @@ public class StartBoardProduction implements Action {
     private Resource secondInputRes;
     private boolean isSecondResourceFromChest;
     private Resource outputResource;
-    private Player player;
+    private Player player;                                                                                              //se gliela passa in doAction, perché lo ha come attributo?
 
     public StartBoardProduction(Resource firstInputRes, boolean isFirstResourceFromChest, Resource secondInputRes,
                                 boolean isSecondResourceFromChest, Resource outputResource, Player player) {
@@ -21,6 +21,18 @@ public class StartBoardProduction implements Action {
 
     @Override
     public void doAction(Player player){
+        Remove(player, isFirstResourceFromChest, firstInputRes);
+        Remove(player, isSecondResourceFromChest, secondInputRes);
+        Chest chest = player.getBoard().getChest();
+        switch (outputResource) {
+            case COIN: chest.setNumOfCoins(chest.getNumOfCoins() + 1); break;
+            case STONE: chest.setNumOfStones(chest.getNumOfStones() + 1); break;
+            case SERVANT: chest.setNumOfServants(chest.getNumOfServants() + 1); break;
+            case SHIELD: chest.setNumOfShields(chest.getNumOfShields() + 1); break;
+        }
+    }
+
+    private void Remove(Player player, boolean isFirstResourceFromChest, Resource firstInputRes) {
         if (isFirstResourceFromChest){
             Chest chest = player.getBoard().getChest();
             switch (firstInputRes){
@@ -31,14 +43,12 @@ public class StartBoardProduction implements Action {
             }
         }
         else {
-
+            Wharehouse wharehouse = player.getBoard().getWharehouse();
+            switch (wharehouse.findShelf(firstInputRes)) {
+                case 1: wharehouse.deleteFirstShelf(); break;
+                case 2: wharehouse.deleteSecondShelf(); break;
+                case 3: wharehouse.deleteThirdShelf(); break;
+            }
         }
-        if (isSecondResourceFromChest){
-
-        }
-        else {
-
-        }
-
     }
 }

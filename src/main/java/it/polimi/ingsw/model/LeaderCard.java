@@ -6,7 +6,7 @@ public class LeaderCard extends Card{
     private boolean state;
     private final List<DevCard> cardRequirements;
 
-    public LeaderCard(List<ResourceReq> resourceRequirements, int victoryPoints, boolean state) {
+    public LeaderCard(List<ResourceQuantity> resourceRequirements, int victoryPoints, boolean state) {
         super(resourceRequirements, victoryPoints);
         this.state = state;
         this.cardRequirements = null;

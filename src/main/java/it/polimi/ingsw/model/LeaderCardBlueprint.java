@@ -30,7 +30,7 @@ public class LeaderCardBlueprint {
     }
 
     public LeaderCard BuildCard (){
-        List<ResourceReq> resourceReqs = new ArrayList<>();
+        List<ResourceQuantity> resourceQuantities = new ArrayList<>();
         List<DevCard> cardsReqs = new ArrayList<>();
         Resource resourceType;
         switch (resource){
@@ -39,7 +39,7 @@ public class LeaderCardBlueprint {
             case "servant": resourceType = Resource.SERVANT; break;
             default /* shield */: resourceType = Resource.SHIELD; break;
         }
-        if (hasResourceRequirements) BuildResources(resourceReqs, resourceRequirements);
+        if (hasResourceRequirements) BuildResources(resourceQuantities, resourceRequirements);
         else{
             AddRequiredDevCard(cardsReqs, firstCardColour, firstCardLevel);
             if (secondCardLevel != 0){
@@ -48,7 +48,7 @@ public class LeaderCardBlueprint {
         }
         switch (type) {
             case "Discount": return new DiscountLeader(victoryPoints, false, cardsReqs, resourceType);
-            case "Depot": return new DepotLeader(resourceReqs, victoryPoints, false, resourceType);
+            case "Depot": return new DepotLeader(resourceQuantities, victoryPoints, false, resourceType);
             case "Marble": return new MarbleLeader(victoryPoints, false, cardsReqs, resourceType);
             default /* Product */: return new ProductLeader(victoryPoints, false, cardsReqs, resourceType);
         }
@@ -67,10 +67,10 @@ public class LeaderCardBlueprint {
         cardsReqs.add(new DevCard(secondCardLevel, colour));
     }
 
-    private void BuildResources(List<ResourceReq> resourceList, int[] array){
-        if (array[0] != 0) resourceList.add(new ResourceReq(array[0], Resource.COIN));
-        if (array[1] != 0) resourceList.add(new ResourceReq(array[1], Resource.STONE));
-        if (array[2] != 0) resourceList.add(new ResourceReq(array[2], Resource.SERVANT));
-        if (array[3] != 0) resourceList.add(new ResourceReq(array[3], Resource.SHIELD));
+    private void BuildResources(List<ResourceQuantity> resourceList, int[] array){
+        if (array[0] != 0) resourceList.add(new ResourceQuantity(array[0], Resource.COIN));
+        if (array[1] != 0) resourceList.add(new ResourceQuantity(array[1], Resource.STONE));
+        if (array[2] != 0) resourceList.add(new ResourceQuantity(array[2], Resource.SERVANT));
+        if (array[3] != 0) resourceList.add(new ResourceQuantity(array[3], Resource.SHIELD));
     }
 }

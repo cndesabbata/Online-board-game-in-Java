@@ -2,78 +2,70 @@ package it.polimi.ingsw.model;
 import java.util.*;
 
 public class Wharehouse {
-    private final ArrayList<Resource> firstShelf = new ArrayList<>();   //non è meglio usare un array lungo 3 i cui elementi sono dei ResourceReq?
-    private final ArrayList<Resource> secondShelf = new ArrayList<>();
-    private final ArrayList<Resource> thirdShelf = new ArrayList<>();
+    private  ArrayList<ResourceQuantity> wharehouse = new ArrayList<ResourceQuantity>();
 
-    public ArrayList<Resource> getFirstShelf() {
-        return new ArrayList<Resource>(firstShelf);
-    }
-
-    public ArrayList<Resource> getSecondShelf() {
-        return new ArrayList<Resource>(secondShelf);
-    }
-
-    public ArrayList<Resource> getThirdShelf() {
-        return new ArrayList<Resource>(thirdShelf);
-    }
-
-    public void addFirstShelf(Resource resource)  throws FullShelfException, WrongDispositionException {
-        if (firstShelf != null && firstShelf.size() == 1) throw new FullShelfException();
-        else if (secondShelf != null && secondShelf.get(0) == resource) throw new WrongDispositionException();
-        else if (thirdShelf != null && thirdShelf.get(0) == resource)   throw new WrongDispositionException();
-        else firstShelf.add(resource);
-    }
-
-    public void deleteFirstShelf() {
-        firstShelf.remove(0);
-    }
-
-    public int findShelf (Resource resource){
-        if (firstShelf.size() > 0) { if (firstShelf.get(0) == resource) return 1;}
-        if (secondShelf.size() > 0) { if (secondShelf.get(0) == resource) return 2;}
-        if (thirdShelf.size() > 0) { if (thirdShelf.get(0) == resource) return 3;}
-    }
-
-    public void addSecondShelf(Resource resource)  throws FullShelfException, WrongDispositionException {
-        if (secondShelf != null && secondShelf.size() == 2) throw new FullShelfException();
-        else if (firstShelf != null && firstShelf.get(0) == resource) throw new WrongDispositionException();
-        else if (secondShelf != null && secondShelf.get(0) != resource) throw new WrongDispositionException();
-        else if (thirdShelf != null && thirdShelf.get(0) == resource) throw new WrongDispositionException();
-        else secondShelf.add(resource);
-    }
-
-    public void deleteSecondShelf() {
-        secondShelf.remove(0);
-    }
-
-    public void addThirdShelf(Resource resource)  throws FullShelfException, WrongDispositionException {
-        if (thirdShelf.size() == 3 ) throw new FullShelfException();
-        else if (firstShelf != null && firstShelf.get(0) == resource) throw new WrongDispositionException();
-        else if (secondShelf != null && secondShelf.get(0) == resource) throw new WrongDispositionException();
-        else if (thirdShelf != null && thirdShelf.get(0) != resource) throw new WrongDispositionException();
-        else thirdShelf.add(resource);
-    }
-
-    public void deleteThirdShelf() {
-        thirdShelf.remove(0);
-    }
-
-    public boolean checkquantity(Resource resource, int quantity){        //con questo metodo non sono più necessarie le eccezioni nelle delete
-        int amount = 0;
-        if(firstShelf != null){
-            if(firstShelf.get(0) == resource) amount += 1;
+    public Wharehouse(){
+        for(int i = 0; i < NumOfShelf.values().length - 1; i++){
+            wharehouse.add(new ResourceQuantity(0, Resource.EMPTY));
         }
-        if(secondShelf != null){
-            for(Resource r : secondShelf){
-                if(r == resource) amount += 1;
+    }
+
+    public ArrayList<ResourceQuantity> getWharehouse(){
+        return new ArrayList<ResourceQuantity>(wharehouse);
+    }
+
+    public ResourceQuantity getShelf(NumOfShelf numOfShelf) {
+        ResourceQuantity shelf = wharehouse.get(numOfShelf.ordinal());
+        return new ResourceQuantity(shelf.getQuantity(), shelf.getResource());
+    }
+
+    public void addResource (Resource resource, NumOfShelf numOfShelf)  {
+        ResourceQuantity shelf = wharehouse.get(numOfShelf.ordinal());
+        if(shelf.getResource() != Resource.EMPTY && shelf.getResource() != resource)
+        {/*gestisci caso risorse diverse nello stesso scaffale*/}
+        else if(shelf.getQuantity() == 1 + numOfShelf.ordinal())
+        { /*gestisci caso scaffale pieno*/ }
+        else if(!this.checkOtherShelves(resource, numOfShelf))
+        {/*gestisci caso altri scaffali hanno stessa risorsa*/}
+        else shelf.setQuantity(shelf.getQuantity() + 1);
+    }
+
+    public void removeResource (Resource resource)  {
+        NumOfShelf numOfShelf = this.findShelf(resource);
+        if(numOfShelf == NumOfShelf.NOT_FOUND)
+            { /*gestisci caso scaffale non trovato*/}
+        else {
+            ResourceQuantity shelf = wharehouse.get(numOfShelf.ordinal());
+            if (shelf.getQuantity() == 1) shelf.setResource(Resource.EMPTY);
+            shelf.setQuantity(shelf.getQuantity() - 1);
+        }
+    }
+
+    public NumOfShelf findShelf (Resource resource){
+        int i;
+        for(i = 0; i < wharehouse.size(); i++){
+            if(wharehouse.get(i).getResource() == resource)
+                break;
+        }
+        return NumOfShelf.values()[i];
+    }
+
+    public boolean checkOtherShelves(Resource resource, NumOfShelf numOfShelf){
+        boolean check = true;
+        for(int i = 0; i < wharehouse.size(); i++){
+            if(i != numOfShelf.ordinal()){
+                if(wharehouse.get(i).getResource() == resource) {
+                    check = false;
+                    break;
+                }
             }
         }
-        if(thirdShelf != null){
-            for(Resource r : thirdShelf){
-                if(r == resource) amount += 1;
-            }
-        }
-        return amount >= quantity;
+        return check;
+    }
+
+    public boolean checkQuantity(Resource resource, int quantity){        //con questo metodo non sono più necessarie le eccezioni nelle delete
+        NumOfShelf numOfShelf = this.findShelf(resource);
+        ResourceQuantity shelf = wharehouse.get(numOfShelf.ordinal());
+        return shelf.getQuantity() >= quantity;
     }
 }
