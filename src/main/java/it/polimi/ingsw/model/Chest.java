@@ -3,52 +3,43 @@ package it.polimi.ingsw.model;
 import java.util.ArrayList;
 
 public class Chest {
-    private int numOfCoins;
-    private int numOfStones;
-    private int numOfServants;
-    private int numOfShields;
+    private ArrayList<ResourceQuantity> chest;
 
-    public int getNumOfCoins() { return numOfCoins; }
-
-    public int getNumOfStones() { return numOfStones; }
-
-    public int getNumOfServants() { return numOfServants; }
-
-    public int getNumOfShields() { return numOfShields; }
-
-    public void setNumOfCoins(int numOfCoins) {
-        this.numOfCoins = numOfCoins;
+    public Chest(){
+        chest = new ArrayList<>();
+        for(int i = 0; i < Resource.values().length - 2; i++){                                                          //faithpoint and empty are not storable in the Chest.
+            chest.add(new ResourceQuantity(0, Resource.values()[i]));
+        }
     }
 
-    public void setNumOfStones(int numOfStones) {
-        this.numOfStones = numOfStones;
+    public ArrayList<ResourceQuantity> getChest() {
+        return new ArrayList<ResourceQuantity>(chest);
     }
 
-    public void setNumOfServants(int numOfServants) {
-        this.numOfServants = numOfServants;
+    public void decrementResource(Resource resource, int quantity) {
+        int index = this.getIndexResource(resource);
+        ResourceQuantity Rq = chest.get(index);
+        Rq.setQuantity(Rq.getQuantity() - quantity);
     }
 
-    public void setNumOfShields(int numOfShields) {
-        this.numOfShields = numOfShields;
+    public void incrementResource(Resource resource, int quantity) {
+        int index = this.getIndexResource(resource);
+        ResourceQuantity Rq = chest.get(index);
+        Rq.setQuantity(Rq.getQuantity() + quantity);
     }
 
-    public boolean checkquantity (Resource resource, int quantity){             //con questo metodo non ci servono le eccezioni per le set sulle quantità negative
-        boolean check = false;
-        switch (resource) {
-            case COIN:
-                check = numOfCoins >= quantity;
-                break;
-            case STONE:
-                check = numOfStones >= quantity;
-                break;
-            case SERVANT:
-                check = numOfServants >= quantity;
-                break;
-            case SHIELD:
-                check = numOfShields >= quantity;
+    public boolean checkQuantity (Resource resource, int quantity){
+        int index = this.getIndexResource(resource);
+        return  chest.get(index).getQuantity() >= quantity;
+    }
+
+    private int getIndexResource(Resource resource){
+        int index;
+        for(index = 0; index < chest.size(); index++){
+            if(chest.get(index).getResource() == resource)
                 break;
         }
-        return check;
+        return index;
     }
 }
 

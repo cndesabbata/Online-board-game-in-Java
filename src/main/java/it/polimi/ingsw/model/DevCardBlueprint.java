@@ -17,20 +17,20 @@ public class DevCardBlueprint {
     }
 
     public DevCard BuildCard (int level, Colour colour){
-        List<ResourceReq> requiredRes = new ArrayList<>();
-        List<ResourceReq> inputRes = new ArrayList<>();
-        List<ResourceReq> outputRes = new ArrayList<>();
+        List<ResourceQuantity> requiredRes = new ArrayList<>();
+        List<ResourceQuantity> inputRes = new ArrayList<>();
+        List<ResourceQuantity> outputRes = new ArrayList<>();
         BuildResources(requiredRes, requiredResources);
         BuildResources(inputRes, inputResources);
         BuildResources(outputRes, outputResources);
-        if (outputResources[4] != 0) outputRes.add(new ResourceReq(outputResources[4], Resource.FAITHPOINT));
+        if (outputResources[4] != 0) outputRes.add(new ResourceQuantity(outputResources[4], Resource.FAITHPOINT));
         return new DevCard(requiredRes, victoryPoints, level, colour, inputRes, outputRes);
     }
 
-    private void BuildResources(List<ResourceReq> resourceList, int[] array){
-        if (array[0] != 0) resourceList.add(new ResourceReq(array[0], Resource.COIN));
-        if (array[1] != 0) resourceList.add(new ResourceReq(array[1], Resource.STONE));
-        if (array[2] != 0) resourceList.add(new ResourceReq(array[2], Resource.SERVANT));
-        if (array[3] != 0) resourceList.add(new ResourceReq(array[3], Resource.SHIELD));
+    private void BuildResources(List<ResourceQuantity> resourceList, int[] array){
+        if (array[0] != 0) resourceList.add(new ResourceQuantity(array[0], Resource.COIN));
+        if (array[1] != 0) resourceList.add(new ResourceQuantity(array[1], Resource.STONE));
+        if (array[2] != 0) resourceList.add(new ResourceQuantity(array[2], Resource.SERVANT));
+        if (array[3] != 0) resourceList.add(new ResourceQuantity(array[3], Resource.SHIELD));
     }
 }

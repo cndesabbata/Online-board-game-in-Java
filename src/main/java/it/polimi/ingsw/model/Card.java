@@ -3,15 +3,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Card {
-    private final List<ResourceReq> resourceRequirements;
+    private final List<ResourceQuantity> resourceRequirements;
     private final int victoryPoints;
 
-    public Card(List<ResourceReq> resourceRequirements, int victoryPoints) {
+    public Card(List<ResourceQuantity> resourceRequirements, int victoryPoints) {
         this.resourceRequirements = resourceRequirements;
         this.victoryPoints = victoryPoints;
     }
 
-    public List<ResourceReq> getRequirements() {
+    public List<ResourceQuantity> getRequirements() {
         if (resourceRequirements == null) return null;
         return new ArrayList<>(resourceRequirements);
     }

@@ -10,7 +10,7 @@ public class DepotLeader extends LeaderCard{
     private final LeaderType type = LeaderType.DEPOT;
     private final Resource resourceType;
 
-    public DepotLeader(List<ResourceReq> resourceRequirements, int victoryPoints, boolean state, Resource resourceType) {
+    public DepotLeader(List<ResourceQuantity> resourceRequirements, int victoryPoints, boolean state, Resource resourceType) {
         super(resourceRequirements, victoryPoints, state);
         this.resourceType = resourceType;
         this.depot = Arrays.asList(false, false);

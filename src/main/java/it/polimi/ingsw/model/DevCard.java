@@ -4,11 +4,11 @@ import java.util.List;
 public class DevCard extends Card{
     private final int level;
     private final Colour colour;
-    private List<ResourceReq> productionInput;
-    private List<ResourceReq> productionOutput;
+    private List<ResourceQuantity> productionInput;
+    private List<ResourceQuantity> productionOutput;
 
-    public DevCard(List<ResourceReq> resourceRequirements, int victoryPoints, int level, Colour colour,
-                   List<ResourceReq> productionInput, List<ResourceReq> productionOutput) {
+    public DevCard(List<ResourceQuantity> resourceRequirements, int victoryPoints, int level, Colour colour,
+                   List<ResourceQuantity> productionInput, List<ResourceQuantity> productionOutput) {
         super(resourceRequirements, victoryPoints);
         this.level = level;
         this.colour = colour;
@@ -30,11 +30,11 @@ public class DevCard extends Card{
         return colour;
     }
 
-    public List<ResourceReq> getProductionInput() {
+    public List<ResourceQuantity> getProductionInput() {
         return productionInput;
     }
 
-    public List<ResourceReq> getProductionOutput() {
+    public List<ResourceQuantity> getProductionOutput() {
         return productionOutput;
     }
 }

@@ -5,7 +5,7 @@ import it.polimi.ingsw.model.Player;
 
 public class ActionController {
     private GameBoard board;
-    private Action action;
+    private Action action;                                                                                              //serve?
     private Player currentPlayer;
     private GameHandler gameHandler;
     private boolean actionDone;
