@@ -1,0 +1,55 @@
+Index: pom.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\n\n<project xmlns=\"http://maven.apache.org/POM/4.0.0\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n  xsi:schemaLocation=\"http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd\">\n  <modelVersion>4.0.0</modelVersion>\n\n  <groupId>it.polimi.ingsw</groupId>\n  <artifactId>CG14</artifactId>\n  <version>1.0-SNAPSHOT</version>\n\n  <name>CG14</name>\n  <url>https://github.com/GianlucaRadi/ing_sw_2021_Radi_Sanchini_De_Sabbata</url>\n\n  <properties>\n    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>\n    <maven.compiler.source>1.7</maven.compiler.source>\n    <maven.compiler.target>1.7</maven.compiler.target>\n  </properties>\n\n  <dependencies>\n    <dependency>\n      <groupId>junit</groupId>\n      <artifactId>junit</artifactId>\n      <version>4.11</version>\n      <scope>test</scope>\n    </dependency>\n  </dependencies>\n\n  <build>\n    <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->\n      <plugins>\n        <!-- clean lifecycle, see https://maven.apache.org/ref/current/maven-core/lifecycles.html#clean_Lifecycle -->\n        <plugin>\n          <artifactId>maven-clean-plugin</artifactId>\n          <version>3.1.0</version>\n        </plugin>\n        <!-- default lifecycle, jar packaging: see https://maven.apache.org/ref/current/maven-core/default-bindings.html#Plugin_bindings_for_jar_packaging -->\n        <plugin>\n          <artifactId>maven-resources-plugin</artifactId>\n          <version>3.0.2</version>\n        </plugin>\n        <plugin>\n          <artifactId>maven-compiler-plugin</artifactId>\n          <version>3.8.0</version>\n        </plugin>\n        <plugin>\n          <artifactId>maven-surefire-plugin</artifactId>\n          <version>2.22.1</version>\n        </plugin>\n        <plugin>\n          <artifactId>maven-jar-plugin</artifactId>\n          <version>3.0.2</version>\n        </plugin>\n        <plugin>\n          <artifactId>maven-install-plugin</artifactId>\n          <version>2.5.2</version>\n        </plugin>\n        <plugin>\n          <artifactId>maven-deploy-plugin</artifactId>\n          <version>2.8.2</version>\n        </plugin>\n        <!-- site lifecycle, see https://maven.apache.org/ref/current/maven-core/lifecycles.html#site_Lifecycle -->\n        <plugin>\n          <artifactId>maven-site-plugin</artifactId>\n          <version>3.7.1</version>\n        </plugin>\n        <plugin>\n          <artifactId>maven-project-info-reports-plugin</artifactId>\n          <version>3.0.0</version>\n        </plugin>\n      </plugins>\n    </pluginManagement>\n  </build>\n</project>\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/pom.xml b/pom.xml
+--- a/pom.xml	(revision 3f9dfaebf226f203c5acad55a95b41b28e18403b)
++++ b/pom.xml	(date 1617699025848)
+@@ -26,6 +26,8 @@
+     </dependency>
+   </dependencies>
+ 
++
++
+   <build>
+     <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
+       <plugins>
+@@ -70,5 +72,15 @@
+         </plugin>
+       </plugins>
+     </pluginManagement>
++      <plugins>
++          <plugin>
++              <groupId>org.apache.maven.plugins</groupId>
++              <artifactId>maven-compiler-plugin</artifactId>
++              <configuration>
++                  <source>8</source>
++                  <target>8</target>
++              </configuration>
++          </plugin>
++      </plugins>
+   </build>
+ </project>
+Index: .idea/encodings.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"Encoding\">\r\n    <file url=\"file://$PROJECT_DIR$/src/main/java\" charset=\"UTF-8\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/encodings.xml b/.idea/encodings.xml
+--- a/.idea/encodings.xml	(revision 3f9dfaebf226f203c5acad55a95b41b28e18403b)
++++ b/.idea/encodings.xml	(date 1617699069037)
+@@ -2,5 +2,6 @@
+ <project version="4">
+   <component name="Encoding">
+     <file url="file://$PROJECT_DIR$/src/main/java" charset="UTF-8" />
++    <file url="file://$PROJECT_DIR$/src/main/resources" charset="UTF-8" />
+   </component>
+ </project>
+\ No newline at end of file
+diff --git a/src/main/resources/FirstBlue.json b/src/main/resources/FirstBlue.json
+new file mode 100644

@@ -20,7 +20,7 @@ public class StartBoardProduction implements Action {
     }
 
     @Override
-    public void doAction(Player player){
+    public void doAction(Player player, boolean actionDone){
         Remove(player, isFirstResourceFromChest, firstInputRes);
         Remove(player, isSecondResourceFromChest, secondInputRes);
         Chest chest = player.getBoard().getChest();

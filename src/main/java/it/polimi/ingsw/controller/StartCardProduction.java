@@ -14,7 +14,7 @@ public class StartProduction implements Action {
     }
 
     @Override
-    public void doAction(Player player) {
+    public void doAction(Player player, boolean actionDone) {
         Chest chest = player.getBoard().getChest();
         chest.setNumOfCoins(chest.getNumOfCoins() - inputResChest[0]);
         chest.setNumOfStones(chest.getNumOfStones() - inputResChest[1]);

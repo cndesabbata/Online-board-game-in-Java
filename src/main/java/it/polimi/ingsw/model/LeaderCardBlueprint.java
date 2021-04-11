@@ -19,7 +19,6 @@ public class LeaderCardBlueprint {
                                String firstCardColour, String secondCardColour, String resource) {
         this.type = type;
         this.hasResourceRequirements = hasResourceRequirements;
-
         this.victoryPoints = victoryPoints;
         this.resourceRequirements = resourceRequirements;
         this.firstCardLevel = firstCardLevel;
@@ -32,18 +31,12 @@ public class LeaderCardBlueprint {
     public LeaderCard BuildCard (){
         List<ResourceQuantity> resourceQuantities = new ArrayList<>();
         List<DevCard> cardsReqs = new ArrayList<>();
-        Resource resourceType;
-        switch (resource){
-            case "coin": resourceType = Resource.COIN; break;
-            case "stone": resourceType = Resource.STONE; break;
-            case "servant": resourceType = Resource.SERVANT; break;
-            default /* shield */: resourceType = Resource.SHIELD; break;
-        }
+        Resource resourceType = Resource.valueOf(resource);
         if (hasResourceRequirements) BuildResources(resourceQuantities, resourceRequirements);
         else{
-            AddRequiredDevCard(cardsReqs, firstCardColour, firstCardLevel);
+            cardsReqs.add(new DevCard(firstCardLevel, Colour.valueOf(firstCardColour)));
             if (secondCardLevel != 0){
-                AddRequiredDevCard(cardsReqs, secondCardColour, secondCardLevel);
+                cardsReqs.add(new DevCard(secondCardLevel, Colour.valueOf(secondCardColour)));
             }
         }
         switch (type) {
@@ -52,19 +45,6 @@ public class LeaderCardBlueprint {
             case "Marble": return new MarbleLeader(victoryPoints, false, cardsReqs, resourceType);
             default /* Product */: return new ProductLeader(victoryPoints, false, cardsReqs, resourceType);
         }
-    }
-
-    private void AddRequiredDevCard(List<DevCard> cardsReqs, String secondCardColour, int secondCardLevel) {
-        Colour colour;
-        switch (secondCardColour){
-            case "yellow": colour = Colour.YELLOW; break;
-            case "blue": colour = Colour.BLUE; break;
-            case "green": colour = Colour.GREEN; break;
-            case "purple": colour = Colour.PURPLE; break;
-            default:
-                throw new IllegalStateException("Unexpected value: " + firstCardColour);
-        }
-        cardsReqs.add(new DevCard(secondCardLevel, colour));
     }
 
     private void BuildResources(List<ResourceQuantity> resourceList, int[] array){

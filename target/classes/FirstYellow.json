@@ -20,7 +20,7 @@
   {
     "victoryPoints": 1,
     "requiredResources" : [0,2,0,0],
-    "inputResources": [0,0,1,0],
+    "inputResources": [0,1,0,0],
     "outputResources": [0,0,0,0,1]
   }
 ]

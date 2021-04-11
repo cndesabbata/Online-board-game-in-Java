@@ -44,6 +44,10 @@ public class Game {
 
     public Player getCurrentPlayer() { return currentPlayer; }
 
+    public DevCard drawDevCard (Colour colour, int level){
+        return devDecks[(level-1) * Colour.values().length + colour.ordinal()].drawCard();
+    }
+
     public Player nextPlayer() {
         if(currentPlayerIndex == activePlayers.size()) {
             currentPlayerIndex = 0;

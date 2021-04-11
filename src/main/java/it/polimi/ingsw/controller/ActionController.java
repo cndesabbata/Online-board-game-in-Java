@@ -19,7 +19,7 @@ public class ActionController {
     }
 
     public void makeAction(Action action) {
-        action.doAction(currentPlayer);
+        actionDone = action.doAction(currentPlayer, actionDone);
     }
 
     public void startTurn() {
@@ -27,14 +27,6 @@ public class ActionController {
     }
 
     public void endTurn() {
-
-    }
-
-    private boolean checkAction() {
-
-    }
-
-    public void setActionDone(boolean actionDone) {
 
     }
 }
