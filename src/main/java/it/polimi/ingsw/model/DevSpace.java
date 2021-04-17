@@ -48,4 +48,10 @@ public class DevSpace {
         return true;
     }
 
+    public boolean checkCard (DevCard devCard){
+        if(firstDeck.get(0).equals(devCard) || secondDeck.get(0).equals(devCard) || thirdDeck.get(0).equals(devCard))
+            return true;
+        else
+            return false;
+    }
 }

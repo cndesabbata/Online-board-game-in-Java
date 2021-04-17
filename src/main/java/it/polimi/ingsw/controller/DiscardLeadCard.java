@@ -11,10 +11,14 @@ public class DiscardLeadCard implements Action{
     }
 
     @Override
-    public boolean doAction(Player player, boolean actionDone) {
+    public boolean doAction(Player player) {
         player.getHandLeaderCards().remove(index);
         player.getBoard().getItinerary().updatePosition(1);
         return false;
     }
 
+    @Override
+    public void checkAction(Player player) {
+
+    }
 }

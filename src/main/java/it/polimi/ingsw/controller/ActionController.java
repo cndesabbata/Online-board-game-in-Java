@@ -19,7 +19,7 @@ public class ActionController {
     }
 
     public void makeAction(Action action) {
-        actionDone = action.doAction(currentPlayer, actionDone);
+        actionDone = action.doAction(currentPlayer);
     }
 
     public void startTurn() {

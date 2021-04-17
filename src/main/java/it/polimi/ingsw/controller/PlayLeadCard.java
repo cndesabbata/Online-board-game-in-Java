@@ -13,9 +13,14 @@ public class PlayLeadCard implements Action {
     }
 
     @Override
-    public boolean doAction(Player player, boolean actionDone) {
+    public boolean doAction(Player player) {
         ArrayList<LeaderCard> hand = player.getHandLeaderCards();
         hand.get(index).setPlayed(true);
         return false;
+    }
+
+    @Override
+    public void checkAction(Player player) {
+
     }
 }

@@ -1,7 +1,5 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.controller.Action;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,4 +46,5 @@ public class LeaderCard extends Card{
     public void setPlayed(boolean played) {
         this.isPlayed = played;
     }
+
 }

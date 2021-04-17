@@ -5,6 +5,7 @@ import java.util.*;
 public class Game {
     private final LeaderDeck leaderDeck;
     private DevDeck[] devDecks;
+    private int warehouseDim;
     private final List<Player> players;
     private List<Player> activePlayers;
     private Player currentPlayer;
