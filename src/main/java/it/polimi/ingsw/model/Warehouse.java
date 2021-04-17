@@ -1,10 +1,10 @@
 package it.polimi.ingsw.model;
 import java.util.*;
 
-public class Wharehouse {
+public class Warehouse {
     private  ArrayList<ResourceQuantity> wharehouse = new ArrayList<ResourceQuantity>();
 
-    public Wharehouse(){
+    public Warehouse(){
         for(int i = 0; i < NumOfShelf.values().length - 1; i++){
             wharehouse.add(new ResourceQuantity(0, Resource.EMPTY));
         }

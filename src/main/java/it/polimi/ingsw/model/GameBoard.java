@@ -2,13 +2,13 @@ package it.polimi.ingsw.model;
 
 public class GameBoard {
     private Itinerary itinerary;
-    private Wharehouse wharehouse;
+    private Warehouse warehouse;
     private Chest chest;
     private DevSpace devSpace;
 
     public GameBoard(){
         itinerary = new Itinerary();
-        wharehouse = new Wharehouse();
+        warehouse = new Warehouse();
         chest = new Chest();
         devSpace = new DevSpace();
     }
@@ -17,8 +17,8 @@ public class GameBoard {
         return itinerary;
     }
 
-    public Wharehouse getWharehouse() {
-        return wharehouse;
+    public Warehouse getWharehouse() {
+        return warehouse;
     }
 
     public Chest getChest() {

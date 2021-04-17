@@ -3,9 +3,15 @@ import java.util.*;
 
 
 public class DevSpace {
-    private ArrayList<DevCard> firstDeck;
-    private ArrayList<DevCard> secondDeck;
-    private ArrayList<DevCard> thirdDeck;
+    private ArrayList<DevCard> firstDeck = new ArrayList<>();
+    private ArrayList<DevCard> secondDeck = new ArrayList<>();
+    private ArrayList<DevCard> thirdDeck = new ArrayList<>();
+
+    public DevSpace (){
+        firstDeck = new ArrayList<>();
+        secondDeck = new ArrayList<>();
+        thirdDeck = new ArrayList<>();
+    }
 
     public List<DevCard> getFirstDeck(){
         return new ArrayList<DevCard>(firstDeck);
@@ -19,35 +25,27 @@ public class DevSpace {
         return new ArrayList<DevCard>(thirdDeck);
     }
 
-    public void addFirstDeck(DevCard card) throws WrongPlacementException {
-        if (!checkplace(firstDeck, card))
-            throw new WrongPlacementException();
-        else
-            firstDeck.add(0, card);
+    public void addFirstDeck(DevCard card){ firstDeck.add(0, card); }
+
+    public void addSecondDeck(DevCard card){ secondDeck.add(0, card); }
+
+    public void addThirdDeck(DevCard card){ thirdDeck.add(0, card); }
+
+    public boolean checkPlace(int level, int slot){
+        switch (slot){
+            case 1: return checkDeck(firstDeck, level);
+            case 2: return checkDeck(secondDeck, level);
+            default: return checkDeck(thirdDeck, level);
+        }
     }
 
-    public void addSecondDeck(DevCard card){
-        if(!checkplace(secondDeck, card))
-            throw new WrongPlacementException();
-        else
-        secondDeck.add(0, card);
-    }
-
-    public void addThirdDeck(DevCard card){
-        if(!checkplace(thirdDeck, card))
-            throw new WrongPlacementException();
-        else
-        thirdDeck.add(0, card);
-    }
-    private boolean checkplace(ArrayList <DevCard> deck, DevCard card){
-        if(deck == null && card.getLevel() != 1)
-            return false;
-        if(deck.size() == 1 && card.getLevel() != 2)
-            return false;
-        if(deck.size() == 2 && card.getLevel() != 3)
-            return false;
-        if(deck.size() >= 3)
-            return false;
+    private boolean checkDeck (ArrayList<DevCard> deck, int level){
+        int size = deck.size();
+        if (size == 0 && level != 1) return false;
+        if (size == 1 && level != 2) return false;
+        if (size == 2 && level != 3) return false;
+        if (size == 3) return false;
         return true;
     }
+
 }

@@ -1,32 +1,51 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.controller.Action;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class LeaderCard extends Card{
-    private boolean state;
+    private boolean isPlayed;
     private final List<DevCard> cardRequirements;
+    private final Resource resource;
+    private final LeaderType type;
 
-    public LeaderCard(List<ResourceQuantity> resourceRequirements, int victoryPoints, boolean state) {
+    public LeaderCard(ArrayList<ResourceQuantity> resourceRequirements, int victoryPoints,
+                      Resource resource, LeaderType type) {
         super(resourceRequirements, victoryPoints);
-        this.state = state;
         this.cardRequirements = null;
+        this.resource = resource;
+        this.type = type;
+        this.isPlayed = false;
     }
 
-    public LeaderCard(int victoryPoints, boolean state, List<DevCard> cardRequirements) {
+    public LeaderCard(int victoryPoints, List<DevCard> cardRequirements,
+                      Resource resource, LeaderType type) {
         super(null, victoryPoints);
-        this.state = state;
+        this.isPlayed = false;
         this.cardRequirements = cardRequirements;
+        this.resource = resource;
+        this.type = type;
+    }
+
+    public Resource getResource() {
+        return resource;
+    }
+
+    public LeaderType getType() {
+        return type;
     }
 
     public List<DevCard> getCardRequirements() {
         return cardRequirements;
     }
 
-    public boolean isState() {
-        return state;
+    public boolean isPlayed() {
+        return isPlayed;
     }
 
-    public void setState(boolean state) {
-        this.state = state;
+    public void setPlayed(boolean played) {
+        this.isPlayed = played;
     }
 }

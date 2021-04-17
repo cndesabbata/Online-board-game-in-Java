@@ -28,9 +28,8 @@ public class DevCardBlueprint {
     }
 
     private void BuildResources(List<ResourceQuantity> resourceList, int[] array){
-        if (array[0] != 0) resourceList.add(new ResourceQuantity(array[0], Resource.COIN));
-        if (array[1] != 0) resourceList.add(new ResourceQuantity(array[1], Resource.STONE));
-        if (array[2] != 0) resourceList.add(new ResourceQuantity(array[2], Resource.SERVANT));
-        if (array[3] != 0) resourceList.add(new ResourceQuantity(array[3], Resource.SHIELD));
+        for (int i = 0; i < array.length; i++){
+            if (i != 0) resourceList.add(new ResourceQuantity(i, Resource.values()[i]));
+        }
     }
 }

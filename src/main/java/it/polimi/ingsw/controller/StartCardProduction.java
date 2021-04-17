@@ -20,7 +20,7 @@ public class StartProduction implements Action {
         chest.setNumOfStones(chest.getNumOfStones() - inputResChest[1]);
         chest.setNumOfServants(chest.getNumOfServants() - inputResChest[2]);
         chest.setNumOfShields(chest.getNumOfShields() - inputResChest[3]);
-        Wharehouse wharehouse = player.getBoard().getWharehouse();
+        Warehouse warehouse = player.getBoard().getWharehouse();
 
     }
 }

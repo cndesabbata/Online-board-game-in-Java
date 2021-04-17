@@ -43,11 +43,11 @@ public class StartBoardProduction implements Action {
             }
         }
         else {
-            Wharehouse wharehouse = player.getBoard().getWharehouse();
-            switch (wharehouse.findShelf(firstInputRes)) {
-                case 1: wharehouse.deleteFirstShelf(); break;
-                case 2: wharehouse.deleteSecondShelf(); break;
-                case 3: wharehouse.deleteThirdShelf(); break;
+            Warehouse warehouse = player.getBoard().getWharehouse();
+            switch (warehouse.findShelf(firstInputRes)) {
+                case 1: warehouse.deleteFirstShelf(); break;
+                case 2: warehouse.deleteSecondShelf(); break;
+                case 3: warehouse.deleteThirdShelf(); break;
             }
         }
     }
