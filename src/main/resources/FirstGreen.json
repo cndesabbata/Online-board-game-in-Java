@@ -1,0 +1,26 @@
+[
+  {
+    "victoryPoints": 4,
+    "requiredResources" : [2,0,2,0],
+    "inputResources": [0,1,1,0],
+    "outputResources": [2,0,0,0,1]
+  },
+  {
+    "victoryPoints": 3,
+    "requiredResources" : [0,0,0,3],
+    "inputResources": [0,0,2,0],
+    "outputResources": [1,1,0,1,0]
+  },
+  {
+    "victoryPoints": 2,
+    "requiredResources" : [0,1,1,1],
+    "inputResources": [0,1,0,0],
+    "outputResources": [0,0,1,0,0]
+  },
+  {
+    "victoryPoints": 1,
+    "requiredResources" : [0,0,0,2],
+    "inputResources": [1,0,0,0],
+    "outputResources": [0,0,0,0,1]
+  }
+]

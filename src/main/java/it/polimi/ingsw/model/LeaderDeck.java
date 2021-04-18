@@ -4,12 +4,13 @@ import com.google.gson.Gson;
 
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
 public class LeaderDeck {
-    private final List<LeaderCard> cards = new LinkedList<>();
+    private final List<LeaderCard> cards = new ArrayList<>();
 
     public LeaderDeck() {
         Gson gson = new Gson();

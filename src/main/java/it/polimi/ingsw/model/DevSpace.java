@@ -3,51 +3,61 @@ import java.util.*;
 
 
 public class DevSpace {
-    private ArrayList<DevCard> firstDeck;
-    private ArrayList<DevCard> secondDeck;
-    private ArrayList<DevCard> thirdDeck;
+    private final ArrayList<DevCard> firstDeck;
+    private final ArrayList<DevCard> secondDeck;
+    private final ArrayList<DevCard> thirdDeck;
 
-    public List<DevCard> getFirstDeck(){
-        return new ArrayList<DevCard>(firstDeck);
+    public DevSpace (){
+        firstDeck = new ArrayList<>();
+        secondDeck = new ArrayList<>();
+        thirdDeck = new ArrayList<>();
     }
 
-    public List<DevCard> getSecondDeck(){
-        return new ArrayList<DevCard>(secondDeck);
+    public boolean checkCards (DevCard requirement){
+        return (checkLevelColour(firstDeck, requirement)
+                || checkLevelColour(firstDeck, requirement)
+                || checkLevelColour(firstDeck, requirement));
     }
 
-    public List<DevCard> getThirdDeck(){
-        return new ArrayList<DevCard>(thirdDeck);
+    private boolean checkLevelColour(ArrayList<DevCard> deck, DevCard requirement){
+        for (DevCard card : deck){
+            if (card.getColour().equals(requirement.getColour()) && card.getLevel() >= requirement.getLevel())
+                return true;
+        }
+        return false;
     }
 
-    public void addFirstDeck(DevCard card) throws WrongPlacementException {
-        if (!checkplace(firstDeck, card))
-            throw new WrongPlacementException();
-        else
-            firstDeck.add(0, card);
+    public void addCard (DevCard card, int slot){
+        switch (slot){
+            case (1): addFirstDeck(card);
+            case (2): addSecondDeck(card);
+            case (3): addThirdDeck(card);
+        }
     }
 
-    public void addSecondDeck(DevCard card){
-        if(!checkplace(secondDeck, card))
-            throw new WrongPlacementException();
-        else
-        secondDeck.add(0, card);
+    private void addFirstDeck(DevCard card){ firstDeck.add(0, card); }
+
+    private void addSecondDeck(DevCard card){ secondDeck.add(0, card); }
+
+    private void addThirdDeck(DevCard card){ thirdDeck.add(0, card); }
+
+    public boolean checkPlace(int level, int slot){
+        switch (slot){
+            case 1: return checkDeck(firstDeck, level);
+            case 2: return checkDeck(secondDeck, level);
+            default: return checkDeck(thirdDeck, level);
+        }
     }
 
-    public void addThirdDeck(DevCard card){
-        if(!checkplace(thirdDeck, card))
-            throw new WrongPlacementException();
-        else
-        thirdDeck.add(0, card);
+    private boolean checkDeck (ArrayList<DevCard> deck, int level){
+        int size = deck.size();
+        if (size == 0 && level != 1) return false;
+        if (size == 1 && level != 2) return false;
+        if (size == 2 && level != 3) return false;
+        return size != 3;
     }
-    private boolean checkplace(ArrayList <DevCard> deck, DevCard card){
-        if(deck == null && card.getLevel() != 1)
-            return false;
-        if(deck.size() == 1 && card.getLevel() != 2)
-            return false;
-        if(deck.size() == 2 && card.getLevel() != 3)
-            return false;
-        if(deck.size() >= 3)
-            return false;
-        return true;
+
+    public boolean checkCard (DevCard devCard){
+        return firstDeck.get(0).equals(devCard) || secondDeck.get(0).equals(devCard) || thirdDeck.get(0).equals(devCard);
     }
 }
