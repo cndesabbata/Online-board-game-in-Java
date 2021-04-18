@@ -5,8 +5,8 @@ import it.polimi.ingsw.controller.Place;
 import java.util.*;
 
 public class Warehouse {
-    private  ArrayList<ResourceQuantity> warehouse = new ArrayList<ResourceQuantity>();
-    private int initialDim;
+    private final ArrayList<ResourceQuantity> warehouse = new ArrayList<>();
+    private final int initialDim;
 
     public Warehouse(int warehouseDim){
         for(int i = 0; i < warehouseDim; i++){
@@ -16,7 +16,7 @@ public class Warehouse {
     }
 
     public ArrayList<ResourceQuantity> getWarehouse(){
-        return new ArrayList<ResourceQuantity>(warehouse);
+        return new ArrayList<>(warehouse);
     }
 
     public ResourceQuantity getShelf(NumOfShelf numOfShelf) {                                                           //returns a shelf of the warehouse (considering also depots)
@@ -114,12 +114,11 @@ public class Warehouse {
         for (int i = 0; i < removableRes.size(); i++) {
             numOfShelf = removableRes.get(i).getShelf();
             Rp = removableRes.get(i);
-
             if (numOfShelf.ordinal() >= warehouse.size())
                 throw new WrongActionException("The resource number " + i + " cannot be removed because the indicated shelf does not exist.");
             else if (Rp.getResource() == Resource.EMPTY)
                 throw new WrongActionException("The resource number " + i + " cannot be removed because the empty resource is not storable.");
-            else {
+            else {                                                                                    //dimension of a "depot"
                 shelf = warehouse.get(numOfShelf.ordinal());
                 if (shelf.getResource() != Rp.getResource())
                     throw new WrongActionException("The resource number " + i + " cannot be removed because the resource is not in the indicated shelf.");
@@ -129,7 +128,7 @@ public class Warehouse {
         }
     }
 
-    public void moveResource (NumOfShelf srcShelf, NumOfShelf destShelf, int quantity){
+    public void moveResource (NumOfShelf srcShelf, NumOfShelf destShelf){
         ResourceQuantity shelfSrc = warehouse.get(srcShelf.ordinal());
         ArrayList <ResourcePosition> inputRes = new ArrayList<>();
         ArrayList <ResourcePosition> outputRes = new ArrayList<>();
@@ -191,6 +190,14 @@ public class Warehouse {
             }
         }
         return check;
+    }
+
+    public int getAvailability(Resource resource){
+        int supply = 0;
+        for (ResourceQuantity shelf : warehouse){
+            if (shelf.getResource() == resource) supply += shelf.getQuantity();
+        }
+        return supply;
     }
 
 }

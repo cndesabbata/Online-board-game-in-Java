@@ -25,7 +25,7 @@ public class StartProduction implements Action{
     @Override
     public boolean doAction(Player player) {
         Chest chest = player.getBoard().getChest();
-        Warehouse warehouse = player.getBoard().getWharehouse();
+        Warehouse warehouse = player.getBoard().getWarehouse();
         warehouse.decrementResource(inputRes);
         chest.decrementResource(inputRes);
         chest.incrementResource(outputRes);
@@ -45,7 +45,7 @@ public class StartProduction implements Action{
             inputRes.add(extraInputRes);
         }
         Chest chest = player.getBoard().getChest();
-        Warehouse warehouse = player.getBoard().getWharehouse();
+        Warehouse warehouse = player.getBoard().getWarehouse();
         warehouse.checkDecrement(inputRes);
         chest.checkDecrement(inputRes);
         chest.checkIncrement(outputRes);

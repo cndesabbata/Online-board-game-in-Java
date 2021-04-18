@@ -27,6 +27,10 @@ public class Player {
         return board;
     }
 
+    public boolean isActionAlreadyDone() {
+        return actionAlreadyDone;
+    }
+
     public void setActionAlreadyDone(boolean actionAlreadyDone) { this.actionAlreadyDone = actionAlreadyDone; }
 
     public ArrayList<LeaderCard> getHandLeaderCards() { return handLeaderCards; }

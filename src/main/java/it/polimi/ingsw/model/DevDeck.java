@@ -43,11 +43,11 @@ public class DevDeck {
         return cards.remove(0);
     }
 
-    public ArrayList<ResourceQuantity> peepFirstCardRequirements(){
+    public ArrayList<ResourceQuantity> peepRequirements(){
         if (cards.isEmpty()) return new ArrayList<>();
         ArrayList<ResourceQuantity> result = new ArrayList<>();
-        for (ResourceQuantity res : cards.get(0).getRequirements()){
-            result.add(new ResourceQuantity(res.getQuantity(), res.getResource()));
+        for (ResourceQuantity res : cards.get(0).getResourceRequirements()){
+            result.add(new ResourcePosition(res.getQuantity(), res.getResource()));
         }
         return result;
     }

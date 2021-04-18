@@ -1,11 +1,10 @@
 package it.polimi.ingsw.model;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class LeaderCard extends Card{
     private boolean isPlayed;
-    private final List<DevCard> cardRequirements;
+    private final ArrayList<DevCard> cardRequirements;
     private final Resource resource;
     private final LeaderType type;
 
@@ -18,7 +17,7 @@ public class LeaderCard extends Card{
         this.isPlayed = false;
     }
 
-    public LeaderCard(int victoryPoints, List<DevCard> cardRequirements,
+    public LeaderCard(int victoryPoints, ArrayList<DevCard> cardRequirements,
                       Resource resource, LeaderType type) {
         super(null, victoryPoints);
         this.isPlayed = false;
@@ -35,7 +34,7 @@ public class LeaderCard extends Card{
         return type;
     }
 
-    public List<DevCard> getCardRequirements() {
+    public ArrayList<DevCard> getCardRequirements() {
         return cardRequirements;
     }
 

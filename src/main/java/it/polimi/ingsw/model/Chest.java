@@ -5,7 +5,7 @@ import it.polimi.ingsw.controller.Place;
 import java.util.ArrayList;
 
 public class Chest {
-    private ArrayList<ResourceQuantity> chest;
+    private final ArrayList<ResourceQuantity> chest;
 
     public Chest(){
         chest = new ArrayList<>();
@@ -15,7 +15,7 @@ public class Chest {
     }
 
     public ArrayList<ResourceQuantity> getChest() {
-        return new ArrayList<ResourceQuantity>(chest);
+        return new ArrayList<>(chest);
     }
 
     public void decrementResource(ArrayList <ResourcePosition> inputRes) {
@@ -44,7 +44,7 @@ public class Chest {
         for(ResourceQuantity Rq : result){
             if(Rq.getQuantity() < 0){
                 check = false;
-                errors.add(new String("The number of" + Rq.getResource().toString() + "is not sufficient\n"));
+                errors.add("The number of" + Rq.getResource().toString() + "is not sufficient\n");
             }
         }
         if(!check) {
@@ -71,6 +71,14 @@ public class Chest {
     public boolean checkQuantity (Resource resource, int quantity){
         int index = this.getIndexResource(resource);
         return  chest.get(index).getQuantity() >= quantity;
+    }
+
+    public int getAvailability(Resource resource){
+        int supply = 0;
+        for (ResourceQuantity res : chest){
+            if (res.getResource() == resource) supply += res.getQuantity();
+        }
+        return supply;
     }
 
     private int getIndexResource(Resource resource){                                                                    //returns the index of the node of chest which store resource

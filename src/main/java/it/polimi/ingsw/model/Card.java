@@ -11,7 +11,7 @@ public abstract class Card {
         this.victoryPoints = victoryPoints;
     }
 
-    public ArrayList<ResourceQuantity> getRequirements() {
+    public ArrayList<ResourceQuantity> getResourceRequirements() {
         if (resourceRequirements == null) return null;
         return new ArrayList<>(resourceRequirements);
     }

@@ -3,9 +3,9 @@ import java.util.*;
 
 
 public class DevSpace {
-    private ArrayList<DevCard> firstDeck = new ArrayList<>();
-    private ArrayList<DevCard> secondDeck = new ArrayList<>();
-    private ArrayList<DevCard> thirdDeck = new ArrayList<>();
+    private final ArrayList<DevCard> firstDeck;
+    private final ArrayList<DevCard> secondDeck;
+    private final ArrayList<DevCard> thirdDeck;
 
     public DevSpace (){
         firstDeck = new ArrayList<>();
@@ -13,23 +13,33 @@ public class DevSpace {
         thirdDeck = new ArrayList<>();
     }
 
-    public List<DevCard> getFirstDeck(){
-        return new ArrayList<DevCard>(firstDeck);
+    public boolean checkCards (DevCard requirement){
+        return (checkLevelColour(firstDeck, requirement)
+                || checkLevelColour(firstDeck, requirement)
+                || checkLevelColour(firstDeck, requirement));
     }
 
-    public List<DevCard> getSecondDeck(){
-        return new ArrayList<DevCard>(secondDeck);
+    private boolean checkLevelColour(ArrayList<DevCard> deck, DevCard requirement){
+        for (DevCard card : deck){
+            if (card.getColour().equals(requirement.getColour()) && card.getLevel() >= requirement.getLevel())
+                return true;
+        }
+        return false;
     }
 
-    public List<DevCard> getThirdDeck(){
-        return new ArrayList<DevCard>(thirdDeck);
+    public void addCard (DevCard card, int slot){
+        switch (slot){
+            case (1): addFirstDeck(card);
+            case (2): addSecondDeck(card);
+            case (3): addThirdDeck(card);
+        }
     }
 
-    public void addFirstDeck(DevCard card){ firstDeck.add(0, card); }
+    private void addFirstDeck(DevCard card){ firstDeck.add(0, card); }
 
-    public void addSecondDeck(DevCard card){ secondDeck.add(0, card); }
+    private void addSecondDeck(DevCard card){ secondDeck.add(0, card); }
 
-    public void addThirdDeck(DevCard card){ thirdDeck.add(0, card); }
+    private void addThirdDeck(DevCard card){ thirdDeck.add(0, card); }
 
     public boolean checkPlace(int level, int slot){
         switch (slot){
@@ -44,14 +54,10 @@ public class DevSpace {
         if (size == 0 && level != 1) return false;
         if (size == 1 && level != 2) return false;
         if (size == 2 && level != 3) return false;
-        if (size == 3) return false;
-        return true;
+        return size != 3;
     }
 
     public boolean checkCard (DevCard devCard){
-        if(firstDeck.get(0).equals(devCard) || secondDeck.get(0).equals(devCard) || thirdDeck.get(0).equals(devCard))
-            return true;
-        else
-            return false;
+        return firstDeck.get(0).equals(devCard) || secondDeck.get(0).equals(devCard) || thirdDeck.get(0).equals(devCard);
     }
 }
