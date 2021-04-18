@@ -1,10 +1,12 @@
 package it.polimi.ingsw.model;
 
+import java.util.ArrayList;
+
 public class GameBoard {
-    private Itinerary itinerary;
-    private Warehouse warehouse;
-    private Chest chest;
-    private DevSpace devSpace;
+    private final Itinerary itinerary;
+    private final Warehouse warehouse;
+    private final Chest chest;
+    private final DevSpace devSpace;
 
     public GameBoard(int warehouseDim){
         itinerary = new Itinerary();
@@ -17,7 +19,7 @@ public class GameBoard {
         return itinerary;
     }
 
-    public Warehouse getWharehouse() {
+    public Warehouse getWarehouse() {
         return warehouse;
     }
 
@@ -27,6 +29,19 @@ public class GameBoard {
 
     public DevSpace getDevSpace() {
         return devSpace;
+    }
+
+    public void expendResources(ArrayList<ResourcePosition> resources){
+        chest.decrementResource(resources);
+        warehouse.decrementResource(resources);
+    }
+
+    public <Res extends ResourceQuantity> boolean checkResources(ArrayList<Res> resources){
+        for(ResourceQuantity res : resources){
+            int quantity = chest.getAvailability(res.getResource()) + warehouse.getAvailability(res.getResource());
+            if (quantity < res.getQuantity()) return false;
+        }
+        return true;
     }
 
 }

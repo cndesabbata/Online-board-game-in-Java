@@ -12,7 +12,7 @@ public class MoveResources implements Action{
 
     @Override
     public boolean doAction(Player player){
-        Warehouse warehouse = player.getBoard().getWharehouse();
+        Warehouse warehouse = player.getBoard().getWarehouse();
         warehouse.moveResource(srcShelf,destShelf);
         return false;
     }

@@ -2,7 +2,6 @@ package it.polimi.ingsw.model;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 public class LeaderCardBlueprint {
     private final String type;
@@ -51,7 +50,7 @@ public class LeaderCardBlueprint {
         if (hasResourceRequirements)
             return new LeaderCard(resQuantities, victoryPoints, resourceType, LeaderType.valueOf(type.toUpperCase()));
         else
-            return new LeaderCard(victoryPoints, cardsReqs, resourceType, LeaderType.valueOf(type.toUpperCase()));
+            return new LeaderCard(victoryPoints, (ArrayList<DevCard>) cardsReqs, resourceType, LeaderType.valueOf(type.toUpperCase()));
     }
 
     private void BuildResources(List<ResourceQuantity> resourceList, int[] array){
