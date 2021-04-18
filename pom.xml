@@ -5,10 +5,10 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>it.polimi.ingsw</groupId>
-  <artifactId>CG14</artifactId>
+  <artifactId>GC14</artifactId>
   <version>1.0-SNAPSHOT</version>
 
-  <name>CG14</name>
+  <name>GC14</name>
   <url>https://github.com/GianlucaRadi/ing_sw_2021_Radi_Sanchini_De_Sabbata</url>
 
   <properties>

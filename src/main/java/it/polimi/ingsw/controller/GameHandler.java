@@ -6,7 +6,7 @@ import it.polimi.ingsw.model.Player;
 
 public class GameHandler {
     private Game model;
-    private ActionController actionController;
+    private GameController gameController;
     private Server server;
     private int started;
     private int numOfPlayers;
@@ -29,5 +29,8 @@ public class GameHandler {
 
     }
 
+    public Game getModel() {
+        return model;
+    }
 
 }

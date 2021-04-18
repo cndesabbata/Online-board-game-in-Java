@@ -49,6 +49,5 @@ public class DevSpace {
         if(deck.size() >= 3)
             return false;
         return true;
-
     }
 }
