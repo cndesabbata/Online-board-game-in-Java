@@ -18,7 +18,7 @@ public class ProductionEffect implements LeaderEffect{
             ArrayList <LeaderCard> playerCards = player.getHandLeaderCards();
             boolean check = false;
             for(LeaderCard Lc : playerCards){
-                if(Lc.getResource() == inputRes.getResource() && Lc.getType() == LeaderType.PRODUCT)
+                if(Lc.getResource() == inputRes.getResource() && Lc.getType() == LeaderType.PRODUCT && Lc.isPlayed())
                     check = true;
             }
             if(!check) throw new WrongActionException("The player does not have the played leadCard");

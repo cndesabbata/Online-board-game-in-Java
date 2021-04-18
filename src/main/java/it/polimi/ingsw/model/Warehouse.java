@@ -110,7 +110,6 @@ public class Warehouse {
         NumOfShelf numOfShelf;
         ResourcePosition Rp;
         ResourceQuantity shelf;
-        int dimShelf;
 
         for (int i = 0; i < removableRes.size(); i++) {
             numOfShelf = removableRes.get(i).getShelf();
@@ -121,8 +120,6 @@ public class Warehouse {
             else if (Rp.getResource() == Resource.EMPTY)
                 throw new WrongActionException("The resource number " + i + " cannot be removed because the empty resource is not storable.");
             else {
-                if (numOfShelf.ordinal() < initialDim) dimShelf = numOfShelf.ordinal() + 1;                             //dimension of a "normal" shelf
-                else dimShelf = 2;                                                                                      //dimension of a "depot"
                 shelf = warehouse.get(numOfShelf.ordinal());
                 if (shelf.getResource() != Rp.getResource())
                     throw new WrongActionException("The resource number " + i + " cannot be removed because the resource is not in the indicated shelf.");
@@ -132,9 +129,8 @@ public class Warehouse {
         }
     }
 
-    public void moveResource (NumOfShelf srcShelf, NumOfShelf destShelf){
+    public void moveResource (NumOfShelf srcShelf, NumOfShelf destShelf, int quantity){
         ResourceQuantity shelfSrc = warehouse.get(srcShelf.ordinal());
-        ResourceQuantity shelfDest = warehouse.get(destShelf.ordinal());
         ArrayList <ResourcePosition> inputRes = new ArrayList<>();
         ArrayList <ResourcePosition> outputRes = new ArrayList<>();
         for(int i = 0; i < shelfSrc.getQuantity(); i++) {

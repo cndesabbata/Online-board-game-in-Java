@@ -21,7 +21,7 @@ public class Chest {
     public void decrementResource(ArrayList <ResourcePosition> inputRes) {
         ArrayList <ResourcePosition> removableRes = new ArrayList<>(inputRes);
         removableRes.removeIf(Rp -> Rp.getPlace() != Place.CHEST);
-        for(ResourcePosition Rp : inputRes){
+        for(ResourcePosition Rp : removableRes){
             int index = getIndexResource(Rp.getResource());
             ResourceQuantity Rq = chest.get(index);
             Rq.setQuantity(Rq.getQuantity() - Rp.getQuantity());
