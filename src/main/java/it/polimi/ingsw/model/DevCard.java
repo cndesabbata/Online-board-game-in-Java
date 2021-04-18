@@ -38,4 +38,33 @@ public class DevCard extends Card{
     public List<ResourceQuantity> getProductionOutput() {
         return productionOutput;
     }
+
+    public boolean equals(Object o){
+        if (!(o instanceof DevCard)) return false;
+        DevCard devCardrd= (DevCard) o;
+        if(((DevCard) o).getColour() == colour && ((DevCard) o).getLevel() == level)
+            return false;
+        else{
+            boolean check = true;
+            for(int i = 0; i < productionInput.size() ; i++){
+                if(productionInput.get(i).getQuantity() != ((DevCard) o).getProductionInput().get(i).getQuantity() ||
+                   productionInput.get(i).getResource() != ((DevCard) o).getProductionInput().get(i).getResource()) {
+                    check = false;
+                    break;
+                }
+            }
+            if(!check) return check;
+            else{
+                for(int i = 0; i < productionOutput.size() ; i++){
+                    if(productionOutput.get(i).getQuantity() != ((DevCard) o).getProductionOutput().get(i).getQuantity() ||
+                            productionOutput.get(i).getResource() != ((DevCard) o).getProductionOutput().get(i).getResource()) {
+                        check = false;
+                        break;
+                    }
+                }
+                return check;
+            }
+        }
+    }
+
 }

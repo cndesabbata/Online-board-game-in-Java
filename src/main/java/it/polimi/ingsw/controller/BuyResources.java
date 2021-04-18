@@ -5,37 +5,39 @@ import it.polimi.ingsw.model.NumOfShelf;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.ResourceQuantity;
 
-import java.util.List;
+import java.util.ArrayList;
 
-public class BuyResources implements Action {
-    private final int position;
-    private final MarketSelection marketSelection;
-    private final List<LeaderEffect> leaderEffects;
-    private final List<ResourceQuantity> boughtResources;
-    private final List<NumOfShelf> numOfShelves;
+public class BuyResources extends Action {
+    private int position;
+    private MarketSelection marketSelection;
+    private ArrayList<ResourceQuantity> gainedRes;
+    private ArrayList<ResourceQuantity> extraRes;                                                                       //it represents the resource gained thanks to the effect of a Marble Leader
+    private ArrayList<NumOfShelf> outputShelves;
+    private ArrayList<LeaderEffect> leaderEffects;
 
-    public BuyResources(int position, MarketSelection marketSelection, List<LeaderEffect> leaderEffectList,
-                        List<ResourceQuantity> boughtResources, List<NumOfShelf> numOfShelves) {
+    public BuyResources(ArrayList<LeaderEffect> leaderEffects, int position, MarketSelection marketSelection,
+                        ArrayList<ResourceQuantity> gainedRes, ArrayList<ResourceQuantity> extraRes,
+                        ArrayList<NumOfShelf> outputShelves, ArrayList<LeaderEffect> leaderEffects1) {
+        super(leaderEffects);
         this.position = position;
         this.marketSelection = marketSelection;
-        this.leaderEffectList = leaderEffectList;
-        this.boughtResources = boughtResources;
-        this.numOfShelves = numOfShelves;
+        this.gainedRes = gainedRes;
+        this.extraRes = extraRes;
+        this.outputShelves = outputShelves;
+        this.leaderEffects = leaderEffects1;
+    }
+
+    public BuyResources(ArrayList<LeaderEffect> leaderEffects) {
+        super(leaderEffects);
     }
 
     @Override
-    public void doAction(Player player) {
-        if (checkAction()) {
-
-            player.getGame().getMarket().setDisposition(marketSelection, position);
-        }
+    public boolean doAction(Player player) {
+        return false;
     }
 
-    public boolean checkAction() {
-        if (position < 0 || (marketSelection == MarketSelection.ROW && position > 3) ||
-                (marketSelection == MarketSelection.COLUMN && position > 4)) {
-            return false;
-        }
+    @Override
+    public void checkAction(Player player){
 
     }
 }

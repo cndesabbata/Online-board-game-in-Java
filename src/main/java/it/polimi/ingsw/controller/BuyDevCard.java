@@ -4,21 +4,20 @@ import it.polimi.ingsw.model.*;
 
 import java.util.ArrayList;
 
-public class BuyDevCard implements Action {
+public class BuyDevCard extends Action {
     private final int level;
     private final Colour colour;
     private final int slot;
     private final ArrayList<ResourcePosition> cost;
-    private final ArrayList<LeaderEffect> leaderEffects;
     private ArrayList<ResourceQuantity> req;
 
     public BuyDevCard(int level, Colour colour, int slot, ArrayList<ResourcePosition> cost,
                       ArrayList<LeaderEffect> leaderEffects) {
+        super(leaderEffects);
         this.level = level;
         this.colour = colour;
         this.slot = slot;
         this.cost = cost;
-        this.leaderEffects = leaderEffects;
     }
 
     @Override
@@ -36,9 +35,9 @@ public class BuyDevCard implements Action {
     @Override
     public void checkAction(Player player) throws WrongActionException {
         if (player.isActionAlreadyDone())
-            throw new WrongActionException("You have already done an exclusive action this turn");
+            throw new WrongActionException("The player has already done an exclusive action this turn");
         if (level <= 0 || level >= 4) throw new WrongActionException("There are no cards of such level");
-        if (slot <= 0 || slot >= 4) throw new WrongActionException("There are only three slots available");
+        if (slot <= 0 || slot >= 4) throw new WrongActionException("There are only three slots in the board");
         DevDeck deck = player.getGame().getDevDecks()[(level-1) * Colour.values().length + colour.ordinal()];
         if (deck.isEmpty())
             throw new WrongActionException("The selected deck is empty");
@@ -50,16 +49,15 @@ public class BuyDevCard implements Action {
 
     private void checkCost (Player player) throws WrongActionException{
         req = player.getGame().getDevDecks()[(level-1) * Colour.values().length + colour.ordinal()].peepRequirements();
-        for (LeaderEffect effect : leaderEffects){
+        for (LeaderEffect effect : getLeaderEffects()){
             effect.doLeaderEffect(player, this);
         }
         if (cost.size() != req.size())
             throw new WrongActionException("The number of required resources is wrong");
-        int l = cost.size();
-        for (int i = 0; i < l; i++){
-            if (cost.get(i).getPlace().equals(Place.TRASH_CAN))
+        for (int i = 0; i < cost.size(); i++){
+            if (cost.get(i).getPlace() == Place.TRASH_CAN)
                 throw new WrongActionException("You cannot withdraw resources from the trashcan");
-            if (!cost.get(i).getResource().equals(req.get(i).getResource()))
+            if (cost.get(i).getResource() != req.get(i).getResource())
                 throw new WrongActionException("The required resources differ from the Development card requirements");
         }
     }

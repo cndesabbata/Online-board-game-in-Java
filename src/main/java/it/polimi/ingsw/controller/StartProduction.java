@@ -3,23 +3,32 @@ import it.polimi.ingsw.model.*;
 
 import java.util.ArrayList;
 
-public class StartProduction implements Action{
-    private DevCard devCard = null;
-    private ArrayList<ResourcePosition> outputRes;
-    private ArrayList<ResourcePosition> inputRes;
+public class StartProduction extends Action{
+    private final DevCard devCard;
+    private final ArrayList<ResourcePosition> outputRes;
+    private final ArrayList<ResourcePosition> inputRes;
     private ResourcePosition extraOutputRes;
     private ResourcePosition extraInputRes;
 
 
-    public StartProduction (DevCard devCard,ArrayList<ResourcePosition> outputRes, ArrayList<ResourcePosition> inputRes){
+    public StartProduction (DevCard devCard,ArrayList<ResourcePosition> outputRes,
+                            ArrayList<ResourcePosition> inputRes,ArrayList <LeaderEffect> leaderEffects){
+        super(leaderEffects);
         this.devCard = devCard;
         this.outputRes = new ArrayList<>(outputRes);
         this.inputRes = new ArrayList<>(inputRes);
+        this.extraInputRes = null;
+        this.extraOutputRes = null;
     }
 
-    public StartProduction (ArrayList<ResourcePosition> outputRes, ArrayList<ResourcePosition> inputRes){
+    public StartProduction (ArrayList<ResourcePosition> outputRes, ArrayList<ResourcePosition> inputRes,
+                            ArrayList <LeaderEffect> leaderEffects){
+        super(leaderEffects);
+        this.devCard = null;
         this.outputRes = new ArrayList<>(outputRes);
         this.inputRes = new ArrayList<>(inputRes);
+        this.extraInputRes = null;
+        this.extraOutputRes = null;
     }
 
     @Override
@@ -33,9 +42,11 @@ public class StartProduction implements Action{
     }
 
     public void checkAction(Player player) throws WrongActionException{
-        if(devCard != null) {                                                                                           //in case there is a devCard played
+        if(player.isActionAlreadyDone())
+            throw new WrongActionException("The player has already done an exclusive action this turn");
+        else if(devCard != null) {                                                                                           //in case there is a devCard played
             DevSpace devSpace = player.getBoard().getDevSpace();
-            if (!devSpace.checkCard(devCard))
+            if (!devSpace.checkUpperCard(devCard))
                 throw new WrongActionException("The player does not have the selected devCard");
         }
         checkDevCardInput(devCard);

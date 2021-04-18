@@ -6,12 +6,14 @@ import it.polimi.ingsw.model.WrongActionException;
 
 import java.util.ArrayList;
 
-public class DiscardLeadCard implements Action{
+public class DiscardLeadCard extends Action{
     private final int index;
     ArrayList<LeaderCard> hand;
 
-    public DiscardLeadCard(int index) {
+    public DiscardLeadCard(int index, ArrayList <LeaderEffect> leaderEffects ) {
+        super(leaderEffects);
         this.index = index;
+        this.hand = null;
     }
 
     @Override
