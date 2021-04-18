@@ -91,7 +91,7 @@ public class Warehouse {
 
     public void decrementResource (ArrayList <ResourcePosition> inputRes) {
         ArrayList<ResourcePosition> removableRes = new ArrayList<>(inputRes);
-        removableRes.removeIf(Rp -> Rp.getPlace() != Place.WHAREHOUSE);                                                 //Resources that should be discarded are not interested in this method.
+        removableRes.removeIf(Rp -> Rp.getPlace() != Place.WAREHOUSE);                                                 //Resources that should be discarded are not interested in this method.
         NumOfShelf numOfShelf;
         ResourceQuantity shelf;
 
@@ -105,7 +105,7 @@ public class Warehouse {
 
     public void checkDecrement(ArrayList<ResourcePosition> inputRes) throws WrongActionException {                                                   //used in checkAction of BuyDevCard, StartProduction.
         ArrayList <ResourcePosition> removableRes = new ArrayList<>(inputRes);
-        removableRes.removeIf(Rp -> Rp.getPlace() != Place.WHAREHOUSE);
+        removableRes.removeIf(Rp -> Rp.getPlace() != Place.WAREHOUSE);
 
         NumOfShelf numOfShelf;
         ResourcePosition Rp;
@@ -138,8 +138,8 @@ public class Warehouse {
         ArrayList <ResourcePosition> inputRes = new ArrayList<>();
         ArrayList <ResourcePosition> outputRes = new ArrayList<>();
         for(int i = 0; i < shelfSrc.getQuantity(); i++) {
-            inputRes.add(new ResourcePosition(1, shelfSrc.getResource(), Place.WHAREHOUSE, srcShelf));
-            outputRes.add(new ResourcePosition(1,shelfSrc.getResource(), Place.WHAREHOUSE, destShelf));
+            inputRes.add(new ResourcePosition(1, shelfSrc.getResource(), Place.WAREHOUSE, srcShelf));
+            outputRes.add(new ResourcePosition(1,shelfSrc.getResource(), Place.WAREHOUSE, destShelf));
         }
         decrementResource(inputRes);
         incrementResource(outputRes);
@@ -184,6 +184,17 @@ public class Warehouse {
 
     public void addDepot(Resource resource){
         warehouse.add(new ResourceQuantity(0, resource));
+    }
+
+    public boolean checkDepot(Resource resource){
+        boolean check = true;
+        for(int i = initialDim; i < warehouse.size(); i++){
+            if(warehouse.get(i).getResource() == resource){
+                check = false;
+                break;
+            }
+        }
+        return check;
     }
 
 }

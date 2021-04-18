@@ -25,6 +25,7 @@ public class ProductionEffect implements LeaderEffect{
             else {
                 ((StartProduction) action).setExtraInputRes(inputRes);
                 ((StartProduction) action).setExtraOutputRes(outputRes);
+                player.getBoard().getItinerary().updatePosition(1);
             }
         }
     }
