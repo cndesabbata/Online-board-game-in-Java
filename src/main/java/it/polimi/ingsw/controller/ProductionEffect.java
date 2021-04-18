@@ -4,8 +4,8 @@ import it.polimi.ingsw.model.*;
 import java.util.ArrayList;
 
 public class ProductionEffect implements LeaderEffect{
-    private ResourcePosition inputRes;
-    private ResourcePosition outputRes;
+    private final ResourcePosition inputRes;
+    private final ResourcePosition outputRes;
 
     public ProductionEffect(ResourcePosition inputRes, ResourcePosition outputRes) {
         this.inputRes = inputRes;
@@ -18,8 +18,10 @@ public class ProductionEffect implements LeaderEffect{
             ArrayList <LeaderCard> playerCards = player.getHandLeaderCards();
             boolean check = false;
             for(LeaderCard Lc : playerCards){
-                if(Lc.getResource() == inputRes.getResource() && Lc.getType() == LeaderType.PRODUCT && Lc.isPlayed())
+                if (Lc.getResource() == inputRes.getResource() && Lc.getType() == LeaderType.PRODUCT && Lc.isPlayed()) {
                     check = true;
+                    break;
+                }
             }
             if(!check) throw new WrongActionException("The player does not have the played leadCard");
             else {

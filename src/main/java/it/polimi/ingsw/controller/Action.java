@@ -2,11 +2,21 @@ package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.model.*;
 
-public interface Action {
+import java.util.ArrayList;
 
-    boolean doAction(Player player);
+public abstract class Action {
+    private final ArrayList<LeaderEffect> leaderEffects;
 
-    void checkAction(Player player) throws WrongActionException;
+    public Action(ArrayList<LeaderEffect> leaderEffects) {
+        this.leaderEffects = leaderEffects;
+    }
 
+    abstract boolean doAction(Player player);
+
+    abstract void checkAction(Player player) throws WrongActionException;
+
+    public ArrayList<LeaderEffect> getLeaderEffects() {
+        return new ArrayList<>(leaderEffects);
+    }
 }
 

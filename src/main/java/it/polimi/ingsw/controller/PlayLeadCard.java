@@ -4,13 +4,15 @@ import it.polimi.ingsw.model.*;
 
 import java.util.ArrayList;
 
-public class PlayLeadCard implements Action {
+public class PlayLeadCard extends Action {
     private final int index;
     private LeaderCard card;
 
 
-    public PlayLeadCard(int index) {
+    public PlayLeadCard(int index, ArrayList <LeaderEffect> leaderEffects) {
+        super(leaderEffects);
         this.index = index;
+        card = null;
     }
 
     @Override
@@ -28,7 +30,7 @@ public class PlayLeadCard implements Action {
         if (null == card.getCardRequirements()){
             ArrayList<ResourceQuantity> requirements = card.getResourceRequirements();
             if (!player.getBoard().checkResources(requirements))
-                throw new WrongActionException("You don't have the required resources");
+                throw new WrongActionException("The player does not have the required resources");
         }
         else {
             ArrayList<DevCard> requirements = card.getCardRequirements();
