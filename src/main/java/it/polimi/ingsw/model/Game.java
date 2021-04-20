@@ -71,6 +71,12 @@ public class Game {
         }
     }
 
+    public DevDeck[] getDevDecks() { return devDecks; }
+
+    public DevCard drawDevCard (Colour colour, int level){
+        return devDecks[(level-1) * Colour.values().length + colour.ordinal()].drawCard();
+    }
+
     public Market getMarket() {
         return market;
     }

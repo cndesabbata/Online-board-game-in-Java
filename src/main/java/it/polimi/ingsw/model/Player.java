@@ -7,7 +7,8 @@ public class Player {
     private final String nickname;
     private final GameBoard board;
     private final ArrayList<LeaderCard> handLeaderCards;
-    private boolean actionAlreadyDone = false;
+    private boolean actionDone;
+    private boolean turnActive;
 
     /* constructor Player creates a new Player instance with a given nickname */
     public Player(String nickname, GameBoard board, Game game) {
@@ -27,12 +28,29 @@ public class Player {
         return board;
     }
 
-    public boolean isActionAlreadyDone() {
-        return actionAlreadyDone;
+    public boolean isActionDone() {
+        return actionDone;
     }
 
-    public void setActionAlreadyDone(boolean actionAlreadyDone) { this.actionAlreadyDone = actionAlreadyDone; }
+    public boolean isTurnActive() {
+        return turnActive;
+    }
+
+    public void setActionDone(boolean actionDone) {
+        this.actionDone = actionDone;
+    }
+
+    public void setTurnActive(boolean turnActive) {
+        this.turnActive = turnActive;
+    }
 
     public ArrayList<LeaderCard> getHandLeaderCards() { return handLeaderCards; }
 
+    public boolean hasPlayedLeaderCard(LeaderType type, Resource resource) {
+        for (LeaderCard leaderCard : handLeaderCards) {
+            if (leaderCard.getType() == type && leaderCard.getResource() == resource && leaderCard.isPlayed())
+                return true;
+        }
+        return false;
+    }
 }

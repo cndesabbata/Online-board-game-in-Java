@@ -34,7 +34,7 @@ public class BuyDevCard extends Action {
 
     @Override
     public void checkAction(Player player) throws WrongActionException {
-        if (player.isActionAlreadyDone())
+        if (player.isActionDone())
             throw new WrongActionException("The player has already done an exclusive action this turn");
         if (level <= 0 || level >= 4) throw new WrongActionException("There are no cards of such level");
         if (slot <= 0 || slot >= 4) throw new WrongActionException("There are only three slots in the board");

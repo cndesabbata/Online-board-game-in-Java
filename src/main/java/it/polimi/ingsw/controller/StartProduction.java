@@ -42,7 +42,7 @@ public class StartProduction extends Action{
     }
 
     public void checkAction(Player player) throws WrongActionException{
-        if(player.isActionAlreadyDone())
+        if(player.isActionDone())
             throw new WrongActionException("The player has already done an exclusive action this turn");
         else if(devCard != null) {                                                                                           //in case there is a devCard played
             DevSpace devSpace = player.getBoard().getDevSpace();
