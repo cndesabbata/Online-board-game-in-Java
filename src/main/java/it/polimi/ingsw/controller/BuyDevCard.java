@@ -5,7 +5,7 @@ import it.polimi.ingsw.model.*;
 
 import java.util.ArrayList;
 
-public class BuyDevCard extends Action {
+public class BuyDevCard implements Action {
     private final int level;
     private final Colour colour;
     private final DevSpaceSlot slot;

@@ -67,7 +67,7 @@ public class GameController {
 
     private void checkEndGame() {
         if (currentPlayer.getBoard().getItinerary().getPosition() == 24 ||
-                currentPlayer.getBoard().getDevSpace().count() == 7) {
+                currentPlayer.getBoard().getDevSpace().countCards() == 7) {
 
             game.setFinalTurn(true);
         }

@@ -5,19 +5,11 @@ import it.polimi.ingsw.model.*;
 
 import java.util.ArrayList;
 
-public abstract class Action {
-    private final ArrayList<LeaderEffect> leaderEffects;
+public interface  Action {
 
-    public Action(ArrayList<LeaderEffect> leaderEffects) {
-        this.leaderEffects = leaderEffects;
-    }
+     boolean doAction(Player player);
 
-    abstract boolean doAction(Player player);
+     void checkAction(Player player) throws WrongActionException;
 
-    abstract void checkAction(Player player) throws WrongActionException;
-
-    public ArrayList<LeaderEffect> getLeaderEffects() {
-        return new ArrayList<>(leaderEffects);
-    }
 }
 
