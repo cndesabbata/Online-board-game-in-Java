@@ -7,11 +7,11 @@ import java.util.ArrayList;
 public class BuyDevCard extends Action {
     private final int level;
     private final Colour colour;
-    private final int slot;
+    private final DevSpaceSlot slot;
     private final ArrayList<ResourcePosition> cost;
     private ArrayList<ResourceQuantity> req;
 
-    public BuyDevCard(int level, Colour colour, int slot, ArrayList<ResourcePosition> cost,
+    public BuyDevCard(int level, Colour colour, DevSpaceSlot slot, ArrayList<ResourcePosition> cost,
                       ArrayList<LeaderEffect> leaderEffects) {
         super(leaderEffects);
         this.level = level;
@@ -37,7 +37,6 @@ public class BuyDevCard extends Action {
         if (player.isActionDone())
             throw new WrongActionException("The player has already done an exclusive action this turn");
         if (level <= 0 || level >= 4) throw new WrongActionException("There are no cards of such level");
-        if (slot <= 0 || slot >= 4) throw new WrongActionException("There are only three slots in the board");
         DevDeck deck = player.getGame().getDevDecks()[(level-1) * Colour.values().length + colour.ordinal()];
         if (deck.isEmpty())
             throw new WrongActionException("The selected deck is empty");

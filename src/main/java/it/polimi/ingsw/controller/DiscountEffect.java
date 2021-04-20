@@ -25,7 +25,7 @@ public class DiscountEffect implements LeaderEffect{
             if(!check) throw new WrongActionException("The player does not have the corresponding leadCard");
             else {
                 for (ResourceQuantity res : ((BuyDevCard) action).getReq()){
-                    if (res.getResource().equals(resource)){
+                    if (res.getResource() == resource){
                         ((BuyDevCard) action).getReq().remove(res);
                         break;
                     }

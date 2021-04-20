@@ -44,4 +44,12 @@ public class GameBoard {
         return true;
     }
 
+    public int getTotalResources (){
+        int quantity = 0;
+        for (int i = 0; i < Resource.values().length - 2; i++){
+            quantity += chest.getAvailability(Resource.values()[i]) + warehouse.getAvailability(Resource.values()[i]);
+        }
+        return quantity;
+    }
+
 }
