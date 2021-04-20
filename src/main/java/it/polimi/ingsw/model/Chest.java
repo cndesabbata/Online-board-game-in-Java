@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.controller.Place;
+import it.polimi.ingsw.exceptions.WrongActionException;
 
 import java.util.ArrayList;
 
@@ -28,7 +29,7 @@ public class Chest {
         }
     }
 
-    public void checkDecrement(ArrayList <ResourcePosition> inputRes) throws WrongActionException{
+    public void checkDecrement(ArrayList <ResourcePosition> inputRes) throws WrongActionException {
         ArrayList <ResourcePosition> storableRes = new ArrayList<>(inputRes);
         storableRes.removeIf(Rp -> Rp.getPlace() != Place.CHEST);                                                       //resources that must be taken elsewhere are not involved in this method.
         ArrayList <ResourceQuantity> result = new ArrayList<>(chest);                                                   //shallow copy of chest

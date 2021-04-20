@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.controller.Place;
+import it.polimi.ingsw.exceptions.WrongActionException;
 
 import java.util.*;
 

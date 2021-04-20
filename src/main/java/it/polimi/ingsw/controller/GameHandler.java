@@ -3,6 +3,7 @@ package it.polimi.ingsw.controller;
 import java.util.*;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.server.Server;
 
 public class GameHandler {
     private Game model;
