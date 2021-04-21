@@ -5,12 +5,13 @@ import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.exceptions.WrongActionException;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class DiscardLeadCard extends Action{
     private final int index;
-    ArrayList<LeaderCard> hand;
+    List<LeaderCard> hand;
 
-    public DiscardLeadCard(int index, ArrayList <LeaderEffect> leaderEffects ) {
+    public DiscardLeadCard(int index, List <LeaderEffect> leaderEffects ) {
         super(leaderEffects);
         this.index = index;
         this.hand = null;

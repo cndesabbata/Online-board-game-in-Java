@@ -4,12 +4,13 @@ import it.polimi.ingsw.exceptions.WrongActionException;
 import it.polimi.ingsw.model.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class DepotEffect implements LeaderEffect{
     private Resource resource;
     @Override
     public void doLeaderEffect(Player player, Action action) throws WrongActionException {
-        ArrayList<LeaderCard> playerCards = player.getHandLeaderCards();
+        List<LeaderCard> playerCards = player.getHandLeaderCards();
         boolean check = false;
         for(LeaderCard Lc : playerCards){
             if (Lc.getResource() == resource && Lc.getType() == LeaderType.DEPOT && Lc.isPlayed()) {

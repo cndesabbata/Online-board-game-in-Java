@@ -3,17 +3,18 @@ import it.polimi.ingsw.exceptions.WrongActionException;
 import it.polimi.ingsw.model.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class StartProduction extends Action{
     private final DevCard devCard;
-    private final ArrayList<ResourcePosition> outputRes;
-    private final ArrayList<ResourcePosition> inputRes;
+    private final List<ResourcePosition> outputRes;
+    private final List<ResourcePosition> inputRes;
     private ResourcePosition extraOutputRes;
     private ResourcePosition extraInputRes;
 
 
-    public StartProduction (DevCard devCard,ArrayList<ResourcePosition> outputRes,
-                            ArrayList<ResourcePosition> inputRes,ArrayList <LeaderEffect> leaderEffects){
+    public StartProduction (DevCard devCard, List<ResourcePosition> outputRes,
+                            List<ResourcePosition> inputRes, List <LeaderEffect> leaderEffects){
         super(leaderEffects);
         this.devCard = devCard;
         this.outputRes = new ArrayList<>(outputRes);
@@ -22,8 +23,8 @@ public class StartProduction extends Action{
         this.extraOutputRes = null;
     }
 
-    public StartProduction (ArrayList<ResourcePosition> outputRes, ArrayList<ResourcePosition> inputRes,
-                            ArrayList <LeaderEffect> leaderEffects){
+    public StartProduction (List<ResourcePosition> outputRes, List<ResourcePosition> inputRes,
+                            List <LeaderEffect> leaderEffects){
         super(leaderEffects);
         this.devCard = null;
         this.outputRes = new ArrayList<>(outputRes);
@@ -72,7 +73,7 @@ public class StartProduction extends Action{
     }
 
     private void checkDevCardInput(DevCard devCard) throws WrongActionException {
-        ArrayList<ResourceQuantity> compareInput = new ArrayList<>();
+        List<ResourceQuantity> compareInput = new ArrayList<>();
         for (ResourcePosition Rp : inputRes) {
             for (int i = Rp.getQuantity(); i > 0; i--) {
                 compareInput.add(new ResourceQuantity(1, Rp.getResource()));
@@ -97,7 +98,7 @@ public class StartProduction extends Action{
     }
 
     private void checkDevCardOutput(DevCard devCard) throws WrongActionException {
-        ArrayList<ResourceQuantity> compareOutput = new ArrayList<>();
+        List<ResourceQuantity> compareOutput = new ArrayList<>();
         for (ResourcePosition Rp : outputRes) {
             for (int i = Rp.getQuantity(); i > 0; i--) {
                 compareOutput.add(new ResourceQuantity(1, Rp.getResource()));

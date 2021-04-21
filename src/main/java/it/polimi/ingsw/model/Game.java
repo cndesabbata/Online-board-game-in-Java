@@ -8,6 +8,7 @@ public class Game {
     private final List<Player> players;
     private final List<Player> activePlayers;
     private Player currentPlayer;
+    private List<Player> winners;
     private int currentPlayerIndex;
     private final Market market;
     private boolean finalTurn;
@@ -22,8 +23,6 @@ public class Game {
             }
         }
         market = new Market();
-        currentPlayerIndex = 0;
-        currentPlayer = null;
         players = new ArrayList<>(playersList);
         activePlayers = new ArrayList<>(playersList);
     }
@@ -71,10 +70,16 @@ public class Game {
         }
     }
 
-    public DevDeck[] getDevDecks() { return devDecks; }
+    public void setWinners(List<Player> winners) {
+        this.winners = winners;
+    }
 
-    public DevCard drawDevCard (Colour colour, int level){
-        return devDecks[(level-1) * Colour.values().length + colour.ordinal()].drawCard();
+    public DevDeck[] getDevDecks() {
+        return devDecks;
+    }
+
+    public DevCard drawDevCard(Colour colour, int level) {
+        return devDecks[(level - 1) * Colour.values().length + colour.ordinal()].drawCard();
     }
 
     public Market getMarket() {

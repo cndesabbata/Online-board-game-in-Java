@@ -3,6 +3,7 @@ import it.polimi.ingsw.exceptions.WrongActionException;
 import it.polimi.ingsw.model.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ProductionEffect implements LeaderEffect{
     private final ResourcePosition inputRes;
@@ -16,7 +17,7 @@ public class ProductionEffect implements LeaderEffect{
     @Override
     public void doLeaderEffect(Player player, Action action) throws WrongActionException {
         if (action instanceof StartProduction){
-            ArrayList <LeaderCard> playerCards = player.getHandLeaderCards();
+            List<LeaderCard> playerCards = player.getHandLeaderCards();
             boolean check = false;
             for(LeaderCard Lc : playerCards){
                 if (Lc.getResource() == inputRes.getResource() && Lc.getType() == LeaderType.PRODUCT && Lc.isPlayed()) {

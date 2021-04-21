@@ -37,6 +37,10 @@ public class Market {
         return dispositionCopy;
     }
 
+    public Marble getExternal() {
+        return external;
+    }
+
     /* sets the new market disposition depending on user selection */
     public void setDisposition(MarketSelection selection, int position) {
         Marble tempLast;

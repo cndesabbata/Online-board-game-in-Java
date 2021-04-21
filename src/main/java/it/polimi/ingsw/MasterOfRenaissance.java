@@ -22,8 +22,8 @@ public class MasterOfRenaissance {
             }
             switch (input) {
                 case 0 -> Server.main(null);
-                case 1 -> GUI.main(null);
-                case 2 -> CLI.main(null);
+                //case 1 -> GUI.main(null);
+                //case 2 -> CLI.main(null);
                 case 3 -> System.exit(0);
                 default -> System.err.println("Invalid argument, please type the number of the desired option:\n>");
             }

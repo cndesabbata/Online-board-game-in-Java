@@ -34,7 +34,7 @@ public class LeaderCardBlueprint {
     }
 
     public LeaderCard BuildCard (){
-        ArrayList<ResourceQuantity> resQuantities = new ArrayList<>();
+        List<ResourceQuantity> resQuantities = new ArrayList<>();
         List<DevCard> cardsReqs = new ArrayList<>();
         Resource resourceType = Resource.valueOf(resource);
         if (hasResourceRequirements) BuildResources(resQuantities, resourceRequirements);
@@ -50,7 +50,7 @@ public class LeaderCardBlueprint {
         if (hasResourceRequirements)
             return new LeaderCard(resQuantities, victoryPoints, resourceType, LeaderType.valueOf(type.toUpperCase()));
         else
-            return new LeaderCard(victoryPoints, (ArrayList<DevCard>) cardsReqs, resourceType, LeaderType.valueOf(type.toUpperCase()));
+            return new LeaderCard(victoryPoints, (List<DevCard>) cardsReqs, resourceType, LeaderType.valueOf(type.toUpperCase()));
     }
 
     private void BuildResources(List<ResourceQuantity> resourceList, int[] array){

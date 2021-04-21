@@ -4,15 +4,16 @@ import it.polimi.ingsw.exceptions.WrongActionException;
 import it.polimi.ingsw.model.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class BuyResources extends Action {
     private final int position;
     private final MarketSelection marketSelection;
-    private final ArrayList<ResourcePosition> gainedRes;
-    private final ArrayList<ResourcePosition> extraRes;                                                                       //it represents the resource gained thanks to the effect of a Marble Leader
+    private final List<ResourcePosition> gainedRes;
+    private final List<ResourcePosition> extraRes;                                                                       //it represents the resource gained thanks to the effect of a Marble Leader
 
-    public BuyResources(ArrayList<LeaderEffect> leaderEffects, int position, MarketSelection marketSelection,
-                        ArrayList<ResourcePosition> gainedRes) {
+    public BuyResources(List<LeaderEffect> leaderEffects, int position, MarketSelection marketSelection,
+                        List<ResourcePosition> gainedRes) {
         super(leaderEffects);
         this.position = position;
         this.marketSelection = marketSelection;
@@ -22,7 +23,7 @@ public class BuyResources extends Action {
 
     @Override
     public boolean doAction(Player player) {
-        ArrayList<ResourcePosition> boughtResources = new ArrayList<>(gainedRes);
+        List<ResourcePosition> boughtResources = new ArrayList<>(gainedRes);
         boughtResources.addAll(extraRes);
         for (ResourcePosition resourcePosition : boughtResources) {
             if (resourcePosition.getResource() == Resource.FAITHPOINT) {
@@ -43,9 +44,9 @@ public class BuyResources extends Action {
                 (marketSelection == MarketSelection.COLUMN && position > 4)) {
             throw new WrongActionException("The player must select an existing row or column");
         }
-        ArrayList<ResourcePosition> boughtResources = new ArrayList<>(gainedRes);
+        List<ResourcePosition> boughtResources = new ArrayList<>(gainedRes);
         boughtResources.addAll(extraRes);
-        ArrayList<Resource> marketResources = new ArrayList<>();
+        List<Resource> marketResources = new ArrayList<>();
         int whiteMarbles = 0;
         Marble[][] disposition = player.getGame().getMarket().getDisposition();
         if (marketSelection == MarketSelection.ROW) {
@@ -79,7 +80,7 @@ public class BuyResources extends Action {
                     whiteMarbles++;
             }
         }
-        ArrayList<Resource> gainedRes1 = new ArrayList<>();
+        List<Resource> gainedRes1 = new ArrayList<>();
         for (ResourcePosition resourcePosition : gainedRes)
             gainedRes1.add(resourcePosition.getResource());
         if (whiteMarbles != extraRes.size())

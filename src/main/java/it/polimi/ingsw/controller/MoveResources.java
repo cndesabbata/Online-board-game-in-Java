@@ -3,13 +3,14 @@ import it.polimi.ingsw.exceptions.WrongActionException;
 import it.polimi.ingsw.model.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MoveResources extends Action{
   private NumOfShelf srcShelf;
   private NumOfShelf destShelf;
   private int quantity;
 
-    public MoveResources(NumOfShelf srcShelf, NumOfShelf destShelf, int quantity, ArrayList <LeaderEffect> leaderEffects) {
+    public MoveResources(NumOfShelf srcShelf, NumOfShelf destShelf, int quantity, List<LeaderEffect> leaderEffects) {
         super(leaderEffects);
         this.srcShelf = srcShelf;
         this.destShelf = destShelf;

@@ -33,11 +33,11 @@ public class SocketClientConnection {
     public void run(){
 
     }
-
+    /*
     public void actionHandler(Message message){
 
     }
-
+    */
     public void checkConnection(){
 
     }

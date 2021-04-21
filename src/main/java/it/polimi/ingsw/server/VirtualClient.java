@@ -1,6 +1,6 @@
 package it.polimi.ingsw.server;
 
-import jdk.internal.event.Event;
+//import jdk.internal.event.Event;
 
 public class VirtualClient {
     private String nickname;
@@ -11,6 +11,7 @@ public class VirtualClient {
         this.socketClientConnection = socketClientConnection;
     }
 
+    /*
     public void send(Message message){
 
     }
@@ -22,4 +23,5 @@ public class VirtualClient {
     public void propertyChange (Event event){
 
     }
+    */
 }

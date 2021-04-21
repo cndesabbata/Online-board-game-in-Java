@@ -21,6 +21,7 @@ public class Server {
         this.waitingList = new ArrayList<>();
     }
 
+    /*
     public void sendAll (Message message){
 
     }
@@ -32,7 +33,7 @@ public class Server {
     public void sendAllExcept (Message message, String nickname){
 
     }
-
+    */
     public void lobby (SocketClientConnection firstConnection){
 
     }
