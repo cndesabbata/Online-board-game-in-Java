@@ -4,21 +4,12 @@ import it.polimi.ingsw.exceptions.WrongActionException;
 import it.polimi.ingsw.model.*;
 
 import java.util.ArrayList;
-import java.util.List;
 
-public abstract class Action {
-    private final List<LeaderEffect> leaderEffects;
+public interface  Action {
 
-    public Action(List<LeaderEffect> leaderEffects) {
-        this.leaderEffects = leaderEffects;
-    }
+     boolean doAction(Player player);
 
-    public abstract boolean doAction(Player player);
+     void checkAction(Player player) throws WrongActionException;
 
-    public abstract void checkAction(Player player) throws WrongActionException;
-
-    public List<LeaderEffect> getLeaderEffects() {
-        return new ArrayList<>(leaderEffects);
-    }
 }
 

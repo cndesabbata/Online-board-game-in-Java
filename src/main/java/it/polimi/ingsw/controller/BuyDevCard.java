@@ -6,16 +6,17 @@ import it.polimi.ingsw.model.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BuyDevCard extends Action {
+public class BuyDevCard implements Action {
     private final int level;
     private final Colour colour;
     private final DevSpaceSlot slot;
     private final List<ResourcePosition> cost;
     private List<ResourceQuantity> req;
+    private List<LeaderEffect> leaderEffects;
 
     public BuyDevCard(int level, Colour colour, DevSpaceSlot slot, List<ResourcePosition> cost,
                       List<LeaderEffect> leaderEffects) {
-        super(leaderEffects);
+        this.leaderEffects = leaderEffects;
         this.level = level;
         this.colour = colour;
         this.slot = slot;
@@ -50,7 +51,7 @@ public class BuyDevCard extends Action {
 
     private void checkCost (Player player) throws WrongActionException{
         req = player.getGame().getDevDecks()[(level-1) * Colour.values().length + colour.ordinal()].peepRequirements();
-        for (LeaderEffect effect : getLeaderEffects()){
+        for (LeaderEffect effect : leaderEffects){
             effect.doLeaderEffect(player, this);
         }
         if (cost.size() != req.size())

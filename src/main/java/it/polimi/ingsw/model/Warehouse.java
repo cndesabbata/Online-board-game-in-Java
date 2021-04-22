@@ -6,7 +6,7 @@ import it.polimi.ingsw.exceptions.WrongActionException;
 import java.util.*;
 
 public class Warehouse {
-    private final List<ResourceQuantity> warehouse = new ArrayList<>();
+    private final ArrayList<ResourceQuantity> warehouse = new ArrayList<>();
     private final int initialDim;
 
     public Warehouse(int warehouseDim){
@@ -15,18 +15,18 @@ public class Warehouse {
         }
         initialDim = warehouseDim;
     }
-
-    public List<ResourceQuantity> getWarehouse(){
+    /*returns a copy of the warehouse*/
+    public ArrayList<ResourceQuantity> getWarehouse(){
         return new ArrayList<>(warehouse);
     }
-
-    public ResourceQuantity getShelf(NumOfShelf numOfShelf) {                                                           //returns a shelf of the warehouse (considering also depots)
+    /*returns a copy of a shelf of the warehouse (considering also depots)*/
+    public ResourceQuantity getShelf(NumOfShelf numOfShelf) {
         ResourceQuantity shelf = warehouse.get(numOfShelf.ordinal());
         return new ResourceQuantity(shelf.getQuantity(), shelf.getResource());
     }
-
-    public void incrementResource (List <ResourcePosition> outputRes) {
-        List<ResourcePosition> storableRes = new ArrayList<>(outputRes);
+    /*store the resources in the shelves*/
+    public void incrementResource (ArrayList <ResourcePosition> outputRes) {
+        ArrayList<ResourcePosition> storableRes = new ArrayList<>(outputRes);
         storableRes.removeIf(Rp -> Rp.getResource() == Resource.FAITHPOINT);                                            //faithpoints are not involved in this entire check
         storableRes.removeIf(Rp -> Rp.getPlace() == Place.TRASH_CAN);                                                   //Resources that should be discarded are not interested in this method.
         NumOfShelf numOfShelf;
@@ -39,9 +39,9 @@ public class Warehouse {
             shelf.setQuantity(shelf.getQuantity() + Rp.getQuantity());                                                  //Rp.getQuantity() = 1
         }
     }
-
-    public void checkIncrement(List <ResourcePosition> outputRes) throws WrongActionException {                    //used in the checkAction of BuyResources                                  //this method will be called only be the checkAction in BuyResources
-        List<ResourcePosition> storableRes = new ArrayList<>(outputRes);
+    /*controls if the resources can be stored*/
+    public void checkIncrement(ArrayList <ResourcePosition> outputRes) throws WrongActionException {                    //used in the checkAction of BuyResources                                  //this method will be called only be the checkAction in BuyResources
+        ArrayList<ResourcePosition> storableRes = new ArrayList<>(outputRes);
         storableRes.removeIf(Rp -> Rp.getResource() == Resource.FAITHPOINT);                                            //faithpoint are not interested by this entire check
         storableRes.removeIf(Rp -> Rp.getPlace() == Place.TRASH_CAN);                                                   //Resources that should be discarded are not interested in this method.
         //check on the storableRes itself
@@ -81,17 +81,17 @@ public class Warehouse {
             }
         }
     }
-
-    private int calculateQuantity(List <ResourcePosition> inputRes, ResourcePosition Rp){                          //it computes the number of nodes in a given list of ResourcePosition that have the same Resource and numOfShelf
+    /*returns the number of resources, contained in inputRes, of the same type of Rp and from / to the same shelf of Rp*/
+    private int calculateQuantity(ArrayList <ResourcePosition> inputRes, ResourcePosition Rp){                          //it computes the number of nodes in a given list of ResourcePosition that have the same Resource and numOfShelf
         int quantity = 0;
         for(ResourcePosition r : inputRes){
             if(r.getResource() == Rp.getResource() && r.getShelf() == Rp.getShelf()) quantity++;
         }
         return quantity;
     }
-
-    public void decrementResource (List <ResourcePosition> inputRes) {
-        List<ResourcePosition> removableRes = new ArrayList<>(inputRes);
+    /*remove the resources from the shelves*/
+    public void decrementResource (ArrayList <ResourcePosition> inputRes) {
+        ArrayList<ResourcePosition> removableRes = new ArrayList<>(inputRes);
         removableRes.removeIf(Rp -> Rp.getPlace() != Place.WAREHOUSE);                                                 //Resources that should be discarded are not interested in this method.
         NumOfShelf numOfShelf;
         ResourceQuantity shelf;
@@ -103,9 +103,9 @@ public class Warehouse {
             shelf.setQuantity(shelf.getQuantity() - Rp.getQuantity());                                                  //Rp.getQuantity() = 1
         }
     }
-
-    public void checkDecrement(List<ResourcePosition> inputRes) throws WrongActionException {                                                   //used in checkAction of BuyDevCard, StartProduction.
-        List <ResourcePosition> removableRes = new ArrayList<>(inputRes);
+    /*controls if the resources can be removed*/
+    public void checkDecrement(ArrayList<ResourcePosition> inputRes) throws WrongActionException {                                                   //used in checkAction of BuyDevCard, StartProduction.
+        ArrayList <ResourcePosition> removableRes = new ArrayList<>(inputRes);
         removableRes.removeIf(Rp -> Rp.getPlace() != Place.WAREHOUSE);
 
         NumOfShelf numOfShelf;
@@ -128,11 +128,11 @@ public class Warehouse {
             }
         }
     }
-
+    /*moves a certain number of resources (quantity) from srcShelf to destShelf*/
     public void moveResource (NumOfShelf srcShelf, NumOfShelf destShelf, int quantity){
         ResourceQuantity shelfSrc = warehouse.get(srcShelf.ordinal());
-        List <ResourcePosition> inputRes = new ArrayList<>();
-        List <ResourcePosition> outputRes = new ArrayList<>();
+        ArrayList <ResourcePosition> inputRes = new ArrayList<>();
+        ArrayList <ResourcePosition> outputRes = new ArrayList<>();
         for(int i = 0; i < quantity; i++) {
             inputRes.add(new ResourcePosition(1, shelfSrc.getResource(), Place.WAREHOUSE, srcShelf));
             outputRes.add(new ResourcePosition(1,shelfSrc.getResource(), Place.WAREHOUSE, destShelf));
@@ -140,7 +140,7 @@ public class Warehouse {
         decrementResource(inputRes);
         incrementResource(outputRes);
     }
-
+    /*controls if the resources can be moved*/
     public void checkMove (NumOfShelf srcShelf, NumOfShelf destShelf, int quantity) throws WrongActionException{
         if (srcShelf.ordinal() >= warehouse.size() || destShelf.ordinal() >= warehouse.size())
             throw new WrongActionException("One of the specified shelves does not exist.");
@@ -163,7 +163,7 @@ public class Warehouse {
                 throw new WrongActionException("There is not enough space in the shelf indicated as destination.");
         }
     }
-
+    /*controls if there are some "normal" shelves storing resources of type resource, apart from numOfShelf*/
     private boolean checkOtherShelves(Resource resource, NumOfShelf numOfShelf){                                        //only used in addResource
         boolean check = true;
         for(int i = 0; i < initialDim; i++){
@@ -176,11 +176,11 @@ public class Warehouse {
         }
         return check;
     }
-
+    /*adds a "depot" shelf*/
     public void addDepot(Resource resource){
         warehouse.add(new ResourceQuantity(0, resource));
     }
-
+    /*controls if there is already a depot storing the same resource*/
     public boolean checkDepot(Resource resource){
         boolean check = true;
         for(int i = initialDim; i < warehouse.size(); i++){
@@ -191,7 +191,7 @@ public class Warehouse {
         }
         return check;
     }
-
+    /*returns the number of resources of the same type of resource*/
     public int getAvailability(Resource resource){
         int supply = 0;
         for (ResourceQuantity shelf : warehouse){

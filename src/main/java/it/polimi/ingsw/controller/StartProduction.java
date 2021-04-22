@@ -1,38 +1,34 @@
 package it.polimi.ingsw.controller;
+
 import it.polimi.ingsw.exceptions.WrongActionException;
 import it.polimi.ingsw.model.*;
 
 import java.util.ArrayList;
-import java.util.List;
 
-public class StartProduction extends Action{
+public class StartProduction implements Action {
     private final DevCard devCard;
-    private final List<ResourcePosition> outputRes;
-    private final List<ResourcePosition> inputRes;
-    private ResourcePosition extraOutputRes;
-    private ResourcePosition extraInputRes;
+    private final ArrayList<ResourcePosition> outputRes;
+    private final ArrayList<ResourcePosition> inputRes;
+    private final ArrayList<LeaderEffect> leaderEffects;
 
 
-    public StartProduction (DevCard devCard, List<ResourcePosition> outputRes,
-                            List<ResourcePosition> inputRes, List <LeaderEffect> leaderEffects){
-        super(leaderEffects);
+    public StartProduction(DevCard devCard, ArrayList<ResourcePosition> outputRes,
+                           ArrayList<ResourcePosition> inputRes, ArrayList<LeaderEffect> leaderEffects) {
         this.devCard = devCard;
         this.outputRes = new ArrayList<>(outputRes);
         this.inputRes = new ArrayList<>(inputRes);
-        this.extraInputRes = null;
-        this.extraOutputRes = null;
+        this.leaderEffects = leaderEffects;
     }
 
-    public StartProduction (List<ResourcePosition> outputRes, List<ResourcePosition> inputRes,
-                            List <LeaderEffect> leaderEffects){
-        super(leaderEffects);
+    public StartProduction(ArrayList<ResourcePosition> outputRes, ArrayList<ResourcePosition> inputRes,
+                           ArrayList<LeaderEffect> leaderEffects) {
         this.devCard = null;
         this.outputRes = new ArrayList<>(outputRes);
         this.inputRes = new ArrayList<>(inputRes);
-        this.extraInputRes = null;
-        this.extraOutputRes = null;
+        this.leaderEffects = leaderEffects;
     }
 
+    /*execute the action, knowing that is correct and feasible*/
     @Override
     public boolean doAction(Player player) {
         Chest chest = player.getBoard().getChest();
@@ -43,19 +39,20 @@ public class StartProduction extends Action{
         return true;
     }
 
+    /*controls if the Action is correct and also resolve any leaderEffect*/
+    @Override
     public void checkAction(Player player) throws WrongActionException {
-        if(player.isActionDone())
+        if (player.isActionDone())
             throw new WrongActionException("The player has already done an exclusive action this turn");
-        else if(devCard != null) {                                                                                           //in case there is a devCard played
+        else if (devCard != null) {                                                                                           //in case there is a devCard played
             DevSpace devSpace = player.getBoard().getDevSpace();
             if (!devSpace.checkUpperCard(devCard))
                 throw new WrongActionException("The player does not have the selected devCard");
         }
         checkDevCardInput(devCard);
         checkDevCardOutput(devCard);
-        if(extraOutputRes != null && extraInputRes != null) {                                                           //before checking if the player has all the resources we must merge the extra resources with the input / output                                                                             //if a player card was played successfully, we need to merge the extra in/out resources.
-            outputRes.add(extraOutputRes);
-            inputRes.add(extraInputRes);
+        for (LeaderEffect leaderEffect : leaderEffects) {                                                           //before checking if the player has all the resources we must merge the extra resources with the input / output                                                                             //if a player card was played successfully, we need to merge the extra in/out resources.
+            leaderEffect.doLeaderEffect(player, this);
         }
         Chest chest = player.getBoard().getChest();
         Warehouse warehouse = player.getBoard().getWarehouse();
@@ -64,61 +61,57 @@ public class StartProduction extends Action{
         chest.checkIncrement(outputRes);
     }
 
-    public void setExtraOutputRes(ResourcePosition extra) {                                                             //set a shallow copy
-        this.extraOutputRes = new ResourcePosition(extra.getQuantity(), extra.getResource(), extra.getPlace(), extra.getShelf());
+    /*used by ProductionEffect to add an extra ResourcePosition in output*/
+    public void addOutputRes(ResourcePosition extra) {                                                             //set a shallow copy
+        outputRes.add(new ResourcePosition(extra.getQuantity(), extra.getResource(), extra.getPlace(), extra.getShelf()));
     }
 
-    public void setExtraInputRes(ResourcePosition extra) {                                                              //set a shallow copy
-        this.extraInputRes = new ResourcePosition(extra.getQuantity(), extra.getResource(), extra.getPlace(), extra.getShelf());
+    /*used by ProductionEffect to add an extra ResourcePosition in inpput*/
+    public void addInputRes(ResourcePosition extra) {                                                                   //set a shallow copy
+        inputRes.add(new ResourcePosition(extra.getQuantity(), extra.getResource(), extra.getPlace(), extra.getShelf()));
     }
 
+    /*controls if inputRes corresponds with the input requested by the devCard*/
     private void checkDevCardInput(DevCard devCard) throws WrongActionException {
-        List<ResourceQuantity> compareInput = new ArrayList<>();
+        ArrayList<ResourceQuantity> compareInput = new ArrayList<>();
         for (ResourcePosition Rp : inputRes) {
-            for (int i = Rp.getQuantity(); i > 0; i--) {
-                compareInput.add(new ResourceQuantity(1, Rp.getResource()));
-            }
+            compareInput.add(new ResourceQuantity(inputRes.stream().filter(Rq -> Rq.getResource() == Rp.getResource()).
+                    map(ResourceQuantity::getQuantity).reduce(0, Integer::sum), Rp.getResource()));              //at the end of the for loop compareInput is a list of ResourceQuantity without repetition of resources
         }
         for (ResourceQuantity Rq : devCard.getProductionInput()) {
-            for (int i = Rq.getQuantity(); i > 0; i--) {
-                int j;
-                for (j = 0; j < compareInput.size(); j++) {                                                               //this loop searches in compareInput a ResourceQuantity that has the same resource as Rq
-                    if (compareInput.get(j).getResource() == Rq.getResource())
-                        break;
-                }
-                try {
-                    compareInput.remove(j);
-                } catch (IndexOutOfBoundsException e) {                                                                    //in case the ResourceQuantity in compareInput that has the same resource of Rq is not found
-                    throw new WrongActionException("The resources required by the devCard are more than the input ones");
-                }
+            int i;
+            for(i = 0; i < inputRes.size(); i++) {
+                if(inputRes.get(i).getResource() == Rq.getResource())
+                    break;
             }
+            compareInput.get(i).setQuantity(compareInput.get(i).getQuantity() - Rq.getQuantity());
         }
-        if (compareInput.size() != 0 && compareInput.size() != 2)
-            throw new WrongActionException("The input resources are more than the ones required by the devCard");
+        if (compareInput.stream().anyMatch(Rq -> Rq.getQuantity() < 0))                                                 //it controls if there are some nodes of compareInput with a negative quantity, hence indicating that the inputRes are less than the ones required by the devCard
+            throw new WrongActionException("The input resources are less than the ones required by the devCard.");
+        else if (compareInput.stream().anyMatch(Rq -> Rq.getQuantity() > 0) &&                                          //if I do not have one of the following situation: - All nodes in compareInput have quantity = 0;
+                 compareInput.stream().map(ResourceQuantity::getQuantity).reduce(0, Integer::sum) != 2)          //- The total quantity of resources is 2;
+            throw new WrongActionException("The input resources are more than the ones required by the devCard.");      //then inputRes has more resources than the one required by the devCard.
     }
 
+    /*controls if outputRes corresponds with the output generated by the devCard*/
     private void checkDevCardOutput(DevCard devCard) throws WrongActionException {
-        List<ResourceQuantity> compareOutput = new ArrayList<>();
+        ArrayList<ResourceQuantity> compareOutput = new ArrayList<>();
         for (ResourcePosition Rp : outputRes) {
-            for (int i = Rp.getQuantity(); i > 0; i--) {
-                compareOutput.add(new ResourceQuantity(1, Rp.getResource()));
-            }
+            compareOutput.add(new ResourceQuantity(outputRes.stream().filter(Rq -> Rq.getResource() == Rp.getResource()).
+                    map(ResourceQuantity::getQuantity).reduce(0, Integer::sum), Rp.getResource()));              //at the end of the for loop compareOutput is a list of ResourceQuantity without repetition of resources
         }
         for (ResourceQuantity Rq : devCard.getProductionOutput()) {
-            for (int i = Rq.getQuantity(); i > 0; i--) {
-                int j;
-                for (j = 0; j < compareOutput.size(); j++) {                                                            //this loop searches in compareOutput a ResourceQuantity that has the same resource as Rq
-                    if (compareOutput.get(j).getResource() == Rq.getResource())
-                        break;
-                }
-                try {
-                    compareOutput.remove(j);
-                } catch (IndexOutOfBoundsException e) {                                                                 //in case the ResourceQuantity in compareOutput that has the same resource of Rq is not found
-                    throw new WrongActionException("The resources produced by the devCard are more than the output ones");
-                }
+            int i;
+            for(i = 0; i < outputRes.size(); i++) {
+                if(outputRes.get(i).getResource() == Rq.getResource())
+                    break;
             }
+            compareOutput.get(i).setQuantity(compareOutput.get(i).getQuantity() - Rq.getQuantity());
         }
-        if (compareOutput.size() != 0 && compareOutput.size() != 1)
-            throw new WrongActionException("The output resources are more than the ones produced by the devCard");
+        if (compareOutput.stream().anyMatch(Rq -> Rq.getQuantity() < 0))                                                 //it controls if there are some nodes of compareOutput with a negative quantity, hence indicating that the outputRes are less than the ones generated by the devCard
+            throw new WrongActionException("The output resources are less than the ones generated by the devCard.");
+        else if (compareOutput.stream().anyMatch(Rq -> Rq.getQuantity() > 0) &&                                         //if I do not have one of the following situation: - All nodes in compareInput have quantity = 0;
+                compareOutput.stream().map(ResourceQuantity::getQuantity).reduce(0, Integer::sum) != 1)          //- The total quantity of resources is 1;
+            throw new WrongActionException("The output resources are more than the ones generated by the devCard.");    //then inputRes has more resources than the one required by the devCard.
     }
 }

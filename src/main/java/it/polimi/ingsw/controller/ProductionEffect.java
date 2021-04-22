@@ -27,8 +27,8 @@ public class ProductionEffect implements LeaderEffect{
             }
             if(!check) throw new WrongActionException("The player does not have the played leadCard");
             else {
-                ((StartProduction) action).setExtraInputRes(inputRes);
-                ((StartProduction) action).setExtraOutputRes(outputRes);
+                ((StartProduction) action).addInputRes(inputRes);
+                ((StartProduction) action).addOutputRes(outputRes);
                 player.getBoard().getItinerary().updatePosition(1);
             }
         }

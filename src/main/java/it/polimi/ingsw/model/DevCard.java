@@ -32,11 +32,11 @@ public class DevCard extends Card{
     }
 
     public List<ResourceQuantity> getProductionInput() {
-        return productionInput;
+        return new ArrayList<>(productionInput);
     }
 
     public List<ResourceQuantity> getProductionOutput() {
-        return productionOutput;
+        return new ArrayList<>(productionOutput);
     }
 
     public boolean equals(Object o){

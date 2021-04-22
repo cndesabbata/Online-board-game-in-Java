@@ -16,10 +16,12 @@ public class Chest {
         }
     }
 
+    /*returns a copy of the chest*/
     public List<ResourceQuantity> getChest() {
         return new ArrayList<>(chest);
     }
 
+    /*removes resources from the chest*/
     public void decrementResource(List <ResourcePosition> inputRes) {
         List <ResourcePosition> removableRes = new ArrayList<>(inputRes);
         removableRes.removeIf(Rp -> Rp.getPlace() != Place.CHEST);
@@ -30,6 +32,7 @@ public class Chest {
         }
     }
 
+    /*controls if the resources can be removed*/
     public void checkDecrement(List <ResourcePosition> inputRes) throws WrongActionException {
         List <ResourcePosition> storableRes = new ArrayList<>(inputRes);
         storableRes.removeIf(Rp -> Rp.getPlace() != Place.CHEST);                                                       //resources that must be taken elsewhere are not involved in this method.
@@ -55,6 +58,7 @@ public class Chest {
         }
     }
 
+    /*add resources from the chest*/
     public void incrementResource(List <ResourcePosition> inputRes) {
         for(ResourcePosition Rp : inputRes){
             int index = getIndexResource(Rp.getResource());
@@ -63,6 +67,7 @@ public class Chest {
         }
     }
 
+    /*controls if the resources can be stored*/
     public void checkIncrement(List <ResourcePosition> outputRes) throws WrongActionException{                     //it is used only by the checkAction in StartProduction
         for(ResourcePosition Rp : outputRes){
             if(Rp.getResource() == Resource.EMPTY) throw new WrongActionException("Empty resource cannot be stored");
@@ -70,11 +75,13 @@ public class Chest {
         }
     }
 
+    /*controls if there is a certain quantity (or more) of a certain resource*/
     public boolean checkQuantity (Resource resource, int quantity){
         int index = this.getIndexResource(resource);
         return  chest.get(index).getQuantity() >= quantity;
     }
 
+    /*returns the number of resources of the same type of resource*/
     public int getAvailability(Resource resource){
         int supply = 0;
         for (ResourceQuantity res : chest){
@@ -83,7 +90,8 @@ public class Chest {
         return supply;
     }
 
-    private int getIndexResource(Resource resource){                                                                    //returns the index of the node of chest which store resource
+    /*returns the index of the node of chest which stores resource*/
+    private int getIndexResource(Resource resource){
         int index;
         for(index = 0; index < chest.size(); index++){
             if(chest.get(index).getResource() == resource)
