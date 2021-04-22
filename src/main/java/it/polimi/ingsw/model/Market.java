@@ -3,7 +3,7 @@ package it.polimi.ingsw.model;
 import java.util.*;
 
 public class Market {
-    private final Marble[][] disposition;
+    private  Marble[][] disposition;
     private Marble external;
 
     /* constructor Market creates a new Market instance setting a random disposition and an external marble */
@@ -61,5 +61,13 @@ public class Market {
             disposition[2][position - 1] = external;
             external = tempLast;
         }
+    }
+
+    public void setFakeDisposition(Marble[][] disposition) {
+        this.disposition = disposition;
+    }
+
+    public void setFakeExternal(Marble marble) {
+        this.external = marble;
     }
 }

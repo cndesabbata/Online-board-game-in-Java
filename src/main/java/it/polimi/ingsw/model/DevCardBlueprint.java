@@ -29,7 +29,7 @@ public class DevCardBlueprint {
 
     private void BuildResources(List<ResourceQuantity> resourceList, int[] array){
         for (int i = 0; i < array.length; i++){
-            if (i != 0) resourceList.add(new ResourceQuantity(i, Resource.values()[i]));
+            if (array[i] != 0) resourceList.add(new ResourceQuantity(array[i], Resource.values()[i]));
         }
     }
 }

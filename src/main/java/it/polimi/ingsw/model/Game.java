@@ -13,18 +13,19 @@ public class Game {
     private final Market market;
     private boolean finalTurn;
 
-    public Game(List<Player> playersList) {
+    public Game() {
         leaderDeck = new LeaderDeck();
         devDecks = new DevDeck[12];
+        int j = 0;
         for (int i = 1; i <= 3; i++) {
-            int j = 0;
             for (Colour colour : Colour.values()) {
                 devDecks[j] = new DevDeck(i, colour);
+                j++;
             }
         }
         market = new Market();
-        players = new ArrayList<>(playersList);
-        activePlayers = new ArrayList<>(playersList);
+        players = new ArrayList<>();
+        activePlayers = new ArrayList<>();
     }
 
     public void removePlayer(Player offlinePlayer) {
@@ -77,6 +78,8 @@ public class Game {
     public DevDeck[] getDevDecks() {
         return devDecks;
     }
+
+    public LeaderDeck getLeaderDeck() { return leaderDeck; }
 
     public DevCard drawDevCard(Colour colour, int level) {
         return devDecks[(level - 1) * Colour.values().length + colour.ordinal()].drawCard();

@@ -36,7 +36,6 @@ public class DevDeck {
         }
         Collections.shuffle(cards);
     }
-
     public boolean isEmpty(){ return (cards.size()==0); }
 
     public DevCard drawCard() {

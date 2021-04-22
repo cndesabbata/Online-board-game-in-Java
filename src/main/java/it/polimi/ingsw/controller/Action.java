@@ -13,9 +13,9 @@ public abstract class Action {
         this.leaderEffects = leaderEffects;
     }
 
-    abstract boolean doAction(Player player);
+    public abstract boolean doAction(Player player);
 
-    abstract void checkAction(Player player) throws WrongActionException;
+    public abstract void checkAction(Player player) throws WrongActionException;
 
     public List<LeaderEffect> getLeaderEffects() {
         return new ArrayList<>(leaderEffects);
