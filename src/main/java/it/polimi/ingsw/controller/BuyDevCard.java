@@ -11,10 +11,11 @@ public class BuyDevCard implements Action {
     private final DevSpaceSlot slot;
     private final ArrayList<ResourcePosition> cost;
     private ArrayList<ResourceQuantity> req;
+    private ArrayList<LeaderEffect> leaderEffects;
 
     public BuyDevCard(int level, Colour colour, DevSpaceSlot slot, ArrayList<ResourcePosition> cost,
                       ArrayList<LeaderEffect> leaderEffects) {
-        super(leaderEffects);
+        this.leaderEffects = leaderEffects;
         this.level = level;
         this.colour = colour;
         this.slot = slot;
@@ -49,7 +50,7 @@ public class BuyDevCard implements Action {
 
     private void checkCost (Player player) throws WrongActionException{
         req = player.getGame().getDevDecks()[(level-1) * Colour.values().length + colour.ordinal()].peepRequirements();
-        for (LeaderEffect effect : getLeaderEffects()){
+        for (LeaderEffect effect : leaderEffects){
             effect.doLeaderEffect(player, this);
         }
         if (cost.size() != req.size())

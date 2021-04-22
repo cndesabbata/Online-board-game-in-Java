@@ -5,13 +5,12 @@ import it.polimi.ingsw.model.*;
 
 import java.util.ArrayList;
 
-public class PlayLeadCard extends Action {
+public class PlayLeadCard implements Action {
     private final int index;
     private LeaderCard card;
 
 
-    public PlayLeadCard(int index, ArrayList <LeaderEffect> leaderEffects) {
-        super(leaderEffects);
+    public PlayLeadCard(int index) {
         this.index = index;
         card = null;
     }
