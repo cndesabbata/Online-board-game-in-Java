@@ -6,16 +6,17 @@ import it.polimi.ingsw.model.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BuyResources extends Action {
+public class BuyResources implements Action {
     private final int position;
     private final MarketSelection marketSelection;
     private final List<ResourcePosition> gainedRes;
     private final List<ResourcePosition> extraRes;
+    private final List<LeaderEffect> leaderEffects;
     private boolean leaderUsed;
 
     public BuyResources(List<LeaderEffect> leaderEffects, int position, MarketSelection marketSelection,
                         List<ResourcePosition> gainedRes) {
-        super(leaderEffects);
+        this.leaderEffects = leaderEffects;
         this.position = position;
         this.marketSelection = marketSelection;
         this.gainedRes = gainedRes;
@@ -51,7 +52,7 @@ public class BuyResources extends Action {
                 (marketSelection == MarketSelection.COLUMN && position > 4)) {
             throw new WrongActionException("The player must select an existing row or column");
         }
-        for(LeaderEffect leaderEffect : this.getLeaderEffects()){
+        for(LeaderEffect leaderEffect : leaderEffects){
             leaderEffect.doLeaderEffect(player, this);
         }
         List<ResourcePosition> boughtResources = new ArrayList<>(gainedRes);

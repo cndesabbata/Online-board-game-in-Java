@@ -66,7 +66,7 @@ public class GameController {
 
     private void checkEndGame() {
         if (currentPlayer.getBoard().getItinerary().getPosition() == 24 ||
-                currentPlayer.getBoard().getDevSpace().countDevCards() == 7) {
+                currentPlayer.getBoard().getDevSpace().countCards() == 7) {
 
             game.setFinalTurn(true);
         }
@@ -78,7 +78,7 @@ public class GameController {
         for (Player player : game.getPlayers()) {
             String nickname = player.getNickname();
             playersPoints.put(nickname, 0);
-            List<List<DevCard>> playerDevCards = player.getBoard().getDevSpace().getDevCards();
+            List<List<DevCard>> playerDevCards = player.getBoard().getDevSpace().getCards();
             for (List<DevCard> devSlotCard : playerDevCards) {
                 for (DevCard devCard : devSlotCard) {
                     playersPoints.put(nickname, playersPoints.get(nickname) + devCard.getVictoryPoints());

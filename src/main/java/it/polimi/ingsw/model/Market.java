@@ -37,6 +37,7 @@ public class Market {
         return dispositionCopy;
     }
 
+    /* return the external marble */
     public Marble getExternal() {
         return external;
     }
@@ -63,10 +64,12 @@ public class Market {
         }
     }
 
+    /* method used in testing */
     public void setFakeDisposition(Marble[][] disposition) {
         this.disposition = disposition;
     }
 
+    /* method used in testing*/
     public void setFakeExternal(Marble marble) {
         this.external = marble;
     }

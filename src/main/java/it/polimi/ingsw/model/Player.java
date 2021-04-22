@@ -7,7 +7,7 @@ public class Player {
     private final Game game;
     private final String nickname;
     private final GameBoard board;
-    private final ArrayList<LeaderCard> handLeaderCards;
+    private final List<LeaderCard> handLeaderCards;
     private boolean actionDone;
     private boolean turnActive;
 
