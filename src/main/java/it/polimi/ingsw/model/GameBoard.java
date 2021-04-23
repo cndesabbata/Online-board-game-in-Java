@@ -8,9 +8,9 @@ public class GameBoard {
     private final Chest chest;
     private final DevSpace devSpace;
 
-    public GameBoard(int warehouseDim){
+    public GameBoard(){
         itinerary = new Itinerary();
-        warehouse = new Warehouse(warehouseDim);
+        warehouse = new Warehouse(3);
         chest = new Chest();
         devSpace = new DevSpace();
     }

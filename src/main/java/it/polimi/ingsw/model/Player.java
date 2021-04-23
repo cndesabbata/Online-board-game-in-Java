@@ -5,14 +5,16 @@ import java.util.ArrayList;
 public class Player {
     private final Game game;
     private final String nickname;
+    private final Integer ID;
     private final GameBoard board;
     private final ArrayList<LeaderCard> handLeaderCards;
     private boolean actionDone;
     private boolean turnActive;
 
     /* constructor Player creates a new Player instance with a given nickname */
-    public Player(String nickname, GameBoard board, Game game) {
-        this.board = board;
+    public Player(String nickname, Integer ID, Game game) {
+        this.board = new GameBoard();
+        this.ID = ID;
         this.nickname = nickname;
         this.game = game;
         handLeaderCards = new ArrayList<>();

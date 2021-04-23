@@ -3,14 +3,30 @@ package it.polimi.ingsw.controller;
 import it.polimi.ingsw.model.CardStatus;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.server.Server;
 
 import java.util.List;
 
 public class GameController {
     private Game game;
     private Player currentPlayer;
-    private GameHandler gameHandler;
+    private Server server;
     private boolean actionDone;
+    private boolean started;
+    private List<Player> activePlayers;
+    private int currentPlayerIndex;
+
+
+    public GameController(Server server) {
+        this.server = server;
+        this.game = new Game();
+    }
+
+    public void setUpPlayer(String nickname, Integer clientID){
+        Player newPlayer = new Player(nickname, clientID, game);
+        activePlayers.add(newPlayer);
+        game.addPlayer(newPlayer);
+    }
 
     public Player getCurrentPlayer() {
         return currentPlayer;
@@ -26,14 +42,28 @@ public class GameController {
         checkEndGame();
     }
 
+    public boolean isStarted() {
+        return started;
+    }
+
     public void changeTurn() {
         currentPlayer.setTurnActive(false);
         currentPlayer.setActionDone(false);
-        if (game.isFinalTurn() && game.getCurrentPlayerIndex() == game.getActivePlayers().size() - 1) {
+        if (game.isFinalTurn() && currentPlayerIndex == activePlayers.size() - 1) {
             endGame();
         } else {
-            currentPlayer = game.nextPlayer();
+            currentPlayer = nextPlayer();
             currentPlayer.setTurnActive(true);
+        }
+    }
+
+    private Player nextPlayer() {
+        if (currentPlayerIndex == activePlayers.size() - 1) {
+            currentPlayerIndex = 0;
+            return activePlayers.get(0);
+        } else {
+            currentPlayerIndex++;
+            return activePlayers.get(currentPlayerIndex);
         }
     }
 
@@ -46,7 +76,7 @@ public class GameController {
 
     /* checks if a specified papalReport needs to be triggered */
     private void checkPapalReport(int papalReportTrigger, int papalReportStart, int cardStatusIndex) {
-        List<Player> players = gameHandler.getModel().getPlayers();
+        List<Player> players = game.getPlayers();
 
         for (Player player : players) {
             int position = player.getBoard().getItinerary().getPosition();
@@ -68,9 +98,12 @@ public class GameController {
     private void checkEndGame() {
         if (currentPlayer.getBoard().getItinerary().getPosition() == 24 ||
                 currentPlayer.getBoard().getDevSpace().countCards() == 7) {
-
             game.setFinalTurn(true);
         }
+    }
+
+    public void setup(){
+
     }
 
     public void endGame() {
