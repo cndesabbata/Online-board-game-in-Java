@@ -1,13 +1,14 @@
 package it.polimi.ingsw.model;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Player {
     private final Game game;
     private final String nickname;
     private final Integer ID;
     private final GameBoard board;
-    private final ArrayList<LeaderCard> handLeaderCards;
+    private final List<LeaderCard> handLeaderCards;
     private boolean actionDone;
     private boolean turnActive;
 
@@ -46,7 +47,7 @@ public class Player {
         this.turnActive = turnActive;
     }
 
-    public ArrayList<LeaderCard> getHandLeaderCards() { return handLeaderCards; }
+    public List<LeaderCard> getHandLeaderCards() { return handLeaderCards; }
 
     public boolean hasPlayedLeaderCard(LeaderType type, Resource resource) {
         for (LeaderCard leaderCard : handLeaderCards) {

@@ -4,6 +4,7 @@ import it.polimi.ingsw.exceptions.WrongActionException;
 import it.polimi.ingsw.model.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class DiscountEffect implements LeaderEffect{
     private final Resource resource;
@@ -15,7 +16,7 @@ public class DiscountEffect implements LeaderEffect{
     @Override
     public void doLeaderEffect(Player player, Action action) throws WrongActionException {
         if (action instanceof BuyDevCard){
-            ArrayList<LeaderCard> playerCards = player.getHandLeaderCards();
+            List<LeaderCard> playerCards = player.getHandLeaderCards();
             boolean check = false;
             for(LeaderCard Lc : playerCards){
                 if (Lc.getResource() == resource && Lc.getType() == LeaderType.DISCOUNT && Lc.isPlayed()) {

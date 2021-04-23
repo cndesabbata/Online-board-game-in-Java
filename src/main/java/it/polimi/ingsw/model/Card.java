@@ -6,12 +6,12 @@ public abstract class Card {
     private final List<ResourceQuantity> resourceRequirements;
     private final int victoryPoints;
 
-    public Card(ArrayList<ResourceQuantity> resourceRequirements, int victoryPoints) {
+    public Card(List<ResourceQuantity> resourceRequirements, int victoryPoints) {
         this.resourceRequirements = resourceRequirements;
         this.victoryPoints = victoryPoints;
     }
 
-    public ArrayList<ResourceQuantity> getResourceRequirements() {
+    public List<ResourceQuantity> getResourceRequirements() {
         if (resourceRequirements == null) return null;
         return new ArrayList<>(resourceRequirements);
     }

@@ -36,16 +36,15 @@ public class DevDeck {
         }
         Collections.shuffle(cards);
     }
-
     public boolean isEmpty(){ return (cards.size()==0); }
 
     public DevCard drawCard() {
         return cards.remove(0);
     }
 
-    public ArrayList<ResourceQuantity> peepRequirements(){
+    public List<ResourceQuantity> peepRequirements(){
         if (cards.isEmpty()) return new ArrayList<>();
-        ArrayList<ResourceQuantity> result = new ArrayList<>();
+        List<ResourceQuantity> result = new ArrayList<>();
         for (ResourceQuantity res : cards.get(0).getResourceRequirements()){
             result.add(new ResourcePosition(res.getQuantity(), res.getResource()));
         }

@@ -34,28 +34,28 @@ public class LeaderCardBlueprint {
     }
 
     public LeaderCard BuildCard (){
-        ArrayList<ResourceQuantity> resQuantities = new ArrayList<>();
+        List<ResourceQuantity> resQuantities = new ArrayList<>();
         List<DevCard> cardsReqs = new ArrayList<>();
-        Resource resourceType = Resource.valueOf(resource);
+        Resource resourceType = Resource.valueOf(resource.toUpperCase());
         if (hasResourceRequirements) BuildResources(resQuantities, resourceRequirements);
         else{
             cardsReqs.add(new DevCard(firstCardLevel, Colour.valueOf(firstCardColour.toUpperCase())));
-            if (secondCardLevel != 0){
+            if (secondCardLevel != -1){
                 cardsReqs.add(new DevCard(secondCardLevel, Colour.valueOf(secondCardColour.toUpperCase())));
             }
-            if (thirdCardLevel != 0){
+            if (thirdCardLevel != -1){
                 cardsReqs.add(new DevCard(thirdCardLevel, Colour.valueOf(thirdCardColour.toUpperCase())));
             }
         }
         if (hasResourceRequirements)
             return new LeaderCard(resQuantities, victoryPoints, resourceType, LeaderType.valueOf(type.toUpperCase()));
         else
-            return new LeaderCard(victoryPoints, (ArrayList<DevCard>) cardsReqs, resourceType, LeaderType.valueOf(type.toUpperCase()));
+            return new LeaderCard(victoryPoints, cardsReqs, resourceType, LeaderType.valueOf(type.toUpperCase()));
     }
 
     private void BuildResources(List<ResourceQuantity> resourceList, int[] array){
         for (int i = 0; i < array.length; i++){
-            if (i != 0) resourceList.add(new ResourceQuantity(i, Resource.values()[i]));
+            if (array[i] != 0) resourceList.add(new ResourceQuantity(array[i], Resource.values()[i]));
         }
     }
 }

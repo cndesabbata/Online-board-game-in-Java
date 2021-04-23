@@ -12,10 +12,11 @@ public class Game {
     public Game() {
         leaderDeck = new LeaderDeck();
         devDecks = new DevDeck[12];
+        int j = 0;
         for (int i = 1; i <= 3; i++) {
-            int j = 0;
             for (Colour colour : Colour.values()) {
                 devDecks[j] = new DevDeck(i, colour);
+                j++;
             }
         }
         market = new Market();

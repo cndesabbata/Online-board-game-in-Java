@@ -8,8 +8,8 @@ public class DevCard extends Card{
     private List<ResourceQuantity> productionInput;
     private List<ResourceQuantity> productionOutput;
 
-    public DevCard(ArrayList<ResourceQuantity> resourceRequirements, int victoryPoints, int level, Colour colour,
-                   ArrayList<ResourceQuantity> productionInput, List<ResourceQuantity> productionOutput) {
+    public DevCard(List<ResourceQuantity> resourceRequirements, int victoryPoints, int level, Colour colour,
+                   List<ResourceQuantity> productionInput, List<ResourceQuantity> productionOutput) {
         super(resourceRequirements, victoryPoints);
         this.level = level;
         this.colour = colour;
@@ -41,7 +41,7 @@ public class DevCard extends Card{
 
     public boolean equals(Object o){
         if (!(o instanceof DevCard)) return false;
-        DevCard devCardrd= (DevCard) o;
+        DevCard devCard= (DevCard) o;
         if(((DevCard) o).getColour() == colour && ((DevCard) o).getLevel() == level)
             return false;
         else{

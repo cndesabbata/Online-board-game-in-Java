@@ -4,17 +4,18 @@ import it.polimi.ingsw.exceptions.WrongActionException;
 import it.polimi.ingsw.model.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class BuyDevCard implements Action {
     private final int level;
     private final Colour colour;
     private final DevSpaceSlot slot;
-    private final ArrayList<ResourcePosition> cost;
-    private ArrayList<ResourceQuantity> req;
-    private ArrayList<LeaderEffect> leaderEffects;
+    private final List<ResourcePosition> cost;
+    private List<ResourceQuantity> req;
+    private List<LeaderEffect> leaderEffects;
 
-    public BuyDevCard(int level, Colour colour, DevSpaceSlot slot, ArrayList<ResourcePosition> cost,
-                      ArrayList<LeaderEffect> leaderEffects) {
+    public BuyDevCard(int level, Colour colour, DevSpaceSlot slot, List<ResourcePosition> cost,
+                      List<LeaderEffect> leaderEffects) {
         this.leaderEffects = leaderEffects;
         this.level = level;
         this.colour = colour;
@@ -30,7 +31,7 @@ public class BuyDevCard implements Action {
         return true;
     }
 
-    public ArrayList<ResourceQuantity> getReq() {
+    public List<ResourceQuantity> getReq() {
         return req;
     }
 
