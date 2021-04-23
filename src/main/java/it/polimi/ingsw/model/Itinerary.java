@@ -4,11 +4,11 @@ import java.util.*;
 //ricorda che le carte papali sono sempre 2, 3 e 4 (in questo ordine)
 public class Itinerary {
     private int position;
-    private CardStatus[] cardstatus;
+    private final CardStatus[] cardstatus;
 
     public Itinerary(){
         position = 0;
-        CardStatus[] cardstatus = new CardStatus[3];        //usa il for
+        cardstatus = new CardStatus[3];        //usa il for
         for(int i = 0; i < 3; i++) {
             cardstatus[i] = CardStatus.FACE_DOWN;
         }

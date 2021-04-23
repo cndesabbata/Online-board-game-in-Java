@@ -4,9 +4,10 @@ import it.polimi.ingsw.controller.Place;
 import it.polimi.ingsw.exceptions.WrongActionException;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Chest {
-    private final ArrayList<ResourceQuantity> chest;
+    private final List<ResourceQuantity> chest;
 
     public Chest(){
         chest = new ArrayList<>();
@@ -16,13 +17,13 @@ public class Chest {
     }
 
     /*returns a copy of the chest*/
-    public ArrayList<ResourceQuantity> getChest() {
+    public List<ResourceQuantity> getChest() {
         return new ArrayList<>(chest);
     }
 
     /*removes resources from the chest*/
-    public void decrementResource(ArrayList <ResourcePosition> inputRes) {
-        ArrayList <ResourcePosition> removableRes = new ArrayList<>(inputRes);
+    public void decrementResource(List <ResourcePosition> inputRes) {
+        List <ResourcePosition> removableRes = new ArrayList<>(inputRes);
         removableRes.removeIf(Rp -> Rp.getPlace() != Place.CHEST);
         for(ResourcePosition Rp : removableRes){
             int index = getIndexResource(Rp.getResource());
@@ -31,11 +32,11 @@ public class Chest {
         }
     }
 
-    /*controls if the resources can be removes*/
-    public void checkDecrement(ArrayList <ResourcePosition> inputRes) throws WrongActionException {
-        ArrayList <ResourcePosition> storableRes = new ArrayList<>(inputRes);
+    /*controls if the resources can be removed*/
+    public void checkDecrement(List <ResourcePosition> inputRes) throws WrongActionException {
+        List <ResourcePosition> storableRes = new ArrayList<>(inputRes);
         storableRes.removeIf(Rp -> Rp.getPlace() != Place.CHEST);                                                       //resources that must be taken elsewhere are not involved in this method.
-        ArrayList <ResourceQuantity> result = new ArrayList<>(chest);                                                   //shallow copy of chest
+        List <ResourceQuantity> result = new ArrayList<>(chest);                                                   //shallow copy of chest
         for(ResourcePosition Rp : storableRes){
             if(Rp.getResource() == Resource.EMPTY) throw new WrongActionException("Empty resource is not removable");
             else {
@@ -44,7 +45,7 @@ public class Chest {
             }
         }
         boolean check = true;
-        ArrayList <String> errors = new ArrayList<>();
+        List <String> errors = new ArrayList<>();
         for(ResourceQuantity Rq : result){
             if(Rq.getQuantity() < 0){
                 check = false;
@@ -58,7 +59,7 @@ public class Chest {
     }
 
     /*add resources from the chest*/
-    public void incrementResource(ArrayList <ResourcePosition> inputRes) {
+    public void incrementResource(List <ResourcePosition> inputRes) {
         for(ResourcePosition Rp : inputRes){
             int index = getIndexResource(Rp.getResource());
             ResourceQuantity Rq = chest.get(index);
@@ -67,7 +68,7 @@ public class Chest {
     }
 
     /*controls if the resources can be stored*/
-    public void checkIncrement(ArrayList <ResourcePosition> outputRes) throws WrongActionException{                     //it is used only by the checkAction in StartProduction
+    public void checkIncrement(List <ResourcePosition> outputRes) throws WrongActionException{                     //it is used only by the checkAction in StartProduction
         for(ResourcePosition Rp : outputRes){
             if(Rp.getResource() == Resource.EMPTY) throw new WrongActionException("Empty resource cannot be stored");
             else if(Rp.getPlace() != Place.CHEST) throw new WrongActionException("All the resources must be stored in the chest");

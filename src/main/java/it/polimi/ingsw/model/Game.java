@@ -6,30 +6,25 @@ public class Game {
     private final LeaderDeck leaderDeck;
     private final DevDeck[] devDecks;
     private final List<Player> players;
-    private final List<Player> activePlayers;
-    private Player currentPlayer;
-    private int currentPlayerIndex;
     private final Market market;
     private boolean finalTurn;
 
-    public Game(List<Player> playersList) {
+    public Game() {
         leaderDeck = new LeaderDeck();
         devDecks = new DevDeck[12];
+        int j = 0;
         for (int i = 1; i <= 3; i++) {
-            int j = 0;
             for (Colour colour : Colour.values()) {
                 devDecks[j] = new DevDeck(i, colour);
+                j++;
             }
         }
         market = new Market();
-        currentPlayerIndex = 0;
-        currentPlayer = null;
-        players = new ArrayList<>(playersList);
-        activePlayers = new ArrayList<>(playersList);
+        players = new ArrayList<>();
     }
 
-    public void removePlayer(Player offlinePlayer) {
-        activePlayers.remove(offlinePlayer);
+    public void addPlayer (Player newPlayer){
+        players.add(newPlayer);
     }
 
     public Player getPlayerByNickname(String nickname) {
@@ -41,34 +36,8 @@ public class Game {
         return null;
     }
 
-    public List<Player> getActivePlayers() {
-        return new ArrayList<>(activePlayers);
-    }
-
     public List<Player> getPlayers() {
         return new ArrayList<>(players);
-    }
-
-    public void setCurrentPlayer(Player currentPlayer) {
-        this.currentPlayer = currentPlayer;
-    }
-
-    public Player getCurrentPlayer() {
-        return currentPlayer;
-    }
-
-    public int getCurrentPlayerIndex() {
-        return currentPlayerIndex;
-    }
-
-    public Player nextPlayer() {
-        if (currentPlayerIndex == activePlayers.size() - 1) {
-            currentPlayerIndex = 0;
-            return activePlayers.get(0);
-        } else {
-            currentPlayerIndex++;
-            return activePlayers.get(currentPlayerIndex);
-        }
     }
 
     public DevDeck[] getDevDecks() { return devDecks; }

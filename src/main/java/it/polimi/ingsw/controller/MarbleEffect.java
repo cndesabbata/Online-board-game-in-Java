@@ -3,14 +3,14 @@ package it.polimi.ingsw.controller;
 import it.polimi.ingsw.exceptions.WrongActionException;
 import it.polimi.ingsw.model.*;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class MarbleEffect implements LeaderEffect {
     private final int whiteMarbles;
     private final Resource resource;
-    private final ArrayList<ResourcePosition> extraResources;
+    private final List<ResourcePosition> extraResources;
 
-    public MarbleEffect(int whiteMarbles, Resource resource, ArrayList<ResourcePosition> extraResources) {
+    public MarbleEffect(int whiteMarbles, Resource resource, List<ResourcePosition> extraResources) {
         this.whiteMarbles = whiteMarbles;
         this.resource = resource;
         this.extraResources = extraResources;
@@ -31,6 +31,7 @@ public class MarbleEffect implements LeaderEffect {
             for(ResourcePosition extraRes : extraResources) {
                 buyResources.setExtraRes(extraRes);
             }
+            buyResources.setLeaderUsed(true);
         }
     }
 }

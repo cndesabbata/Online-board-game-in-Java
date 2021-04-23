@@ -4,7 +4,7 @@ public class Constants {
     private static int port;
 
     public static void setPort(int port) {
-        this.port = port;
+        Constants.port = port;
     }
 
     public static int getPort() {

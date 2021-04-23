@@ -1,6 +1,6 @@
 package it.polimi.ingsw.model;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class GameBoard {
     private final Itinerary itinerary;
@@ -8,9 +8,9 @@ public class GameBoard {
     private final Chest chest;
     private final DevSpace devSpace;
 
-    public GameBoard(int warehouseDim){
+    public GameBoard(){
         itinerary = new Itinerary();
-        warehouse = new Warehouse(warehouseDim);
+        warehouse = new Warehouse(3);
         chest = new Chest();
         devSpace = new DevSpace();
     }
@@ -31,12 +31,12 @@ public class GameBoard {
         return devSpace;
     }
 
-    public void expendResources(ArrayList<ResourcePosition> resources){
+    public void expendResources(List<ResourcePosition> resources){
         chest.decrementResource(resources);
         warehouse.decrementResource(resources);
     }
 
-    public <Res extends ResourceQuantity> boolean checkResources(ArrayList<Res> resources){
+    public <Res extends ResourceQuantity> boolean checkResources(List<Res> resources){
         for(ResourceQuantity res : resources){
             int quantity = chest.getAvailability(res.getResource()) + warehouse.getAvailability(res.getResource());
             if (quantity < res.getQuantity()) return false;

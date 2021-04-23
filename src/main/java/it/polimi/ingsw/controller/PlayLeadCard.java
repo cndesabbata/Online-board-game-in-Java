@@ -4,14 +4,14 @@ import it.polimi.ingsw.exceptions.WrongActionException;
 import it.polimi.ingsw.model.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class PlayLeadCard extends Action {
+public class PlayLeadCard implements Action {
     private final int index;
     private LeaderCard card;
 
 
-    public PlayLeadCard(int index, ArrayList <LeaderEffect> leaderEffects) {
-        super(leaderEffects);
+    public PlayLeadCard(int index) {
         this.index = index;
         card = null;
     }
@@ -24,17 +24,17 @@ public class PlayLeadCard extends Action {
 
     @Override
     public void checkAction(Player player) throws WrongActionException {
-        ArrayList<LeaderCard> hand = player.getHandLeaderCards();
+        List<LeaderCard> hand = player.getHandLeaderCards();
         if (index <= 0 || index > hand.size())
             throw new WrongActionException("The specified index is out of bounds");
         card = hand.get(index - 1);
         if (null == card.getCardRequirements()){
-            ArrayList<ResourceQuantity> requirements = card.getResourceRequirements();
+            List<ResourceQuantity> requirements = card.getResourceRequirements();
             if (!player.getBoard().checkResources(requirements))
                 throw new WrongActionException("The player does not have the required resources");
         }
         else {
-            ArrayList<DevCard> requirements = card.getCardRequirements();
+            List<DevCard> requirements = card.getCardRequirements();
             for (DevCard card : requirements){
                 if (!player.getBoard().getDevSpace().checkCards(card))
                     throw new WrongActionException("You don't have the required cards");

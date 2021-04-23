@@ -4,17 +4,19 @@ import it.polimi.ingsw.exceptions.WrongActionException;
 import it.polimi.ingsw.model.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class BuyDevCard implements Action {
     private final int level;
     private final Colour colour;
     private final DevSpaceSlot slot;
-    private final ArrayList<ResourcePosition> cost;
-    private ArrayList<ResourceQuantity> req;
+    private final List<ResourcePosition> cost;
+    private List<ResourceQuantity> req;
+    private List<LeaderEffect> leaderEffects;
 
-    public BuyDevCard(int level, Colour colour, DevSpaceSlot slot, ArrayList<ResourcePosition> cost,
-                      ArrayList<LeaderEffect> leaderEffects) {
-        super(leaderEffects);
+    public BuyDevCard(int level, Colour colour, DevSpaceSlot slot, List<ResourcePosition> cost,
+                      List<LeaderEffect> leaderEffects) {
+        this.leaderEffects = leaderEffects;
         this.level = level;
         this.colour = colour;
         this.slot = slot;
@@ -29,7 +31,7 @@ public class BuyDevCard implements Action {
         return true;
     }
 
-    public ArrayList<ResourceQuantity> getReq() {
+    public List<ResourceQuantity> getReq() {
         return req;
     }
 
@@ -49,7 +51,7 @@ public class BuyDevCard implements Action {
 
     private void checkCost (Player player) throws WrongActionException{
         req = player.getGame().getDevDecks()[(level-1) * Colour.values().length + colour.ordinal()].peepRequirements();
-        for (LeaderEffect effect : getLeaderEffects()){
+        for (LeaderEffect effect : leaderEffects){
             effect.doLeaderEffect(player, this);
         }
         if (cost.size() != req.size())
