@@ -4,7 +4,6 @@ import static org.junit.Assert.assertTrue;
 
 import it.polimi.ingsw.controller.Action;
 import it.polimi.ingsw.controller.BuyResources;
-import it.polimi.ingsw.controller.MoveResources;
 import it.polimi.ingsw.controller.Place;
 import it.polimi.ingsw.exceptions.WrongActionException;
 import it.polimi.ingsw.model.*;
@@ -17,9 +16,9 @@ public class BuyResourcesTest {
     @Test
     public void BuyResourceTest() {
         Game game = new Game();
-        GameBoard board = new GameBoard(3);
+        GameBoard board = new GameBoard();
         String nickname = "Andrea";
-        Player player = new Player(nickname, board, game);
+        Player player = new Player(nickname, 1, game);
         List<ResourcePosition> boughtResources = new ArrayList<>();
         Marble[][] disposition = {{Marble.PURPLE, Marble.BLUE, Marble.PURPLE, Marble.GREY},
                 {Marble.WHITE, Marble.RED, Marble.WHITE, Marble.WHITE},

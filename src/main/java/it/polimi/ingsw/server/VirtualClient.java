@@ -3,7 +3,7 @@ package it.polimi.ingsw.server;
 import it.polimi.ingsw.controller.ClientMessage;
 import it.polimi.ingsw.controller.ServerMessage;
 import it.polimi.ingsw.model.Game;
-import jdk.internal.event.Event;
+//import jdk.internal.event.Event;
 
 public class VirtualClient {
     private String nickname;
@@ -28,7 +28,7 @@ public class VirtualClient {
 
     }
 
-    public void propertyChange (Event event){
+ /* public void propertyChange (Event event){
 
-    }
+    }*/
 }

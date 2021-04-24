@@ -15,10 +15,12 @@ public class Warehouse {
         }
         initialDim = warehouseDim;
     }
+
     /*returns a copy of the warehouse*/
     public List<ResourceQuantity> getWarehouse(){
         return new ArrayList<>(warehouse);
     }
+
     /*returns a copy of a shelf of the warehouse (considering also depots)*/
     public ResourceQuantity getShelf(NumOfShelf numOfShelf) {
         ResourceQuantity shelf = warehouse.get(numOfShelf.ordinal());
@@ -40,7 +42,7 @@ public class Warehouse {
         }
     }
     /*controls if the resources can be stored*/
-    public void checkIncrement(List <ResourcePosition> outputRes) throws WrongActionException {                    //used in the checkAction of BuyResources                                  //this method will be called only be the checkAction in BuyResources
+    public void checkIncrement(List <ResourcePosition> outputRes) throws WrongActionException {                         //used in the checkAction of BuyResources                                  //this method will be called only be the checkAction in BuyResources
         List<ResourcePosition> storableRes = new ArrayList<>(outputRes);
         storableRes.removeIf(Rp -> Rp.getResource() == Resource.FAITHPOINT);                                            //faithpoint are not interested by this entire check
         storableRes.removeIf(Rp -> Rp.getPlace() == Place.TRASH_CAN);                                                   //Resources that should be discarded are not interested in this method.

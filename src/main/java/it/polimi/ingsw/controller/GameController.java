@@ -1,6 +1,7 @@
 package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.model.*;
+import it.polimi.ingsw.server.*;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -150,7 +151,7 @@ public class GameController {
             for (String winnerNickname : winnersNickname) {
                 winners.add(game.getPlayerByNickname(winnerNickname));
             }
-            game.setWinners(winners);
+//            game.setWinners(winners);
         }
     }
 

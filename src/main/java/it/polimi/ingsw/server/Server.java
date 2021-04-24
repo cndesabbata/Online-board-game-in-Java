@@ -50,9 +50,9 @@ public class Server {
 
     }
 
-    public GameController findGameByID(int clientID){
+    /*public GameController findGameByID(int clientID){
 
-    }
+    }*/
 
     public ServerConnectionSocket getSocketServer() {
         return serverConnectionSocket;
@@ -81,7 +81,7 @@ public class Server {
         }
     }
 
-    public synchronized Integer registerClient(String nickname, ClientConnection connection){
+    public synchronized Integer registerClient(String nickname, ClientConnection connection) throws InterruptedException{
         Integer clientID;
         if (waitingList.isEmpty()) {
             gameControllers.add(0, new GameController(this));
