@@ -6,10 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MoveResources implements Action{
-  private NumOfShelf srcShelf;
-  private NumOfShelf destShelf;
-  private int quantity;
-  private List<LeaderEffect> leaderEffects;
+    private NumOfShelf srcShelf;
+    private NumOfShelf destShelf;
+    private int quantity;
+    private List<LeaderEffect> leaderEffects;
 
     public MoveResources(NumOfShelf srcShelf, NumOfShelf destShelf, int quantity, List<LeaderEffect> leaderEffects) {
         this.srcShelf = srcShelf;
