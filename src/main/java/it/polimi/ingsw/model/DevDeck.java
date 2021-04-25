@@ -38,6 +38,11 @@ public class DevDeck {
     }
     public boolean isEmpty(){ return (cards.size()==0); }
 
+    public DevCard getFirstCard(){
+        if (cards.isEmpty()) return null;
+        else return cards.get(0);
+    }
+
     public DevCard drawCard() {
         return cards.remove(0);
     }
@@ -50,4 +55,5 @@ public class DevDeck {
         }
         return result;
     }
+
 }

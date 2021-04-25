@@ -55,7 +55,7 @@ public class BuyDevCard implements Action {
             effect.doLeaderEffect(player, this);
         }
         if (cost.size() != req.size())
-            throw new WrongActionException("The number of required resources is wrong");
+            throw new WrongActionException("The number of required resources is wrong: " + cost.size() + " vs " + req.size());
         for (int i = 0; i < cost.size(); i++){
             if (cost.get(i).getPlace() == Place.TRASH_CAN)
                 throw new WrongActionException("You cannot withdraw resources from the trashcan");

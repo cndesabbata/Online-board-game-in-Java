@@ -12,6 +12,11 @@ public class ResourcePosition extends ResourceQuantity{
         this.shelf = shelf;
     }
 
+    public ResourcePosition(int quantity, Resource resource, Place place) {
+        super(quantity, resource);
+        this.place = place;
+    }
+
     public ResourcePosition(int quantity, Resource resource) {
         super(quantity, resource);
     }
