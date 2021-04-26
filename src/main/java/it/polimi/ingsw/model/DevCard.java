@@ -42,27 +42,37 @@ public class DevCard extends Card{
     public boolean equals(Object o){
         if (!(o instanceof DevCard)) return false;
         DevCard devCard= (DevCard) o;
-        if(((DevCard) o).getColour() == colour && ((DevCard) o).getLevel() == level)
+        if(devCard.getColour() != colour || devCard.getLevel() != level)
             return false;
-        else{
+        else {
             boolean check = true;
-            for(int i = 0; i < productionInput.size() ; i++){
-                if(productionInput.get(i).getQuantity() != ((DevCard) o).getProductionInput().get(i).getQuantity() ||
-                   productionInput.get(i).getResource() != ((DevCard) o).getProductionInput().get(i).getResource()) {
+            for (int i = 0; i < getResourceRequirements().size(); i++) {
+                if (getResourceRequirements().get(i).getQuantity() != devCard.getResourceRequirements().get(i).getQuantity() ||
+                        getResourceRequirements().get(i).getResource() != devCard.getResourceRequirements().get(i).getResource()) {
                     check = false;
                     break;
                 }
             }
-            if(!check) return check;
-            else{
-                for(int i = 0; i < productionOutput.size() ; i++){
-                    if(productionOutput.get(i).getQuantity() != ((DevCard) o).getProductionOutput().get(i).getQuantity() ||
-                            productionOutput.get(i).getResource() != ((DevCard) o).getProductionOutput().get(i).getResource()) {
+            if (!check) return check;
+            else {
+                for (int i = 0; i < productionInput.size(); i++) {
+                    if (productionInput.get(i).getQuantity() != devCard.getProductionInput().get(i).getQuantity() ||
+                            productionInput.get(i).getResource() != devCard.getProductionInput().get(i).getResource()) {
                         check = false;
                         break;
                     }
                 }
-                return check;
+                if (!check) return check;
+                else {
+                    for (int i = 0; i < productionOutput.size(); i++) {
+                        if (productionOutput.get(i).getQuantity() != devCard.getProductionOutput().get(i).getQuantity() ||
+                                productionOutput.get(i).getResource() != devCard.getProductionOutput().get(i).getResource()) {
+                            check = false;
+                            break;
+                        }
+                    }
+                    return check;
+                }
             }
         }
     }

@@ -7,6 +7,9 @@ public class DevSpace {
 
     public DevSpace (){
         devSpace = new ArrayList<>();
+        for (int i = 0; i < 3; i++){
+            devSpace.add(new ArrayList<>());
+        }
     }
 
     /*controls if the player has a certain DevCard*/

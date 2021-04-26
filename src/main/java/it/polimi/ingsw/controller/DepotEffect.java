@@ -8,6 +8,11 @@ import java.util.List;
 
 public class DepotEffect implements LeaderEffect{
     private Resource resource;
+
+    public DepotEffect(Resource resource) {
+        this.resource = resource;
+    }
+
     @Override
     public void doLeaderEffect(Player player, Action action) throws WrongActionException {
         List<LeaderCard> playerCards = player.getHandLeaderCards();
