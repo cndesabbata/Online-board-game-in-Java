@@ -44,7 +44,7 @@ public class Warehouse {
     /*controls if the resources can be stored*/
     public void checkIncrement(List <ResourcePosition> outputRes) throws WrongActionException {                         //used in the checkAction of BuyResources                                  //this method will be called only be the checkAction in BuyResources
         List<ResourcePosition> storableRes = new ArrayList<>(outputRes);
-        storableRes.removeIf(Rp -> Rp.getResource() == Resource.FAITHPOINT);                                            //faithpoint are not interested by this entire check
+        storableRes.removeIf(Rp -> Rp.getResource() == Resource.FAITHPOINT);                                            //faithPoints are not interested by this entire check
         storableRes.removeIf(Rp -> Rp.getPlace() == Place.TRASH_CAN);                                                   //Resources that should be discarded are not interested in this method.
         //check on the storableRes itself
         for(int i = 0; i < storableRes.size(); i++){
