@@ -42,11 +42,11 @@ public class Server {
         }
     }
 
-    public void removeClient(int clientID){
+    public void removeClient(int clientID) {
 
     }
 
-    public void unregisterClient(int clientID){
+    public void unregisterClient(int clientID) {
 
     }
 
@@ -58,19 +58,19 @@ public class Server {
         return serverConnectionSocket;
     }
 
-    public void sendAll (ClientMessage clientMessage){
+    public void sendAll(ClientMessage clientMessage) {
 
     }
 
-    public void singleSend (ClientMessage clientMessage, String nickname){
+    public void singleSend(ClientMessage clientMessage, String nickname) {
 
     }
 
-    public void sendAllExcept (ClientMessage clientMessage, String nickname){
+    public void sendAllExcept(ClientMessage clientMessage, String nickname) {
 
     }
 
-    private void lobby (ClientConnection connection){
+    private void lobby(ClientConnection connection) {
         waitingList.add(connection);
         if (waitingList.size() == 1) {
 
@@ -81,12 +81,12 @@ public class Server {
         }
     }
 
-    public synchronized Integer registerClient(String nickname, ClientConnection connection) throws InterruptedException{
+    public synchronized Integer registerClient(String nickname, ClientConnection connection) throws InterruptedException {
         Integer clientID;
         if (waitingList.isEmpty()) {
             gameControllers.add(0, new GameController(this));
         }
-        if(nameMapId.keySet().stream().anyMatch(nickname::equalsIgnoreCase)){
+        if (nameMapId.keySet().stream().anyMatch(nickname::equalsIgnoreCase)) {
             ErrorMessage error = new ErrorMessage("This nickname is already in use, please choose another one");
             connection.sendSocketMessage(error);
             return null;
@@ -106,23 +106,24 @@ public class Server {
         return clientID;
     }
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
         System.out.println("Welcome to our server!");
         Scanner scanner = new Scanner(System.in);
         System.out.println(">Insert the port which the server will listen on.");
         System.out.print(">");
         int port = 0;
         boolean active = true;
-        while (active){
+        while (active) {
             try {
                 port = scanner.nextInt();
             } catch (InputMismatchException e) {
                 port = -1;
             }
-            if (port <= 1024){
+            if (port <= 1024) {
                 if (port == -1) System.err.println("Numeric format requested, please try again:\n>");
                 else System.err.println("Ports accepted started from 1024! Please try again.\n>");
-            }
+            } else
+                active = false;
         }
         Constants.setPort(port);
         System.err.println("Starting Server...\n");

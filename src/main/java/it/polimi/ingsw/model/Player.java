@@ -56,4 +56,8 @@ public class Player {
         }
         return false;
     }
+
+    public void addFakeLeaderCard(LeaderCard leaderCard) {
+        handLeaderCards.add(leaderCard);
+    }
 }
