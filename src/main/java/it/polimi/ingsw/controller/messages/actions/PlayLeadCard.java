@@ -1,9 +1,9 @@
-package it.polimi.ingsw.controller;
+package it.polimi.ingsw.controller.messages.actions;
 
 import it.polimi.ingsw.exceptions.WrongActionException;
+import it.polimi.ingsw.controller.messages.actions.Action;
 import it.polimi.ingsw.model.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class PlayLeadCard implements Action {

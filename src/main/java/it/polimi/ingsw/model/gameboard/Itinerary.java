@@ -1,4 +1,6 @@
-package it.polimi.ingsw.model;
+package it.polimi.ingsw.model.gameboard;
+import it.polimi.ingsw.model.CardStatus;
+
 import java.util.*;
 
 //ricorda che le carte papali sono sempre 2, 3 e 4 (in questo ordine)

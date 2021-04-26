@@ -1,5 +1,6 @@
 package it.polimi.ingsw.controller;
 
+import it.polimi.ingsw.controller.messages.actions.Action;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.server.*;
 
@@ -7,33 +8,50 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class GameController {
-    private Game game;
+    private final Game game;
     private Player currentPlayer;
-    private Server server;
+    private final Server server;
     private boolean actionDone;
     private boolean started;
     private List<Player> activePlayers;
+    private List<ClientConnection> activeConnections;
     private int currentPlayerIndex;
 
 
     public GameController(Server server) {
         this.server = server;
         this.game = new Game();
+        activePlayers = new ArrayList<>();
+        activeConnections = new ArrayList<>();
     }
 
-    public void setUpPlayer(String nickname, Integer clientID){
-        Player newPlayer = new Player(nickname, clientID, game);
-        activePlayers.add(newPlayer);
+    public void setUpPlayer(ClientConnection connection){
+        Player newPlayer = new Player(connection.getPlayerNickname(), game);
+        addActivePlayer(newPlayer);
+        addActiveConnection(connection);
         game.addPlayer(newPlayer);
     }
 
-    public Player getCurrentPlayer() {
-        return currentPlayer;
+    public List<ClientConnection> getActiveConnections() {
+        return activeConnections;
     }
 
-    public void setCurrentPlayer(Player currentPlayer) {
-        this.currentPlayer = currentPlayer;
+    public Game getGame() {
+        return game;
     }
+
+    public List<Player> getActivePlayers() {
+        return activePlayers;
+    }
+
+    public void addActiveConnection(ClientConnection connection){
+        activeConnections.add(connection);
+    }
+
+    public void addActivePlayer(Player player){
+        activePlayers.add(player);
+    }
+
 
     public void makeAction(Action action) {
         boolean done = action.doAction(currentPlayer);
@@ -75,17 +93,17 @@ public class GameController {
     }
 
     /* checks if a specified papalReport needs to be triggered */
-    private void checkPapalReport(int papalReportTrigger, int papalReportStart, int cardStatusIndex) {
+    private void checkPapalReport(int vaticanReportTrigger, int vaticanReportStart, int cardStatusIndex) {
         List<Player> players = game.getPlayers();
 
         for (Player player : players) {
             int position = player.getBoard().getItinerary().getPosition();
             CardStatus[] cardStatuses = player.getBoard().getItinerary().getCardStatus();
-            if (position >= papalReportTrigger) {
+            if (position >= vaticanReportTrigger) {
                 if (cardStatuses[cardStatusIndex] == CardStatus.FACE_DOWN) {
                     for (Player otherPlayer : players) {
                         int playerPosition = otherPlayer.getBoard().getItinerary().getPosition();
-                        if (playerPosition >= papalReportStart)
+                        if (playerPosition >= vaticanReportStart)
                             otherPlayer.getBoard().getItinerary().setCardStatus(CardStatus.FACE_UP, cardStatusIndex);
                         else
                             otherPlayer.getBoard().getItinerary().setCardStatus(CardStatus.DISCARDED, cardStatusIndex);
@@ -104,7 +122,6 @@ public class GameController {
 
 
     public void setup(){
-
     }
 
     /* computes victory points for every player and sets the game winner */

@@ -1,5 +1,7 @@
-package it.polimi.ingsw.controller;
+package it.polimi.ingsw.controller.messages.actions;
 
+import it.polimi.ingsw.controller.leaders.LeaderEffect;
+import it.polimi.ingsw.controller.Place;
 import it.polimi.ingsw.exceptions.WrongActionException;
 import it.polimi.ingsw.model.*;
 
@@ -101,9 +103,9 @@ public class BuyResources implements Action {
         player.getBoard().getWarehouse().checkIncrement(boughtResources);
     }
 
-    /* sets the extra resources gained from marble leader card */
-    public void setExtraRes(ResourcePosition extraRes) {
-        this.extraRes.add(extraRes);
+    /* adds the extra resources gained from marble leader card */
+    public void addExtraRes(List<ResourcePosition> extraRes) {
+        this.extraRes.addAll(extraRes);
     }
 
     public void setLeaderUsed(boolean leaderUsed) {

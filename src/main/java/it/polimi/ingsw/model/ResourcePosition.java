@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.controller.Place;
+import it.polimi.ingsw.model.gameboard.NumOfShelf;
 
 public class ResourcePosition extends ResourceQuantity{
     private Place place;

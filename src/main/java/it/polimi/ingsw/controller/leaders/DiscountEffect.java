@@ -1,12 +1,13 @@
-package it.polimi.ingsw.controller;
+package it.polimi.ingsw.controller.leaders;
 
 import it.polimi.ingsw.exceptions.WrongActionException;
+import it.polimi.ingsw.controller.messages.actions.Action;
+import it.polimi.ingsw.controller.messages.actions.BuyDevCard;
 import it.polimi.ingsw.model.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class DiscountEffect implements LeaderEffect{
+public class DiscountEffect implements LeaderEffect {
     private final Resource resource;
 
     public DiscountEffect(Resource resource) {

@@ -1,13 +1,13 @@
-package it.polimi.ingsw.controller;
+package it.polimi.ingsw.controller.messages.actions;
 
+import it.polimi.ingsw.controller.messages.actions.Action;
 import it.polimi.ingsw.model.LeaderCard;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.exceptions.WrongActionException;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class DiscardLeadCard implements Action{
+public class DiscardLeadCard implements Action {
     private final int index;
     List<LeaderCard> hand;
 

@@ -2,10 +2,13 @@ package it.polimi.ingsw;
 
 import static org.junit.Assert.assertTrue;
 
-import it.polimi.ingsw.controller.BuyDevCard;
+import it.polimi.ingsw.controller.messages.actions.BuyDevCard;
 import it.polimi.ingsw.controller.Place;
 import it.polimi.ingsw.exceptions.WrongActionException;
 import it.polimi.ingsw.model.*;
+import it.polimi.ingsw.model.gameboard.DevSpaceSlot;
+import it.polimi.ingsw.model.gameboard.GameBoard;
+import it.polimi.ingsw.model.gameboard.NumOfShelf;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -79,27 +82,27 @@ public class BuyDevCardTest {
 
     private void printCard(DevCard card){
 
-        for (int i = 0; i < 50; i++) System.out.printf("-");
+        for (int i = 0; i < 50; i++) System.out.print("-");
         if (card != null) {
             System.out.println("\nLevel: " + card.getLevel());
             System.out.println("Colour: " + card.getColour());
             System.out.println("Victory Points: " + card.getVictoryPoints());
             System.out.println("Requirements: ");
             for (ResourceQuantity req : card.getResourceRequirements()) {
-                System.out.printf("> " + req.getQuantity() + " " + req.getResource() + "S ");
+                System.out.print("> " + req.getQuantity() + " " + req.getResource() + "S ");
             }
             System.out.println("\nInput: ");
             for (ResourceQuantity input : card.getProductionInput()) {
-                System.out.printf("> " + input.getQuantity() + " " + input.getResource() + "S ");
+                System.out.print("> " + input.getQuantity() + " " + input.getResource() + "S ");
             }
             System.out.println("\nOutput: ");
             for (ResourceQuantity output : card.getProductionOutput()) {
-                System.out.printf("> " + output.getQuantity() + " " + output.getResource() + "S ");
+                System.out.print("> " + output.getQuantity() + " " + output.getResource() + "S ");
             }
         }
         else System.out.println("Empty deck");
         System.out.print("\n");
-        for (int i = 0; i < 50; i++) System.out.printf("-");
+        for (int i = 0; i < 50; i++) System.out.print("-");
         System.out.println("\n");
     }
 

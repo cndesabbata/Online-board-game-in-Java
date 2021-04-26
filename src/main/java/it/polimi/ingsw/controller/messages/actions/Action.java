@@ -1,5 +1,6 @@
-package it.polimi.ingsw.controller;
+package it.polimi.ingsw.controller.messages.actions;
 
+import it.polimi.ingsw.controller.messages.ClientMessage;
 import it.polimi.ingsw.exceptions.WrongActionException;
 import it.polimi.ingsw.model.*;
 

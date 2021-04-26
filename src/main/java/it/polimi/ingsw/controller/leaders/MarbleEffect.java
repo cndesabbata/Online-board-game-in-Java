@@ -1,6 +1,9 @@
-package it.polimi.ingsw.controller;
+package it.polimi.ingsw.controller.leaders;
 
+import it.polimi.ingsw.controller.leaders.LeaderEffect;
 import it.polimi.ingsw.exceptions.WrongActionException;
+import it.polimi.ingsw.controller.messages.actions.Action;
+import it.polimi.ingsw.controller.messages.actions.BuyResources;
 import it.polimi.ingsw.model.*;
 
 import java.util.List;
@@ -28,9 +31,7 @@ public class MarbleEffect implements LeaderEffect {
                 if (resourcePosition.getResource() != resource)
                     throw new WrongActionException("Extra resources must match marble leaders' resource");
             }
-            for(ResourcePosition extraRes : extraResources) {
-                buyResources.setExtraRes(extraRes);
-            }
+            buyResources.addExtraRes(extraResources);
             buyResources.setLeaderUsed(true);
         }
     }
