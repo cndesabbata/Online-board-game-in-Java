@@ -148,7 +148,10 @@ public class Server {
             }
             if (port <= 1024){
                 if (port == -1) System.err.println("Numeric format requested, please try again:\n>");
-                else System.err.println("Ports accepted started from 1024! Please try again.\n>");
+                else {
+                    System.err.println("Ports accepted started from 1024! Please try again.\n>");
+                    active = false;
+                }
             }
         }
         Constants.setPort(port);
