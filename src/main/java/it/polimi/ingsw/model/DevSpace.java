@@ -7,7 +7,7 @@ public class DevSpace {
 
     public DevSpace (){
         devSpace = new ArrayList<>();
-        for(DevSpaceSlot dss : DevSpaceSlot.values()){
+        for (int i = 0; i < 3; i++){
             devSpace.add(new ArrayList<>());
         }
     }
@@ -28,7 +28,7 @@ public class DevSpace {
 
     /*adds a new card "on top" of the deck in the selected slot*/
     public void addCard (DevCard card, DevSpaceSlot slot){
-        devSpace.get(slot.ordinal()).add(0, card);
+        devSpace.get(slot.ordinal()).add(0,card);
     }
 
     /*controls if there is place for a card of a specific level in the selected slot*/
@@ -41,7 +41,7 @@ public class DevSpace {
     public boolean checkUpperCard (DevCard devCard){
         boolean check = false;
         for(List <DevCard> deck : devSpace){
-            if(deck.size() != 0 && deck.get(0).equals(devCard)) {
+            if(deck.get(0).equals(devCard)) {
                 check = true;
                 break;
             }
