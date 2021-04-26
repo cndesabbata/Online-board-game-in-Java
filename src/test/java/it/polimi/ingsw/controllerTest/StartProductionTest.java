@@ -23,7 +23,7 @@ public class StartProductionTest {
         requirements.add(new ResourceQuantity(2, Resource.SERVANT));
         List <ResourceQuantity> input = new ArrayList<>();
         input.add(new ResourceQuantity(1, Resource.SHIELD));
-        input.add(new ResourceQuantity(1, Resource.SERVANT));
+        input.add(new ResourceQuantity(1, Resource.STONE));
         List <ResourceQuantity> output = new ArrayList<>();
         output.add(new ResourceQuantity(3, Resource.STONE));
         DevCard devCard = new DevCard(requirements, 6,1,Colour.GREEN, input, output);
@@ -49,7 +49,7 @@ public class StartProductionTest {
         depotLead.setPlayed(true);
 
         List <ResourcePosition> inputClient = new ArrayList<>();
-        inputClient.add(new ResourcePosition(1, Resource.SERVANT, Place.CHEST, null));
+        inputClient.add(new ResourcePosition(1, Resource.STONE, Place.CHEST, null));
         inputClient.add(new ResourcePosition(1, Resource.SHIELD, Place.WAREHOUSE, NumOfShelf.TWO));
         inputClient.add(new ResourcePosition(1, Resource.STONE, Place.CHEST, null));
         inputClient.add(new ResourcePosition(1, Resource.STONE, Place.WAREHOUSE, NumOfShelf.ONE));
@@ -121,9 +121,9 @@ public class StartProductionTest {
             assertTrue(myWarehouse.getShelf(NumOfShelf.THREE).getResource() == Resource.EMPTY && myWarehouse.getShelf(NumOfShelf.THREE).getQuantity() == 0);
             assertTrue(myWarehouse.getShelf(NumOfShelf.DEPOT_ONE).getResource() == Resource.COIN && myWarehouse.getShelf(NumOfShelf.DEPOT_ONE).getQuantity() == 0);
             assertEquals(4, myChest.getAvailability(Resource.SHIELD));
-            assertEquals(5, myChest.getAvailability(Resource.STONE));
+            assertEquals(4, myChest.getAvailability(Resource.STONE));
             assertEquals(1, myChest.getAvailability(Resource.COIN));
-            assertEquals(2, myChest.getAvailability(Resource.SERVANT));
+            assertEquals(3, myChest.getAvailability(Resource.SERVANT));
             assertEquals(1, myItinerary.getPosition());
 
         }
