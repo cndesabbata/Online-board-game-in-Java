@@ -23,7 +23,7 @@ public class Game {
         players = new ArrayList<>();
     }
 
-    public void addPlayer (Player newPlayer){
+    public void addPlayer(Player newPlayer) {
         players.add(newPlayer);
     }
 
@@ -40,10 +40,16 @@ public class Game {
         return new ArrayList<>(players);
     }
 
-    public DevDeck[] getDevDecks() { return devDecks; }
+    public DevDeck[] getDevDecks() {
+        return devDecks;
+    }
 
-    public DevCard drawDevCard (Colour colour, int level){
-        return devDecks[(level-1) * Colour.values().length + colour.ordinal()].drawCard();
+    public LeaderDeck getLeaderDeck() {
+        return leaderDeck;
+    }
+
+    public DevCard drawDevCard(Colour colour, int level) {
+        return devDecks[(level - 1) * Colour.values().length + colour.ordinal()].drawCard();
     }
 
     public Market getMarket() {

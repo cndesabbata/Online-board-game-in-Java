@@ -31,9 +31,7 @@ public class MarbleEffect implements LeaderEffect {
                 if (resourcePosition.getResource() != resource)
                     throw new WrongActionException("Extra resources must match marble leaders' resource");
             }
-            for(ResourcePosition extraRes : extraResources) {
-                buyResources.setExtraRes(extraRes);
-            }
+            buyResources.addExtraRes(extraResources);
             buyResources.setLeaderUsed(true);
         }
     }

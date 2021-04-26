@@ -86,9 +86,6 @@ public class StartProduction implements Action {
                 totalDevCardResources(totalDevInput, dc.getProductionInput());
                 totalDevCardResources(totalDevOutput, dc.getProductionOutput());
             }
-            totalDevInput.forEach(Rq -> System.out.println(Rq.getResource()+ " " +Rq.getQuantity()));
-            System.out.println("\n");
-            totalDevOutput.forEach(Rq -> System.out.println(Rq.getResource()+ " " +Rq.getQuantity()));
             for (ResourceQuantity Rq : totalDevInput) {
                     if (inputRes.stream().filter(Rp -> Rp.getResource() == Rq.getResource()).map(ResourceQuantity::getQuantity).
                             reduce(0, Integer::sum) < Rq.getQuantity())

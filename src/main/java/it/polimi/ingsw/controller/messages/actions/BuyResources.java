@@ -103,9 +103,9 @@ public class BuyResources implements Action {
         player.getBoard().getWarehouse().checkIncrement(boughtResources);
     }
 
-    /* sets the extra resources gained from marble leader card */
-    public void setExtraRes(ResourcePosition extraRes) {
-        this.extraRes.add(extraRes);
+    /* adds the extra resources gained from marble leader card */
+    public void addExtraRes(List<ResourcePosition> extraRes) {
+        this.extraRes.addAll(extraRes);
     }
 
     public void setLeaderUsed(boolean leaderUsed) {

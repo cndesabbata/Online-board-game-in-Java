@@ -8,9 +8,9 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class GameController {
-    private Game game;
+    private final Game game;
     private Player currentPlayer;
-    private Server server;
+    private final Server server;
     private boolean actionDone;
     private boolean started;
     private List<Player> activePlayers;
@@ -92,17 +92,17 @@ public class GameController {
     }
 
     /* checks if a specified papalReport needs to be triggered */
-    private void checkPapalReport(int papalReportTrigger, int papalReportStart, int cardStatusIndex) {
+    private void checkPapalReport(int vaticanReportTrigger, int vaticanReportStart, int cardStatusIndex) {
         List<Player> players = game.getPlayers();
 
         for (Player player : players) {
             int position = player.getBoard().getItinerary().getPosition();
             CardStatus[] cardStatuses = player.getBoard().getItinerary().getCardStatus();
-            if (position >= papalReportTrigger) {
+            if (position >= vaticanReportTrigger) {
                 if (cardStatuses[cardStatusIndex] == CardStatus.FACE_DOWN) {
                     for (Player otherPlayer : players) {
                         int playerPosition = otherPlayer.getBoard().getItinerary().getPosition();
-                        if (playerPosition >= papalReportStart)
+                        if (playerPosition >= vaticanReportStart)
                             otherPlayer.getBoard().getItinerary().setCardStatus(CardStatus.FACE_UP, 0);
                         else
                             otherPlayer.getBoard().getItinerary().setCardStatus(CardStatus.DISCARDED, 0);
@@ -121,7 +121,6 @@ public class GameController {
 
 
     public void setup(){
-
     }
 
     /* computes victory points for every player and sets the game winner */
