@@ -1,12 +1,14 @@
-package it.polimi.ingsw.controller;
+package it.polimi.ingsw.controller.leaders;
 
 import it.polimi.ingsw.exceptions.WrongActionException;
+import it.polimi.ingsw.controller.messages.actions.Action;
 import it.polimi.ingsw.model.*;
+import it.polimi.ingsw.model.gameboard.NumOfShelf;
+import it.polimi.ingsw.model.gameboard.Warehouse;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class DepotEffect implements LeaderEffect{
+public class DepotEffect implements LeaderEffect {
     private Resource resource;
 
     public DepotEffect(Resource resource) {

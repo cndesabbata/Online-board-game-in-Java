@@ -2,11 +2,13 @@ package it.polimi.ingsw;
 
 import static org.junit.Assert.assertTrue;
 
-import it.polimi.ingsw.controller.Action;
-import it.polimi.ingsw.controller.BuyResources;
+import it.polimi.ingsw.controller.messages.actions.Action;
+import it.polimi.ingsw.controller.messages.actions.BuyResources;
 import it.polimi.ingsw.controller.Place;
 import it.polimi.ingsw.exceptions.WrongActionException;
 import it.polimi.ingsw.model.*;
+import it.polimi.ingsw.model.gameboard.GameBoard;
+import it.polimi.ingsw.model.gameboard.NumOfShelf;
 import org.junit.Test;
 
 import java.util.ArrayList;

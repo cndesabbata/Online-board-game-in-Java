@@ -1,4 +1,6 @@
-package it.polimi.ingsw.model;
+package it.polimi.ingsw.model.gameboard;
+import it.polimi.ingsw.model.DevCard;
+
 import java.util.*;
 
 

@@ -1,11 +1,13 @@
-package it.polimi.ingsw.controller;
+package it.polimi.ingsw.controller.leaders;
+import it.polimi.ingsw.controller.leaders.LeaderEffect;
+import it.polimi.ingsw.controller.messages.actions.StartProduction;
 import it.polimi.ingsw.exceptions.WrongActionException;
+import it.polimi.ingsw.controller.messages.actions.Action;
 import it.polimi.ingsw.model.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class ProductionEffect implements LeaderEffect{
+public class ProductionEffect implements LeaderEffect {
     private final ResourcePosition inputRes;
     private final ResourcePosition outputRes;
 

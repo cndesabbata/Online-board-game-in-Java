@@ -1,9 +1,7 @@
 package it.polimi.ingsw.server;
 
-import it.polimi.ingsw.controller.ServerMessage;
+import it.polimi.ingsw.controller.messages.*;
 import it.polimi.ingsw.controller.GameController;
-import it.polimi.ingsw.controller.ClientMessage;
-import it.polimi.ingsw.controller.SetNickname;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -17,13 +15,11 @@ public class ClientConnection implements Runnable {
     private ObjectInputStream input;
     private ObjectOutputStream output;
     private String playerNickname;
-    private Integer clientID;
     private GameController gameController;
 
     public ClientConnection(Socket socket, Server server ) {
         this.server = server;
         this.socket = socket;
-        clientID = -1;
         active = true;
         try {
             input = new ObjectInputStream(socket.getInputStream());
@@ -41,6 +37,14 @@ public class ClientConnection implements Runnable {
 
     }
 
+    public GameController getGameController() {
+        return gameController;
+    }
+
+    public void setGameController(GameController gameController) {
+        this.gameController = gameController;
+    }
+
     public void readInput() throws IOException, ClassNotFoundException {
         ClientMessage inputClientMessage = (ClientMessage) input.readObject();
         if (inputClientMessage != null) messageHandler(inputClientMessage);
@@ -52,9 +56,10 @@ public class ClientConnection implements Runnable {
             while (active) {
                 readInput();
             }
+            server.removeClient(this);
         } catch (IOException e) {
-            if (gameController.isStarted()) server.unregisterClient(clientID);
-            else server.removeClient(clientID);
+            if (gameController.isStarted()) server.unregisterClient(this);
+            else server.removeClient(this);
             System.err.println(e.getMessage());
         } catch (ClassNotFoundException e){
             System.err.println(e.getMessage());
@@ -64,16 +69,29 @@ public class ClientConnection implements Runnable {
     public void messageHandler(ClientMessage clientMessage){
         if (clientMessage instanceof SetNickname){
             try {
-                clientID = server.registerClient(((SetNickname) clientMessage).getNickname(), this);
-                if (clientID == null) {
-                    active = false;
-                    return;
-                }
+                server.registerClient(((SetNickname) clientMessage).getNickname(), this);
             } catch (InterruptedException e) {
                 System.err.println(e.getMessage());
                 Thread.currentThread().interrupt();
             }
         }
+        else if (clientMessage instanceof Reconnect){
+            try {
+                server.reconnectClient(((Reconnect) clientMessage).getNickname(), this);
+            } catch (InterruptedException e) {
+                System.err.println(e.getMessage());
+                Thread.currentThread().interrupt();
+            }
+        }
+        else if (clientMessage instanceof SetPlayersNumber){
+            if (((SetPlayersNumber) clientMessage).getNumOfPlayers() < 1
+                    || ((SetPlayersNumber) clientMessage).getNumOfPlayers() > 4){
+                sendSocketMessage(new ErrorMessage("Not a valid input, please provide a number between 1 and 4"));
+                sendSocketMessage(new PlayersNumberMessage("Choose the number of players: [1...4]"));
+            }
+            else server.setTotalPlayers(((SetPlayersNumber) clientMessage).getNumOfPlayers(), this);
+        }
+        //...
     }
 
     public void checkConnection(){
@@ -81,7 +99,15 @@ public class ClientConnection implements Runnable {
     }
 
     public void sendSocketMessage(ServerMessage serverMessage){
-
+        try {
+            output.writeObject(serverMessage);
+            output.flush();
+        } catch (IOException e) {
+            close();
+        }
     }
 
+    public String getPlayerNickname() {
+        return playerNickname;
+    }
 }

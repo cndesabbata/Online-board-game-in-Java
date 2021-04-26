@@ -1,7 +1,11 @@
-package it.polimi.ingsw.model;
+package it.polimi.ingsw.model.gameboard;
 
 import it.polimi.ingsw.controller.Place;
 import it.polimi.ingsw.exceptions.WrongActionException;
+import it.polimi.ingsw.model.Resource;
+import it.polimi.ingsw.model.ResourcePosition;
+import it.polimi.ingsw.model.ResourceQuantity;
+import it.polimi.ingsw.model.gameboard.NumOfShelf;
 
 import java.util.*;
 

@@ -5,6 +5,8 @@ import static org.junit.Assert.assertTrue;
 import it.polimi.ingsw.controller.Place;
 import it.polimi.ingsw.exceptions.WrongActionException;
 import it.polimi.ingsw.model.*;
+import it.polimi.ingsw.model.gameboard.NumOfShelf;
+import it.polimi.ingsw.model.gameboard.Warehouse;
 import org.junit.Test;
 
 import java.util.ArrayList;

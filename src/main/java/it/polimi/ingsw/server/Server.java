@@ -1,32 +1,29 @@
 package it.polimi.ingsw.server;
 
 import it.polimi.ingsw.constants.Constants;
-import it.polimi.ingsw.controller.CustomMessage;
-import it.polimi.ingsw.controller.ErrorMessage;
-import it.polimi.ingsw.controller.GameController;
-import it.polimi.ingsw.controller.ClientMessage;
+import it.polimi.ingsw.controller.*;
+import it.polimi.ingsw.controller.messages.CustomMessage;
+import it.polimi.ingsw.controller.messages.ErrorMessage;
+import it.polimi.ingsw.controller.messages.PlayersNumberMessage;
 
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.stream.Collectors;
 
 public class Server {
     private Map<VirtualClient, ClientConnection> clientToConnection;
-    private Map<String, Integer> nameMapId;
     private ServerConnectionSocket serverConnectionSocket;
     private List<GameController> gameControllers;
     private int totalPlayers;
-    private int nextClientID;
     private ArrayList<ClientConnection> waitingList;
 
     public Server() {
         this.clientToConnection = new HashMap<>();
-        this.nameMapId = new HashMap<>();
         this.gameControllers = new ArrayList<>();
         this.serverConnectionSocket = new ServerConnectionSocket(Constants.getPort(), this);
         this.totalPlayers = -1;
         this.waitingList = new ArrayList<>();
-        this.nextClientID = 1;
         Thread thread = new Thread(this::serverQuitter);
         thread.start();
     }
@@ -42,68 +39,98 @@ public class Server {
         }
     }
 
-    public void removeClient(int clientID){
-
+    public void removeClient(ClientConnection connection){
+        connection.getGameController().getGame().getPlayers()
+                .removeIf(p -> p.getNickname().equals(connection.getPlayerNickname()));
+        waitingList.removeIf(c -> c == connection);
+        unregisterClient(connection);
     }
 
-    public void unregisterClient(int clientID){
-
+    public void unregisterClient(ClientConnection connection){
+        connection.getGameController().getActiveConnections().removeIf(c -> c == connection);
+        connection.getGameController().getActivePlayers().
+                removeIf(p -> p.getNickname().equals(connection.getPlayerNickname()));
+        find(connection, clientToConnection).setClientConnection(null);
+        clientToConnection.remove(connection);
     }
-
-    /*public GameController findGameByID(int clientID){
-
-    }*/
 
     public ServerConnectionSocket getSocketServer() {
         return serverConnectionSocket;
     }
 
-    public void sendAll (ClientMessage clientMessage){
-
-    }
-
-    public void singleSend (ClientMessage clientMessage, String nickname){
-
-    }
-
-    public void sendAllExcept (ClientMessage clientMessage, String nickname){
-
+    public void setTotalPlayers(int totalPlayers, ClientConnection connection) {
+        this.totalPlayers = totalPlayers;
+        // if ...
+        gameControllers.add(0, new GameController(this));
+        gameControllers.get(0).setUpPlayer(connection);
+        connection.setGameController(gameControllers.get(0));
     }
 
     private void lobby (ClientConnection connection){
         waitingList.add(connection);
         if (waitingList.size() == 1) {
-
+            connection.sendSocketMessage(new PlayersNumberMessage(connection.getPlayerNickname() +
+                    ", you are the lobby host, please choose the number of players: [1...4]"));
         } else if (waitingList.size() == totalPlayers) {
-
+            VirtualClient v = find(connection, clientToConnection);
+            v.sendAll(new CustomMessage("Player number reached. The match is starting."));
+            waitingList.clear();
+            gameControllers.get(0).setup();
         } else {
-
+            VirtualClient v = find(connection, clientToConnection);
+            v.sendAll(new CustomMessage((totalPlayers - waitingList.size()) + " slots left."));
         }
     }
 
-    public synchronized Integer registerClient(String nickname, ClientConnection connection) throws InterruptedException{
-        Integer clientID;
-        if (waitingList.isEmpty()) {
-            gameControllers.add(0, new GameController(this));
+    private VirtualClient find(ClientConnection connection, Map<VirtualClient, ClientConnection> map){
+        return map.entrySet()
+                .stream()
+                .filter(entry -> Objects.equals(entry.getValue(), connection))
+                .map(Map.Entry::getKey)
+                .collect(Collectors.toList()).get(0);
+    }
+
+    /*public GameController getControllerByNickname(String nickname){
+        for (GameController gc : gameControllers){
+            if (gc.getGame().getPlayers().stream().anyMatch(p -> p.getNickname().equals(nickname)))
+                return gc;
         }
-        if(nameMapId.keySet().stream().anyMatch(nickname::equalsIgnoreCase)){
-            ErrorMessage error = new ErrorMessage("This nickname is already in use, please choose another one");
-            connection.sendSocketMessage(error);
-            return null;
+        return null;
+    }*/
+
+    public synchronized void reconnectClient(String nickname, ClientConnection connection) throws InterruptedException{
+        for (GameController gc : gameControllers){
+            if (gc.getGame().getPlayers().stream().anyMatch(p -> p.getNickname().equals(nickname)) &&
+                    gc.getActivePlayers().stream().noneMatch(p -> p.getNickname().equals(nickname))){
+                gc.addActivePlayer(gc.getGame().getPlayerByNickname(nickname));
+                gc.addActiveConnection(connection);
+                connection.setGameController(gc);
+                VirtualClient virtualClient = new VirtualClient(nickname, connection);
+                clientToConnection.put(virtualClient, connection);
+                connection.sendSocketMessage(new CustomMessage("Connection was successfully set-up!" +
+                        " You are now reconnected."));
+                return;
+            }
         }
-        clientID = nextClientID;
-        nextClientID++;
-        gameControllers.get(0).setUpPlayer(nickname, clientID);
-        VirtualClient virtualClient = new VirtualClient(nickname, clientID, connection);
-        nameMapId.put(nickname, clientID);
+        ErrorMessage error = new ErrorMessage("There is no active match with an inactive player with such nickname");
+        connection.sendSocketMessage(error);
+    }
+
+    public synchronized void registerClient(String nickname, ClientConnection connection) throws InterruptedException{
+        for (GameController gc : gameControllers){
+            if (gc.getGame().getPlayers().stream().anyMatch(p -> p.getNickname().equals(nickname))){
+                ErrorMessage error = new ErrorMessage("This nickname is already in use, please choose another one");
+                connection.sendSocketMessage(error);
+            }
+        }
+        VirtualClient virtualClient = new VirtualClient(nickname, connection);
         clientToConnection.put(virtualClient, connection);
         connection.sendSocketMessage(new CustomMessage("Connection was successfully set-up!" +
-                " You are now connected.", 0));
+                " You are now connected."));
         if (waitingList.size() > 0) {
-            virtualClient.sendAll(new CustomMessage(nickname + " joined the game", 0));
+            virtualClient.sendAll(new CustomMessage(nickname + " joined the game"));
         }
         lobby(connection);
-        return clientID;
     }
 
     public static void main(String[] args){

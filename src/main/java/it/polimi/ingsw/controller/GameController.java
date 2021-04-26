@@ -1,5 +1,6 @@
 package it.polimi.ingsw.controller;
 
+import it.polimi.ingsw.controller.messages.actions.Action;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.server.*;
 
@@ -13,27 +14,44 @@ public class GameController {
     private boolean actionDone;
     private boolean started;
     private List<Player> activePlayers;
+    private List<ClientConnection> activeConnections;
     private int currentPlayerIndex;
 
 
     public GameController(Server server) {
         this.server = server;
         this.game = new Game();
+        activePlayers = new ArrayList<>();
+        activeConnections = new ArrayList<>();
     }
 
-    public void setUpPlayer(String nickname, Integer clientID){
-        Player newPlayer = new Player(nickname, clientID, game);
-        activePlayers.add(newPlayer);
+    public void setUpPlayer(ClientConnection connection){
+        Player newPlayer = new Player(connection.getPlayerNickname(), game);
+        addActivePlayer(newPlayer);
+        addActiveConnection(connection);
         game.addPlayer(newPlayer);
     }
 
-    public Player getCurrentPlayer() {
-        return currentPlayer;
+    public List<ClientConnection> getActiveConnections() {
+        return activeConnections;
     }
 
-    public void setCurrentPlayer(Player currentPlayer) {
-        this.currentPlayer = currentPlayer;
+    public Game getGame() {
+        return game;
     }
+
+    public List<Player> getActivePlayers() {
+        return activePlayers;
+    }
+
+    public void addActiveConnection(ClientConnection connection){
+        activeConnections.add(connection);
+    }
+
+    public void addActivePlayer(Player player){
+        activePlayers.add(player);
+    }
+
 
     public void makeAction(Action action) {
         currentPlayer.setActionDone(action.doAction(currentPlayer));

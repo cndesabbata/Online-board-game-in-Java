@@ -1,4 +1,6 @@
-package it.polimi.ingsw.controller;
+package it.polimi.ingsw.controller.messages;
+
+import it.polimi.ingsw.controller.messages.ClientMessage;
 
 public class SetNickname implements ClientMessage {
     private final String nickname;
