@@ -14,18 +14,10 @@ public class DevSpace {
         }
     }
 
-    /*controls if the player has a certain DevCard*/
+    /*controls if the player has a DevCard with the same colour of requirement and the same (or greater) level*/
     public boolean checkCards (DevCard requirement){
-        boolean check = false;
-        for(List <DevCard> stack : devSpace){
-           for(DevCard card : stack){
-               if (card.equals(requirement)) {
-                   check = true;
-                   break;
-               }
-           }
-       }
-       return check;
+        return devSpace.stream().flatMap(Collection::stream)                                                            //it transforms the devspace into a stream of stacks
+                .anyMatch(dc -> dc.getColour() == requirement.getColour() && dc.getLevel()>= requirement.getLevel());
     }
 
     /*adds a new card "on top" of the deck in the selected slot*/
@@ -43,7 +35,7 @@ public class DevSpace {
     public boolean checkUpperCard (DevCard devCard){
         boolean check = false;
         for(List <DevCard> deck : devSpace){
-            if(deck.get(0).equals(devCard)) {
+            if(deck.size()>0 && deck.get(0).equals(devCard)) {
                 check = true;
                 break;
             }
