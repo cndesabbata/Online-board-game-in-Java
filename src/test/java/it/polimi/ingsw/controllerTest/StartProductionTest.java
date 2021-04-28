@@ -77,7 +77,7 @@ public class StartProductionTest {
 
         Action production = new StartProduction(devCards, inputClient, outputClient, leaderEffects);
 
-        Player me = new Player("Gianluca", 1, game);
+        Player me = new Player("Gianluca", game);
         me.getHandLeaderCards().add(prodLead);
         me.getHandLeaderCards().add(depotLead);
         game.addPlayer(me);

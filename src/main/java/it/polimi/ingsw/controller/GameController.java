@@ -13,8 +13,8 @@ public class GameController {
     private final Server server;
     private boolean actionDone;
     private boolean started;
-    private List<Player> activePlayers;
-    private List<ClientConnection> activeConnections;
+    private final List<Player> activePlayers;
+    private final List<ClientConnection> activeConnections;
     private int currentPlayerIndex;
 
 
@@ -25,7 +25,7 @@ public class GameController {
         activeConnections = new ArrayList<>();
     }
 
-    public void setUpPlayer(ClientConnection connection){
+    public void setUpPlayer(ClientConnection connection) {
         Player newPlayer = new Player(connection.getPlayerNickname(), game);
         addActivePlayer(newPlayer);
         addActiveConnection(connection);
@@ -44,15 +44,15 @@ public class GameController {
         return activePlayers;
     }
 
-    public void addActiveConnection(ClientConnection connection){
+    public void addActiveConnection(ClientConnection connection) {
         activeConnections.add(connection);
     }
 
-    public void addActivePlayer(Player player){
+    public void addActivePlayer(Player player) {
         activePlayers.add(player);
     }
 
-
+    /* handles action messages from the current player */
     public void makeAction(Action action) {
         currentPlayer.setActionDone(action.doAction(currentPlayer));
         checkAllPapalReports();
@@ -63,6 +63,7 @@ public class GameController {
         return started;
     }
 
+    /* changes turn and sets the new current player */
     public void changeTurn() {
         currentPlayer.setTurnActive(false);
         currentPlayer.setActionDone(false);
@@ -74,6 +75,7 @@ public class GameController {
         }
     }
 
+    /* returns the next current player */
     private Player nextPlayer() {
         if (currentPlayerIndex == activePlayers.size() - 1) {
             currentPlayerIndex = 0;
@@ -112,6 +114,7 @@ public class GameController {
         }
     }
 
+    /* checks if requirements for the end game phase are matched */
     private void checkEndGame() {
         if (currentPlayer.getBoard().getItinerary().getPosition() == 24 ||
                 currentPlayer.getBoard().getDevSpace().countCards() == 7) {
@@ -120,7 +123,7 @@ public class GameController {
     }
 
 
-    public void setup(){
+    public void setup() {
     }
 
     /* computes victory points for every player and sets the game winner */
@@ -135,14 +138,7 @@ public class GameController {
                     playersPoints.put(nickname, playersPoints.get(nickname) + devCard.getVictoryPoints());
                 }
             }
-            addItineraryPoints(playersPoints, player, 3, 1);
-            addItineraryPoints(playersPoints, player, 6, 2);
-            addItineraryPoints(playersPoints, player, 9, 4);
-            addItineraryPoints(playersPoints, player, 12, 6);
-            addItineraryPoints(playersPoints, player, 15, 9);
-            addItineraryPoints(playersPoints, player, 18, 12);
-            addItineraryPoints(playersPoints, player, 21, 16);
-            addItineraryPoints(playersPoints, player, 24, 20);
+            addItineraryPoints(playersPoints, player);
             addPapalCardPoints(playersPoints, player, 0, 2);
             addPapalCardPoints(playersPoints, player, 1, 3);
             addPapalCardPoints(playersPoints, player, 2, 4);
@@ -150,32 +146,47 @@ public class GameController {
                 if (leaderCard.isPlayed())
                     playersPoints.put(nickname, playersPoints.get(nickname) + leaderCard.getVictoryPoints());
             }
-            playersPoints.put(nickname, playersPoints.get(nickname) + player.getBoard().getTotalResources());
-            int max = Collections.max(playersPoints.values());
-            List<String> potentialWinners = playersPoints.entrySet().stream()
-                    .filter(entry -> entry.getValue() == max)
-                    .map(entry -> entry.getKey())
-                    .collect(Collectors.toList());
-            Map<String, Integer> potentialWinnersResources = new HashMap<>();
-            for (String playerNickname : potentialWinners) {
-                potentialWinnersResources.put(playerNickname, game.getPlayerByNickname(playerNickname).getBoard().getTotalResources());
-            }
-            List<String> winnersNickname = potentialWinnersResources.entrySet().stream()
-                    .filter(entry -> entry.getValue() == max)
-                    .map(entry -> entry.getKey())
-                    .collect(Collectors.toList());
-            List<Player> winners = new ArrayList<>();
-            for (String winnerNickname : winnersNickname) {
-                winners.add(game.getPlayerByNickname(winnerNickname));
-            }
-//            game.setWinners(winners);
+            playersPoints.put(nickname, playersPoints.get(nickname) + player.getBoard().getTotalResources() / 5);
         }
+        int maxPoints = Collections.max(playersPoints.values());
+        List<String> potentialWinners = playersPoints.entrySet().stream()
+                .filter(entry -> entry.getValue() == maxPoints)
+                .map(entry -> entry.getKey())
+                .collect(Collectors.toList());
+        Map<String, Integer> potentialWinnersResources = new HashMap<>();
+        for (String playerNickname : potentialWinners) {
+            potentialWinnersResources.put(playerNickname, game.getPlayerByNickname(playerNickname).getBoard().getTotalResources());
+        }
+        int maxResources = Collections.max(potentialWinnersResources.values());
+        List<String> winnersNickname = potentialWinnersResources.entrySet().stream()
+                .filter(entry -> entry.getValue() == maxResources)
+                .map(entry -> entry.getKey())
+                .collect(Collectors.toList());
+        List<Player> winners = new ArrayList<>();
+        for (String winnerNickname : winnersNickname) {
+            winners.add(game.getPlayerByNickname(winnerNickname));
+        }
+        game.setWinners(winners);
     }
 
-    /* private method called by endgame to compute victory points gained from itinerary */
-    private void addItineraryPoints(Map<String, Integer> playersPoints, Player player, int cell, int victoryPoints) {
-        if (player.getBoard().getItinerary().getPosition() >= cell)
-            playersPoints.put(player.getNickname(), playersPoints.get(player.getNickname()) + victoryPoints);
+    /* private method called by endgame to compute victory points gained from itinerary position */
+    private void addItineraryPoints(Map<String, Integer> playersPoints, Player player) {
+        if (player.getBoard().getItinerary().getPosition() >= 3 && player.getBoard().getItinerary().getPosition() < 6)
+            playersPoints.put(player.getNickname(), playersPoints.get(player.getNickname()) + 1);
+        else if (player.getBoard().getItinerary().getPosition() >= 6 && player.getBoard().getItinerary().getPosition() < 9)
+            playersPoints.put(player.getNickname(), playersPoints.get(player.getNickname()) + 2);
+        else if (player.getBoard().getItinerary().getPosition() >= 9 && player.getBoard().getItinerary().getPosition() < 12)
+            playersPoints.put(player.getNickname(), playersPoints.get(player.getNickname()) + 4);
+        else if (player.getBoard().getItinerary().getPosition() >= 12 && player.getBoard().getItinerary().getPosition() < 15)
+            playersPoints.put(player.getNickname(), playersPoints.get(player.getNickname()) + 6);
+        else if (player.getBoard().getItinerary().getPosition() >= 15 && player.getBoard().getItinerary().getPosition() < 18)
+            playersPoints.put(player.getNickname(), playersPoints.get(player.getNickname()) + 9);
+        else if (player.getBoard().getItinerary().getPosition() >= 18 && player.getBoard().getItinerary().getPosition() < 21)
+            playersPoints.put(player.getNickname(), playersPoints.get(player.getNickname()) + 12);
+        else if (player.getBoard().getItinerary().getPosition() >= 21 && player.getBoard().getItinerary().getPosition() < 24)
+            playersPoints.put(player.getNickname(), playersPoints.get(player.getNickname()) + 16);
+        else if (player.getBoard().getItinerary().getPosition() >= 24)
+            playersPoints.put(player.getNickname(), playersPoints.get(player.getNickname()) + 20);
     }
 
     /* private method called by endgame to compute victory points gained from papal cards */

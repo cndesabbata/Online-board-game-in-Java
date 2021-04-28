@@ -10,7 +10,7 @@ public class Itinerary {
 
     public Itinerary(){
         position = 0;
-        cardstatus = new CardStatus[3];        //usa il for
+        cardstatus = new CardStatus[3];
         for(int i = 0; i < 3; i++) {
             cardstatus[i] = CardStatus.FACE_DOWN;
         }
@@ -26,13 +26,11 @@ public class Itinerary {
          return copy;
     }
 
-    public void setCardStatus(CardStatus cardStatus, int index) {       //Metto index per capire quale carta devo girare. Ovviamente, utilizzando la sola posizione,
-        cardstatus[index] = cardStatus;                                 //io potrei capire quale carta girare. Tuttavia, questo controllo sulla posizione è meglio farlo fare al controller (per coerenza).
+    public void setCardStatus(CardStatus cardStatus, int index) {
+        cardstatus[index] = cardStatus;
     }
 
-    public void updatePosition(int amount) {                //ci sono carte che fanno avanzare di 1 o 2.
+    public void updatePosition(int amount) {
         position += amount;
-    }               //dopo l'update il controller verifica se il giocatore ha oltrepassato o raggiunto un rapporto col vaticano. Se sì,
-                    //controlla le posizioni degli altri giocatori e in base a quello chiama le setCardStatus su gli itinerary di tutti i giocatori
-                    //passando gli appropriati cardstatus.
+    }
 }

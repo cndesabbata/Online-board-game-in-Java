@@ -6,6 +6,7 @@ public class Game {
     private final LeaderDeck leaderDeck;
     private final DevDeck[] devDecks;
     private final List<Player> players;
+    private final List<Player> winners;
     private final Market market;
     private boolean finalTurn;
 
@@ -21,6 +22,7 @@ public class Game {
         }
         market = new Market();
         players = new ArrayList<>();
+        winners = new ArrayList<>();
     }
 
     public void addPlayer(Player newPlayer) {
@@ -62,5 +64,13 @@ public class Game {
 
     public void setFinalTurn(boolean finalTurn) {
         this.finalTurn = finalTurn;
+    }
+
+    public void setWinners(List<Player> winners) {
+        this.winners.addAll(winners);
+    }
+
+    public List<Player> getWinners() {
+        return winners;
     }
 }
