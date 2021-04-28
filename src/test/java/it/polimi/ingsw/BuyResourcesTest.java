@@ -3,8 +3,13 @@ package it.polimi.ingsw;
 import static org.junit.Assert.assertTrue;
 
 import it.polimi.ingsw.controller.*;
+import it.polimi.ingsw.controller.leaders.LeaderEffect;
+import it.polimi.ingsw.controller.leaders.MarbleEffect;
+import it.polimi.ingsw.controller.messages.actions.Action;
+import it.polimi.ingsw.controller.messages.actions.BuyResources;
 import it.polimi.ingsw.exceptions.WrongActionException;
 import it.polimi.ingsw.model.*;
+import it.polimi.ingsw.model.gameboard.NumOfShelf;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -16,7 +21,7 @@ public class BuyResourcesTest {
     public void buyResourceFirstTest() {
         Game game = new Game();
         String nickname = "Andrea";
-        Player player = new Player(nickname, 1, game);
+        Player player = new Player(nickname, game);
         List<ResourcePosition> boughtResources = new ArrayList<>();
         Marble[][] disposition = {{Marble.PURPLE, Marble.BLUE, Marble.PURPLE, Marble.GREY},
                 {Marble.WHITE, Marble.RED, Marble.WHITE, Marble.WHITE},
@@ -49,7 +54,7 @@ public class BuyResourcesTest {
     public void buyResourceOneLeaderTest() {
         Game game = new Game();
         String nickname = "Andrea";
-        Player player = new Player(nickname, 1, game);
+        Player player = new Player(nickname, game);
         List<ResourcePosition> boughtResources = new ArrayList<>();
         List<ResourcePosition> extraRes = new ArrayList<>();
         List<LeaderEffect> leaderEffects = new ArrayList<>();
@@ -90,7 +95,7 @@ public class BuyResourcesTest {
     public void buyResourceTwoLeaderTest() {
         Game game = new Game();
         String nickname = "Andrea";
-        Player player = new Player(nickname, 1, game);
+        Player player = new Player(nickname, game);
         List<ResourcePosition> boughtResources = new ArrayList<>();
         List<ResourcePosition> extraRes = new ArrayList<>();
         List<LeaderEffect> leaderEffects = new ArrayList<>();
@@ -136,7 +141,7 @@ public class BuyResourcesTest {
     public  void  buyResourcesExceptionFirstTest(){
         Game game = new Game();
         String nickname = "Andrea";
-        Player player = new Player(nickname, 1, game);
+        Player player = new Player(nickname, game);
         List<ResourcePosition> boughtResources = new ArrayList<>();
         Marble[][] disposition = {{Marble.PURPLE, Marble.BLUE, Marble.PURPLE, Marble.GREY},
                 {Marble.WHITE, Marble.RED, Marble.WHITE, Marble.WHITE},
@@ -161,7 +166,7 @@ public class BuyResourcesTest {
     public  void  buyResourcesExceptionSecondTest(){
         Game game = new Game();
         String nickname = "Andrea";
-        Player player = new Player(nickname, 1, game);
+        Player player = new Player(nickname, game);
         List<ResourcePosition> boughtResources = new ArrayList<>();
         Marble[][] disposition = {{Marble.PURPLE, Marble.BLUE, Marble.PURPLE, Marble.GREY},
                 {Marble.WHITE, Marble.RED, Marble.WHITE, Marble.WHITE},

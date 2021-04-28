@@ -48,12 +48,12 @@ public class StartProduction implements Action {
     @Override
     public void checkAction(Player player) throws WrongActionException {
         if (player.isActionDone())
-            throw new WrongActionException("The player has already done an exclusive action this turn");
+            throw new WrongActionException("The player has already done an exclusive action this turn.");
         else if (devCards != null) {                                                                                     //in case there is a devCard played
             DevSpace devSpace = player.getBoard().getDevSpace();
             for(DevCard devCard : devCards) {
                 if (!devSpace.checkUpperCard(devCard))
-                    throw new WrongActionException("The player does not have one of the selected devCard");
+                    throw new WrongActionException("The player does not have one of the selected devCards.");
             }
         }
         checkInputOutput(devCards);
@@ -105,7 +105,8 @@ public class StartProduction implements Action {
                 throw new WrongActionException("The number of input / output resources for the board production is incorrect.");
         }
         else
-            if(inputRes.size() != 2 || outputRes.size() != 1)
+            if(inputRes.stream().map(ResourcePosition::getQuantity).reduce(0, Integer::sum) != 2 ||
+                    outputRes.stream().map(ResourcePosition::getQuantity).reduce(0, Integer::sum) != 1)
                 throw new WrongActionException("The number of input / output resources for the board production is incorrect.");
     }
 

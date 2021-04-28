@@ -20,7 +20,7 @@ public class BuyDevCardTest {
     public void DevCardTest (){
         Game game = new Game();
         GameBoard board = new GameBoard();
-        Player player = new Player("Nickname", 1, game);
+        Player player = new Player("Nickname", game);
         Colour colour = randomEnum(Colour.class);
         System.out.println("Colour: "+ colour);
         int level = 1;
