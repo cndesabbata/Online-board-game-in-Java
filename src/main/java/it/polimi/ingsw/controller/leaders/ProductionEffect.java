@@ -27,7 +27,7 @@ public class ProductionEffect implements LeaderEffect {
                     break;
                 }
             }
-            if(!check) throw new WrongActionException("The player does not have the played leadCard");
+            if(!check) throw new WrongActionException("The player does not have the played leadCard.");
             else {
                 ((StartProduction) action).addInputRes(inputRes);
                 ((StartProduction) action).addOutputRes(outputRes);

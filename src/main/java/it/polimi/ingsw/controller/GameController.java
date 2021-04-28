@@ -54,9 +54,10 @@ public class GameController {
 
     /* handles action messages from the current player */
     public void makeAction(Action action) {
-        currentPlayer.setActionDone(action.doAction(currentPlayer));
+        boolean done = action.doAction(currentPlayer);
         checkAllPapalReports();
         checkEndGame();
+        currentPlayer.setActionDone(done);
     }
 
     public boolean isStarted() {
@@ -105,9 +106,9 @@ public class GameController {
                     for (Player otherPlayer : players) {
                         int playerPosition = otherPlayer.getBoard().getItinerary().getPosition();
                         if (playerPosition >= vaticanReportStart)
-                            otherPlayer.getBoard().getItinerary().setCardStatus(CardStatus.FACE_UP, 0);
+                            otherPlayer.getBoard().getItinerary().setCardStatus(CardStatus.FACE_UP, cardStatusIndex);
                         else
-                            otherPlayer.getBoard().getItinerary().setCardStatus(CardStatus.DISCARDED, 0);
+                            otherPlayer.getBoard().getItinerary().setCardStatus(CardStatus.DISCARDED, cardStatusIndex);
                     }
                 }
             }
