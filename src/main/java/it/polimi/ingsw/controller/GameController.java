@@ -1,21 +1,21 @@
 package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.controller.messages.actions.Action;
-import it.polimi.ingsw.model.*;
-import it.polimi.ingsw.server.*;
+import it.polimi.ingsw.model.CardStatus;
+import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.server.ClientConnection;
+import it.polimi.ingsw.server.Server;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.List;
 
-public class GameController {
+public abstract class GameController {
     private final Game game;
-    private Player currentPlayer;
     private final Server server;
-    private boolean actionDone;
-    private boolean started;
-    private List<Player> activePlayers;
-    private List<ClientConnection> activeConnections;
-    private int currentPlayerIndex;
+    private Integer started;
+    private final List<Player> activePlayers;
+    private final List<ClientConnection> activeConnections;
 
 
     public GameController(Server server) {
@@ -23,6 +23,7 @@ public class GameController {
         this.game = new Game();
         activePlayers = new ArrayList<>();
         activeConnections = new ArrayList<>();
+        started = 0;
     }
 
     public void setUpPlayer(ClientConnection connection){
@@ -53,40 +54,18 @@ public class GameController {
     }
 
 
-    public void makeAction(Action action) {
-        boolean done = action.doAction(currentPlayer);
-        checkAllPapalReports();
-        checkEndGame();
-        currentPlayer.setActionDone(done);
-    }
+    public abstract void makeAction(Action action);
 
-    public boolean isStarted() {
+    public Integer isStarted() {
         return started;
     }
 
-    public void changeTurn() {
-        currentPlayer.setTurnActive(false);
-        currentPlayer.setActionDone(false);
-        if (game.isFinalTurn() && currentPlayerIndex == activePlayers.size() - 1) {
-            endGame();
-        } else {
-            currentPlayer = nextPlayer();
-            currentPlayer.setTurnActive(true);
-        }
-    }
-
-    private Player nextPlayer() {
-        if (currentPlayerIndex == activePlayers.size() - 1) {
-            currentPlayerIndex = 0;
-            return activePlayers.get(0);
-        } else {
-            currentPlayerIndex++;
-            return activePlayers.get(currentPlayerIndex);
-        }
+    public void setStarted(Integer started) {
+        this.started = started;
     }
 
     /* checks if any papalReport needs to be triggered */
-    private void checkAllPapalReports() {
+    public void checkAllPapalReports() {
         checkPapalReport(8, 5, 0);
         checkPapalReport(16, 12, 1);
         checkPapalReport(24, 19, 2);
@@ -104,85 +83,21 @@ public class GameController {
                     for (Player otherPlayer : players) {
                         int playerPosition = otherPlayer.getBoard().getItinerary().getPosition();
                         if (playerPosition >= vaticanReportStart)
-                            otherPlayer.getBoard().getItinerary().setCardStatus(CardStatus.FACE_UP, cardStatusIndex);
+                            otherPlayer.getBoard().getItinerary().setCardStatus(CardStatus.FACE_UP, 0);
                         else
-                            otherPlayer.getBoard().getItinerary().setCardStatus(CardStatus.DISCARDED, cardStatusIndex);
+                            otherPlayer.getBoard().getItinerary().setCardStatus(CardStatus.DISCARDED, 0);
                     }
                 }
             }
         }
     }
 
-    private void checkEndGame() {
-        if (currentPlayer.getBoard().getItinerary().getPosition() == 24 ||
-                currentPlayer.getBoard().getDevSpace().countCards() == 7) {
-            game.setFinalTurn(true);
-        }
-    }
-
+    public abstract void checkEndGame();
 
     public void setup(){
     }
 
     /* computes victory points for every player and sets the game winner */
-    public void endGame() {
-        Map<String, Integer> playersPoints = new HashMap<>();
-        for (Player player : game.getPlayers()) {
-            String nickname = player.getNickname();
-            playersPoints.put(nickname, 0);
-            List<List<DevCard>> playerDevCards = player.getBoard().getDevSpace().getCards();
-            for (List<DevCard> devSlotCard : playerDevCards) {
-                for (DevCard devCard : devSlotCard) {
-                    playersPoints.put(nickname, playersPoints.get(nickname) + devCard.getVictoryPoints());
-                }
-            }
-            addItineraryPoints(playersPoints, player, 3, 1);
-            addItineraryPoints(playersPoints, player, 6, 2);
-            addItineraryPoints(playersPoints, player, 9, 4);
-            addItineraryPoints(playersPoints, player, 12, 6);
-            addItineraryPoints(playersPoints, player, 15, 9);
-            addItineraryPoints(playersPoints, player, 18, 12);
-            addItineraryPoints(playersPoints, player, 21, 16);
-            addItineraryPoints(playersPoints, player, 24, 20);
-            addPapalCardPoints(playersPoints, player, 0, 2);
-            addPapalCardPoints(playersPoints, player, 1, 3);
-            addPapalCardPoints(playersPoints, player, 2, 4);
-            for (LeaderCard leaderCard : player.getHandLeaderCards()) {
-                if (leaderCard.isPlayed())
-                    playersPoints.put(nickname, playersPoints.get(nickname) + leaderCard.getVictoryPoints());
-            }
-            playersPoints.put(nickname, playersPoints.get(nickname) + player.getBoard().getTotalResources());
-            int max = Collections.max(playersPoints.values());
-            List<String> potentialWinners = playersPoints.entrySet().stream()
-                    .filter(entry -> entry.getValue() == max)
-                    .map(entry -> entry.getKey())
-                    .collect(Collectors.toList());
-            Map<String, Integer> potentialWinnersResources = new HashMap<>();
-            for (String playerNickname : potentialWinners) {
-                potentialWinnersResources.put(playerNickname, game.getPlayerByNickname(playerNickname).getBoard().getTotalResources());
-            }
-            List<String> winnersNickname = potentialWinnersResources.entrySet().stream()
-                    .filter(entry -> entry.getValue() == max)
-                    .map(entry -> entry.getKey())
-                    .collect(Collectors.toList());
-            List<Player> winners = new ArrayList<>();
-            for (String winnerNickname : winnersNickname) {
-                winners.add(game.getPlayerByNickname(winnerNickname));
-            }
-//            game.setWinners(winners);
-        }
-    }
+    public abstract void endGame();
 
-    /* private method called by endgame to compute victory points gained from itinerary */
-    private void addItineraryPoints(Map<String, Integer> playersPoints, Player player, int cell, int victoryPoints) {
-        if (player.getBoard().getItinerary().getPosition() >= cell)
-            playersPoints.put(player.getNickname(), playersPoints.get(player.getNickname()) + victoryPoints);
-    }
-
-    /* private method called by endgame to compute victory points gained from papal cards */
-    private void addPapalCardPoints(Map<String, Integer> playersPoints, Player player, int index, int victoryPoints) {
-        CardStatus[] papalCardStatus = player.getBoard().getItinerary().getCardStatus();
-        if (papalCardStatus[index] == CardStatus.FACE_UP)
-            playersPoints.put(player.getNickname(), playersPoints.get(player.getNickname()) + victoryPoints);
-    }
 }

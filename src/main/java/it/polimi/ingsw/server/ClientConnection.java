@@ -1,7 +1,7 @@
 package it.polimi.ingsw.server;
 
-import it.polimi.ingsw.controller.messages.*;
 import it.polimi.ingsw.controller.GameController;
+import it.polimi.ingsw.controller.messages.*;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -58,7 +58,7 @@ public class ClientConnection implements Runnable {
             }
             server.removeClient(this);
         } catch (IOException e) {
-            if (gameController.isStarted()) server.unregisterClient(this);
+            if (gameController.isStarted() == 1) server.unregisterClient(this);
             else server.removeClient(this);
             System.err.println(e.getMessage());
         } catch (ClassNotFoundException e){

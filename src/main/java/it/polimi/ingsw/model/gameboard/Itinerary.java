@@ -7,13 +7,23 @@ import java.util.*;
 public class Itinerary {
     private int position;
     private final CardStatus[] cardstatus;
+    private Integer blackCrossPosition;
 
     public Itinerary(){
         position = 0;
+        blackCrossPosition = 0;
         cardstatus = new CardStatus[3];        //usa il for
         for(int i = 0; i < 3; i++) {
             cardstatus[i] = CardStatus.FACE_DOWN;
         }
+    }
+
+    public void updateBlackCross(int amount){
+        blackCrossPosition += amount;
+    }
+
+    public Integer getBlackCrossPosition() {
+        return blackCrossPosition;
     }
 
     public int getPosition() {
