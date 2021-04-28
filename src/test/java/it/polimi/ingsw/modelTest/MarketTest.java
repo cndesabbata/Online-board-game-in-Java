@@ -2,9 +2,9 @@ package it.polimi.ingsw.modelTest;
 
 import static org.junit.Assert.assertTrue;
 
-import it.polimi.ingsw.model.Marble;
-import it.polimi.ingsw.model.Market;
-import it.polimi.ingsw.model.MarketSelection;
+import it.polimi.ingsw.server.model.Marble;
+import it.polimi.ingsw.server.model.Market;
+import it.polimi.ingsw.server.model.MarketSelection;
 import org.junit.Test;
 
 public class MarketTest {
