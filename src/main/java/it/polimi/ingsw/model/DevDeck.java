@@ -7,8 +7,12 @@ import java.util.*;
 
 public class DevDeck {
     private final List<DevCard> cards = new ArrayList<>();
+    private final Colour colour;
+    private  final int level;
 
     public DevDeck (int level, Colour colour){
+        this.level = level;
+        this.colour = colour;
         String path = null;
         if (level == 1){
             if (colour == Colour.YELLOW) path = "/FirstYellow.json";
@@ -43,8 +47,17 @@ public class DevDeck {
         else return cards.get(0);
     }
 
+    public Colour getColour() {
+        return colour;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
     public DevCard drawCard() {
-        return cards.remove(0);
+        if (cards.isEmpty()) return null;
+        else return cards.remove(0);
     }
 
     public List<ResourceQuantity> peepRequirements(){

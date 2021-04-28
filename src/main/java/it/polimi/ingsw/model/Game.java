@@ -41,7 +41,7 @@ public class Game {
     }
 
     public DevDeck[] getDevDecks() {
-        return devDecks;
+        return Arrays.copyOf(devDecks, devDecks.length);
     }
 
     public LeaderDeck getLeaderDeck() {

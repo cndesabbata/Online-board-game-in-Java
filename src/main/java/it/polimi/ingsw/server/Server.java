@@ -1,7 +1,9 @@
 package it.polimi.ingsw.server;
 
 import it.polimi.ingsw.constants.Constants;
-import it.polimi.ingsw.controller.*;
+import it.polimi.ingsw.controller.GameController;
+import it.polimi.ingsw.controller.multiplayer.MultiPlayerController;
+import it.polimi.ingsw.controller.singleplayer.SinglePlayerController;
 import it.polimi.ingsw.controller.messages.CustomMessage;
 import it.polimi.ingsw.controller.messages.ErrorMessage;
 import it.polimi.ingsw.controller.messages.PlayersNumberMessage;
@@ -12,11 +14,11 @@ import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
 public class Server {
-    private Map<VirtualClient, ClientConnection> clientToConnection;
-    private ServerConnectionSocket serverConnectionSocket;
-    private List<GameController> gameControllers;
+    private final Map<VirtualClient, ClientConnection> clientToConnection;
+    private final ServerConnectionSocket serverConnectionSocket;
+    private final List<GameController> gameControllers;
     private int totalPlayers;
-    private ArrayList<ClientConnection> waitingList;
+    private final ArrayList<ClientConnection> waitingList;
 
     public Server() {
         this.clientToConnection = new HashMap<>();
@@ -60,10 +62,18 @@ public class Server {
 
     public void setTotalPlayers(int totalPlayers, ClientConnection connection) {
         this.totalPlayers = totalPlayers;
-        // if ...
-        gameControllers.add(0, new GameController(this));
-        gameControllers.get(0).setUpPlayer(connection);
-        connection.setGameController(gameControllers.get(0));
+        if (totalPlayers == 1){
+            gameControllers.add(0, new SinglePlayerController(this));
+            gameControllers.get(0).setUpPlayer(connection);
+            connection.setGameController(gameControllers.get(0));
+            waitingList.clear();
+            gameControllers.get(0).setup();
+        }
+        else {
+            gameControllers.add(0, new MultiPlayerController(this));
+            gameControllers.get(0).setUpPlayer(connection);
+            connection.setGameController(gameControllers.get(0));
+        }
     }
 
     private void lobby (ClientConnection connection){
