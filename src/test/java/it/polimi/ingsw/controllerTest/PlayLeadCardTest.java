@@ -1,11 +1,11 @@
 package it.polimi.ingsw.controllerTest;
 
-import it.polimi.ingsw.controller.Place;
-import it.polimi.ingsw.controller.messages.actions.*;
-import it.polimi.ingsw.exceptions.WrongActionException;
-import it.polimi.ingsw.model.*;
-import it.polimi.ingsw.model.gameboard.DevSpaceSlot;
-import it.polimi.ingsw.model.gameboard.NumOfShelf;
+import it.polimi.ingsw.server.controller.Place;
+import it.polimi.ingsw.messages.actions.*;
+import it.polimi.ingsw.server.exceptions.WrongActionException;
+import it.polimi.ingsw.server.model.*;
+import it.polimi.ingsw.server.model.gameboard.DevSpaceSlot;
+import it.polimi.ingsw.server.model.gameboard.NumOfShelf;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
