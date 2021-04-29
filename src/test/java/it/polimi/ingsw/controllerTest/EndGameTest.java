@@ -1,9 +1,10 @@
 package it.polimi.ingsw.controllerTest;
 
-import it.polimi.ingsw.controller.*;
-import it.polimi.ingsw.model.*;
-import it.polimi.ingsw.model.gameboard.NumOfShelf;
-import it.polimi.ingsw.server.Server;
+import it.polimi.ingsw.server.controller.multiplayer.MultiPlayerController;
+import it.polimi.ingsw.server.model.*;
+import it.polimi.ingsw.server.controller.*;
+import it.polimi.ingsw.server.model.gameboard.NumOfShelf;
+import it.polimi.ingsw.server.serverNetwork.Server;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -15,7 +16,7 @@ import static org.junit.Assert.assertTrue;
 public class EndGameTest {
     @Test
     public void FirstEndgameTest() {
-        GameController gameController = new GameController(new Server());
+        GameController gameController = new MultiPlayerController(new Server());
         Game game = gameController.getGame();
         Player player1 = new Player("Andri", game);
         game.addPlayer(player1);
@@ -57,7 +58,7 @@ public class EndGameTest {
 
     @Test
     public void DrawEndGameTest() {
-        GameController gameController = new GameController(new Server());
+        GameController gameController = new MultiPlayerController(new Server());
         Game game = gameController.getGame();
         Player player1 = new Player("Andri", game);
         game.addPlayer(player1);

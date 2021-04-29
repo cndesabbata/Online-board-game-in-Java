@@ -59,8 +59,9 @@ public class MultiPlayerController extends GameController {
     /* computes victory points for every player and sets the game winner */
     @Override
     public void endGame() {
+        Game game = getGame();
         Map<String, Integer> playersPoints = new HashMap<>();
-        for (Player player : getGame().getPlayers()) {
+        for (Player player : game.getPlayers()) {
             String nickname = player.getNickname();
             playersPoints.put(nickname, 0);
             List<List<DevCard>> playerDevCards = player.getBoard().getDevSpace().getCards();
@@ -69,37 +70,44 @@ public class MultiPlayerController extends GameController {
                     playersPoints.put(nickname, playersPoints.get(nickname) + devCard.getVictoryPoints());
                 }
             }
-            int itineraryVP[] = {1,2,4,6,9,12,16,20};
-            for (int i = 0; i < itineraryVP.length; i++){
-                addItineraryPoints(playersPoints, player, (i+1)*3, itineraryVP[i]);
-            }
-            for (int i = 0; i < 3; i++){
-                addPapalCardPoints(playersPoints, player, i, i+2);
-            }
+            addItineraryPoints(playersPoints, player);
+            addPapalCardPoints(playersPoints, player);
             for (LeaderCard leaderCard : player.getHandLeaderCards()) {
                 if (leaderCard.isPlayed())
                     playersPoints.put(nickname, playersPoints.get(nickname) + leaderCard.getVictoryPoints());
             }
-            playersPoints.put(nickname, playersPoints.get(nickname) + (player.getBoard().getTotalResources()/5));
-            int max = Collections.max(playersPoints.values());
-            List<String> potentialWinners = playersPoints.entrySet().stream()
-                    .filter(entry -> entry.getValue() == max)
-                    .map(Map.Entry::getKey)
-                    .collect(Collectors.toList());
-            Map<String, Integer> potentialWinnersResources = new HashMap<>();
-            for (String playerNickname : potentialWinners) {
-                potentialWinnersResources.put(playerNickname, getGame().getPlayerByNickname(playerNickname).getBoard().getTotalResources());
-            }
-            List<String> winnersNickname = potentialWinnersResources.entrySet().stream()
-                    .filter(entry -> entry.getValue() == max)
-                    .map(Map.Entry::getKey)
-                    .collect(Collectors.toList());
-            List<Player> winners = new ArrayList<>();
-            for (String winnerNickname : winnersNickname) {
-                winners.add(getGame().getPlayerByNickname(winnerNickname));
-            }
-//            game.setWinners(winners);
+            playersPoints.put(nickname, playersPoints.get(nickname) + player.getBoard().getTotalResources() / 5);
         }
+        int maxPoints = Collections.max(playersPoints.values());
+        List<String> potentialWinners = playersPoints.entrySet().stream()
+                .filter(entry -> entry.getValue() == maxPoints)
+                .map(entry -> entry.getKey())
+                .collect(Collectors.toList());
+        Map<String, Integer> potentialWinnersResources = new HashMap<>();
+        for (String playerNickname : potentialWinners) {
+            potentialWinnersResources.put(playerNickname, game.getPlayerByNickname(playerNickname).getBoard().getTotalResources());
+        }
+        int maxResources = Collections.max(potentialWinnersResources.values());
+        List<String> winnersNickname = potentialWinnersResources.entrySet().stream()
+                .filter(entry -> entry.getValue() == maxResources)
+                .map(entry -> entry.getKey())
+                .collect(Collectors.toList());
+        List<Player> winners = new ArrayList<>();
+        for (String winnerNickname : winnersNickname) {
+            winners.add(game.getPlayerByNickname(winnerNickname));
+        }
+        game.setWinners(winners);
+    }
+
+    /* private method called by endgame to compute victory points gained from itinerary */
+    private void addItineraryPoints(Map<String, Integer> playersPoints, Player player) {
+        int[] itineraryVP = {1,2,4,6,9,12,16,20};
+        for(int i = 3, j = 0; i <= 21; i = i + 3, j++) {
+            if (player.getBoard().getItinerary().getPosition() >= i && player.getBoard().getItinerary().getPosition() < i + 3)
+                playersPoints.put(player.getNickname(), playersPoints.get(player.getNickname()) + itineraryVP[j]);
+        }
+        if (player.getBoard().getItinerary().getPosition() == 24)
+            playersPoints.put(player.getNickname(), playersPoints.get(player.getNickname()) + 20);
     }
 
     /* private method called by endgame to compute victory points gained from itinerary */
@@ -109,9 +117,11 @@ public class MultiPlayerController extends GameController {
     }
 
     /* private method called by endgame to compute victory points gained from papal cards */
-    private void addPapalCardPoints(Map<String, Integer> playersPoints, Player player, int index, int victoryPoints) {
+    private void addPapalCardPoints(Map<String, Integer> playersPoints, Player player) {
         CardStatus[] papalCardStatus = player.getBoard().getItinerary().getCardStatus();
-        if (papalCardStatus[index] == CardStatus.FACE_UP)
-            playersPoints.put(player.getNickname(), playersPoints.get(player.getNickname()) + victoryPoints);
+        for (int i = 0; i < 3; i++){
+            if (papalCardStatus[i] == CardStatus.FACE_UP)
+                playersPoints.put(player.getNickname(), playersPoints.get(player.getNickname()) + i + 2);
+        }
     }
 }
