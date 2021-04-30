@@ -2,10 +2,13 @@ package it.polimi.ingsw.server.controller;
 
 import it.polimi.ingsw.messages.actions.Action;
 import it.polimi.ingsw.server.model.CardStatus;
+import it.polimi.ingsw.server.model.DevDeck;
 import it.polimi.ingsw.server.model.Game;
 import it.polimi.ingsw.server.model.Player;
+import it.polimi.ingsw.server.observer.Observer;
 import it.polimi.ingsw.server.serverNetwork.ClientConnection;
 import it.polimi.ingsw.server.serverNetwork.Server;
+import it.polimi.ingsw.server.serverNetwork.VirtualView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -88,6 +91,34 @@ public abstract class GameController {
                     }
                 }
             }
+        }
+    }
+
+    public void addObserver(Observer observer){
+        for (DevDeck d : game.getDevDecks()){
+            d.addObserver(observer);
+        }
+        game.getMarket().addObserver(observer);
+        for (Player p : activePlayers){
+            p.addObserver(observer);
+            p.getBoard().getChest().addObserver(observer);
+            p.getBoard().getDevSpace().addObserver(observer);
+            p.getBoard().getWarehouse().addObserver(observer);
+            p.getBoard().getItinerary().addObserver(observer);
+        }
+    }
+
+    public void removeObserver (Observer observer){
+        for (DevDeck d : game.getDevDecks()){
+            d.removeObserver(observer);
+        }
+        game.getMarket().removeObserver(observer);
+        for (Player p : activePlayers){
+            p.removeObserver(observer);
+            p.getBoard().getChest().removeObserver(observer);
+            p.getBoard().getDevSpace().removeObserver(observer);
+            p.getBoard().getWarehouse().removeObserver(observer);
+            p.getBoard().getItinerary().removeObserver(observer);
         }
     }
 

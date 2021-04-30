@@ -53,7 +53,7 @@ public class DevCard extends Card{
                     break;
                 }
             }
-            if (!check) return check;
+            if (!check) return false;
             else {
                 for (int i = 0; i < productionInput.size(); i++) {
                     if (productionInput.get(i).getQuantity() != devCard.getProductionInput().get(i).getQuantity() ||
@@ -62,7 +62,7 @@ public class DevCard extends Card{
                         break;
                     }
                 }
-                if (!check) return check;
+                if (!check) return false;
                 else {
                     for (int i = 0; i < productionOutput.size(); i++) {
                         if (productionOutput.get(i).getQuantity() != devCard.getProductionOutput().get(i).getQuantity() ||

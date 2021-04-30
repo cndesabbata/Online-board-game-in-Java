@@ -1,4 +1,5 @@
 package it.polimi.ingsw.server.model.gameboard;
+import it.polimi.ingsw.messages.newElement.NewDevSpace;
 import it.polimi.ingsw.server.model.DevCard;
 import it.polimi.ingsw.server.observer.Observable;
 
@@ -7,12 +8,15 @@ import java.util.*;
 
 public class DevSpace extends Observable {
     private final List<List<DevCard>> devSpace;
+    private final String owner;
 
-    public DevSpace (){
+    public DevSpace (String nickname){
+        owner = nickname;
         devSpace = new ArrayList<>();
         for (int i = 0; i < 3; i++){
             devSpace.add(new ArrayList<>());
         }
+        notifyObservers(new NewDevSpace(devSpace, owner));
     }
 
     /*controls if the player has a DevCard with the same colour of requirement and the same (or greater) level*/
@@ -24,6 +28,7 @@ public class DevSpace extends Observable {
     /*adds a new card "on top" of the deck in the selected slot*/
     public void addCard (DevCard card, DevSpaceSlot slot){
         devSpace.get(slot.ordinal()).add(0,card);
+        notifyObservers(new NewDevSpace(devSpace, owner));
     }
 
     /*controls if there is place for a card of a specific level in the selected slot*/

@@ -14,7 +14,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 public class ClientConnection implements Runnable {
-    private Server server;
+    private final Server server;
     private Socket socket;
     private boolean active;
     private ObjectInputStream input;
@@ -27,19 +27,19 @@ public class ClientConnection implements Runnable {
         this.socket = socket;
         active = true;
         try {
-            input = new ObjectInputStream(socket.getInputStream());
-            output = new ObjectOutputStream(socket.getOutputStream());
+            input = new ObjectInputStream(this.socket.getInputStream());
+            output = new ObjectOutputStream(this.socket.getOutputStream());
         } catch (IOException e) {
             System.err.println("Error during initialization of the client!");
         }
     }
 
-    public void getFromStream(){
-
-    }
-
     public void close(){
-
+        try {
+            socket.close();
+        } catch (IOException e) {
+            System.err.println(e.getMessage());
+        }
     }
 
     public GameController getGameController() {
@@ -73,20 +73,28 @@ public class ClientConnection implements Runnable {
 
     public void messageHandler(Message clientMessage){
         if (clientMessage instanceof SetNickname){
-            try {
-                server.registerClient(((SetNickname) clientMessage).getNickname(), this);
-            } catch (InterruptedException e) {
-                System.err.println(e.getMessage());
-                Thread.currentThread().interrupt();
+            if (gameController == null && playerNickname == null){
+                try {
+                    server.registerClient(((SetNickname) clientMessage).getNickname(), this);
+                    playerNickname = ((SetNickname) clientMessage).getNickname();
+                } catch (InterruptedException e) {
+                    System.err.println(e.getMessage());
+                    Thread.currentThread().interrupt();
+                }
             }
+            else sendSocketMessage(new ErrorMessage("Invalid action: you already have a nickname"));
         }
         else if (clientMessage instanceof Reconnect){
-            try {
-                server.reconnectClient(((Reconnect) clientMessage).getNickname(), this);
-            } catch (InterruptedException e) {
-                System.err.println(e.getMessage());
-                Thread.currentThread().interrupt();
+            if (gameController == null && playerNickname == null){
+                try {
+                    server.reconnectClient(((Reconnect) clientMessage).getNickname(), this);
+                    playerNickname = ((SetNickname) clientMessage).getNickname();
+                } catch (InterruptedException e) {
+                    System.err.println(e.getMessage());
+                    Thread.currentThread().interrupt();
+                }
             }
+            else sendSocketMessage(new ErrorMessage("Invalid action: you are already connected"));
         }
         else if (clientMessage instanceof SetPlayersNumber){
             if (((SetPlayersNumber) clientMessage).getNumOfPlayers() < 1
@@ -96,11 +104,6 @@ public class ClientConnection implements Runnable {
             }
             else server.setTotalPlayers(((SetPlayersNumber) clientMessage).getNumOfPlayers(), this);
         }
-        //...
-    }
-
-    public void checkConnection(){
-
     }
 
     public void sendSocketMessage(Message message){

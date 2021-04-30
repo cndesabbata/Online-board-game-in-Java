@@ -1,16 +1,23 @@
 package it.polimi.ingsw.server.serverNetwork;
 
 import it.polimi.ingsw.messages.Message;
+import it.polimi.ingsw.messages.newElement.ChangeMessage;
+import it.polimi.ingsw.messages.serverMessages.ActionDone;
 import it.polimi.ingsw.server.observer.Observer;
+
+import java.util.ArrayList;
+import java.util.List;
 //import jdk.internal.event.Event;
 
 public class VirtualView implements Observer {
     private String nickname;
     private ClientConnection clientConnection;
+    private List<ChangeMessage> newElements;
 
     public VirtualView(String nickname, ClientConnection clientConnection) {
         this.nickname = nickname;
         this.clientConnection = clientConnection;
+        newElements = new ArrayList<>();
     }
 
     public void send(Message message){
@@ -43,10 +50,14 @@ public class VirtualView implements Observer {
 
     @Override
     public void update(Message message) {
-
+        if (message instanceof ActionDone){
+            ((ActionDone) message).setNewElements(newElements);
+            clientConnection.sendSocketMessage(message);
+            newElements.clear();
+        }
+        else {
+            newElements.add((ChangeMessage) message);
+        }
     }
 
- /* public void propertyChange (Event event){
-
-    }*/
 }

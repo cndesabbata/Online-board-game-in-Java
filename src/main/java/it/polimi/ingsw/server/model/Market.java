@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server.model;
 
+import it.polimi.ingsw.messages.newElement.NewMarket;
 import it.polimi.ingsw.server.observer.Observable;
 
 import java.util.*;
@@ -29,6 +30,7 @@ public class Market extends Observable {
                 disposition[i][j] = temp.remove(0);
             }
         }
+        notifyObservers(new NewMarket(disposition, external));
     }
 
     /* returns a copy of the current market disposition */
@@ -64,6 +66,7 @@ public class Market extends Observable {
             disposition[2][position - 1] = external;
             external = tempLast;
         }
+        notifyObservers(new NewMarket(disposition, external));
     }
 
     /* method used in testing */

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server.model.gameboard;
 
+import it.polimi.ingsw.messages.newElement.NewWarehouse;
 import it.polimi.ingsw.server.controller.Place;
 import it.polimi.ingsw.server.exceptions.WrongActionException;
 import it.polimi.ingsw.server.model.Resource;
@@ -12,12 +13,15 @@ import java.util.*;
 public class Warehouse extends Observable {
     private final List<ResourceQuantity> warehouse = new ArrayList<>();
     private final int initialDim;
+    private String owner;
 
-    public Warehouse(int warehouseDim){
+    public Warehouse(int warehouseDim, String nickname){
+        owner = nickname;
         for(int i = 0; i < warehouseDim; i++){
             warehouse.add(new ResourceQuantity(0, Resource.EMPTY));
         }
         initialDim = warehouseDim;
+        notifyObservers(new NewWarehouse(warehouse, initialDim, owner));
     }
 
     /*returns a copy of the warehouse*/
@@ -44,6 +48,7 @@ public class Warehouse extends Observable {
             if(shelf.getResource() == Resource.EMPTY) shelf.setResource(Rp.getResource());
             shelf.setQuantity(shelf.getQuantity() + Rp.getQuantity());                                                  //Rp.getQuantity() = 1
         }
+        notifyObservers(new NewWarehouse(warehouse, initialDim, owner));
     }
     /*controls if the resources can be stored*/
     public void checkIncrement(List <ResourcePosition> outputRes) throws WrongActionException {                         //used in the checkAction of BuyResources                                  //this method will be called only be the checkAction in BuyResources
@@ -109,6 +114,7 @@ public class Warehouse extends Observable {
             if(shelf.getQuantity() == 1 && numOfShelf.ordinal() < initialDim) shelf.setResource(Resource.EMPTY);
             shelf.setQuantity(shelf.getQuantity() - Rp.getQuantity());                                                  //Rp.getQuantity() = 1
         }
+        notifyObservers(new NewWarehouse(warehouse, initialDim, owner));
     }
     /*controls if the resources can be removed*/
     public void checkDecrement(List<ResourcePosition> inputRes) throws WrongActionException {                                                   //used in checkAction of BuyDevCard, StartProduction.
