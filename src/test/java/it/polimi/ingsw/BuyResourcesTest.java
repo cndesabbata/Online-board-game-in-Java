@@ -2,14 +2,14 @@ package it.polimi.ingsw;
 
 import static org.junit.Assert.assertTrue;
 
-import it.polimi.ingsw.controller.*;
-import it.polimi.ingsw.controller.leaders.LeaderEffect;
-import it.polimi.ingsw.controller.leaders.MarbleEffect;
-import it.polimi.ingsw.controller.messages.actions.Action;
-import it.polimi.ingsw.controller.messages.actions.BuyResources;
-import it.polimi.ingsw.exceptions.WrongActionException;
-import it.polimi.ingsw.model.*;
-import it.polimi.ingsw.model.gameboard.NumOfShelf;
+import it.polimi.ingsw.server.controller.*;
+import it.polimi.ingsw.server.controller.leaders.LeaderEffect;
+import it.polimi.ingsw.server.controller.leaders.MarbleEffect;
+import it.polimi.ingsw.messages.actions.Action;
+import it.polimi.ingsw.messages.actions.BuyResources;
+import it.polimi.ingsw.server.exceptions.WrongActionException;
+import it.polimi.ingsw.server.model.*;
+import it.polimi.ingsw.server.model.gameboard.NumOfShelf;
 import org.junit.Assert;
 import org.junit.Test;
 

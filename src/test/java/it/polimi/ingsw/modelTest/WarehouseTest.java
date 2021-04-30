@@ -2,11 +2,11 @@ package it.polimi.ingsw.modelTest;
 
 import static org.junit.Assert.assertTrue;
 
-import it.polimi.ingsw.controller.Place;
-import it.polimi.ingsw.exceptions.WrongActionException;
-import it.polimi.ingsw.model.*;
-import it.polimi.ingsw.model.gameboard.NumOfShelf;
-import it.polimi.ingsw.model.gameboard.Warehouse;
+import it.polimi.ingsw.server.controller.Place;
+import it.polimi.ingsw.server.exceptions.WrongActionException;
+import it.polimi.ingsw.server.model.*;
+import it.polimi.ingsw.server.model.gameboard.NumOfShelf;
+import it.polimi.ingsw.server.model.gameboard.Warehouse;
 import org.junit.Test;
 
 import java.util.ArrayList;
