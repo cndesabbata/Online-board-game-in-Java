@@ -49,6 +49,11 @@ public class DevDeck extends Observable {
         else return cards.get(0);
     }
 
+    /*used only only in tests*/
+    public List<DevCard> getCards() {
+        return cards;
+    }
+
     public Colour getColour() {
         return colour;
     }

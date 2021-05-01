@@ -8,15 +8,15 @@ import it.polimi.ingsw.server.model.gameboard.DevSpaceSlot;
 import it.polimi.ingsw.server.model.gameboard.NumOfShelf;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.junit.Assert.*;
 
 public class PlayLeadCardTest {
 
     @Test
-    public void playLeadCardTestDevCardReq(){
+    public void playLeadCardDevCardReqTest(){
         Game game = new Game();
 
         List <ResourceQuantity> requirements = new ArrayList<>();
@@ -91,6 +91,7 @@ public class PlayLeadCardTest {
 
         try {
             action.checkAction(me);
+            assertFalse(me.hasPlayedLeaderCard(LeaderType.PRODUCT, Resource.COIN));
             action.doAction(me);
             assertTrue(me.hasPlayedLeaderCard(LeaderType.PRODUCT, Resource.COIN));
             assertTrue(me.getBoard().getWarehouse().getShelf(NumOfShelf.ONE).getResource() == Resource.STONE && me.getBoard().getWarehouse().getShelf(NumOfShelf.ONE).getQuantity() == 1);

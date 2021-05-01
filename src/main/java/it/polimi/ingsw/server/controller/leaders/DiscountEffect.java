@@ -17,23 +17,15 @@ public class DiscountEffect implements LeaderEffect {
     @Override
     public void doLeaderEffect(Player player, Action action) throws WrongActionException {
         if (action instanceof BuyDevCard){
-            List<LeaderCard> playerCards = player.getHandLeaderCards();
-            boolean check = false;
-            for(LeaderCard Lc : playerCards){
-                if (Lc.getResource() == resource && Lc.getType() == LeaderType.DISCOUNT && Lc.isPlayed()) {
-                    check = true;
+            if(!(player.hasPlayedLeaderCard(LeaderType.DISCOUNT, resource)))
+                throw new WrongActionException("The user does not have the played Discount Leader Card.");
+            for (ResourceQuantity res : ((BuyDevCard) action).getReq()){
+                if (res.getResource() == resource){
+                    res.setQuantity(res.getQuantity() - 1);
                     break;
-                }
-            }
-            if(!check) throw new WrongActionException("The player does not have the corresponding leadCard");
-            else {
-                for (ResourceQuantity res : ((BuyDevCard) action).getReq()){
-                    if (res.getResource() == resource){
-                        ((BuyDevCard) action).getReq().remove(res);
-                        break;
-                    }
                 }
             }
         }
     }
+
 }

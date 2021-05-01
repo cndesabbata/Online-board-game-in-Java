@@ -354,7 +354,7 @@ public class StartProductionTest {
             assertEquals(2, myChest.getAvailability(Resource.STONE));
             assertEquals(0, myChest.getAvailability(Resource.COIN));
             assertEquals(2, myChest.getAvailability(Resource.SERVANT));
-
+            assertEquals(1, me.getBoard().getItinerary().getPosition());
 
             production.doAction(me);
             assertTrue(myWarehouse.getShelf(NumOfShelf.ONE).getResource() == Resource.EMPTY && myWarehouse.getShelf(NumOfShelf.ONE).getQuantity() == 0);
@@ -364,6 +364,7 @@ public class StartProductionTest {
             assertEquals(5, myChest.getAvailability(Resource.STONE));
             assertEquals(2, myChest.getAvailability(Resource.COIN));
             assertEquals(2, myChest.getAvailability(Resource.SERVANT));
+            assertEquals(1, me.getBoard().getItinerary().getPosition());
 
         }
         catch (WrongActionException e){

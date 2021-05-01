@@ -62,11 +62,7 @@ public class Player extends Observable {
     public List<LeaderCard> getHandLeaderCards() { return handLeaderCards; }
 
     public boolean hasPlayedLeaderCard(LeaderType type, Resource resource) {
-        for (LeaderCard leaderCard : handLeaderCards) {
-            if (leaderCard.getType() == type && leaderCard.getResource() == resource && leaderCard.isPlayed())
-                return true;
-        }
-        return false;
+        return handLeaderCards.stream().anyMatch(Lc -> Lc.getResource() == resource && Lc.getType() == type && Lc.isPlayed());
     }
 
     public void addFakeLeaderCard(LeaderCard leaderCard) {

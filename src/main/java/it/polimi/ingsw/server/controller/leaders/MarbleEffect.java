@@ -22,13 +22,13 @@ public class MarbleEffect implements LeaderEffect {
     public void doLeaderEffect(Player player, Action action) throws WrongActionException {
         if(action instanceof BuyResources) {
             if(!(player.hasPlayedLeaderCard(LeaderType.MARBLE, resource)))
-                throw new WrongActionException("The player does not have the played leadCard");
+                throw new WrongActionException("The user does not have the played Marble Leader Card.");
             BuyResources buyResources = (BuyResources) action;
             if(extraResources.size() != whiteMarbles)
-                throw new WrongActionException("Number of extra resources does not match the number of white marbles converted");
+                throw new WrongActionException("Number of extra resources does not match the number of white marbles converted.");
             for(ResourcePosition resourcePosition : extraResources) {
                 if (resourcePosition.getResource() != resource)
-                    throw new WrongActionException("Extra resources must match marble leaders' resource");
+                    throw new WrongActionException("Extra resources must match marble leaders' resource.");
             }
             buyResources.addExtraRes(extraResources);
             buyResources.setLeaderUsed(true);

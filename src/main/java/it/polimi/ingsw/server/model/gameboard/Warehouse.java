@@ -55,10 +55,10 @@ public class Warehouse extends Observable {
             ResourcePosition Rp = storableRes.get(i);
             for(int j = i + 1; j < storableRes.size(); j++){
                 if(storableRes.get(j).getResource() != Rp.getResource() && storableRes.get(j).getShelf() == Rp.getShelf())
-                    throw new WrongActionException("The resources number " +(i+1)+ " and " +(j+1)+ " cannot be stored because they are different, but the player wanted to store them in the same shelf.");
+                    throw new WrongActionException("Resources of different types cannot be stored in the same shelf.");
                 else if(storableRes.get(j).getResource() == Rp.getResource() && storableRes.get(j).getShelf() != Rp.getShelf()
                         && storableRes.get(j).getShelf().ordinal() < initialDim && Rp.getShelf().ordinal() < initialDim)//if the player wants to store 2 coins in the second shelf and 1 coin in the first one, that is an error. It is not an error if he wants to store 2 coins in the second shelf and 1 coin in the first depot
-                    throw new WrongActionException("The resources number " +(i+1)+ " and " +(j+1)+ " cannot be stored because they are of the same type, but the player wanted to store them in two different shelves.");
+                    throw new WrongActionException("Resources of the same type cannot be stored in different shelves.");
             }
         }
         NumOfShelf numOfShelf;
@@ -72,7 +72,7 @@ public class Warehouse extends Observable {
             if (Rp.getPlace() == Place.CHEST)
                 throw new WrongActionException("All the resources must be stored in the warehouse.");
             else if (numOfShelf.ordinal() >= warehouse.size())
-                throw new WrongActionException("The resource number " + (i+1) + " cannot be stored because shelf " +numOfShelf+ " does not exist.");
+                throw new WrongActionException("Shelf " +numOfShelf+ " does not exist.");
             else if (Rp.getResource() == Resource.EMPTY)
                 throw new WrongActionException("The EMPTY resource is not storable.");
             else {
@@ -80,9 +80,9 @@ public class Warehouse extends Observable {
                 else dimShelf = 2;                                                                                      //dimension of a "depot"
                 shelf = warehouse.get(numOfShelf.ordinal());
                 if (shelf.getResource() != Resource.EMPTY && shelf.getResource() != Rp.getResource())
-                    throw new WrongActionException("The resource number " + (i+1) + " cannot be stored because there is another type of resource in shelf " +numOfShelf+ ".");
+                    throw new WrongActionException("Shelf " +numOfShelf+ " contains " +shelf.getResource()+ "S, not " +Rp.getResource()+ "S.");
                 else if (!checkOtherShelves(Rp.getResource(), numOfShelf))                                              //example: if I want to add two coins in the third shelf, but there is already one coin in the second shelf, then I have to discard two coins.
-                    throw new WrongActionException("The resource number " + (i+1) + " cannot be stored because there is already another shelf storing " +Rp.getResource().toString()+ "S.");
+                    throw new WrongActionException("There is already another shelf storing " +Rp.getResource().toString()+ "S and it is not shelf " +Rp.getShelf()+ ".");
                 else if (calculateQuantity(storableRes, Rp) > dimShelf - shelf.getQuantity())
                     throw new WrongActionException("Shelf " +numOfShelf+ " does not have enough space to store the indicated " +Rp.getResource()+ "S.");
             }
@@ -123,15 +123,15 @@ public class Warehouse extends Observable {
             numOfShelf = removableRes.get(i).getShelf();
             Rp = removableRes.get(i);
             if (numOfShelf.ordinal() >= warehouse.size())
-                throw new WrongActionException("The resource number " + (i+1) + " cannot be removed because shelf " +numOfShelf+ " does not exist.");
+                throw new WrongActionException("Shelf " +numOfShelf+ " does not exist.");
             else if (Rp.getResource() == Resource.EMPTY)
-                throw new WrongActionException("The resource number " + (i+1) + " cannot be removed because the EMPTY resource is not removable.");
+                throw new WrongActionException("EMPTY resource is not removable.");
             else {                                                                                                      //dimension of a "depot"
                 shelf = warehouse.get(numOfShelf.ordinal());
                 if (shelf.getResource() != Resource.EMPTY && shelf.getResource() != Rp.getResource())
-                    throw new WrongActionException("The resource number " + (i+1) + " cannot be removed because there are not " +Rp.getResource().toString()+ "S in shelf " +numOfShelf+ ".");
+                    throw new WrongActionException("There are not " +Rp.getResource()+ "S in shelf " +numOfShelf+ ".");
                 else if (calculateQuantity(removableRes, Rp) > shelf.getQuantity())
-                    throw new WrongActionException("Shelf " +numOfShelf+ " does not have enough " +Rp.getResource().toString()+ "S.");
+                    throw new WrongActionException("Shelf " +numOfShelf+ " does not have enough " +Rp.getResource()+ "S.");
             }
         }
     }

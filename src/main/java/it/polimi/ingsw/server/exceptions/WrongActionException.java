@@ -6,5 +6,4 @@ public class WrongActionException extends Exception{
         super(message);
     }
 
-
 }

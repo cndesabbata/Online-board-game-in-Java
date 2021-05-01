@@ -1,8 +1,11 @@
 package it.polimi.ingsw.server.model;
-import java.util.ArrayList;
-import java.util.List;
 
-public class DevCard extends Card{
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Stream;
+
+public class DevCard extends Card {
     private final int level;
     private final Colour colour;
     private List<ResourceQuantity> productionInput;
@@ -39,42 +42,26 @@ public class DevCard extends Card{
         return new ArrayList<>(productionOutput);
     }
 
-    public boolean equals(Object o){
+    public boolean equals(Object o) {
         if (!(o instanceof DevCard)) return false;
-        DevCard devCard= (DevCard) o;
-        if(devCard.getColour() != colour || devCard.getLevel() != level)
+        DevCard devCard = (DevCard) o;
+        if (devCard.getColour() != colour || devCard.getLevel() != level || devCard.getVictoryPoints() != getVictoryPoints())
             return false;
-        else {
-            boolean check = true;
-            for (int i = 0; i < getResourceRequirements().size(); i++) {
-                if (getResourceRequirements().get(i).getQuantity() != devCard.getResourceRequirements().get(i).getQuantity() ||
-                        getResourceRequirements().get(i).getResource() != devCard.getResourceRequirements().get(i).getResource()) {
-                    check = false;
-                    break;
-                }
-            }
-            if (!check) return check;
-            else {
-                for (int i = 0; i < productionInput.size(); i++) {
-                    if (productionInput.get(i).getQuantity() != devCard.getProductionInput().get(i).getQuantity() ||
-                            productionInput.get(i).getResource() != devCard.getProductionInput().get(i).getResource()) {
-                        check = false;
-                        break;
-                    }
-                }
-                if (!check) return check;
-                else {
-                    for (int i = 0; i < productionOutput.size(); i++) {
-                        if (productionOutput.get(i).getQuantity() != devCard.getProductionOutput().get(i).getQuantity() ||
-                                productionOutput.get(i).getResource() != devCard.getProductionOutput().get(i).getResource()) {
-                            check = false;
-                            break;
-                        }
-                    }
-                    return check;
-                }
-            }
-        }
+        return checkList(devCard.getResourceRequirements(), getResourceRequirements()) &&
+                checkList(devCard.getProductionInput(), getProductionInput()) &&
+                checkList(devCard.getProductionOutput(), getProductionOutput());
     }
+
+    public boolean checkList(List<ResourceQuantity> thoseRes, List<ResourceQuantity> theseRes) {
+        if (thoseRes.size() != theseRes.size())
+            return false;
+        for (int i = 0; i < theseRes.size(); i++) {
+            if (thoseRes.get(i).getResource() != theseRes.get(i).getResource() ||
+                    thoseRes.get(i).getQuantity() != theseRes.get(i).getQuantity())
+                return false;
+        }
+        return true;
+    }
+
 
 }
