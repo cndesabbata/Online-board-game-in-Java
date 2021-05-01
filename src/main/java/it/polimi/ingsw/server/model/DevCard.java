@@ -1,9 +1,7 @@
 package it.polimi.ingsw.server.model;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.stream.Stream;
 
 public class DevCard extends Card {
     private final int level;
@@ -42,7 +40,7 @@ public class DevCard extends Card {
         return new ArrayList<>(productionOutput);
     }
 
-    public boolean equals(Object o) {
+    public boolean equals(Object o){
         if (!(o instanceof DevCard)) return false;
         DevCard devCard = (DevCard) o;
         if (devCard.getColour() != colour || devCard.getLevel() != level || devCard.getVictoryPoints() != getVictoryPoints())

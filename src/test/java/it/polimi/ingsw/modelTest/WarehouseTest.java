@@ -16,7 +16,7 @@ public class WarehouseTest {
 
     @Test
     public void testIncrementResource() {
-        Warehouse warehouse = new Warehouse(3);
+        Warehouse warehouse = new Warehouse(3, "Gianluca");
         warehouse.addDepot(Resource.COIN);
         warehouse.addDepot(Resource.SHIELD);
         List<ResourcePosition> resInWarehouse = new ArrayList<>();
@@ -46,7 +46,7 @@ public class WarehouseTest {
 
     @Test
     public void testDecrementResource() {
-        Warehouse warehouse = new Warehouse(3);
+        Warehouse warehouse = new Warehouse(3,"Gianluca");
         warehouse.addDepot(Resource.COIN);
         warehouse.addDepot(Resource.SHIELD);
         List<ResourcePosition> resInWarehouse = new ArrayList<>();
@@ -90,7 +90,7 @@ public class WarehouseTest {
 
     @Test
     public void testMoveResource() {
-        Warehouse warehouse = new Warehouse(3);
+        Warehouse warehouse = new Warehouse(3,"Gianluca");
         warehouse.addDepot(Resource.SHIELD);
         warehouse.addDepot(Resource.STONE);
         List<ResourcePosition> resInWarehouse = new ArrayList<>();
@@ -123,7 +123,7 @@ public class WarehouseTest {
 
     @Test
     public void testAddDepot() {
-        Warehouse warehouse = new Warehouse(3);
+        Warehouse warehouse = new Warehouse(3,"Gianluca");
         if(warehouse.checkDepot(Resource.COIN))
             warehouse.addDepot(Resource.COIN);
         if(warehouse.checkDepot(Resource.STONE))
