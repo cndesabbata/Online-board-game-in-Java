@@ -17,7 +17,7 @@ public class DiscardLeadCard implements Action {
 
     @Override
     public boolean doAction(Player player) {
-        hand.remove(index - 1);
+        player.discardLeadCard(index - 1);
         player.getBoard().getItinerary().updatePosition(1);
         return false;
     }

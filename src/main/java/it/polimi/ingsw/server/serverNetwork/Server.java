@@ -49,7 +49,9 @@ public class Server {
     }
 
     public void unregisterClient(ClientConnection connection){
+        connection.close();
         connection.getGameController().getActiveConnections().removeIf(c -> c == connection);
+        connection.getGameController().removeObserver(find(connection, clientToConnection));
         connection.getGameController().getActivePlayers().
                 removeIf(p -> p.getNickname().equals(connection.getPlayerNickname()));
         find(connection, clientToConnection).setClientConnection(null);
@@ -65,15 +67,14 @@ public class Server {
         if (totalPlayers == 1){
             gameControllers.add(0, new SinglePlayerController(this));
             gameControllers.get(0).setUpPlayer(connection);
-            // gameControllers.get(0).newObserver(VirtualView ...);
             connection.setGameController(gameControllers.get(0));
             waitingList.clear();
+            gameControllers.get(0).addObserver(find(connection, clientToConnection));
             gameControllers.get(0).setup();
         }
         else {
             gameControllers.add(0, new MultiPlayerController(this));
             gameControllers.get(0).setUpPlayer(connection);
-            // gameControllers.get(0).newObserver(VirtualView ...);
             connection.setGameController(gameControllers.get(0));
         }
     }
@@ -87,12 +88,13 @@ public class Server {
             VirtualView v = find(connection, clientToConnection);
             v.sendAll(new CustomMessage("Player number reached. The match is starting."));
             waitingList.clear();
+            for (ClientConnection c : gameControllers.get(0).getActiveConnections()){
+                gameControllers.get(0).addObserver(find(c, clientToConnection));
+            }
             gameControllers.get(0).setup();
-            // gameControllers.get(0).newObserver(VirtualView ...);
         } else {
             VirtualView v = find(connection, clientToConnection);
             v.sendAll(new CustomMessage((totalPlayers - waitingList.size()) + " slots left."));
-            // gameControllers.get(0).newObserver(VirtualView ...);
         }
     }
 

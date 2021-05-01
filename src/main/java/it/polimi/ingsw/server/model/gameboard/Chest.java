@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server.model.gameboard;
 
+import it.polimi.ingsw.messages.newElement.NewChest;
 import it.polimi.ingsw.server.controller.Place;
 import it.polimi.ingsw.server.exceptions.WrongActionException;
 import it.polimi.ingsw.server.model.Resource;
@@ -12,12 +13,15 @@ import java.util.List;
 
 public class Chest extends Observable {
     private final List<ResourceQuantity> chest;
+    private String owner;
 
-    public Chest(){
+    public Chest(String nickname){
+        owner = nickname;
         chest = new ArrayList<>();
         for(int i = 0; i < Resource.values().length - 2; i++){                                                          //faithpoint and empty are not storable in the Chest.
             chest.add(new ResourceQuantity(0, Resource.values()[i]));
         }
+        notifyObservers(new NewChest(chest, owner));
     }
 
     /*returns a copy of the chest*/
@@ -34,6 +38,7 @@ public class Chest extends Observable {
             ResourceQuantity Rq = chest.get(index);
             Rq.setQuantity(Rq.getQuantity() - Rp.getQuantity());
         }
+        notifyObservers(new NewChest(chest, owner));
     }
 
     /*controls if the resources can be removed*/
@@ -58,6 +63,7 @@ public class Chest extends Observable {
             ResourceQuantity Rq = chest.get(index);
             Rq.setQuantity(Rq.getQuantity() + Rp.getQuantity());
         }
+        notifyObservers(new NewChest(chest, owner));
     }
 
     /*controls if the resources can be stored*/
@@ -68,11 +74,11 @@ public class Chest extends Observable {
         }
     }
 
-    /*controls if there is a certain quantity (or more) of a certain resource*/
+    /*controls if there is a certain quantity (or more) of a certain resource
     public boolean checkQuantity (Resource resource, int quantity){
         int index = this.getIndexResource(resource);
         return  chest.get(index).getQuantity() >= quantity;
-    }
+    }*/
 
     /*returns the number of resources of the same type of resource*/
     public int getAvailability(Resource resource){

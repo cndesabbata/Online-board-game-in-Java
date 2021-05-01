@@ -15,7 +15,7 @@ public class PlayLeadCard implements Action {
 
     @Override
     public boolean doAction(Player player) {
-        player.getHandLeaderCards().get(index - 1).setPlayed(true);
+        player.playLeadCard(index);
         return true;
     }
 

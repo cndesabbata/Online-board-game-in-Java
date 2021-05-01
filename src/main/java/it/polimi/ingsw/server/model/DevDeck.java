@@ -1,6 +1,7 @@
 package it.polimi.ingsw.server.model;
 
 import com.google.gson.Gson;
+import it.polimi.ingsw.messages.newElement.NewDevDeck;
 import it.polimi.ingsw.server.observer.Observable;
 
 import java.io.InputStreamReader;
@@ -41,6 +42,7 @@ public class DevDeck extends Observable {
             this.cards.add(blueprint.BuildCard(level, colour));
         }
         Collections.shuffle(cards);
+        notifyObservers(new NewDevDeck(colour, level, cards.get(0)));
     }
     public boolean isEmpty(){ return (cards.size()==0); }
 
@@ -64,7 +66,11 @@ public class DevDeck extends Observable {
 
     public DevCard drawCard() {
         if (cards.isEmpty()) return null;
-        else return cards.remove(0);
+        else {
+            DevCard d = cards.remove(0);
+            notifyObservers(new NewDevDeck(colour, level, cards.get(0)));
+            return d;
+        }
     }
 
     public List<ResourceQuantity> peepRequirements(){

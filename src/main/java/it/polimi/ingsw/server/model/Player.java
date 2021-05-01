@@ -1,5 +1,8 @@
 package it.polimi.ingsw.server.model;
 
+import it.polimi.ingsw.messages.newElement.NewHandCards;
+import it.polimi.ingsw.messages.serverMessages.ActionDone;
+import it.polimi.ingsw.server.controller.UserAction;
 import it.polimi.ingsw.server.model.gameboard.GameBoard;
 import it.polimi.ingsw.server.observer.Observable;
 
@@ -12,25 +15,22 @@ public class Player extends Observable {
     private final GameBoard board;
     private final List<LeaderCard> handLeaderCards;
     private boolean exclusiveActionDone;
-    private boolean actionDone;
+    private UserAction actionDone;
     private boolean turnActive;
     // private List<GameElement> changedElement;
 
     /* constructor Player creates a new Player instance with a given nickname */
     public Player(String nickname, Game game) {
-        this.board = new GameBoard();
+        this.board = new GameBoard(nickname);
         this.nickname = nickname;
         this.game = game;
-        this.actionDone = false;
         handLeaderCards = new ArrayList<>();
+        notifySingleObserver(new NewHandCards(handLeaderCards, nickname), nickname);
     }
 
-    public boolean isActionDone() {
-        return actionDone;
-    }
-
-    public void setActionDone(boolean actionDone) {
+    public void setActionDone(UserAction actionDone) {
         this.actionDone = actionDone;
+        notifyObservers(new ActionDone(nickname, actionDone));
     }
 
     public String getNickname() {
@@ -41,6 +41,16 @@ public class Player extends Observable {
 
     public GameBoard getBoard() {
         return board;
+    }
+
+    public void discardLeadCard(int index){
+        handLeaderCards.remove(index);
+        notifySingleObserver(new NewHandCards(handLeaderCards, nickname), nickname);
+    }
+
+    public void playLeadCard(int index){
+        handLeaderCards.get(index).setPlayed(true);
+        notifySingleObserver(new NewHandCards(handLeaderCards, nickname), nickname);
     }
 
     public boolean isExclusiveActionDone() {

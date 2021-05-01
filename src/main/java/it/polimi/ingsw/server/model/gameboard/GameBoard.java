@@ -11,11 +11,11 @@ public class GameBoard extends Observable {
     private final Chest chest;
     private final DevSpace devSpace;
 
-    public GameBoard(){
-        itinerary = new Itinerary();
-        warehouse = new Warehouse(3);
-        chest = new Chest();
-        devSpace = new DevSpace();
+    public GameBoard(String nickname){
+        itinerary = new Itinerary(nickname);
+        warehouse = new Warehouse(3, nickname);
+        chest = new Chest(nickname);
+        devSpace = new DevSpace(nickname);
     }
 
     public Itinerary getItinerary() {
