@@ -1,10 +1,7 @@
 package it.polimi.ingsw.server.controller;
 
 import it.polimi.ingsw.messages.actions.Action;
-import it.polimi.ingsw.server.model.CardStatus;
-import it.polimi.ingsw.server.model.DevDeck;
-import it.polimi.ingsw.server.model.Game;
-import it.polimi.ingsw.server.model.Player;
+import it.polimi.ingsw.server.model.*;
 import it.polimi.ingsw.server.observer.Observer;
 import it.polimi.ingsw.server.serverNetwork.ClientConnection;
 import it.polimi.ingsw.server.serverNetwork.Server;
@@ -92,6 +89,47 @@ public abstract class GameController {
                 }
             }
         }
+    }
+
+    public int addItineraryVP(Player player) {
+        int result = 0;
+        int[] itineraryVP = {1,2,4,6,9,12,16,20};
+        for(int i = 3, j = 0; i <= 21; i = i + 3, j++) {
+            if (player.getBoard().getItinerary().getPosition() >= i && player.getBoard().getItinerary().getPosition() < i + 3)
+                result += itineraryVP[j];
+        }
+        if (player.getBoard().getItinerary().getPosition() == 24)
+            result += itineraryVP[7];
+        return result;
+    }
+
+    public int addPapalVP(Player player) {
+        int result = 0;
+        CardStatus[] papalCardStatus = player.getBoard().getItinerary().getCardStatus();
+        for (int i = 0; i < 3; i++) {
+            if (papalCardStatus[i] == CardStatus.FACE_UP) result += i + 2;
+        }
+        return result;
+    }
+
+    public int addDevCardVP(Player player) {
+        int result = 0;
+        List<List<DevCard>> playerDevCards = player.getBoard().getDevSpace().getCards();
+        for (List<DevCard> devSlotCard : playerDevCards) {
+            for (DevCard devCard : devSlotCard) {
+                result += devCard.getVictoryPoints();
+            }
+        }
+        return result;
+    }
+
+    public int addLeaderVP(Player player) {
+        int result = 0;
+        for (LeaderCard leaderCard : player.getHandLeaderCards()) {
+            if (leaderCard.isPlayed())
+                result += leaderCard.getVictoryPoints();
+        }
+        return result;
     }
 
     public void addObserver(Observer observer){
