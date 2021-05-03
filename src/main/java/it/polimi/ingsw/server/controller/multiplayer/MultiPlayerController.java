@@ -110,18 +110,10 @@ public class MultiPlayerController extends GameController {
         for (Player player : game.getPlayers()) {
             String nickname = player.getNickname();
             playersPoints.put(nickname, 0);
-            List<List<DevCard>> playerDevCards = player.getBoard().getDevSpace().getCards();
-            for (List<DevCard> devSlotCard : playerDevCards) {
-                for (DevCard devCard : devSlotCard) {
-                    playersPoints.put(nickname, playersPoints.get(nickname) + devCard.getVictoryPoints());
-                }
-            }
-            addItineraryPoints(playersPoints, player);
-            addPapalCardPoints(playersPoints, player);
-            for (LeaderCard leaderCard : player.getHandLeaderCards()) {
-                if (leaderCard.isPlayed())
-                    playersPoints.put(nickname, playersPoints.get(nickname) + leaderCard.getVictoryPoints());
-            }
+            playersPoints.put(nickname, playersPoints.get(nickname) + addItineraryVP(player));
+            playersPoints.put(nickname, playersPoints.get(nickname) + addDevCardVP(player));
+            playersPoints.put(nickname, playersPoints.get(nickname) + addPapalVP(player));
+            playersPoints.put(nickname, playersPoints.get(nickname) + addLeaderVP(player));
             playersPoints.put(nickname, playersPoints.get(nickname) + player.getBoard().getTotalResources() / 5);
         }
         int maxPoints = Collections.max(playersPoints.values());
@@ -143,31 +135,5 @@ public class MultiPlayerController extends GameController {
             winners.add(game.getPlayerByNickname(winnerNickname));
         }
         game.setWinners(winners);
-    }
-
-    /* private method called by endgame to compute victory points gained from itinerary */
-    private void addItineraryPoints(Map<String, Integer> playersPoints, Player player) {
-        int[] itineraryVP = {1,2,4,6,9,12,16,20};
-        for(int i = 3, j = 0; i <= 21; i = i + 3, j++) {
-            if (player.getBoard().getItinerary().getPosition() >= i && player.getBoard().getItinerary().getPosition() < i + 3)
-                playersPoints.put(player.getNickname(), playersPoints.get(player.getNickname()) + itineraryVP[j]);
-        }
-        if (player.getBoard().getItinerary().getPosition() == 24)
-            playersPoints.put(player.getNickname(), playersPoints.get(player.getNickname()) + 20);
-    }
-
-    /* private method called by endgame to compute victory points gained from itinerary */
-    private void addItineraryPoints(Map<String, Integer> playersPoints, Player player, int cell, int victoryPoints) {
-        if (player.getBoard().getItinerary().getPosition() >= cell && player.getBoard().getItinerary().getPosition() < cell + 3)
-            playersPoints.put(player.getNickname(), playersPoints.get(player.getNickname()) + victoryPoints);
-    }
-
-    /* private method called by endgame to compute victory points gained from papal cards */
-    private void addPapalCardPoints(Map<String, Integer> playersPoints, Player player) {
-        CardStatus[] papalCardStatus = player.getBoard().getItinerary().getCardStatus();
-        for (int i = 0; i < 3; i++){
-            if (papalCardStatus[i] == CardStatus.FACE_UP)
-                playersPoints.put(player.getNickname(), playersPoints.get(player.getNickname()) + i + 2);
-        }
     }
 }

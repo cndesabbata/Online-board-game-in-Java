@@ -88,44 +88,4 @@ public class SinglePlayerController extends GameController {
         score += player.getBoard().getTotalResources() / 5;
         return score;
     }
-
-    private int addItineraryVP(Player player) {
-        int result = 0;
-        int[] itineraryVP = {1, 2, 4, 6, 9, 12, 16, 20};
-        for (int i = 0; i < itineraryVP.length; i++) {
-            if (player.getBoard().getItinerary().getPosition() >= (i + 1) * 3 &&
-                    player.getBoard().getItinerary().getPosition() < (i + 2) * 3) result += itineraryVP[i];
-        }
-        return result;
-    }
-
-    private int addPapalVP(Player player) {
-        int result = 0;
-        CardStatus[] papalCardStatus = player.getBoard().getItinerary().getCardStatus();
-        for (int i = 0; i < 3; i++) {
-            if (papalCardStatus[i] == CardStatus.FACE_UP) result += i + 2;
-        }
-        return result;
-    }
-
-    private int addLeaderVP(Player player) {
-        int result = 0;
-        for (LeaderCard leaderCard : player.getHandLeaderCards()) {
-            if (leaderCard.isPlayed())
-                result += leaderCard.getVictoryPoints();
-        }
-        return result;
-    }
-
-    private int addDevCardVP(Player player) {
-        int result = 0;
-        List<List<DevCard>> playerDevCards = player.getBoard().getDevSpace().getCards();
-        for (List<DevCard> devSlotCard : playerDevCards) {
-            for (DevCard devCard : devSlotCard) {
-                result += devCard.getVictoryPoints();
-            }
-        }
-        return result;
-    }
-
 }
