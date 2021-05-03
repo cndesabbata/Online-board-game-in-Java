@@ -4,7 +4,7 @@ import it.polimi.ingsw.constants.Constants;
 import it.polimi.ingsw.server.controller.GameController;
 import it.polimi.ingsw.server.controller.multiplayer.MultiPlayerController;
 import it.polimi.ingsw.server.controller.singleplayer.SinglePlayerController;
-import it.polimi.ingsw.messages.serverMessages.CustomMessage;
+import it.polimi.ingsw.messages.serverMessages.SetupMessage;
 import it.polimi.ingsw.messages.serverMessages.ErrorMessage;
 import it.polimi.ingsw.messages.serverMessages.PlayersNumberMessage;
 
@@ -86,7 +86,7 @@ public class Server {
                     ", you are the lobby host, please choose the number of players: [1...4]"));
         } else if (waitingList.size() == totalPlayers) {
             VirtualView v = find(connection, clientToConnection);
-            v.sendAll(new CustomMessage("Player number reached. The match is starting."));
+            v.sendAll(new SetupMessage("Player number reached. The match is starting."));
             waitingList.clear();
             for (ClientConnection c : gameControllers.get(0).getActiveConnections()){
                 gameControllers.get(0).addObserver(find(c, clientToConnection));
@@ -94,7 +94,7 @@ public class Server {
             gameControllers.get(0).setup();
         } else {
             VirtualView v = find(connection, clientToConnection);
-            v.sendAll(new CustomMessage((totalPlayers - waitingList.size()) + " slots left."));
+            v.sendAll(new SetupMessage((totalPlayers - waitingList.size()) + " slots left."));
         }
     }
 
@@ -123,7 +123,7 @@ public class Server {
                 connection.setGameController(gc);
                 VirtualView virtualView = new VirtualView(nickname, connection);
                 clientToConnection.put(virtualView, connection);
-                connection.sendSocketMessage(new CustomMessage("Connection was successfully set-up!" +
+                connection.sendSocketMessage(new SetupMessage("Connection was successfully set-up!" +
                         " You are now reconnected."));
                 return;
             }
@@ -141,10 +141,10 @@ public class Server {
         }
         VirtualView virtualView = new VirtualView(nickname, connection);
         clientToConnection.put(virtualView, connection);
-        connection.sendSocketMessage(new CustomMessage("Connection was successfully set-up!" +
+        connection.sendSocketMessage(new SetupMessage("Connection was successfully set-up!" +
                 " You are now connected."));
         if (waitingList.size() > 0) {
-            virtualView.sendAll(new CustomMessage(nickname + " joined the game"));
+            virtualView.sendAll(new SetupMessage(nickname + " joined the game"));
         }
         lobby(connection);
     }

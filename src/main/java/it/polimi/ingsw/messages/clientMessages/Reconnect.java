@@ -1,8 +1,7 @@
-package it.polimi.ingsw.messages.serverMessages;
+package it.polimi.ingsw.messages.clientMessages;
+import it.polimi.ingsw.messages.Message;
 
-import java.io.Serializable;
-
-public class Reconnect implements Serializable {
+public class Reconnect implements Message {
     private String nickname;
 
     public Reconnect(String nickname) {

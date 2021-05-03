@@ -6,7 +6,7 @@ import it.polimi.ingsw.messages.clientMessages.SetNickname;
 import it.polimi.ingsw.messages.clientMessages.SetPlayersNumber;
 import it.polimi.ingsw.messages.serverMessages.ErrorMessage;
 import it.polimi.ingsw.messages.serverMessages.PlayersNumberMessage;
-import it.polimi.ingsw.messages.serverMessages.Reconnect;
+import it.polimi.ingsw.messages.clientMessages.Reconnect;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -75,7 +75,7 @@ public class ClientConnection implements Runnable {
         if (clientMessage instanceof SetNickname){
             if (gameController == null && playerNickname == null){
                 try {
-                    server.registerClient(((SetNickname) clientMessage).getNickname(), this);
+                    server.(((SetNickname) clientMessage).getNickname(), this);
                     playerNickname = ((SetNickname) clientMessage).getNickname();
                 } catch (InterruptedException e) {
                     System.err.println(e.getMessage());

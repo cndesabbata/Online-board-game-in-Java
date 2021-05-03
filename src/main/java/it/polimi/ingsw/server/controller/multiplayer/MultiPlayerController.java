@@ -2,6 +2,7 @@ package it.polimi.ingsw.server.controller.multiplayer;
 
 import it.polimi.ingsw.server.controller.GameController;
 import it.polimi.ingsw.messages.actions.Action;
+import it.polimi.ingsw.server.controller.UserAction;
 import it.polimi.ingsw.server.model.*;
 import it.polimi.ingsw.server.serverNetwork.Server;
 
@@ -17,13 +18,17 @@ public class MultiPlayerController extends GameController {
     }
 
     public void changeTurn() {
+        //String oldPlayer = currentPlayer.getNickname();
         currentPlayer.setTurnActive(false);
         currentPlayer.setExclusiveActionDone(false);
         if (getGame().isFinalTurn() && currentPlayerIndex == getActivePlayers().size() - 1) {
             endGame();
         } else {
             currentPlayer = nextPlayer();
-            currentPlayer.setTurnActive(true);
+            //if(isStarted() == "SETUP")
+                currentPlayer.setTurnActive(true /*, true, oldPlayer*/);
+            //else
+                //currentPlayer.setTurnActive(true, /*false, oldPlayer*/);
         }
     }
 
@@ -37,8 +42,16 @@ public class MultiPlayerController extends GameController {
 
     private Player nextPlayer() {
         if (currentPlayerIndex == getActivePlayers().size() - 1) {
+            //if(isStarted() == "IN CORSO")
             currentPlayerIndex = 0;
             return getActivePlayers().get(0);
+            //else if(isStarted() == "SETUP" && currentPlayer.getActionDone == UserAction.SETUP_DISCARD)                                                                           //used when we have to pass from the last player that has to discard the leadcards to the first one that has to choose the initial resources
+            //currentPlayerIndex = 1;
+            //return getActivePlayers().get(1);
+            //else if(isStarted() == "SETUP" && currentPlayer.getActionDone == UserAction.REQUEST_RESOURCE_FAITHPOINT)
+            //currentPlayerIndex = 1;
+            //setStarted("IN CORSO");
+            //return getActivePlayers().get(1);
         } else {
             currentPlayerIndex++;
             return getActivePlayers().get(currentPlayerIndex);
@@ -54,7 +67,40 @@ public class MultiPlayerController extends GameController {
     }
 
     public void setup(){
+        //shuffle()
+        //notifyObservers()                                                                                             //notify to all the virtual views the common parts of the model (market, devdecks)
+        //add()
     }
+
+    /*public void add(){
+        currentPlayer.setupDraw();
+        currentPlayer.setActionDone(UserAction.SETUP_DRAW);
+    }*/
+
+    /*public void remove(int index1, int index2){
+        currentPlayer.setupDiscard(index1, index2);
+        changeTurn();
+        if(currentPlayer.getActionDone() == null)
+            add();
+        else if(currentPlayer.getActionDone() == UserAction.SETUP_DRAW)
+            currentPlayer.requestResource();
+    }*/
+
+    /*public void incrementResourceFaithpoint(ResourcePosition rp){
+        List<ResourcePosition> rps = new ArrayList<ResourcePosition>();
+        rps.add(rp);
+        currentPlayer.getBoard().getWarehouse().incrementResource(rps);
+        if(currentPlayerIndex == 2)
+            currentPlayer.getBoard().getItinerary().updatePosition(1);
+        else if(currentPlayerIndex == 3)
+            currentPlayer.getBoard().getItinerary().updatePosition(2);
+        currentPlayer.setActionDone(UserAction.SETUP_RESOURCE_FAITHPOINT);
+        changeTurn();
+        if(currentPlayer.getActionDone() == UserAction.SETUP_DRAW)
+            currentPlayer.requestResource();
+        else if(currentPlayer.getActionDone() == UserAction.SETUP_RESOURCE_FAITHPOINT)
+            currentPlayer.requestFirstTurn();
+    }*/
 
     /* computes victory points for every player and sets the game winner */
     @Override

@@ -3,16 +3,16 @@ package it.polimi.ingsw.server.serverNetwork;
 import it.polimi.ingsw.messages.Message;
 import it.polimi.ingsw.messages.newElement.ChangeMessage;
 import it.polimi.ingsw.messages.serverMessages.ActionDone;
+import it.polimi.ingsw.messages.serverMessages.CustomMessage;
 import it.polimi.ingsw.server.observer.Observer;
 
 import java.util.ArrayList;
 import java.util.List;
-//import jdk.internal.event.Event;
 
 public class VirtualView implements Observer {
     private String nickname;
     private ClientConnection clientConnection;
-    private List<ChangeMessage> newElements;
+    private List<ChangeMessage> newElements;                                                                            //List of new parts of the model, which will be send when an ActionDone message is received.
 
     public VirtualView(String nickname, ClientConnection clientConnection) {
         this.nickname = nickname;
@@ -51,12 +51,14 @@ public class VirtualView implements Observer {
     @Override
     public void update(Message message) {
         if (message instanceof ActionDone){
-            ((ActionDone) message).setNewElements(newElements);
-            clientConnection.sendSocketMessage(message);
+            ((ActionDone) message).setNewElements(newElements);                                                         //passes the list of new parts of the model to the ActionDone message.
+            clientConnection.sendSocketMessage(message);                                                                //sends ActionDone message with the list of new parts of the model.
             newElements.clear();
         }
+        /*else if (message instanceof CustomMessage)
+            clientConnection.sendSocketMessage(message);*/
         else {
-            newElements.add((ChangeMessage) message);
+            newElements.add((ChangeMessage) message);                                                                   //add new parts of the model to the list.
         }
     }
 
