@@ -51,6 +51,10 @@ public class DevDeck extends Observable {
         else return cards.get(0);
     }
 
+    public void notifyNew(){
+        notifyObservers(new NewDevDeck(colour, level, cards.get(0)));
+    }
+
     /*used only only in tests*/
     public List<DevCard> getCards() {
         return cards;
@@ -68,7 +72,7 @@ public class DevDeck extends Observable {
         if (cards.isEmpty()) return null;
         else {
             DevCard d = cards.remove(0);
-            notifyObservers(new NewDevDeck(colour, level, cards.get(0)));
+            notifyObservers(new NewDevDeck(colour, level, cards.isEmpty() ? null : cards.get(0)));
             return d;
         }
     }

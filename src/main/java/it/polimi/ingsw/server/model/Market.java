@@ -41,6 +41,10 @@ public class Market extends Observable {
         return dispositionCopy;
     }
 
+    public void notifyNew (){
+        notifyObservers(new NewMarket(disposition, external));
+    }
+
     /* return the external marble */
     public Marble getExternal() {
         return external;

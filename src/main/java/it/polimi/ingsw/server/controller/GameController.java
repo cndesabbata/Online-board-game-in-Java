@@ -5,7 +5,6 @@ import it.polimi.ingsw.server.model.*;
 import it.polimi.ingsw.server.observer.Observer;
 import it.polimi.ingsw.server.serverNetwork.ClientConnection;
 import it.polimi.ingsw.server.serverNetwork.Server;
-import it.polimi.ingsw.server.serverNetwork.VirtualView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +12,7 @@ import java.util.List;
 public abstract class GameController {
     private final Game game;
     private final Server server;
-    private Integer started;
+    private GamePhase phase;
     private final List<Player> activePlayers;
     private final List<ClientConnection> activeConnections;
 
@@ -23,7 +22,7 @@ public abstract class GameController {
         this.game = new Game();
         activePlayers = new ArrayList<>();
         activeConnections = new ArrayList<>();
-        started = 0;
+        phase = GamePhase.NOT_STARTED;
     }
 
     public void setUpPlayer(ClientConnection connection){
@@ -55,12 +54,12 @@ public abstract class GameController {
 
     public abstract void makeAction(Action action);
 
-    public Integer isStarted() {
-        return started;
+    public GamePhase getPhase() {
+        return phase;
     }
 
-    public void setStarted(Integer started) {
-        this.started = started;
+    public void setPhase(GamePhase phase) {
+        this.phase = phase;
     }
 
     /* checks if any papalReport needs to be triggered */

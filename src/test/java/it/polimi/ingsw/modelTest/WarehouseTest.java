@@ -20,14 +20,14 @@ public class WarehouseTest {
         warehouse.addDepot(Resource.COIN);
         warehouse.addDepot(Resource.SHIELD);
         List<ResourcePosition> resInWarehouse = new ArrayList<>();
-        resInWarehouse.add(new ResourcePosition(1,Resource.COIN, Place.WAREHOUSE, NumOfShelf.TWO));
+        resInWarehouse.add(new ResourcePosition(Resource.COIN, Place.WAREHOUSE, NumOfShelf.TWO));
         warehouse.incrementResource(resInWarehouse);
         List<ResourcePosition> inputRes = new ArrayList<>();
-        inputRes.add(new ResourcePosition(1, Resource.STONE, Place.TRASH_CAN, null));
-        inputRes.add(new ResourcePosition(1, Resource.COIN, Place.WAREHOUSE, NumOfShelf.DEPOT_ONE));
-        inputRes.add(new ResourcePosition(1, Resource.COIN, Place.WAREHOUSE, NumOfShelf.DEPOT_ONE));
-        inputRes.add(new ResourcePosition(1, Resource.COIN, Place.WAREHOUSE, NumOfShelf.TWO));
-        inputRes.add(new ResourcePosition(1, Resource.SHIELD, Place.WAREHOUSE, NumOfShelf.DEPOT_TWO));
+        inputRes.add(new ResourcePosition(Resource.STONE, Place.TRASH_CAN, null));
+        inputRes.add(new ResourcePosition(Resource.COIN, Place.WAREHOUSE, NumOfShelf.DEPOT_ONE));
+        inputRes.add(new ResourcePosition(Resource.COIN, Place.WAREHOUSE, NumOfShelf.DEPOT_ONE));
+        inputRes.add(new ResourcePosition(Resource.COIN, Place.WAREHOUSE, NumOfShelf.TWO));
+        inputRes.add(new ResourcePosition(Resource.SHIELD, Place.WAREHOUSE, NumOfShelf.DEPOT_TWO));
         try {
             warehouse.checkIncrement(inputRes);
             warehouse.incrementResource(inputRes);
@@ -50,13 +50,13 @@ public class WarehouseTest {
         warehouse.addDepot(Resource.COIN);
         warehouse.addDepot(Resource.SHIELD);
         List<ResourcePosition> resInWarehouse = new ArrayList<>();
-        resInWarehouse.add(new ResourcePosition(1,Resource.STONE, Place.WAREHOUSE, NumOfShelf.ONE));
-        resInWarehouse.add(new ResourcePosition(1,Resource.SHIELD, Place.WAREHOUSE, NumOfShelf.TWO));
-        resInWarehouse.add(new ResourcePosition(1,Resource.COIN, Place.WAREHOUSE, NumOfShelf.THREE));
-        resInWarehouse.add(new ResourcePosition(1,Resource.COIN, Place.WAREHOUSE, NumOfShelf.THREE));
-        resInWarehouse.add(new ResourcePosition(1,Resource.COIN, Place.WAREHOUSE, NumOfShelf.DEPOT_ONE));
-        resInWarehouse.add(new ResourcePosition(1,Resource.COIN, Place.WAREHOUSE, NumOfShelf.DEPOT_ONE));
-        resInWarehouse.add(new ResourcePosition(1,Resource.SHIELD, Place.WAREHOUSE, NumOfShelf.DEPOT_TWO));
+        resInWarehouse.add(new ResourcePosition(Resource.STONE, Place.WAREHOUSE, NumOfShelf.ONE));
+        resInWarehouse.add(new ResourcePosition(Resource.SHIELD, Place.WAREHOUSE, NumOfShelf.TWO));
+        resInWarehouse.add(new ResourcePosition(Resource.COIN, Place.WAREHOUSE, NumOfShelf.THREE));
+        resInWarehouse.add(new ResourcePosition(Resource.COIN, Place.WAREHOUSE, NumOfShelf.THREE));
+        resInWarehouse.add(new ResourcePosition(Resource.COIN, Place.WAREHOUSE, NumOfShelf.DEPOT_ONE));
+        resInWarehouse.add(new ResourcePosition(Resource.COIN, Place.WAREHOUSE, NumOfShelf.DEPOT_ONE));
+        resInWarehouse.add(new ResourcePosition(Resource.SHIELD, Place.WAREHOUSE, NumOfShelf.DEPOT_TWO));
         try {
             warehouse.checkIncrement(resInWarehouse);
         }
@@ -65,13 +65,13 @@ public class WarehouseTest {
         }
         warehouse.incrementResource(resInWarehouse);
         List<ResourcePosition> inputRes = new ArrayList<>();
-        inputRes.add(new ResourcePosition(1, Resource.STONE, Place.CHEST, null));
-        inputRes.add(new ResourcePosition(1, Resource.COIN, Place.CHEST, null));
-        inputRes.add(new ResourcePosition(1, Resource.SHIELD, Place.WAREHOUSE, NumOfShelf.TWO));
-        inputRes.add(new ResourcePosition(1, Resource.COIN, Place.WAREHOUSE, NumOfShelf.THREE));
-        inputRes.add(new ResourcePosition(1, Resource.COIN, Place.WAREHOUSE, NumOfShelf.DEPOT_ONE));
-        inputRes.add(new ResourcePosition(1, Resource.STONE, Place.WAREHOUSE, NumOfShelf.ONE));
-        inputRes.add(new ResourcePosition(1, Resource.SHIELD, Place.WAREHOUSE, NumOfShelf.DEPOT_TWO));
+        inputRes.add(new ResourcePosition(Resource.STONE, Place.CHEST, null));
+        inputRes.add(new ResourcePosition(Resource.COIN, Place.CHEST, null));
+        inputRes.add(new ResourcePosition(Resource.SHIELD, Place.WAREHOUSE, NumOfShelf.TWO));
+        inputRes.add(new ResourcePosition(Resource.COIN, Place.WAREHOUSE, NumOfShelf.THREE));
+        inputRes.add(new ResourcePosition(Resource.COIN, Place.WAREHOUSE, NumOfShelf.DEPOT_ONE));
+        inputRes.add(new ResourcePosition(Resource.STONE, Place.WAREHOUSE, NumOfShelf.ONE));
+        inputRes.add(new ResourcePosition(Resource.SHIELD, Place.WAREHOUSE, NumOfShelf.DEPOT_TWO));
         try {
             warehouse.checkDecrement(inputRes);
             warehouse.decrementResource(inputRes);
@@ -95,11 +95,11 @@ public class WarehouseTest {
         warehouse.addDepot(Resource.STONE);
         List<ResourcePosition> resInWarehouse = new ArrayList<>();
         //resInWarehouse.add(new ResourcePosition(1,Resource.STONE, Place.WAREHOUSE, NumOfShelf.TWO));
-        resInWarehouse.add(new ResourcePosition(1,Resource.SHIELD, Place.WAREHOUSE, NumOfShelf.ONE));
-        resInWarehouse.add(new ResourcePosition(1,Resource.COIN, Place.WAREHOUSE, NumOfShelf.THREE));
-        resInWarehouse.add(new ResourcePosition(1,Resource.COIN, Place.WAREHOUSE, NumOfShelf.THREE));
-        resInWarehouse.add(new ResourcePosition(1,Resource.SHIELD, Place.WAREHOUSE, NumOfShelf.DEPOT_ONE));
-        resInWarehouse.add(new ResourcePosition(1,Resource.STONE, Place.WAREHOUSE, NumOfShelf.DEPOT_TWO));
+        resInWarehouse.add(new ResourcePosition(Resource.SHIELD, Place.WAREHOUSE, NumOfShelf.ONE));
+        resInWarehouse.add(new ResourcePosition(Resource.COIN, Place.WAREHOUSE, NumOfShelf.THREE));
+        resInWarehouse.add(new ResourcePosition(Resource.COIN, Place.WAREHOUSE, NumOfShelf.THREE));
+        resInWarehouse.add(new ResourcePosition(Resource.SHIELD, Place.WAREHOUSE, NumOfShelf.DEPOT_ONE));
+        resInWarehouse.add(new ResourcePosition(Resource.STONE, Place.WAREHOUSE, NumOfShelf.DEPOT_TWO));
         warehouse.incrementResource(resInWarehouse);
         try{
             warehouse.checkMove(NumOfShelf.THREE, NumOfShelf.TWO, 2);

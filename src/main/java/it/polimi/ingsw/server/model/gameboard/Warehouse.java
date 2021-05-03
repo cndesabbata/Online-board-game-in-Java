@@ -147,8 +147,8 @@ public class Warehouse extends Observable {
         List <ResourcePosition> inputRes = new ArrayList<>();
         List <ResourcePosition> outputRes = new ArrayList<>();
         for(int i = 0; i < quantity; i++) {
-            inputRes.add(new ResourcePosition(1, shelfSrc.getResource(), Place.WAREHOUSE, srcShelf));
-            outputRes.add(new ResourcePosition(1,shelfSrc.getResource(), Place.WAREHOUSE, destShelf));
+            inputRes.add(new ResourcePosition(shelfSrc.getResource(), Place.WAREHOUSE, srcShelf));
+            outputRes.add(new ResourcePosition(shelfSrc.getResource(), Place.WAREHOUSE, destShelf));
         }
         decrementResource(inputRes);
         incrementResource(outputRes);

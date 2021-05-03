@@ -66,12 +66,12 @@ public class StartProduction implements Action {
 
     /*used by ProductionEffect to add an extra ResourcePosition in output*/
     public void addOutputRes(ResourcePosition extra) {
-        outputRes.add(new ResourcePosition(extra.getQuantity(), extra.getResource(), extra.getPlace(), extra.getShelf()));
+        outputRes.add(new ResourcePosition(extra.getResource(), extra.getPlace(), extra.getShelf()));
     }
 
     /*used by ProductionEffect to add an extra ResourcePosition in input*/
     public void addInputRes(ResourcePosition extra) {                                                                   //set a shallow copy
-        inputRes.add(new ResourcePosition(extra.getQuantity(), extra.getResource(), extra.getPlace(), extra.getShelf()));
+        inputRes.add(new ResourcePosition(extra.getResource(), extra.getPlace(), extra.getShelf()));
     }
 
     /*controls if input and output correspond to the input and output of the devCard or of the boardProduction (or both)*/

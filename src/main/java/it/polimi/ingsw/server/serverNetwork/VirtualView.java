@@ -2,8 +2,8 @@ package it.polimi.ingsw.server.serverNetwork;
 
 import it.polimi.ingsw.messages.Message;
 import it.polimi.ingsw.messages.newElement.ChangeMessage;
-import it.polimi.ingsw.messages.serverMessages.ActionDone;
-import it.polimi.ingsw.messages.serverMessages.CustomMessage;
+import it.polimi.ingsw.messages.serverMessages.ChangesDone;
+import it.polimi.ingsw.messages.serverMessages.TurnChange;
 import it.polimi.ingsw.server.observer.Observer;
 
 import java.util.ArrayList;
@@ -50,13 +50,13 @@ public class VirtualView implements Observer {
 
     @Override
     public void update(Message message) {
-        if (message instanceof ActionDone){
-            ((ActionDone) message).setNewElements(newElements);                                                         //passes the list of new parts of the model to the ActionDone message.
+        if (message instanceof ChangesDone){
+            ((ChangesDone) message).setNewElements(newElements);                                                         //passes the list of new parts of the model to the ActionDone message.
             clientConnection.sendSocketMessage(message);                                                                //sends ActionDone message with the list of new parts of the model.
             newElements.clear();
         }
-        /*else if (message instanceof CustomMessage)
-            clientConnection.sendSocketMessage(message);*/
+        else if (message instanceof TurnChange)
+            clientConnection.sendSocketMessage(message);
         else {
             newElements.add((ChangeMessage) message);                                                                   //add new parts of the model to the list.
         }

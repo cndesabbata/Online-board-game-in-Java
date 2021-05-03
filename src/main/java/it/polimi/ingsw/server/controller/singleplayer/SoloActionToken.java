@@ -7,7 +7,5 @@ public abstract class SoloActionToken {
         this.controller = controller;
     }
 
-    public void doSoloAction() {
-
-    }
+    public abstract LorenzoAction doSoloAction();
 }
