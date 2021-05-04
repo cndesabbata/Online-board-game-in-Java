@@ -6,7 +6,8 @@ public class UpdateItinerary extends SoloActionToken{
     }
 
     @Override
-    public void doSoloAction() {
+    public LorenzoAction doSoloAction() {
         controller.getGame().getPlayers().get(0).getBoard().getItinerary().updateBlackCross(2);
+        return LorenzoAction.UPDATE_ITINERARY;
     }
 }

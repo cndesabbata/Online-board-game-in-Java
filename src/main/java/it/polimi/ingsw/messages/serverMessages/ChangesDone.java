@@ -7,14 +7,14 @@ import it.polimi.ingsw.server.controller.UserAction;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ActionDone implements Message {
+public class ChangesDone implements Message {
     private final String nickname;
-    private final UserAction userAction;
+    private final UserAction type;
     private List<ChangeMessage> newElements;
 
-    public ActionDone(String nickname, UserAction userAction) {
+    public ChangesDone(String nickname, UserAction userAction) {
         this.nickname = nickname;
-        this.userAction = userAction;
+        this.type = userAction;
         newElements = new ArrayList<>();
     }
 
@@ -26,8 +26,8 @@ public class ActionDone implements Message {
         return nickname;
     }
 
-    public UserAction getUserAction() {
-        return userAction;
+    public UserAction getType() {
+        return type;
     }
 
     public void setNewElements(List<ChangeMessage> newElements) {

@@ -1,6 +1,7 @@
 package it.polimi.ingsw.server.serverNetwork;
 
 import it.polimi.ingsw.constants.Constants;
+import it.polimi.ingsw.messages.serverMessages.CustomMessage;
 import it.polimi.ingsw.server.controller.GameController;
 import it.polimi.ingsw.server.controller.multiplayer.MultiPlayerController;
 import it.polimi.ingsw.server.controller.singleplayer.SinglePlayerController;
@@ -8,6 +9,7 @@ import it.polimi.ingsw.messages.serverMessages.SetupMessage;
 import it.polimi.ingsw.messages.serverMessages.ErrorMessage;
 import it.polimi.ingsw.messages.serverMessages.PlayersNumberMessage;
 
+import javax.swing.text.html.CSS;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -49,12 +51,14 @@ public class Server {
     }
 
     public void unregisterClient(ClientConnection connection){
+        VirtualView view = find(connection, clientToConnection);
+        String nickname = connection.getPlayerNickname();
+        view.sendAllExcept(new CustomMessage("Player " + nickname + " disconnected."), nickname);
         connection.close();
         connection.getGameController().getActiveConnections().removeIf(c -> c == connection);
         connection.getGameController().removeObserver(find(connection, clientToConnection));
-        connection.getGameController().getActivePlayers().
-                removeIf(p -> p.getNickname().equals(connection.getPlayerNickname()));
-        find(connection, clientToConnection).setClientConnection(null);
+        connection.getGameController().getActivePlayers().removeIf(p -> p.getNickname().equals(nickname));
+        view.setClientConnection(null);
         clientToConnection.remove(connection);
     }
 

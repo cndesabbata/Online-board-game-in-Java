@@ -28,9 +28,9 @@ public class BuyResourcesTest {
                 {Marble.WHITE, Marble.GREY, Marble.YELLOW, Marble.YELLOW}};
         game.getMarket().setFakeDisposition(disposition);
         game.getMarket().setFakeExternal(Marble.BLUE);
-        boughtResources.add(new ResourcePosition(1, Resource.STONE, Place.WAREHOUSE, NumOfShelf.ONE));
-        boughtResources.add(new ResourcePosition(1, Resource.COIN, Place.WAREHOUSE, NumOfShelf.THREE));
-        boughtResources.add(new ResourcePosition(1, Resource.COIN, Place.WAREHOUSE, NumOfShelf.THREE));
+        boughtResources.add(new ResourcePosition(Resource.STONE, Place.WAREHOUSE, NumOfShelf.ONE));
+        boughtResources.add(new ResourcePosition(Resource.COIN, Place.WAREHOUSE, NumOfShelf.THREE));
+        boughtResources.add(new ResourcePosition(Resource.COIN, Place.WAREHOUSE, NumOfShelf.THREE));
         Action action = new BuyResources(new ArrayList<>(), 3, MarketSelection.ROW, boughtResources);
         try {
             action.checkAction(player);
@@ -63,15 +63,15 @@ public class BuyResourcesTest {
                 {Marble.WHITE, Marble.GREY, Marble.YELLOW, Marble.YELLOW}};
         game.getMarket().setFakeDisposition(disposition);
         game.getMarket().setFakeExternal(Marble.BLUE);
-        extraRes.add(new ResourcePosition(1, Resource.STONE, Place.WAREHOUSE, NumOfShelf.TWO));
+        extraRes.add(new ResourcePosition(Resource.STONE, Place.WAREHOUSE, NumOfShelf.TWO));
         LeaderCard marbleCard = new LeaderCard(3, null, Resource.STONE, LeaderType.MARBLE);
         marbleCard.setPlayed(true);
         player.addLeaderCard(marbleCard);
         LeaderEffect leaderEffect = new MarbleEffect(1, Resource.STONE, extraRes);
         leaderEffects.add(leaderEffect);
-        boughtResources.add(new ResourcePosition(1, Resource.STONE, Place.WAREHOUSE, NumOfShelf.TWO));
-        boughtResources.add(new ResourcePosition(1, Resource.COIN, Place.WAREHOUSE, NumOfShelf.THREE));
-        boughtResources.add(new ResourcePosition(1, Resource.COIN, Place.WAREHOUSE, NumOfShelf.THREE));
+        boughtResources.add(new ResourcePosition(Resource.STONE, Place.WAREHOUSE, NumOfShelf.TWO));
+        boughtResources.add(new ResourcePosition(Resource.COIN, Place.WAREHOUSE, NumOfShelf.THREE));
+        boughtResources.add(new ResourcePosition(Resource.COIN, Place.WAREHOUSE, NumOfShelf.THREE));
         Action action = new BuyResources(leaderEffects, 3, MarketSelection.ROW, boughtResources);
         try {
             action.checkAction(player);
@@ -104,7 +104,7 @@ public class BuyResourcesTest {
                 {Marble.WHITE, Marble.GREY, Marble.YELLOW, Marble.YELLOW}};
         game.getMarket().setFakeDisposition(disposition);
         game.getMarket().setFakeExternal(Marble.BLUE);
-        extraRes.add(new ResourcePosition(1, Resource.STONE, Place.WAREHOUSE, NumOfShelf.TWO));
+        extraRes.add(new ResourcePosition(Resource.STONE, Place.WAREHOUSE, NumOfShelf.TWO));
         LeaderCard marbleCard1 = new LeaderCard(3, null, Resource.STONE, LeaderType.MARBLE);
         LeaderCard marbleCard2 = new LeaderCard(3, null, Resource.SERVANT, LeaderType.MARBLE);
         marbleCard1.setPlayed(true);
@@ -115,9 +115,9 @@ public class BuyResourcesTest {
         LeaderEffect leaderEffect2 = new MarbleEffect(0, Resource.SERVANT, new ArrayList<>());
         leaderEffects.add(leaderEffect1);
         leaderEffects.add(leaderEffect2);
-        boughtResources.add(new ResourcePosition(1, Resource.STONE, Place.WAREHOUSE, NumOfShelf.TWO));
-        boughtResources.add(new ResourcePosition(1, Resource.COIN, Place.WAREHOUSE, NumOfShelf.THREE));
-        boughtResources.add(new ResourcePosition(1, Resource.COIN, Place.WAREHOUSE, NumOfShelf.THREE));
+        boughtResources.add(new ResourcePosition(Resource.STONE, Place.WAREHOUSE, NumOfShelf.TWO));
+        boughtResources.add(new ResourcePosition(Resource.COIN, Place.WAREHOUSE, NumOfShelf.THREE));
+        boughtResources.add(new ResourcePosition(Resource.COIN, Place.WAREHOUSE, NumOfShelf.THREE));
         Action action = new BuyResources(leaderEffects, 3, MarketSelection.ROW, boughtResources);
         try {
             action.checkAction(player);
@@ -148,9 +148,9 @@ public class BuyResourcesTest {
                 {Marble.WHITE, Marble.GREY, Marble.YELLOW, Marble.YELLOW}};
         game.getMarket().setFakeDisposition(disposition);
         game.getMarket().setFakeExternal(Marble.BLUE);
-        boughtResources.add(new ResourcePosition(1, Resource.STONE, Place.WAREHOUSE, NumOfShelf.ONE));
-        boughtResources.add(new ResourcePosition(1, Resource.COIN, Place.WAREHOUSE, NumOfShelf.THREE));
-        boughtResources.add(new ResourcePosition(1, Resource.COIN, Place.WAREHOUSE, NumOfShelf.TWO));
+        boughtResources.add(new ResourcePosition(Resource.STONE, Place.WAREHOUSE, NumOfShelf.ONE));
+        boughtResources.add(new ResourcePosition(Resource.COIN, Place.WAREHOUSE, NumOfShelf.THREE));
+        boughtResources.add(new ResourcePosition(Resource.COIN, Place.WAREHOUSE, NumOfShelf.TWO));
         Action action = new BuyResources(new ArrayList<>(), 3, MarketSelection.ROW, boughtResources);
         try {
             action.checkAction(player);
@@ -173,9 +173,9 @@ public class BuyResourcesTest {
                 {Marble.WHITE, Marble.GREY, Marble.YELLOW, Marble.YELLOW}};
         game.getMarket().setFakeDisposition(disposition);
         game.getMarket().setFakeExternal(Marble.BLUE);
-        boughtResources.add(new ResourcePosition(1, Resource.STONE, Place.WAREHOUSE, NumOfShelf.THREE));
-        boughtResources.add(new ResourcePosition(1, Resource.COIN, Place.WAREHOUSE, NumOfShelf.ONE));
-        boughtResources.add(new ResourcePosition(1, Resource.COIN, Place.WAREHOUSE, NumOfShelf.ONE));
+        boughtResources.add(new ResourcePosition(Resource.STONE, Place.WAREHOUSE, NumOfShelf.THREE));
+        boughtResources.add(new ResourcePosition(Resource.COIN, Place.WAREHOUSE, NumOfShelf.ONE));
+        boughtResources.add(new ResourcePosition(Resource.COIN, Place.WAREHOUSE, NumOfShelf.ONE));
         Action action = new BuyResources(new ArrayList<>(), 3, MarketSelection.ROW, boughtResources);
         try {
             action.checkAction(player);

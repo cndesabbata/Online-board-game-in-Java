@@ -9,8 +9,9 @@ public class UpdateAndShuffle extends SoloActionToken {
     }
 
     @Override
-    public void doSoloAction() {
+    public LorenzoAction doSoloAction() {
         controller.getGame().getPlayers().get(0).getBoard().getItinerary().updateBlackCross(1);
         Collections.shuffle(controller.getTokens());
+        return LorenzoAction.UPDATE_AND_SHUFFLE;
     }
 }

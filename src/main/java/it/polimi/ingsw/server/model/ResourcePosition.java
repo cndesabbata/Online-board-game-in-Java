@@ -7,8 +7,8 @@ public class ResourcePosition extends ResourceQuantity{
     private Place place;
     private NumOfShelf shelf;
 
-    public ResourcePosition(int quantity, Resource resource, Place place, NumOfShelf shelf) {
-        super(quantity, resource);
+    public ResourcePosition(Resource resource, Place place, NumOfShelf shelf) {
+        super(1, resource);
         this.place = place;
         this.shelf = shelf;
     }

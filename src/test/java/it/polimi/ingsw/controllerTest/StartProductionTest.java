@@ -25,10 +25,10 @@ public class StartProductionTest {
         Game game = new Game();
 
         List <ResourcePosition> inputClient = new ArrayList<>();
-        inputClient.add(new ResourcePosition(1, Resource.STONE, Place.WAREHOUSE, NumOfShelf.ONE));
-        inputClient.add(new ResourcePosition(1, Resource.SHIELD, Place.WAREHOUSE, NumOfShelf.TWO));
+        inputClient.add(new ResourcePosition(Resource.STONE, Place.WAREHOUSE, NumOfShelf.ONE));
+        inputClient.add(new ResourcePosition(Resource.SHIELD, Place.WAREHOUSE, NumOfShelf.TWO));
         List <ResourcePosition> outputClient = new ArrayList<>();
-        outputClient.add(new ResourcePosition(1, Resource.COIN, Place.CHEST, null));
+        outputClient.add(new ResourcePosition(Resource.COIN, Place.CHEST, null));
 
         List <LeaderEffect> leaderEffects = new ArrayList<>();
         Action production = new StartProduction(inputClient, outputClient, leaderEffects);
@@ -39,16 +39,19 @@ public class StartProductionTest {
         Warehouse myWarehouse = me.getBoard().getWarehouse();
         Chest myChest = me.getBoard().getChest();
         List <ResourcePosition> resInWarehouse = new ArrayList<>();
-        resInWarehouse.add(new ResourcePosition(1, Resource.STONE, Place.WAREHOUSE, NumOfShelf.ONE));
-        resInWarehouse.add(new ResourcePosition(1, Resource.SHIELD, Place.WAREHOUSE, NumOfShelf.TWO));
-        resInWarehouse.add(new ResourcePosition(1, Resource.COIN, Place.WAREHOUSE, NumOfShelf.THREE));
-        resInWarehouse.add(new ResourcePosition(1, Resource.COIN, Place.WAREHOUSE, NumOfShelf.THREE));
-        resInWarehouse.add(new ResourcePosition(1, Resource.COIN, Place.WAREHOUSE, NumOfShelf.THREE));
+        resInWarehouse.add(new ResourcePosition(Resource.STONE, Place.WAREHOUSE, NumOfShelf.ONE));
+        resInWarehouse.add(new ResourcePosition(Resource.SHIELD, Place.WAREHOUSE, NumOfShelf.TWO));
+        resInWarehouse.add(new ResourcePosition(Resource.COIN, Place.WAREHOUSE, NumOfShelf.THREE));
+        resInWarehouse.add(new ResourcePosition(Resource.COIN, Place.WAREHOUSE, NumOfShelf.THREE));
+        resInWarehouse.add(new ResourcePosition(Resource.COIN, Place.WAREHOUSE, NumOfShelf.THREE));
         myWarehouse.incrementResource(resInWarehouse);
         List <ResourcePosition> resInChest = new ArrayList<>();
-        resInChest.add(new ResourcePosition(2, Resource.SHIELD, Place.CHEST, null));
-        resInChest.add(new ResourcePosition(2, Resource.SERVANT, Place.CHEST, null));
-        resInChest.add(new ResourcePosition(2, Resource.STONE, Place.CHEST, null));
+        resInChest.add(new ResourcePosition(Resource.SHIELD, Place.CHEST, null));
+        resInChest.add(new ResourcePosition(Resource.SERVANT, Place.CHEST, null));
+        resInChest.add(new ResourcePosition(Resource.STONE, Place.CHEST, null));
+        resInChest.add(new ResourcePosition(Resource.SHIELD, Place.CHEST, null));
+        resInChest.add(new ResourcePosition(Resource.SERVANT, Place.CHEST, null));
+        resInChest.add(new ResourcePosition(Resource.STONE, Place.CHEST, null));
         myChest.incrementResource(resInChest);
 
         assertTrue(myWarehouse.getShelf(NumOfShelf.ONE).getResource() == Resource.STONE && myWarehouse.getShelf(NumOfShelf.ONE).getQuantity() == 1);
@@ -102,13 +105,15 @@ public class StartProductionTest {
         DevCard devCard = new DevCard(requirements, 6,1,Colour.GREEN, input, output);
 
         List <ResourcePosition> inputClient = new ArrayList<>();
-        inputClient.add(new ResourcePosition(1, Resource.STONE, Place.WAREHOUSE, NumOfShelf.ONE));
-        inputClient.add(new ResourcePosition(1, Resource.SHIELD, Place.CHEST, null));
-        inputClient.add(new ResourcePosition(1, Resource.SHIELD, Place.CHEST, null));
-        inputClient.add(new ResourcePosition(1, Resource.COIN, Place.WAREHOUSE, NumOfShelf.THREE));
+        inputClient.add(new ResourcePosition(Resource.STONE, Place.WAREHOUSE, NumOfShelf.ONE));
+        inputClient.add(new ResourcePosition(Resource.SHIELD, Place.CHEST, null));
+        inputClient.add(new ResourcePosition(Resource.SHIELD, Place.CHEST, null));
+        inputClient.add(new ResourcePosition(Resource.COIN, Place.WAREHOUSE, NumOfShelf.THREE));
         List <ResourcePosition> outputClient = new ArrayList<>();
-        outputClient.add(new ResourcePosition(1, Resource.COIN, Place.CHEST, null));
-        outputClient.add(new ResourcePosition(3, Resource.STONE, Place.CHEST, null));
+        outputClient.add(new ResourcePosition(Resource.COIN, Place.CHEST, null));
+        outputClient.add(new ResourcePosition(Resource.STONE, Place.CHEST, null));
+        outputClient.add(new ResourcePosition(Resource.STONE, Place.CHEST, null));
+        outputClient.add(new ResourcePosition(Resource.STONE, Place.CHEST, null));
 
 
         List <LeaderEffect> leaderEffects = new ArrayList<>();
@@ -123,16 +128,19 @@ public class StartProductionTest {
         Warehouse myWarehouse = me.getBoard().getWarehouse();
         Chest myChest = me.getBoard().getChest();
         List <ResourcePosition> resInWarehouse = new ArrayList<>();
-        resInWarehouse.add(new ResourcePosition(1, Resource.STONE, Place.WAREHOUSE, NumOfShelf.ONE));
-        resInWarehouse.add(new ResourcePosition(1, Resource.SHIELD, Place.WAREHOUSE, NumOfShelf.TWO));
-        resInWarehouse.add(new ResourcePosition(1, Resource.COIN, Place.WAREHOUSE, NumOfShelf.THREE));
-        resInWarehouse.add(new ResourcePosition(1, Resource.COIN, Place.WAREHOUSE, NumOfShelf.THREE));
-        resInWarehouse.add(new ResourcePosition(1, Resource.COIN, Place.WAREHOUSE, NumOfShelf.THREE));
+        resInWarehouse.add(new ResourcePosition(Resource.STONE, Place.WAREHOUSE, NumOfShelf.ONE));
+        resInWarehouse.add(new ResourcePosition(Resource.SHIELD, Place.WAREHOUSE, NumOfShelf.TWO));
+        resInWarehouse.add(new ResourcePosition(Resource.COIN, Place.WAREHOUSE, NumOfShelf.THREE));
+        resInWarehouse.add(new ResourcePosition(Resource.COIN, Place.WAREHOUSE, NumOfShelf.THREE));
+        resInWarehouse.add(new ResourcePosition(Resource.COIN, Place.WAREHOUSE, NumOfShelf.THREE));
         myWarehouse.incrementResource(resInWarehouse);
         List <ResourcePosition> resInChest = new ArrayList<>();
-        resInChest.add(new ResourcePosition(2, Resource.SHIELD, Place.CHEST, null));
-        resInChest.add(new ResourcePosition(2, Resource.SERVANT, Place.CHEST, null));
-        resInChest.add(new ResourcePosition(2, Resource.STONE, Place.CHEST, null));
+        resInChest.add(new ResourcePosition(Resource.SHIELD, Place.CHEST, null));
+        resInChest.add(new ResourcePosition(Resource.SERVANT, Place.CHEST, null));
+        resInChest.add(new ResourcePosition(Resource.STONE, Place.CHEST, null));
+        resInChest.add(new ResourcePosition(Resource.SHIELD, Place.CHEST, null));
+        resInChest.add(new ResourcePosition(Resource.SERVANT, Place.CHEST, null));
+        resInChest.add(new ResourcePosition(Resource.STONE, Place.CHEST, null));
         myChest.incrementResource(resInChest);
 
         assertTrue(myWarehouse.getShelf(NumOfShelf.ONE).getResource() == Resource.STONE && myWarehouse.getShelf(NumOfShelf.ONE).getQuantity() == 1);
@@ -195,16 +203,20 @@ public class StartProductionTest {
         DevCard devCard2 = new DevCard(requirements2, 5,1,Colour.PURPLE, input2, output2);
 
         List <ResourcePosition> inputClient = new ArrayList<>();
-        inputClient.add(new ResourcePosition(1, Resource.STONE, Place.WAREHOUSE, NumOfShelf.ONE));
-        inputClient.add(new ResourcePosition(1, Resource.SHIELD, Place.CHEST, null));
-        inputClient.add(new ResourcePosition(1, Resource.SHIELD, Place.CHEST, null));
-        inputClient.add(new ResourcePosition(1, Resource.COIN, Place.WAREHOUSE, NumOfShelf.THREE));
-        inputClient.add(new ResourcePosition(1, Resource.COIN, Place.WAREHOUSE, NumOfShelf.THREE));
-        inputClient.add(new ResourcePosition(1, Resource.COIN, Place.WAREHOUSE, NumOfShelf.THREE));
+        inputClient.add(new ResourcePosition(Resource.STONE, Place.WAREHOUSE, NumOfShelf.ONE));
+        inputClient.add(new ResourcePosition(Resource.SHIELD, Place.CHEST, null));
+        inputClient.add(new ResourcePosition(Resource.SHIELD, Place.CHEST, null));
+        inputClient.add(new ResourcePosition(Resource.COIN, Place.WAREHOUSE, NumOfShelf.THREE));
+        inputClient.add(new ResourcePosition(Resource.COIN, Place.WAREHOUSE, NumOfShelf.THREE));
+        inputClient.add(new ResourcePosition(Resource.COIN, Place.WAREHOUSE, NumOfShelf.THREE));
         List <ResourcePosition> outputClient = new ArrayList<>();
-        outputClient.add(new ResourcePosition(1, Resource.COIN, Place.CHEST, null));
-        outputClient.add(new ResourcePosition(4, Resource.STONE, Place.CHEST, null));
-        outputClient.add(new ResourcePosition(2, Resource.SHIELD, Place.CHEST, null));
+        outputClient.add(new ResourcePosition(Resource.COIN, Place.CHEST, null));
+        outputClient.add(new ResourcePosition(Resource.STONE, Place.CHEST, null));
+        outputClient.add(new ResourcePosition(Resource.STONE, Place.CHEST, null));
+        outputClient.add(new ResourcePosition(Resource.STONE, Place.CHEST, null));
+        outputClient.add(new ResourcePosition(Resource.STONE, Place.CHEST, null));
+        outputClient.add(new ResourcePosition(Resource.SHIELD, Place.CHEST, null));
+        outputClient.add(new ResourcePosition(Resource.SHIELD, Place.CHEST, null));
 
         List <LeaderEffect> leaderEffects = new ArrayList<>();
         List <DevCard> devCards = new ArrayList<>();
@@ -220,16 +232,19 @@ public class StartProductionTest {
         Warehouse myWarehouse = me.getBoard().getWarehouse();
         Chest myChest = me.getBoard().getChest();
         List <ResourcePosition> resInWarehouse = new ArrayList<>();
-        resInWarehouse.add(new ResourcePosition(1, Resource.STONE, Place.WAREHOUSE, NumOfShelf.ONE));
-        resInWarehouse.add(new ResourcePosition(1, Resource.SHIELD, Place.WAREHOUSE, NumOfShelf.TWO));
-        resInWarehouse.add(new ResourcePosition(1, Resource.COIN, Place.WAREHOUSE, NumOfShelf.THREE));
-        resInWarehouse.add(new ResourcePosition(1, Resource.COIN, Place.WAREHOUSE, NumOfShelf.THREE));
-        resInWarehouse.add(new ResourcePosition(1, Resource.COIN, Place.WAREHOUSE, NumOfShelf.THREE));
+        resInWarehouse.add(new ResourcePosition(Resource.STONE, Place.WAREHOUSE, NumOfShelf.ONE));
+        resInWarehouse.add(new ResourcePosition(Resource.SHIELD, Place.WAREHOUSE, NumOfShelf.TWO));
+        resInWarehouse.add(new ResourcePosition(Resource.COIN, Place.WAREHOUSE, NumOfShelf.THREE));
+        resInWarehouse.add(new ResourcePosition(Resource.COIN, Place.WAREHOUSE, NumOfShelf.THREE));
+        resInWarehouse.add(new ResourcePosition(Resource.COIN, Place.WAREHOUSE, NumOfShelf.THREE));
         myWarehouse.incrementResource(resInWarehouse);
         List <ResourcePosition> resInChest = new ArrayList<>();
-        resInChest.add(new ResourcePosition(2, Resource.SHIELD, Place.CHEST, null));
-        resInChest.add(new ResourcePosition(2, Resource.SERVANT, Place.CHEST, null));
-        resInChest.add(new ResourcePosition(2, Resource.STONE, Place.CHEST, null));
+        resInChest.add(new ResourcePosition(Resource.SHIELD, Place.CHEST, null));
+        resInChest.add(new ResourcePosition(Resource.SERVANT, Place.CHEST, null));
+        resInChest.add(new ResourcePosition(Resource.STONE, Place.CHEST, null));
+        resInChest.add(new ResourcePosition(Resource.SHIELD, Place.CHEST, null));
+        resInChest.add(new ResourcePosition(Resource.SERVANT, Place.CHEST, null));
+        resInChest.add(new ResourcePosition(Resource.STONE, Place.CHEST, null));
         myChest.incrementResource(resInChest);
 
         assertTrue(myWarehouse.getShelf(NumOfShelf.ONE).getResource() == Resource.STONE && myWarehouse.getShelf(NumOfShelf.ONE).getQuantity() == 1);
@@ -297,20 +312,24 @@ public class StartProductionTest {
         prodLead.setPlayed(true);
 
         List <ResourcePosition> inputClient = new ArrayList<>();
-        inputClient.add(new ResourcePosition(1, Resource.STONE, Place.CHEST, null));
-        inputClient.add(new ResourcePosition(1, Resource.SHIELD, Place.WAREHOUSE, NumOfShelf.TWO));
-        inputClient.add(new ResourcePosition(1, Resource.SHIELD, Place.CHEST, null));
-        inputClient.add(new ResourcePosition(1, Resource.COIN, Place.WAREHOUSE, NumOfShelf.THREE));
-        inputClient.add(new ResourcePosition(1, Resource.COIN, Place.WAREHOUSE, NumOfShelf.THREE));
-        inputClient.add(new ResourcePosition(1, Resource.COIN, Place.WAREHOUSE, NumOfShelf.THREE));
+        inputClient.add(new ResourcePosition(Resource.STONE, Place.CHEST, null));
+        inputClient.add(new ResourcePosition(Resource.SHIELD, Place.WAREHOUSE, NumOfShelf.TWO));
+        inputClient.add(new ResourcePosition(Resource.SHIELD, Place.CHEST, null));
+        inputClient.add(new ResourcePosition(Resource.COIN, Place.WAREHOUSE, NumOfShelf.THREE));
+        inputClient.add(new ResourcePosition(Resource.COIN, Place.WAREHOUSE, NumOfShelf.THREE));
+        inputClient.add(new ResourcePosition(Resource.COIN, Place.WAREHOUSE, NumOfShelf.THREE));
         List <ResourcePosition> outputClient = new ArrayList<>();
-        outputClient.add(new ResourcePosition(1, Resource.COIN, Place.CHEST, null));
-        outputClient.add(new ResourcePosition(4, Resource.STONE, Place.CHEST, null));
-        outputClient.add(new ResourcePosition(2, Resource.SHIELD, Place.CHEST, null));
+        outputClient.add(new ResourcePosition(Resource.COIN, Place.CHEST, null));
+        outputClient.add(new ResourcePosition(Resource.STONE, Place.CHEST, null));
+        outputClient.add(new ResourcePosition(Resource.STONE, Place.CHEST, null));
+        outputClient.add(new ResourcePosition(Resource.STONE, Place.CHEST, null));
+        outputClient.add(new ResourcePosition(Resource.STONE, Place.CHEST, null));
+        outputClient.add(new ResourcePosition(Resource.SHIELD, Place.CHEST, null));
+        outputClient.add(new ResourcePosition(Resource.SHIELD, Place.CHEST, null));
 
         List <LeaderEffect> leaderEffects = new ArrayList<>();
-        leaderEffects.add(new ProductionEffect(new ResourcePosition(1, Resource.SERVANT, Place.WAREHOUSE, NumOfShelf.ONE),
-                                               new ResourcePosition(1, Resource.COIN, Place.CHEST, null)));
+        leaderEffects.add(new ProductionEffect(new ResourcePosition(Resource.SERVANT, Place.WAREHOUSE, NumOfShelf.ONE),
+                                               new ResourcePosition(Resource.COIN, Place.CHEST, null)));
         List <DevCard> devCards = new ArrayList<>();
         devCards.add(devCard);
         devCards.add(devCard2);
@@ -325,16 +344,19 @@ public class StartProductionTest {
         Warehouse myWarehouse = me.getBoard().getWarehouse();
         Chest myChest = me.getBoard().getChest();
         List <ResourcePosition> resInWarehouse = new ArrayList<>();
-        resInWarehouse.add(new ResourcePosition(1, Resource.SERVANT, Place.WAREHOUSE, NumOfShelf.ONE));
-        resInWarehouse.add(new ResourcePosition(1, Resource.SHIELD, Place.WAREHOUSE, NumOfShelf.TWO));
-        resInWarehouse.add(new ResourcePosition(1, Resource.COIN, Place.WAREHOUSE, NumOfShelf.THREE));
-        resInWarehouse.add(new ResourcePosition(1, Resource.COIN, Place.WAREHOUSE, NumOfShelf.THREE));
-        resInWarehouse.add(new ResourcePosition(1, Resource.COIN, Place.WAREHOUSE, NumOfShelf.THREE));
+        resInWarehouse.add(new ResourcePosition(Resource.SERVANT, Place.WAREHOUSE, NumOfShelf.ONE));
+        resInWarehouse.add(new ResourcePosition(Resource.SHIELD, Place.WAREHOUSE, NumOfShelf.TWO));
+        resInWarehouse.add(new ResourcePosition(Resource.COIN, Place.WAREHOUSE, NumOfShelf.THREE));
+        resInWarehouse.add(new ResourcePosition(Resource.COIN, Place.WAREHOUSE, NumOfShelf.THREE));
+        resInWarehouse.add(new ResourcePosition(Resource.COIN, Place.WAREHOUSE, NumOfShelf.THREE));
         myWarehouse.incrementResource(resInWarehouse);
         List <ResourcePosition> resInChest = new ArrayList<>();
-        resInChest.add(new ResourcePosition(2, Resource.SHIELD, Place.CHEST, null));
-        resInChest.add(new ResourcePosition(2, Resource.SERVANT, Place.CHEST, null));
-        resInChest.add(new ResourcePosition(2, Resource.STONE, Place.CHEST, null));
+        resInChest.add(new ResourcePosition(Resource.SHIELD, Place.CHEST, null));
+        resInChest.add(new ResourcePosition(Resource.SERVANT, Place.CHEST, null));
+        resInChest.add(new ResourcePosition(Resource.STONE, Place.CHEST, null));
+        resInChest.add(new ResourcePosition(Resource.SHIELD, Place.CHEST, null));
+        resInChest.add(new ResourcePosition(Resource.SERVANT, Place.CHEST, null));
+        resInChest.add(new ResourcePosition(Resource.STONE, Place.CHEST, null));
         myChest.incrementResource(resInChest);
 
         assertTrue(myWarehouse.getShelf(NumOfShelf.ONE).getResource() == Resource.SERVANT && myWarehouse.getShelf(NumOfShelf.ONE).getQuantity() == 1);
@@ -408,24 +430,27 @@ public class StartProductionTest {
         depotLead.setPlayed(true);
 
         List <ResourcePosition> inputClient = new ArrayList<>();
-        inputClient.add(new ResourcePosition(1, Resource.STONE, Place.CHEST, null));
-        inputClient.add(new ResourcePosition(1, Resource.SHIELD, Place.WAREHOUSE, NumOfShelf.TWO));
-        inputClient.add(new ResourcePosition(1, Resource.STONE, Place.CHEST, null));
-        inputClient.add(new ResourcePosition(1, Resource.STONE, Place.WAREHOUSE, NumOfShelf.ONE));
-        inputClient.add(new ResourcePosition(1, Resource.COIN, Place.WAREHOUSE, NumOfShelf.THREE));
-        inputClient.add(new ResourcePosition(1, Resource.COIN, Place.WAREHOUSE, NumOfShelf.THREE));
+        inputClient.add(new ResourcePosition(Resource.STONE, Place.CHEST, null));
+        inputClient.add(new ResourcePosition(Resource.SHIELD, Place.WAREHOUSE, NumOfShelf.TWO));
+        inputClient.add(new ResourcePosition(Resource.STONE, Place.CHEST, null));
+        inputClient.add(new ResourcePosition(Resource.STONE, Place.WAREHOUSE, NumOfShelf.ONE));
+        inputClient.add(new ResourcePosition(Resource.COIN, Place.WAREHOUSE, NumOfShelf.THREE));
+        inputClient.add(new ResourcePosition(Resource.COIN, Place.WAREHOUSE, NumOfShelf.THREE));
         List <ResourcePosition> outputClient = new ArrayList<>();
-        outputClient.add(new ResourcePosition(3, Resource.STONE, Place.CHEST, null));
-        outputClient.add(new ResourcePosition(1, Resource.SERVANT, Place.CHEST, null));
-        outputClient.add(new ResourcePosition(2, Resource.SHIELD, Place.CHEST, null));
-        outputClient.add(new ResourcePosition(1, Resource.STONE, Place.CHEST, null));
+        outputClient.add(new ResourcePosition(Resource.STONE, Place.CHEST, null));
+        outputClient.add(new ResourcePosition(Resource.STONE, Place.CHEST, null));
+        outputClient.add(new ResourcePosition(Resource.STONE, Place.CHEST, null));
+        outputClient.add(new ResourcePosition(Resource.SERVANT, Place.CHEST, null));
+        outputClient.add(new ResourcePosition(Resource.SHIELD, Place.CHEST, null));
+        outputClient.add(new ResourcePosition(Resource.SHIELD, Place.CHEST, null));
+        outputClient.add(new ResourcePosition(Resource.STONE, Place.CHEST, null));
 
         List <DevCard> devCards = new ArrayList<>();
         devCards.add(devCard);
         devCards.add(devCard2);
         List <LeaderEffect> leaderEffects = new ArrayList<>();
-        leaderEffects.add(new ProductionEffect(new ResourcePosition(1, Resource.COIN, Place.WAREHOUSE, NumOfShelf.THREE),
-                                               new ResourcePosition(1, Resource.COIN, Place.CHEST, null)));
+        leaderEffects.add(new ProductionEffect(new ResourcePosition(Resource.COIN, Place.WAREHOUSE, NumOfShelf.THREE),
+                                               new ResourcePosition(Resource.COIN, Place.CHEST, null)));
         leaderEffects.add(new DepotEffect(Resource.COIN));
 
         Action production = new StartProduction(devCards, inputClient, outputClient, leaderEffects);
@@ -437,16 +462,19 @@ public class StartProductionTest {
         me.getBoard().getDevSpace().addCard(devCard, DevSpaceSlot.ONE);
         me.getBoard().getDevSpace().addCard(devCard2, DevSpaceSlot.TWO);
         List <ResourcePosition> resInWarehouse = new ArrayList<>();
-        resInWarehouse.add(new ResourcePosition(1, Resource.STONE, Place.WAREHOUSE, NumOfShelf.ONE));
-        resInWarehouse.add(new ResourcePosition(1, Resource.SHIELD, Place.WAREHOUSE, NumOfShelf.TWO));
-        resInWarehouse.add(new ResourcePosition(1, Resource.COIN, Place.WAREHOUSE, NumOfShelf.THREE));
-        resInWarehouse.add(new ResourcePosition(1, Resource.COIN, Place.WAREHOUSE, NumOfShelf.THREE));
-        resInWarehouse.add(new ResourcePosition(1, Resource.COIN, Place.WAREHOUSE, NumOfShelf.THREE));
+        resInWarehouse.add(new ResourcePosition(Resource.STONE, Place.WAREHOUSE, NumOfShelf.ONE));
+        resInWarehouse.add(new ResourcePosition(Resource.SHIELD, Place.WAREHOUSE, NumOfShelf.TWO));
+        resInWarehouse.add(new ResourcePosition(Resource.COIN, Place.WAREHOUSE, NumOfShelf.THREE));
+        resInWarehouse.add(new ResourcePosition(Resource.COIN, Place.WAREHOUSE, NumOfShelf.THREE));
+        resInWarehouse.add(new ResourcePosition(Resource.COIN, Place.WAREHOUSE, NumOfShelf.THREE));
         me.getBoard().getWarehouse().incrementResource(resInWarehouse);
         List <ResourcePosition> resInChest = new ArrayList<>();
-        resInChest.add(new ResourcePosition(2, Resource.SHIELD, Place.CHEST, null));
-        resInChest.add(new ResourcePosition(2, Resource.SERVANT, Place.CHEST, null));
-        resInChest.add(new ResourcePosition(2, Resource.STONE, Place.CHEST, null));
+        resInChest.add(new ResourcePosition(Resource.SHIELD, Place.CHEST, null));
+        resInChest.add(new ResourcePosition(Resource.SERVANT, Place.CHEST, null));
+        resInChest.add(new ResourcePosition(Resource.STONE, Place.CHEST, null));
+        resInChest.add(new ResourcePosition(Resource.SHIELD, Place.CHEST, null));
+        resInChest.add(new ResourcePosition(Resource.SERVANT, Place.CHEST, null));
+        resInChest.add(new ResourcePosition(Resource.STONE, Place.CHEST, null));
         me.getBoard().getChest().incrementResource(resInChest);
 
         Warehouse myWarehouse = me.getBoard().getWarehouse();

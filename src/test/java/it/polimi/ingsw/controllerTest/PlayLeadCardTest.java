@@ -77,16 +77,19 @@ public class PlayLeadCardTest {
         Action action = new PlayLeadCard(1);
 
         List <ResourcePosition> resInWarehouse = new ArrayList<>();
-        resInWarehouse.add(new ResourcePosition(1, Resource.STONE, Place.WAREHOUSE, NumOfShelf.ONE));
-        resInWarehouse.add(new ResourcePosition(1, Resource.SHIELD, Place.WAREHOUSE, NumOfShelf.TWO));
-        resInWarehouse.add(new ResourcePosition(1, Resource.COIN, Place.WAREHOUSE, NumOfShelf.THREE));
-        resInWarehouse.add(new ResourcePosition(1, Resource.COIN, Place.WAREHOUSE, NumOfShelf.THREE));
-        resInWarehouse.add(new ResourcePosition(1, Resource.COIN, Place.WAREHOUSE, NumOfShelf.THREE));
+        resInWarehouse.add(new ResourcePosition(Resource.STONE, Place.WAREHOUSE, NumOfShelf.ONE));
+        resInWarehouse.add(new ResourcePosition(Resource.SHIELD, Place.WAREHOUSE, NumOfShelf.TWO));
+        resInWarehouse.add(new ResourcePosition(Resource.COIN, Place.WAREHOUSE, NumOfShelf.THREE));
+        resInWarehouse.add(new ResourcePosition(Resource.COIN, Place.WAREHOUSE, NumOfShelf.THREE));
+        resInWarehouse.add(new ResourcePosition(Resource.COIN, Place.WAREHOUSE, NumOfShelf.THREE));
         me.getBoard().getWarehouse().incrementResource(resInWarehouse);
         List <ResourcePosition> resInChest = new ArrayList<>();
-        resInChest.add(new ResourcePosition(2, Resource.SHIELD, Place.CHEST, null));
-        resInChest.add(new ResourcePosition(2, Resource.SERVANT, Place.CHEST, null));
-        resInChest.add(new ResourcePosition(2, Resource.STONE, Place.CHEST, null));
+        resInChest.add(new ResourcePosition(Resource.SHIELD, Place.CHEST, null));
+        resInChest.add(new ResourcePosition(Resource.SHIELD, Place.CHEST, null));
+        resInChest.add(new ResourcePosition(Resource.SERVANT, Place.CHEST, null));
+        resInChest.add(new ResourcePosition(Resource.SERVANT, Place.CHEST, null));
+        resInChest.add(new ResourcePosition(Resource.STONE, Place.CHEST, null));
+        resInChest.add(new ResourcePosition(Resource.STONE, Place.CHEST, null));
         me.getBoard().getChest().incrementResource(resInChest);
 
         try {

@@ -1,8 +1,11 @@
 package it.polimi.ingsw.server.controller.singleplayer;
 
+import it.polimi.ingsw.messages.clientMessages.LeaderCardSelection;
 import it.polimi.ingsw.server.controller.GameController;
 import it.polimi.ingsw.messages.serverMessages.SetupMessage;
 import it.polimi.ingsw.messages.actions.Action;
+import it.polimi.ingsw.server.controller.GamePhase;
+import it.polimi.ingsw.server.controller.UserAction;
 import it.polimi.ingsw.server.model.*;
 import it.polimi.ingsw.server.model.gameboard.GameBoard;
 import it.polimi.ingsw.server.serverNetwork.Server;
@@ -33,7 +36,8 @@ public class SinglePlayerController extends GameController {
 
     public void makeTokenAction() {
         tokens.add(tokens.remove(0));
-        tokens.get(tokens.size() - 1).doSoloAction();
+        LorenzoAction actionType = tokens.get(tokens.size() - 1).doSoloAction();
+        getActivePlayers().get(0).setLorenzoActionDone(actionType);
     }
 
     @Override
@@ -68,8 +72,29 @@ public class SinglePlayerController extends GameController {
 
     @Override
     public void setup() {
+        setPhase(GamePhase.SETUP);
         getActivePlayers().get(0).getBoard().getItinerary().setBlackCrossPosition(0);
-        //getActivePlayers().get(0).setupDraw();
+        getGame().getMarket().notifyNew();
+        for (DevDeck d : getGame().getDevDecks()){
+            d.notifyNew();
+        }
+        getActivePlayers().get(0).setActionDone(UserAction.INITIAL_DISPOSITION);
+        initialDraw();
+    }
+
+    private void initialDraw(){
+        getActivePlayers().get(0).setupDraw();
+        getActivePlayers().get(0).setActionDone(UserAction.SETUP_DRAW);
+    }
+
+    public void initialDiscardLeader(int[] indexes){
+        getActivePlayers().get(0).setupDiscard(indexes[0], indexes[1], 0);
+        getActivePlayers().get(0).setActionDone(UserAction.SELECT_LEADCARD);
+    }
+
+    public void startMatch(){
+        setPhase(GamePhase.STARTED);
+        getActivePlayers().get(0).setTurnActive(true , false, "Lorenzo De Medici");
     }
 
     @Override
@@ -80,7 +105,7 @@ public class SinglePlayerController extends GameController {
             int score = calculateScore(getActivePlayers().get(0));
             getActiveConnections().get(0).sendSocketMessage(new SetupMessage("You won the game! Your score is " + score));
         }
-        setStarted(-1);
+        setPhase(GamePhase.ENDED);
     }
 
     private int calculateScore(Player player) {
