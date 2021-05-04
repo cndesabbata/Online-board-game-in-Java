@@ -95,7 +95,7 @@ public class Player extends Observable {
     }
 
     public void requestResource(){
-        notifySingleObserver(new CustomMessage("Choose a resource to store in the Warehouse"), nickname);
+        notifySingleObserver(new ResourceRequest("Choose a resource to store in the Warehouse"), nickname);
     }
 
     public void requestFirstTurn(){

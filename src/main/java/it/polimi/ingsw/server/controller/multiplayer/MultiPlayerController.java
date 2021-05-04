@@ -46,12 +46,13 @@ public class MultiPlayerController extends GameController {
             currentPlayerIndex = 0;
             return getActivePlayers().get(0);
             //else if(isStarted() == "SETUP" && currentPlayer.getActionDone == UserAction.SETUP_DISCARD)                                                                           //used when we have to pass from the last player that has to discard the leadcards to the first one that has to choose the initial resources
+            //getActivePlayers().get(0).setActionDone = UserAction.REQUEST_RESOURCE_FAITHPOINT;
             //currentPlayerIndex = 1;
             //return getActivePlayers().get(1);
             //else if(isStarted() == "SETUP" && currentPlayer.getActionDone == UserAction.REQUEST_RESOURCE_FAITHPOINT)
-            //currentPlayerIndex = 1;
+            //currentPlayerIndex = 0;
             //setStarted("IN CORSO");
-            //return getActivePlayers().get(1);
+            //return getActivePlayers().get(0);
         } else {
             currentPlayerIndex++;
             return getActivePlayers().get(currentPlayerIndex);
@@ -79,24 +80,21 @@ public class MultiPlayerController extends GameController {
 
     /*public void remove(int index1, int index2){
         currentPlayer.setupDiscard(index1, index2);
+        currentPlayer.setActionDone(UserAction.SETUP_DISCARD);
         changeTurn();
         if(currentPlayer.getActionDone() == null)
             add();
-        else if(currentPlayer.getActionDone() == UserAction.SETUP_DRAW)
+        else if(currentPlayer.getActionDone() == UserAction.SETUP_DISCARDED)
             currentPlayer.requestResource();
     }*/
 
-    /*public void incrementResourceFaithpoint(ResourcePosition rp){
-        List<ResourcePosition> rps = new ArrayList<ResourcePosition>();
-        rps.add(rp);
+    /*public void incrementResourceFaithpoint(List<ResourcePosition> rps){
         currentPlayer.getBoard().getWarehouse().incrementResource(rps);
-        if(currentPlayerIndex == 2)
+        if(currentPlayerIndex == 2 || currentPlayerIndex == 3)
             currentPlayer.getBoard().getItinerary().updatePosition(1);
-        else if(currentPlayerIndex == 3)
-            currentPlayer.getBoard().getItinerary().updatePosition(2);
         currentPlayer.setActionDone(UserAction.SETUP_RESOURCE_FAITHPOINT);
         changeTurn();
-        if(currentPlayer.getActionDone() == UserAction.SETUP_DRAW)
+        if(currentPlayer.getActionDone() == UserAction.SETUP_DISCARD)
             currentPlayer.requestResource();
         else if(currentPlayer.getActionDone() == UserAction.SETUP_RESOURCE_FAITHPOINT)
             currentPlayer.requestFirstTurn();
