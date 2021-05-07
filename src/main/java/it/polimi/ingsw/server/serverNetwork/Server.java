@@ -1,13 +1,10 @@
 package it.polimi.ingsw.server.serverNetwork;
 
 import it.polimi.ingsw.constants.Constants;
-import it.polimi.ingsw.messages.serverMessages.CustomMessage;
+import it.polimi.ingsw.messages.serverMessages.*;
 import it.polimi.ingsw.server.controller.GameController;
 import it.polimi.ingsw.server.controller.multiplayer.MultiPlayerController;
 import it.polimi.ingsw.server.controller.singleplayer.SinglePlayerController;
-import it.polimi.ingsw.messages.serverMessages.SetupMessage;
-import it.polimi.ingsw.messages.serverMessages.ErrorMessage;
-import it.polimi.ingsw.messages.serverMessages.PlayersNumberMessage;
 
 import javax.swing.text.html.CSS;
 import java.util.*;
@@ -90,7 +87,7 @@ public class Server {
                     ", you are the lobby host, please choose the number of players: [1...4]"));
         } else if (waitingList.size() == totalPlayers) {
             VirtualView v = find(connection, clientToConnection);
-            v.sendAll(new SetupMessage("Player number reached. The match is starting."));
+            v.sendAll(new SetupMessage("Player number reached. The match is starting.", AnswerType.INFORMATION));
             waitingList.clear();
             for (ClientConnection c : gameControllers.get(0).getActiveConnections()){
                 gameControllers.get(0).addObserver(find(c, clientToConnection));
@@ -98,7 +95,7 @@ public class Server {
             gameControllers.get(0).setup();
         } else {
             VirtualView v = find(connection, clientToConnection);
-            v.sendAll(new SetupMessage((totalPlayers - waitingList.size()) + " slots left."));
+            v.sendAll(new SetupMessage((totalPlayers - waitingList.size()) + " slots left.", AnswerType.INFORMATION));
         }
     }
 
@@ -128,27 +125,27 @@ public class Server {
                 VirtualView virtualView = new VirtualView(nickname, connection);
                 clientToConnection.put(virtualView, connection);
                 connection.sendSocketMessage(new SetupMessage("Connection was successfully set-up!" +
-                        " You are now reconnected."));
+                        " You are now reconnected.", AnswerType.CONFIRMATION));
                 return;
             }
         }
-        ErrorMessage error = new ErrorMessage("There is no active match with an inactive player with such nickname");
+        ErrorMessage error = new ErrorMessage("There is no active match with an inactive player with such nickname", ErrorType.RECONNECTION);
         connection.sendSocketMessage(error);
     }
 
     public synchronized void registerClient(String nickname, ClientConnection connection) throws InterruptedException{
         for (GameController gc : gameControllers){
             if (gc.getGame().getPlayers().stream().anyMatch(p -> p.getNickname().equals(nickname))){
-                ErrorMessage error = new ErrorMessage("This nickname is already in use, please choose another one");
+                ErrorMessage error = new ErrorMessage("This nickname is already in use, please choose another one.", ErrorType.DUPLICATE_NICKNAME);
                 connection.sendSocketMessage(error);
             }
         }
         VirtualView virtualView = new VirtualView(nickname, connection);
         clientToConnection.put(virtualView, connection);
         connection.sendSocketMessage(new SetupMessage("Connection was successfully set-up!" +
-                " You are now connected."));
+                " You are now connected.", AnswerType.CONFIRMATION));
         if (waitingList.size() > 0) {
-            virtualView.sendAll(new SetupMessage(nickname + " joined the game"));
+            virtualView.sendAll(new SetupMessage(nickname + " joined the game", AnswerType.INFORMATION));
         }
         lobby(connection);
     }

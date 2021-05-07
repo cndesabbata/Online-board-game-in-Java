@@ -1,11 +1,11 @@
-package it.polimi.ingsw.server.serverNetwork;
+/*package it.polimi.ingsw.server.serverNetwork;
 
 import it.polimi.ingsw.messages.actions.Action;
 import it.polimi.ingsw.messages.clientMessages.*;
+import it.polimi.ingsw.messages.serverMessages.ErrorType;
 import it.polimi.ingsw.server.controller.GameController;
 import it.polimi.ingsw.messages.*;
 import it.polimi.ingsw.messages.serverMessages.ErrorMessage;
-import it.polimi.ingsw.messages.serverMessages.PlayersNumberMessage;
 import it.polimi.ingsw.server.controller.GamePhase;
 import it.polimi.ingsw.server.controller.UserAction;
 import it.polimi.ingsw.server.controller.multiplayer.MultiPlayerController;
@@ -92,8 +92,9 @@ public class ClientConnection implements Runnable {
                     Thread.currentThread().interrupt();
                 }
             }
-            else sendSocketMessage(new ErrorMessage("Invalid action: you already have a nickname"));
+            else sendSocketMessage(new ErrorMessage("Invalid action: you already have a nickname.", ErrorType.WRONG_MESSAGE));
         }
+
         else if (clientMessage instanceof Reconnect){
             if (gameController == null && playerNickname == null){
                 try {
@@ -104,46 +105,53 @@ public class ClientConnection implements Runnable {
                     Thread.currentThread().interrupt();
                 }
             }
-            else sendSocketMessage(new ErrorMessage("Invalid action: you are already connected"));
+            else sendSocketMessage(new ErrorMessage(
+                    "Invalid action: you are already connected.", ErrorType.WRONG_MESSAGE));
         }
+
         else if (clientMessage instanceof SetPlayersNumber){
             if (((SetPlayersNumber) clientMessage).getNumOfPlayers() < 1
                     || ((SetPlayersNumber) clientMessage).getNumOfPlayers() > 4){
-                sendSocketMessage(new ErrorMessage("Not a valid input, please provide a number between 1 and 4"));
-                sendSocketMessage(new PlayersNumberMessage("Choose the number of players: [1...4]"));
+                sendSocketMessage(new ErrorMessage(
+                        "Not a valid input, please provide a number between 1 and 4.", ErrorType.INVALID_CHOICE));
             }
             else server.setTotalPlayers(((SetPlayersNumber) clientMessage).getNumOfPlayers(), this);
         }
+
         else if (clientMessage instanceof LeaderCardSelection){
             if (checkMessageMultiplayer(GamePhase.SETUP)
                     && ((MultiPlayerController) getGameController()).getCurrentPlayer().getActionDone() == UserAction.SETUP_DRAW){
                 if (checkLeadCardSelection((LeaderCardSelection) clientMessage))
                 ((MultiPlayerController) getGameController()).initialDiscardLeader(((LeaderCardSelection) clientMessage).getIndexes());
-                else sendSocketMessage(new ErrorMessage("Indexes out of bound."));
+                else sendSocketMessage(new ErrorMessage("Indexes out of bound.", ErrorType.INVALID_CHOICE));
             }
             else if (checkMessageSinglePlayer(GamePhase.SETUP)
                     && getGameController().getActivePlayers().get(0).getActionDone() == UserAction.SETUP_DRAW){
                 if (checkLeadCardSelection((LeaderCardSelection) clientMessage))
                     ((SinglePlayerController) getGameController()).initialDiscardLeader(((LeaderCardSelection) clientMessage).getIndexes());
-                else sendSocketMessage(new ErrorMessage("Indexes out of bound."));
+                else sendSocketMessage(new ErrorMessage("Indexes out of bound.", ErrorType.INVALID_CHOICE));
             }
-            else sendSocketMessage(new ErrorMessage("Not a valid action; the setup phase is ended or it is not yet your turn."));
+            else sendSocketMessage(new ErrorMessage(
+                    "Not a valid action; the setup phase is ended or it is not yet your turn.", ErrorType.WRONG_MESSAGE));
         }
+
         else if (clientMessage instanceof ResourceSelection){
             if (checkMessageMultiplayer(GamePhase.SETUP)
                     && ((MultiPlayerController) getGameController()).getCurrentPlayer().getActionDone() == UserAction.SELECT_LEADCARD){
                 if (checkResourceSelection((ResourceSelection) clientMessage))
                     ((MultiPlayerController) getGameController()).addInitialResources(((ResourceSelection) clientMessage).getResources());
-                else sendSocketMessage(new ErrorMessage("Invalid resources choice."));
+                else sendSocketMessage(new ErrorMessage("Invalid resources choice.", ErrorType.INVALID_CHOICE));
             }
             else if (checkMessageSinglePlayer(GamePhase.SETUP)
                     && getGameController().getActivePlayers().get(0).getActionDone() == UserAction.SELECT_LEADCARD){
                 if (checkResourceSelection((ResourceSelection) clientMessage))
                     ((SinglePlayerController) getGameController()).startMatch();
-                else sendSocketMessage(new ErrorMessage("Invalid resources choice."));
+                else sendSocketMessage(new ErrorMessage("Invalid resources choice.", ErrorType.INVALID_CHOICE));
             }
-            else sendSocketMessage(new ErrorMessage("Not a valid action; the setup phase is ended or it is not yet your turn."));
+            else sendSocketMessage(new ErrorMessage(
+                    "Not a valid action; the setup phase is ended or it is not yet your turn.", ErrorType.WRONG_MESSAGE));
         }
+
         else if (clientMessage instanceof EndTurn){
             if (checkMessageMultiplayer(GamePhase.STARTED)
                 && ((MultiPlayerController) getGameController()).getCurrentPlayer().isExclusiveActionDone()){
@@ -153,18 +161,21 @@ public class ClientConnection implements Runnable {
                     && getGameController().getActivePlayers().get(0).isExclusiveActionDone()){
                 ((SinglePlayerController) getGameController()).makeTokenAction();
             }
-            else sendSocketMessage(new ErrorMessage("Not a valid action; you cannot end your turn at the moment."));
+            else sendSocketMessage(new ErrorMessage(
+                    "Not a valid action; you cannot end your turn at the moment.", ErrorType.WRONG_MESSAGE));
         }
+
         else if (clientMessage instanceof Action){
             if (checkMessageMultiplayer(GamePhase.STARTED) || checkMessageSinglePlayer(GamePhase.STARTED)){
                 try{
                     ((Action) clientMessage).checkAction(((MultiPlayerController) getGameController()).getCurrentPlayer());
                 } catch (WrongActionException e){
-                    sendSocketMessage(new ErrorMessage(e.getMessage()));
+                    sendSocketMessage(new ErrorMessage(e.getMessage(), ErrorType.WRONG_ACTION));
                 }
                 getGameController().makeAction((Action) clientMessage);
             }
-            else sendSocketMessage(new ErrorMessage("Not a valid action; please wait for your turn."));
+            else sendSocketMessage(new ErrorMessage(
+                    "Not a valid action; please wait for your turn.", ErrorType.WRONG_MESSAGE));
         }
     }
 
@@ -217,4 +228,4 @@ public class ClientConnection implements Runnable {
     public String getPlayerNickname() {
         return playerNickname;
     }
-}
+}*/

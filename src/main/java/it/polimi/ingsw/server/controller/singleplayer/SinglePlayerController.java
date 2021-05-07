@@ -1,6 +1,7 @@
 package it.polimi.ingsw.server.controller.singleplayer;
 
 import it.polimi.ingsw.messages.clientMessages.LeaderCardSelection;
+import it.polimi.ingsw.messages.serverMessages.CustomMessage;
 import it.polimi.ingsw.server.controller.GameController;
 import it.polimi.ingsw.messages.serverMessages.SetupMessage;
 import it.polimi.ingsw.messages.actions.Action;
@@ -100,10 +101,10 @@ public class SinglePlayerController extends GameController {
     @Override
     public void endGame() {
         if (!win) {
-            getActiveConnections().get(0).sendSocketMessage(new SetupMessage("You lost the game: Lorenzo has won!"));
+            getActiveConnections().get(0).sendSocketMessage(new CustomMessage("You lost the game: Lorenzo has won!"));
         } else {
             int score = calculateScore(getActivePlayers().get(0));
-            getActiveConnections().get(0).sendSocketMessage(new SetupMessage("You won the game! Your score is " + score));
+            getActiveConnections().get(0).sendSocketMessage(new CustomMessage("You won the game! Your score is " + score));
         }
         setPhase(GamePhase.ENDED);
     }

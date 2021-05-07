@@ -1,8 +1,8 @@
 package it.polimi.ingsw.messages.clientMessages;
 
-import java.io.Serializable;
+import it.polimi.ingsw.messages.Message;
 
-public class SetNickname implements Serializable {
+public class SetNickname implements Message {
     private final String nickname;
 
     public SetNickname(String nickname) {
