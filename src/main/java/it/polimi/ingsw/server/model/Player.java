@@ -68,7 +68,7 @@ public class Player extends Observable {
 
     public void setTurnActive(boolean turnActive , boolean gameSetup, String oldPlayer) {
         this.turnActive = turnActive;
-        if(!gameSetup && turnActive == true)
+        if(!gameSetup && turnActive)
             notifyObservers(new TurnChange(nickname, oldPlayer));
     }
 
