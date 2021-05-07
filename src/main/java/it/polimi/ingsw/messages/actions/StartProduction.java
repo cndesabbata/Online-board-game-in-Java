@@ -15,6 +15,7 @@ public class StartProduction implements Action {
     private final List<ResourcePosition> outputRes;
     private final List<ResourcePosition> inputRes;
     private final List<LeaderEffect> leaderEffects;
+    // private final List<Integer> chosenCards;
 
 
     public StartProduction(List<DevCard> devCards, List<ResourcePosition> inputRes,

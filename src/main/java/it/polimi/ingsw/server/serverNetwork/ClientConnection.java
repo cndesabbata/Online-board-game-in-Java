@@ -94,7 +94,6 @@ public class ClientConnection implements Runnable {
             }
             else sendSocketMessage(new ErrorMessage("Invalid action: you already have a nickname.", ErrorType.WRONG_MESSAGE));
         }
-
         else if (clientMessage instanceof Reconnect){
             if (gameController == null && playerNickname == null){
                 try {
@@ -108,7 +107,6 @@ public class ClientConnection implements Runnable {
             else sendSocketMessage(new ErrorMessage(
                     "Invalid action: you are already connected.", ErrorType.WRONG_MESSAGE));
         }
-
         else if (clientMessage instanceof SetPlayersNumber){
             if (((SetPlayersNumber) clientMessage).getNumOfPlayers() < 1
                     || ((SetPlayersNumber) clientMessage).getNumOfPlayers() > 4){
@@ -117,7 +115,6 @@ public class ClientConnection implements Runnable {
             }
             else server.setTotalPlayers(((SetPlayersNumber) clientMessage).getNumOfPlayers(), this);
         }
-
         else if (clientMessage instanceof LeaderCardSelection){
             if (checkMessageMultiplayer(GamePhase.SETUP)
                     && ((MultiPlayerController) getGameController()).getCurrentPlayer().getActionDone() == UserAction.SETUP_DRAW){

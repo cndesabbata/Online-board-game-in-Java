@@ -87,7 +87,7 @@ public class Server {
                     ", you are the lobby host, please choose the number of players: [1...4]"));
         } else if (waitingList.size() == totalPlayers) {
             VirtualView v = find(connection, clientToConnection);
-            v.sendAll(new SetupMessage("Player number reached. The match is starting.", AnswerType.INFORMATION));
+            v.sendAll(new SetupMessage("Player number reached. The match is starting."));
             waitingList.clear();
             for (ClientConnection c : gameControllers.get(0).getActiveConnections()){
                 gameControllers.get(0).addObserver(find(c, clientToConnection));
@@ -95,7 +95,7 @@ public class Server {
             gameControllers.get(0).setup();
         } else {
             VirtualView v = find(connection, clientToConnection);
-            v.sendAll(new SetupMessage((totalPlayers - waitingList.size()) + " slots left.", AnswerType.INFORMATION));
+            v.sendAll(new SetupMessage((totalPlayers - waitingList.size()) + " slots left."));
         }
     }
 
@@ -125,7 +125,7 @@ public class Server {
                 VirtualView virtualView = new VirtualView(nickname, connection);
                 clientToConnection.put(virtualView, connection);
                 connection.sendSocketMessage(new SetupMessage("Connection was successfully set-up!" +
-                        " You are now reconnected.", AnswerType.CONFIRMATION));
+                        " You are now reconnected."));
                 return;
             }
         }
@@ -143,9 +143,9 @@ public class Server {
         VirtualView virtualView = new VirtualView(nickname, connection);
         clientToConnection.put(virtualView, connection);
         connection.sendSocketMessage(new SetupMessage("Connection was successfully set-up!" +
-                " You are now connected.", AnswerType.CONFIRMATION));
+                " You are now connected."));
         if (waitingList.size() > 0) {
-            virtualView.sendAll(new SetupMessage(nickname + " joined the game", AnswerType.INFORMATION));
+            virtualView.sendAll(new SetupMessage(nickname + " joined the game"));
         }
         lobby(connection);
     }
