@@ -83,6 +83,10 @@ public class MultiPlayerController extends GameController {
     public void initialDiscardLeader(int[] indexes){
         currentPlayer.setupDiscard(indexes[0], indexes[1], currentPlayerIndex);
         currentPlayer.setActionDone(UserAction.SELECT_LEADCARD);
+        if(currentPlayerIndex == 0) {                                                                                   //the first player will not receive any resources, hence, after having sent the new LeadCards to him, we can move on to the next player.
+            changeTurn();
+            initialDraw();
+        }
     }
 
     public void addInitialResources(List<ResourcePosition> rps){
