@@ -1,4 +1,4 @@
-package it.polimi.ingsw.client.clientNetwork;
+/*package it.polimi.ingsw.client.clientNetwork;
 
 import it.polimi.ingsw.client.view.ClientView;
 import it.polimi.ingsw.client.view.MessageHandler;
@@ -72,4 +72,4 @@ public class ClientConnectionSocket {
             System.err.println(e.getMessage());
         }
     }
-}
+}*/

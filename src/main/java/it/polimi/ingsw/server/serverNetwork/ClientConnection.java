@@ -1,4 +1,4 @@
-/*package it.polimi.ingsw.server.serverNetwork;
+package it.polimi.ingsw.server.serverNetwork;
 
 import it.polimi.ingsw.messages.actions.Action;
 import it.polimi.ingsw.messages.clientMessages.*;
@@ -228,4 +228,4 @@ public class ClientConnection implements Runnable {
     public String getPlayerNickname() {
         return playerNickname;
     }
-}*/
+}
