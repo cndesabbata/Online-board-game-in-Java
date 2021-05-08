@@ -1,4 +1,5 @@
 package it.polimi.ingsw.messages.actions;
+import it.polimi.ingsw.server.controller.UserAction;
 import it.polimi.ingsw.server.controller.leaders.LeaderEffect;
 import it.polimi.ingsw.server.exceptions.WrongActionException;
 import it.polimi.ingsw.server.model.*;
@@ -12,12 +13,14 @@ public class MoveResources implements Action {
     private NumOfShelf destShelf;
     private int quantity;
     private List<LeaderEffect> leaderEffects;
+    private UserAction type;
 
     public MoveResources(NumOfShelf srcShelf, NumOfShelf destShelf, int quantity, List<LeaderEffect> leaderEffects) {
         this.srcShelf = srcShelf;
         this.destShelf = destShelf;
         this.quantity = quantity;
         this.leaderEffects = leaderEffects;
+        this.type = UserAction.MOVE_RESOURCES;
     }
 
     @Override
@@ -25,6 +28,11 @@ public class MoveResources implements Action {
         Warehouse warehouse = player.getBoard().getWarehouse();
         warehouse.moveResource(srcShelf, destShelf, quantity);
         return false;
+    }
+
+    @Override
+    public UserAction getType() {
+        return type;
     }
 
     @Override

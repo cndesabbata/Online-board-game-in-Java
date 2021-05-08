@@ -1,5 +1,6 @@
 package it.polimi.ingsw.messages.actions;
 
+import it.polimi.ingsw.server.controller.UserAction;
 import it.polimi.ingsw.server.exceptions.WrongActionException;
 import it.polimi.ingsw.server.model.*;
 
@@ -7,10 +8,16 @@ import java.util.List;
 
 public class PlayLeadCard implements Action {
     private final int index;
-
+    private UserAction type;
 
     public PlayLeadCard(int index) {
         this.index = index;
+        this.type = UserAction.PLAY_LEADCARD;
+    }
+
+    @Override
+    public UserAction getType() {
+        return type;
     }
 
     @Override

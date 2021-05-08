@@ -1,5 +1,7 @@
 package it.polimi.ingsw.server.controller.singleplayer;
 
+import it.polimi.ingsw.server.controller.UserAction;
+
 public abstract class SoloActionToken {
     protected SinglePlayerController controller;
 
@@ -7,5 +9,5 @@ public abstract class SoloActionToken {
         this.controller = controller;
     }
 
-    public abstract LorenzoAction doSoloAction();
+    public abstract UserAction doSoloAction();
 }

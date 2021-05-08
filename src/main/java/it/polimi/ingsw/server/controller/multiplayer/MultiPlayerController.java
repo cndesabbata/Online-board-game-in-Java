@@ -26,6 +26,7 @@ public class MultiPlayerController extends GameController {
         if (getGame().isFinalTurn() && currentPlayerIndex == getActivePlayers().size() - 1) {
             endGame();
         } else {
+            if (getPhase() == GamePhase.SETUP) oldPlayer = null;
             currentPlayer = nextPlayer();
             currentPlayer.setTurnActive(true , getPhase() == GamePhase.SETUP, oldPlayer);
         }
@@ -41,6 +42,7 @@ public class MultiPlayerController extends GameController {
         currentPlayer.setExclusiveActionDone(actionDone);
         checkAllPapalReports();
         checkEndGame();
+        currentPlayer.setActionDone(action.getType());
     }
 
     private Player nextPlayer() {

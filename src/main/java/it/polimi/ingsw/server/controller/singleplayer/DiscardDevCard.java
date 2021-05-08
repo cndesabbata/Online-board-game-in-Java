@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server.controller.singleplayer;
 
+import it.polimi.ingsw.server.controller.UserAction;
 import it.polimi.ingsw.server.model.Colour;
 
 public class DiscardDevCard extends SoloActionToken{
@@ -11,7 +12,7 @@ public class DiscardDevCard extends SoloActionToken{
     }
 
     @Override
-    public LorenzoAction doSoloAction() {
+    public UserAction doSoloAction() {
         for (int i = 0; i < 2; i++) {
             if (controller.getGame().drawDevCard(colour, 1) == null) {
                 if (controller.getGame().drawDevCard(colour, 2) == null) {
@@ -19,6 +20,6 @@ public class DiscardDevCard extends SoloActionToken{
                 }
             }
         }
-        return LorenzoAction.DISCARD_DEV_CARD;
+        return UserAction.DISCARD_DEV_CARD;
     }
 }

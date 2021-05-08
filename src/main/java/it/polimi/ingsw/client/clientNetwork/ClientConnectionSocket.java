@@ -8,6 +8,7 @@ import it.polimi.ingsw.messages.clientMessages.Reconnect;
 import it.polimi.ingsw.messages.clientMessages.SetNickname;
 import it.polimi.ingsw.messages.serverMessages.CloseMessage;
 import it.polimi.ingsw.messages.serverMessages.ErrorMessage;
+import it.polimi.ingsw.messages.serverMessages.ErrorType;
 import it.polimi.ingsw.messages.serverMessages.SetupMessage;
 
 import java.io.IOException;
@@ -51,7 +52,7 @@ public class ClientConnectionSocket implements Runnable{
         try {
              inputObject = input.readObject();
         } catch (IOException | ClassNotFoundException e) {
-            System.out.println("Error in reading server answer");
+            messageHandler.process(new ErrorMessage("Error in reading server answer", ErrorType.SOCKET_ERROR));
             return false;
         }
         Message message = (Message) inputObject;
@@ -71,20 +72,19 @@ public class ClientConnectionSocket implements Runnable{
             output.writeObject(message);
             output.flush();
         } catch (IOException e) {
-            System.err.println("Error during send process.");
-            System.err.println(e.getMessage());
+            messageHandler.process(new ErrorMessage("Error in send process", ErrorType.SOCKET_ERROR));
         }
     }
 
     @Override
     public void run() {
+        Message message = null;
         while (cli.isActive()){
-            Message message = null;
             try {
                 message = (Message) input.readObject();
                 messageHandler.process(message);
             } catch (IOException | ClassNotFoundException e) {
-               System.out.println("Error in reading server message");
+                messageHandler.process(new ErrorMessage("Error in reading server message", ErrorType.SOCKET_ERROR));
             }
             if(message instanceof CloseMessage) break;
         }

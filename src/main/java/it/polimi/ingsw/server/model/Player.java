@@ -72,8 +72,8 @@ public class Player extends Observable {
             notifyObservers(new TurnChange(nickname, oldPlayer));
     }
 
-    public void setLorenzoActionDone(LorenzoAction action){
-        notifyObservers(new ChangesDone("Lorenzo De Medici", UserAction.LORENZO_ACTION));
+    public void setLorenzoActionDone(UserAction action){
+        notifyObservers(new ChangesDone("Lorenzo De Medici", action));
     }
 
     public void addLeaderCard(LeaderCard card){

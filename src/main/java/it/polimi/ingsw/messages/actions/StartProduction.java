@@ -1,5 +1,6 @@
 package it.polimi.ingsw.messages.actions;
 
+import it.polimi.ingsw.server.controller.UserAction;
 import it.polimi.ingsw.server.controller.leaders.LeaderEffect;
 import it.polimi.ingsw.server.exceptions.WrongActionException;
 import it.polimi.ingsw.server.model.*;
@@ -16,6 +17,7 @@ public class StartProduction implements Action {
     private final List<ResourcePosition> inputRes;
     private final List<LeaderEffect> leaderEffects;
     // private final List<Integer> chosenCards;
+    private UserAction type;
 
 
     public StartProduction(List<DevCard> devCards, List<ResourcePosition> inputRes,
@@ -24,6 +26,12 @@ public class StartProduction implements Action {
         this.outputRes = new ArrayList<>(outputRes);
         this.inputRes = new ArrayList<>(inputRes);
         this.leaderEffects = leaderEffects;
+        this.type = UserAction.START_PRODUCTION;
+    }
+
+    @Override
+    public UserAction getType() {
+        return type;
     }
 
     public StartProduction(List<ResourcePosition> inputRes, List<ResourcePosition> outputRes,

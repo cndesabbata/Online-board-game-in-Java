@@ -50,7 +50,7 @@ public class Server {
     public void unregisterClient(ClientConnection connection){
         VirtualView view = find(connection, clientToConnection);
         String nickname = connection.getPlayerNickname();
-        view.sendAllExcept(new CustomMessage("Player " + nickname + " disconnected."), nickname);
+        view.sendAllExcept(new Disconnection("Player " + nickname + " disconnected."), nickname);
         connection.close();
         connection.getGameController().getActiveConnections().removeIf(c -> c == connection);
         connection.getGameController().removeObserver(find(connection, clientToConnection));
@@ -106,14 +106,6 @@ public class Server {
                 .map(Map.Entry::getKey)
                 .collect(Collectors.toList()).get(0);
     }
-
-    /*public GameController getControllerByNickname(String nickname){
-        for (GameController gc : gameControllers){
-            if (gc.getGame().getPlayers().stream().anyMatch(p -> p.getNickname().equals(nickname)))
-                return gc;
-        }
-        return null;
-    }*/
 
     public synchronized void reconnectClient(String nickname, ClientConnection connection) throws InterruptedException{
         for (GameController gc : gameControllers){

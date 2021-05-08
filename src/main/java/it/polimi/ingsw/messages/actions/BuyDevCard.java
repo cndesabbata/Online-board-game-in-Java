@@ -1,5 +1,6 @@
 package it.polimi.ingsw.messages.actions;
 
+import it.polimi.ingsw.server.controller.UserAction;
 import it.polimi.ingsw.server.controller.leaders.LeaderEffect;
 import it.polimi.ingsw.server.controller.Place;
 import it.polimi.ingsw.server.exceptions.WrongActionException;
@@ -15,6 +16,7 @@ public class BuyDevCard implements Action {
     private final List<ResourcePosition> cost;
     private List<ResourceQuantity> req;                                                                                 //it is used by the DiscountEffect
     private final List<LeaderEffect> leaderEffects;
+    private final UserAction type;
 
     public BuyDevCard(int level, Colour colour, DevSpaceSlot slot, List<ResourcePosition> cost,
                       List<LeaderEffect> leaderEffects) {
@@ -24,10 +26,16 @@ public class BuyDevCard implements Action {
         this.slot = slot;
         this.req = null;
         this.cost = cost;
+        type = UserAction.BUY_DEVCARD;
     }
 
     public List<ResourceQuantity> getReq() {
         return req;
+    }
+
+    @Override
+    public UserAction getType() {
+        return type;
     }
 
     @Override

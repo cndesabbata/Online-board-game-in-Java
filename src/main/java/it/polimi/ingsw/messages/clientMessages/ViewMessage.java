@@ -1,11 +1,11 @@
-package it.polimi.ingsw.messages.serverMessages;
+package it.polimi.ingsw.messages.clientMessages;
 
 import it.polimi.ingsw.messages.Message;
 
-public abstract class CustomMessage implements Message {
+public class ViewMessage implements Message {
     private final String message;
 
-    public CustomMessage(String message){
+    public ViewMessage(String message) {
         this.message = message;
     }
 

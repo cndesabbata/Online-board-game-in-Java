@@ -1,5 +1,7 @@
 package it.polimi.ingsw.server.controller.singleplayer;
 
+import it.polimi.ingsw.server.controller.UserAction;
+
 import java.util.Collections;
 
 public class UpdateAndShuffle extends SoloActionToken {
@@ -9,9 +11,9 @@ public class UpdateAndShuffle extends SoloActionToken {
     }
 
     @Override
-    public LorenzoAction doSoloAction() {
+    public UserAction doSoloAction() {
         controller.getGame().getPlayers().get(0).getBoard().getItinerary().updateBlackCross(1);
         Collections.shuffle(controller.getTokens());
-        return LorenzoAction.UPDATE_AND_SHUFFLE;
+        return UserAction.UPDATE_AND_SHUFFLE;
     }
 }

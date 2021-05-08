@@ -1,6 +1,7 @@
 package it.polimi.ingsw.server.controller.singleplayer;
 
 import it.polimi.ingsw.messages.clientMessages.LeaderCardSelection;
+import it.polimi.ingsw.messages.serverMessages.CloseMessage;
 import it.polimi.ingsw.messages.serverMessages.CustomMessage;
 import it.polimi.ingsw.server.controller.GameController;
 import it.polimi.ingsw.messages.serverMessages.SetupMessage;
@@ -37,7 +38,7 @@ public class SinglePlayerController extends GameController {
 
     public void makeTokenAction() {
         tokens.add(tokens.remove(0));
-        LorenzoAction actionType = tokens.get(tokens.size() - 1).doSoloAction();
+        UserAction actionType = tokens.get(tokens.size() - 1).doSoloAction();
         getActivePlayers().get(0).setLorenzoActionDone(actionType);
     }
 
@@ -47,6 +48,7 @@ public class SinglePlayerController extends GameController {
         getActivePlayers().get(0).setExclusiveActionDone(actionDone);
         checkAllPapalReports();
         checkEndGame();
+        getActivePlayers().get(0).setActionDone(action.getType());
     }
 
     @Override
@@ -101,10 +103,10 @@ public class SinglePlayerController extends GameController {
     @Override
     public void endGame() {
         if (!win) {
-            getActiveConnections().get(0).sendSocketMessage(new CustomMessage("You lost the game: Lorenzo has won!"));
+            getActiveConnections().get(0).sendSocketMessage(new CloseMessage("You lost the game: Lorenzo has won!"));
         } else {
             int score = calculateScore(getActivePlayers().get(0));
-            getActiveConnections().get(0).sendSocketMessage(new CustomMessage("You won the game! Your score is " + score));
+            getActiveConnections().get(0).sendSocketMessage(new CloseMessage("You won the game! Your score is " + score));
         }
         setPhase(GamePhase.ENDED);
     }

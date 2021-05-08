@@ -1,5 +1,6 @@
 package it.polimi.ingsw.messages.actions;
 
+import it.polimi.ingsw.server.controller.UserAction;
 import it.polimi.ingsw.server.controller.leaders.LeaderEffect;
 import it.polimi.ingsw.server.controller.Place;
 import it.polimi.ingsw.server.exceptions.WrongActionException;
@@ -15,6 +16,7 @@ public class BuyResources implements Action {
     private final List<ResourcePosition> extraRes;
     private final List<LeaderEffect> leaderEffects;
     private boolean leaderUsed;
+    private final UserAction type;
 
     public BuyResources(List<LeaderEffect> leaderEffects, int position, MarketSelection marketSelection,
                         List<ResourcePosition> gainedRes) {
@@ -23,6 +25,7 @@ public class BuyResources implements Action {
         this.marketSelection = marketSelection;
         this.gainedRes = gainedRes;
         this.extraRes = new ArrayList<>();
+        this.type = UserAction.BUY_RESOURCES;
     }
 
     @Override
@@ -44,6 +47,11 @@ public class BuyResources implements Action {
         player.getBoard().getWarehouse().incrementResource(boughtResources);
         player.getGame().getMarket().setDisposition(marketSelection, position);
         return true;
+    }
+
+    @Override
+    public UserAction getType() {
+        return type;
     }
 
     @Override
