@@ -1,13 +1,11 @@
 package it.polimi.ingsw.client.view;
 
-import it.polimi.ingsw.client.clientNetwork.ClientConnectionSocket;
+import it.polimi.ingsw.messages.actions.Action;
+import it.polimi.ingsw.messages.actions.PlayLeadCard;
 
 public class ActionFactory {
-    private final CLI cli;
-    private final ClientConnectionSocket connectionSocket;
 
-    public ActionFactory(CLI cli, ClientConnectionSocket connectionSocket) {
-        this.cli = cli;
-        this.connectionSocket = connectionSocket;
+    public static Action createAction(int n){
+        return new PlayLeadCard(1);
     }
 }

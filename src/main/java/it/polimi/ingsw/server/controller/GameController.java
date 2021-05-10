@@ -2,6 +2,7 @@ package it.polimi.ingsw.server.controller;
 
 import it.polimi.ingsw.messages.actions.Action;
 import it.polimi.ingsw.server.model.*;
+import it.polimi.ingsw.server.model.gameboard.CardStatus;
 import it.polimi.ingsw.server.observer.Observer;
 import it.polimi.ingsw.server.serverNetwork.ClientConnection;
 import it.polimi.ingsw.server.serverNetwork.Server;

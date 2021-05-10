@@ -17,16 +17,17 @@ public class ClientView extends Observable {
     private List<GameBoardInfo> otherGameBoards;
     private GameBoardInfo ownGameBoard;
     private Integer playerIndex;
+    private boolean turnActive;
 
     public ClientView(CLI cli) {
         this.cli = cli;
         addObserver(cli);
         gui = null;
-        this.devDecks = new DevCardInfo[4][3];
+        this.devDecks = new DevCardInfo[3][4];
         hand = new ArrayList<>();
         otherGameBoards = new ArrayList<>();
         ownGameBoard = new GameBoardInfo(nickname);
-
+        turnActive = false;
     }
 
     public Integer getPlayerIndex() {
@@ -40,6 +41,14 @@ public class ClientView extends Observable {
     public ClientView(GUI gui) {
         this.gui = gui;
         cli = null;
+    }
+
+    public boolean isTurnActive() {
+        return turnActive;
+    }
+
+    public void setTurnActive(boolean turnActive) {
+        this.turnActive = turnActive;
     }
 
     public void setHand(List<LeadCardInfo> hand) {

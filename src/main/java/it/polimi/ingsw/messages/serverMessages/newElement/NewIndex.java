@@ -1,4 +1,4 @@
-package it.polimi.ingsw.messages.newElement;
+package it.polimi.ingsw.messages.serverMessages.newElement;
 
 public class NewIndex implements ChangeMessage{
     private int playerIndex;

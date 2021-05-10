@@ -1,5 +1,5 @@
 package it.polimi.ingsw.server.model.gameboard;
-import it.polimi.ingsw.messages.newElement.NewDevSpace;
+import it.polimi.ingsw.messages.serverMessages.newElement.NewDevSpace;
 import it.polimi.ingsw.server.model.DevCard;
 import it.polimi.ingsw.server.observer.Observable;
 

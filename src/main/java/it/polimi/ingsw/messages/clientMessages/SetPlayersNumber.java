@@ -1,8 +1,8 @@
 package it.polimi.ingsw.messages.clientMessages;
 
-import java.io.Serializable;
+import it.polimi.ingsw.messages.Message;
 
-public class SetPlayersNumber implements Serializable {
+public class SetPlayersNumber implements Message {
     private final int numOfPlayers;
 
     public SetPlayersNumber(int numOfPlayers) {

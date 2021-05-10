@@ -1,7 +1,7 @@
 package it.polimi.ingsw.server.model;
 
 import com.google.gson.Gson;
-import it.polimi.ingsw.messages.newElement.NewDevDeck;
+import it.polimi.ingsw.messages.serverMessages.newElement.NewDevDeck;
 import it.polimi.ingsw.server.observer.Observable;
 
 import java.io.InputStreamReader;

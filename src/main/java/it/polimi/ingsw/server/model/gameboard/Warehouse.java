@@ -1,6 +1,6 @@
 package it.polimi.ingsw.server.model.gameboard;
 
-import it.polimi.ingsw.messages.newElement.NewWarehouse;
+import it.polimi.ingsw.messages.serverMessages.newElement.NewWarehouse;
 import it.polimi.ingsw.server.controller.Place;
 import it.polimi.ingsw.server.exceptions.WrongActionException;
 import it.polimi.ingsw.server.model.Resource;

@@ -1,6 +1,6 @@
 package it.polimi.ingsw.server.model;
 
-import it.polimi.ingsw.messages.newElement.NewMarket;
+import it.polimi.ingsw.messages.serverMessages.newElement.NewMarket;
 import it.polimi.ingsw.server.observer.Observable;
 
 import java.util.*;

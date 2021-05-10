@@ -1,9 +1,7 @@
-package it.polimi.ingsw.messages.newElement;
+package it.polimi.ingsw.messages.serverMessages.newElement;
 
 import it.polimi.ingsw.server.model.Colour;
 import it.polimi.ingsw.server.model.DevCard;
-
-import java.util.List;
 
 public class NewDevDeck implements ChangeMessage {
     private final Colour colour;

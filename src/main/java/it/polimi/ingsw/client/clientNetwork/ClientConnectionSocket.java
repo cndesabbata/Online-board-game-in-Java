@@ -66,7 +66,7 @@ public class ClientConnectionSocket implements Runnable{
         return false;
     }
 
-    private void send(Message message) {
+    public void send(Message message) {
         try {
             output.reset();
             output.writeObject(message);

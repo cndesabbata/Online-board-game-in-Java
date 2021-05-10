@@ -93,11 +93,12 @@ public class SinglePlayerController extends GameController {
     public void initialDiscardLeader(int[] indexes){
         getActivePlayers().get(0).setupDiscard(indexes[0], indexes[1], 0);
         getActivePlayers().get(0).setActionDone(UserAction.SELECT_LEADCARD);
+        startMatch();
     }
 
-    public void startMatch(){
+    private void startMatch(){
         setPhase(GamePhase.STARTED);
-        getActivePlayers().get(0).setTurnActive(true , false, "Lorenzo De Medici");
+        getActivePlayers().get(0).setTurnActive(true , false, null);
     }
 
     @Override

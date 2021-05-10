@@ -1,8 +1,7 @@
-package it.polimi.ingsw.messages.newElement;
+package it.polimi.ingsw.messages.serverMessages.newElement;
 
 import it.polimi.ingsw.server.model.ResourceQuantity;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class NewWarehouse implements ChangeMessage{

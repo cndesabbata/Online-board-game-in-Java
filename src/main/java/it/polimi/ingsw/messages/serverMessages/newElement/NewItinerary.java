@@ -1,6 +1,6 @@
-package it.polimi.ingsw.messages.newElement;
+package it.polimi.ingsw.messages.serverMessages.newElement;
 
-import it.polimi.ingsw.server.model.CardStatus;
+import it.polimi.ingsw.server.model.gameboard.CardStatus;
 
 public class NewItinerary implements ChangeMessage{
     private int position;
@@ -13,5 +13,21 @@ public class NewItinerary implements ChangeMessage{
         this.cardStatus = cardStatus;
         this.blackCrossPosition = blackCrossPosition;
         this.owner = owner;
+    }
+
+    public int getPosition() {
+        return position;
+    }
+
+    public CardStatus[] getCardStatus() {
+        return cardStatus;
+    }
+
+    public Integer getBlackCrossPosition() {
+        return blackCrossPosition;
+    }
+
+    public String getOwner() {
+        return owner;
     }
 }
