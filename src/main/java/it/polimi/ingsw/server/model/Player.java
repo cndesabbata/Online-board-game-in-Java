@@ -1,11 +1,10 @@
 package it.polimi.ingsw.server.model;
 
-import it.polimi.ingsw.messages.newElement.NewHandCards;
-import it.polimi.ingsw.messages.newElement.NewIndex;
+import it.polimi.ingsw.messages.serverMessages.newElement.NewHandCards;
+import it.polimi.ingsw.messages.serverMessages.newElement.NewIndex;
 import it.polimi.ingsw.messages.serverMessages.ChangesDone;
 import it.polimi.ingsw.messages.serverMessages.TurnChange;
 import it.polimi.ingsw.server.controller.UserAction;
-import it.polimi.ingsw.server.controller.singleplayer.LorenzoAction;
 import it.polimi.ingsw.server.model.gameboard.GameBoard;
 import it.polimi.ingsw.server.observer.Observable;
 

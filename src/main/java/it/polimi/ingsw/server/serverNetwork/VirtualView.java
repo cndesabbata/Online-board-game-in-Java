@@ -1,7 +1,7 @@
 package it.polimi.ingsw.server.serverNetwork;
 
 import it.polimi.ingsw.messages.Message;
-import it.polimi.ingsw.messages.newElement.ChangeMessage;
+import it.polimi.ingsw.messages.serverMessages.newElement.ChangeMessage;
 import it.polimi.ingsw.messages.serverMessages.ChangesDone;
 import it.polimi.ingsw.messages.serverMessages.TurnChange;
 import it.polimi.ingsw.server.observer.Observer;

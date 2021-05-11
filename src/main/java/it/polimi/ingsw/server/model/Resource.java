@@ -1,8 +1,8 @@
 package it.polimi.ingsw.server.model;
 
 public enum Resource {
-    COIN("Coins"), STONE("Stones"), SERVANT("Servants"),
-    SHIELD("Shields"), FAITHPOINT("Faith points"), EMPTY("");
+    COIN("Coin"), STONE("Stone"), SERVANT("Servant"),
+    SHIELD("Shield"), FAITHPOINT("Faith point"), EMPTY("");
 
     private final String name;
 

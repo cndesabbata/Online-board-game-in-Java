@@ -1,9 +1,6 @@
 package it.polimi.ingsw.server.model.gameboard;
-import it.polimi.ingsw.messages.newElement.NewItinerary;
-import it.polimi.ingsw.server.model.CardStatus;
+import it.polimi.ingsw.messages.serverMessages.newElement.NewItinerary;
 import it.polimi.ingsw.server.observer.Observable;
-
-import java.util.Arrays;
 
 //ricorda che le carte papali sono sempre 2, 3 e 4 (in questo ordine)
 public class Itinerary extends Observable {

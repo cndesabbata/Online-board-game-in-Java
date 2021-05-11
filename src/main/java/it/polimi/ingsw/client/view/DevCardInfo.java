@@ -1,5 +1,8 @@
 package it.polimi.ingsw.client.view;
 
+import it.polimi.ingsw.server.model.DevCard;
+import it.polimi.ingsw.server.model.ResourceQuantity;
+
 import java.util.List;
 
 public class DevCardInfo {
@@ -10,24 +13,23 @@ public class DevCardInfo {
     private final List<String> productionInput;
     private final List<String> productionOutput;
 
-    public DevCardInfo(List<String> resourceRequirements, int victoryPoints,
-                       int level, String colour, List<String> productionInput, List<String> getProductionOutput) {
-        this.resourceRequirements = resourceRequirements;
-        this.victoryPoints = victoryPoints;
-        this.level = level;
-        this.colour = colour;
-        this.productionInput = productionInput;
-        this.productionOutput = getProductionOutput;
+    public DevCardInfo(DevCard c){
+        if (c.getResourceRequirements() == null){
+            this.resourceRequirements = null;
+            this.productionInput = null;
+            this.productionOutput = null;
+            this.victoryPoints = null;
+        }
+        else {
+            this.resourceRequirements = ResourceQuantity.toStringList(ResourceQuantity.flatten(c.getResourceRequirements()));
+            this.productionInput = ResourceQuantity.toStringList(ResourceQuantity.flatten(c.getProductionInput()));
+            this.productionOutput = ResourceQuantity.toStringList(ResourceQuantity.flatten(c.getProductionOutput()));
+            this.victoryPoints = c.getVictoryPoints();
+        }
+        this.colour = c.getColour().toString();
+        this.level = c.getLevel();
     }
 
-    public DevCardInfo(int level, String colour) {
-        this.level = level;
-        this.colour = colour;
-        this.resourceRequirements = null;
-        this.victoryPoints = null;
-        this.productionInput = null;
-        this.productionOutput = null;
-    }
 
     public List<String> getResourceRequirements() {
         return resourceRequirements;
@@ -52,4 +54,5 @@ public class DevCardInfo {
     public List<String> getProductionOutput() {
         return productionOutput;
     }
+
 }

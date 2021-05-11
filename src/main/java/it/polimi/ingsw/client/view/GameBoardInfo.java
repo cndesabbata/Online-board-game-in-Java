@@ -13,6 +13,7 @@ public class GameBoardInfo {
     private Map<Integer, List<String>> warehouse;
     private List<LeadCardInfo> playedCards;
     private Map<Integer, List<DevCardInfo>> devSpace;
+    private Integer blackCrossPosition;
 
     public GameBoardInfo(String nickname) {
         this.owner = nickname;
@@ -22,6 +23,7 @@ public class GameBoardInfo {
         warehouse = new HashMap<>();
         playedCards = new ArrayList<>();
         devSpace = new HashMap<>();
+        blackCrossPosition = null;
         chest.put("Coins", 0);
         chest.put("Stones", 0);
         chest.put("Servants", 0);
@@ -33,6 +35,14 @@ public class GameBoardInfo {
         }
     }
 
+    public Integer getBlackCrossPosition() {
+        return blackCrossPosition;
+    }
+
+    public void setBlackCrossPosition(Integer blackCrossPosition) {
+        this.blackCrossPosition = blackCrossPosition;
+    }
+
     public String getOwner() {
         return owner;
     }
@@ -41,11 +51,11 @@ public class GameBoardInfo {
         papalCards.put(index, newStatus);
     }
 
-    public void newChest(String type, int newQuantity){
+    public void changeChest(String type, int newQuantity){
         chest.put(type, newQuantity);
     }
 
-    public void newWarehouse(int shelf, List<String> resources){
+    public void changeWarehouse(int shelf, List<String> resources){
         warehouse.put(shelf, resources);
     }
 
@@ -53,12 +63,8 @@ public class GameBoardInfo {
         this.playedCards = playedCards;
     }
 
-    public void newDevSpace(int slot, List<DevCardInfo> cards) {
+    public void changeDevSpace(int slot, List<DevCardInfo> cards) {
         devSpace.put(slot, cards);
-    }
-
-    public void newDevSpace(int slot, DevCardInfo newCard){
-
     }
 
     public void setPosition(Integer position) {

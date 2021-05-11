@@ -1,7 +1,7 @@
 package it.polimi.ingsw.messages.serverMessages;
 
 import it.polimi.ingsw.messages.Message;
-import it.polimi.ingsw.messages.newElement.ChangeMessage;
+import it.polimi.ingsw.messages.serverMessages.newElement.ChangeMessage;
 import it.polimi.ingsw.server.controller.UserAction;
 
 import java.util.ArrayList;

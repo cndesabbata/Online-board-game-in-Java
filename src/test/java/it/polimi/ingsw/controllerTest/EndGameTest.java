@@ -3,6 +3,7 @@ package it.polimi.ingsw.controllerTest;
 import it.polimi.ingsw.server.controller.multiplayer.MultiPlayerController;
 import it.polimi.ingsw.server.model.*;
 import it.polimi.ingsw.server.controller.*;
+import it.polimi.ingsw.server.model.gameboard.CardStatus;
 import it.polimi.ingsw.server.model.gameboard.NumOfShelf;
 import it.polimi.ingsw.server.serverNetwork.Server;
 import org.junit.Test;

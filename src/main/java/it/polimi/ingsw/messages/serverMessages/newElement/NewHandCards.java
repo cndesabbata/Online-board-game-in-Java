@@ -1,4 +1,4 @@
-package it.polimi.ingsw.messages.newElement;
+package it.polimi.ingsw.messages.serverMessages.newElement;
 
 import it.polimi.ingsw.server.model.LeaderCard;
 
@@ -6,12 +6,12 @@ import java.util.List;
 
 public class NewHandCards implements ChangeMessage{
     private final List<LeaderCard> handLeaderCards;
-    private final String nickname;
+    private final String owner;
     private boolean mustDiscard;
 
     public NewHandCards(List<LeaderCard> handLeaderCards, String nickname, boolean mustDiscard) {
         this.handLeaderCards = handLeaderCards;
-        this.nickname = nickname;
+        this.owner = nickname;
         this.mustDiscard = mustDiscard;
     }
 
@@ -19,7 +19,7 @@ public class NewHandCards implements ChangeMessage{
         return handLeaderCards;
     }
 
-    public String getNickname() {
-        return nickname;
+    public String getOwner() {
+        return owner;
     }
 }

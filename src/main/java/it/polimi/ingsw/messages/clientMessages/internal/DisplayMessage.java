@@ -1,4 +1,4 @@
-package it.polimi.ingsw.messages.clientMessages;
+package it.polimi.ingsw.messages.clientMessages.internal;
 
 public class DisplayMessage extends ViewMessage {
 

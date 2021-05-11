@@ -111,7 +111,7 @@ public class ClientConnection implements Runnable {
             if (((SetPlayersNumber) clientMessage).getNumOfPlayers() < 1
                     || ((SetPlayersNumber) clientMessage).getNumOfPlayers() > 4){
                 sendSocketMessage(new ErrorMessage(
-                        "Not a valid input, please provide a number between 1 and 4.", ErrorType.INVALID_CHOICE));
+                        "Not a valid input, please provide a number between 1 and 4.", ErrorType.PLAYER_NUMBER));
             }
             else server.setTotalPlayers(((SetPlayersNumber) clientMessage).getNumOfPlayers(), this);
         }
@@ -120,13 +120,13 @@ public class ClientConnection implements Runnable {
                     && ((MultiPlayerController) getGameController()).getCurrentPlayer().getActionDone() == UserAction.SETUP_DRAW){
                 if (checkLeadCardSelection((LeaderCardSelection) clientMessage))
                 ((MultiPlayerController) getGameController()).initialDiscardLeader(((LeaderCardSelection) clientMessage).getIndexes());
-                else sendSocketMessage(new ErrorMessage("Indexes out of bound.", ErrorType.INVALID_CHOICE));
+                else sendSocketMessage(new ErrorMessage("Indexes out of bound. Please choose two numbers between 1 and 4", ErrorType.SETUP_DRAW));
             }
             else if (checkMessageSinglePlayer(GamePhase.SETUP)
                     && getGameController().getActivePlayers().get(0).getActionDone() == UserAction.SETUP_DRAW){
                 if (checkLeadCardSelection((LeaderCardSelection) clientMessage))
                     ((SinglePlayerController) getGameController()).initialDiscardLeader(((LeaderCardSelection) clientMessage).getIndexes());
-                else sendSocketMessage(new ErrorMessage("Indexes out of bound.", ErrorType.INVALID_CHOICE));
+                else sendSocketMessage(new ErrorMessage("Indexes out of bound. Please choose two numbers between 1 and 4", ErrorType.SETUP_DRAW));
             }
             else sendSocketMessage(new ErrorMessage(
                     "Not a valid action; the setup phase is ended or it is not yet your turn.", ErrorType.WRONG_MESSAGE));
@@ -137,13 +137,8 @@ public class ClientConnection implements Runnable {
                     && ((MultiPlayerController) getGameController()).getCurrentPlayer().getActionDone() == UserAction.SELECT_LEADCARD){
                 if (checkResourceSelection((ResourceSelection) clientMessage))
                     ((MultiPlayerController) getGameController()).addInitialResources(((ResourceSelection) clientMessage).getResources());
-                else sendSocketMessage(new ErrorMessage("Invalid resources choice.", ErrorType.INVALID_CHOICE));
-            }
-            else if (checkMessageSinglePlayer(GamePhase.SETUP)
-                    && getGameController().getActivePlayers().get(0).getActionDone() == UserAction.SELECT_LEADCARD){
-                if (checkResourceSelection((ResourceSelection) clientMessage))
-                    ((SinglePlayerController) getGameController()).startMatch();
-                else sendSocketMessage(new ErrorMessage("Invalid resources choice.", ErrorType.INVALID_CHOICE));
+                else sendSocketMessage(new ErrorMessage("Invalid resources choice. " +
+                        "Please select the correct number and type of resources.", ErrorType.SETUP_RESOURCE));
             }
             else sendSocketMessage(new ErrorMessage(
                     "Not a valid action; the setup phase is ended or it is not yet your turn.", ErrorType.WRONG_MESSAGE));
