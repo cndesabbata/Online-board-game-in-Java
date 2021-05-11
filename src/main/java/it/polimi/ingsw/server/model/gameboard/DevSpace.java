@@ -55,7 +55,7 @@ public class DevSpace extends Observable {
 
     /*returns the number of DevCards in DevSpace*/
     public int countCards() {
-        return devSpace.stream().map(List::size).reduce(0, Integer::sum);                                   //equivalent to: devSpace.stream().map(deck -> deck.size()).reduce(0, (a,b) -> a + b);
+        return devSpace.stream().map(List::size).reduce(0, Integer::sum);                                               //equivalent to: devSpace.stream().map(deck -> deck.size()).reduce(0, (a,b) -> a + b);
     }
 
 }

@@ -12,34 +12,36 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class StartProduction implements Action {
-    private final List<DevCard> devCards;
+    private final List<Integer> chosenCards;
     private final List<ResourcePosition> outputRes;
     private final List<ResourcePosition> inputRes;
     private final List<LeaderEffect> leaderEffects;
-    // private final List<Integer> chosenCards;
     private UserAction type;
+    private List <DevCard> devCards;
 
 
-    public StartProduction(List<DevCard> devCards, List<ResourcePosition> inputRes,
+    public StartProduction(List<Integer> chosenCards, List<ResourcePosition> inputRes,
                            List<ResourcePosition> outputRes, List<LeaderEffect> leaderEffects) {
-        this.devCards = new ArrayList<>(devCards);
+        this.chosenCards = new ArrayList<>(chosenCards);
         this.outputRes = new ArrayList<>(outputRes);
         this.inputRes = new ArrayList<>(inputRes);
         this.leaderEffects = leaderEffects;
         this.type = UserAction.START_PRODUCTION;
+        this.devCards = null;
+    }
+
+    public StartProduction(List<ResourcePosition> inputRes, List<ResourcePosition> outputRes,
+                           List<LeaderEffect> leaderEffects) {
+        this.chosenCards = null;
+        this.devCards = null;
+        this.outputRes = new ArrayList<>(outputRes);
+        this.inputRes = new ArrayList<>(inputRes);
+        this.leaderEffects = leaderEffects;
     }
 
     @Override
     public UserAction getType() {
         return type;
-    }
-
-    public StartProduction(List<ResourcePosition> inputRes, List<ResourcePosition> outputRes,
-                           List<LeaderEffect> leaderEffects) {
-        this.devCards = null;
-        this.outputRes = new ArrayList<>(outputRes);
-        this.inputRes = new ArrayList<>(inputRes);
-        this.leaderEffects = leaderEffects;
     }
 
     /*execute the action, knowing that is correct and feasible*/
@@ -50,18 +52,32 @@ public class StartProduction implements Action {
         return true;
     }
 
+    private void devCardsConstructor(Player player) throws WrongActionException{
+        DevSpace devSpace = player.getBoard().getDevSpace();
+        devCards = new ArrayList<>();
+        List<Integer> counter = new ArrayList<>();
+        for(int i = 0; i < devSpace.getCards().size(); i++) {
+            counter.add(0);
+        }
+        for(int i : chosenCards){
+            if(i < 0 || i > 2)
+                throw new WrongActionException("The selected slot does not exist.");
+            if(devSpace.getCards().get(i).size() == 0)
+                throw new WrongActionException("The selected slot is empty.");
+            counter.set(i, counter.get(i) + 1);
+            if(counter.stream().anyMatch(I -> I > 1))
+                throw new WrongActionException("The same development card cannot be chosen twice.");
+            devCards.add(devSpace.getCards().get(i).get(0));
+        }
+    }
+
     /*controls if the Action is correct and also resolve any leaderEffect*/
     @Override
     public void checkAction(Player player) throws WrongActionException {
         if (player.isExclusiveActionDone())
             throw new WrongActionException("The player has already done an exclusive action this turn.");
-        else if (devCards != null) {                                                                                     //in case there is a devCard played
-            DevSpace devSpace = player.getBoard().getDevSpace();
-            for(DevCard devCard : devCards) {
-                if (!devSpace.checkUpperCard(devCard))
-                    throw new WrongActionException("The player does not have one of the selected Development Cards.");
-            }
-        }
+        if (chosenCards != null)                                                                                        //in case there is a devCard played
+            devCardsConstructor(player);
         checkInputOutput(devCards);
         for (LeaderEffect leaderEffect : leaderEffects) {                                                               //before checking if the player has all the resources we must merge the extra resources with the input / output                                                                             //if a player card was played successfully, we need to merge the extra in/out resources.
             leaderEffect.doLeaderEffect(player, this);

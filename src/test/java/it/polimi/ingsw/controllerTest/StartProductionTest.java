@@ -117,9 +117,9 @@ public class StartProductionTest {
 
 
         List <LeaderEffect> leaderEffects = new ArrayList<>();
-        List <DevCard> devCards = new ArrayList<>();
-        devCards.add(devCard);
-        Action production = new StartProduction(devCards, inputClient, outputClient, leaderEffects);
+        List <Integer> slots = new ArrayList<>();
+        slots.add(1);
+        Action production = new StartProduction(slots, inputClient, outputClient, leaderEffects);
 
         Player me = new Player("Gianluca", game);
         game.addPlayer(me);
@@ -219,10 +219,10 @@ public class StartProductionTest {
         outputClient.add(new ResourcePosition(Resource.SHIELD, Place.CHEST, null));
 
         List <LeaderEffect> leaderEffects = new ArrayList<>();
-        List <DevCard> devCards = new ArrayList<>();
-        devCards.add(devCard);
-        devCards.add(devCard2);
-        Action production = new StartProduction(devCards, inputClient, outputClient, leaderEffects);
+        List <Integer> slots = new ArrayList<>();
+        slots.add(1);
+        slots.add(2);
+        Action production = new StartProduction(slots, inputClient, outputClient, leaderEffects);
 
         Player me = new Player("Gianluca", game);
         game.addPlayer(me);
@@ -330,10 +330,10 @@ public class StartProductionTest {
         List <LeaderEffect> leaderEffects = new ArrayList<>();
         leaderEffects.add(new ProductionEffect(new ResourcePosition(Resource.SERVANT, Place.WAREHOUSE, NumOfShelf.ONE),
                                                new ResourcePosition(Resource.COIN, Place.CHEST, null)));
-        List <DevCard> devCards = new ArrayList<>();
-        devCards.add(devCard);
-        devCards.add(devCard2);
-        Action production = new StartProduction(devCards, inputClient, outputClient, leaderEffects);
+        List <Integer> slots = new ArrayList<>();
+        slots.add(1);
+        slots.add(2);
+        Action production = new StartProduction(slots, inputClient, outputClient, leaderEffects);
 
         Player me = new Player("Gianluca", game);
         game.addPlayer(me);
@@ -445,15 +445,15 @@ public class StartProductionTest {
         outputClient.add(new ResourcePosition(Resource.SHIELD, Place.CHEST, null));
         outputClient.add(new ResourcePosition(Resource.STONE, Place.CHEST, null));
 
-        List <DevCard> devCards = new ArrayList<>();
-        devCards.add(devCard);
-        devCards.add(devCard2);
+        List <Integer> slots = new ArrayList<>();
+        slots.add(0);
+        slots.add(1);
         List <LeaderEffect> leaderEffects = new ArrayList<>();
         leaderEffects.add(new ProductionEffect(new ResourcePosition(Resource.COIN, Place.WAREHOUSE, NumOfShelf.THREE),
                                                new ResourcePosition(Resource.COIN, Place.CHEST, null)));
         leaderEffects.add(new DepotEffect(Resource.COIN));
 
-        Action production = new StartProduction(devCards, inputClient, outputClient, leaderEffects);
+        Action production = new StartProduction(slots, inputClient, outputClient, leaderEffects);
 
         Player me = new Player("Gianluca", game);
         me.getHandLeaderCards().add(prodLead);

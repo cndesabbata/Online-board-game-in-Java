@@ -1,7 +1,6 @@
 package it.polimi.ingsw.messages.newElement;
 
 import it.polimi.ingsw.server.model.ResourceQuantity;
-
 import java.util.List;
 
 public class NewChest implements ChangeMessage {

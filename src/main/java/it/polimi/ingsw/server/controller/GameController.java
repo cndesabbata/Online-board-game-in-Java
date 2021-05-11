@@ -90,7 +90,7 @@ public abstract class GameController {
         }
     }
 
-    public int addItineraryVP(Player player) {
+    protected int addItineraryVP(Player player) {
         int result = 0;
         int[] itineraryVP = {1,2,4,6,9,12,16,20};
         for(int i = 3, j = 0; i <= 21; i = i + 3, j++) {
