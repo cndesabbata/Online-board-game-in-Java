@@ -38,6 +38,8 @@ public class ClientConnection implements Runnable {
         } catch (IOException e) {
             System.err.println("Error during initialization of the client!");
         }
+        this.playerNickname = null;
+        this.gameController = null;
     }
 
     public void close(){
@@ -85,8 +87,8 @@ public class ClientConnection implements Runnable {
         if (clientMessage instanceof SetNickname){
             if (gameController == null && playerNickname == null){
                 try {
-                    server.registerClient(((SetNickname) clientMessage).getNickname(), this);
                     playerNickname = ((SetNickname) clientMessage).getNickname();
+                    server.registerClient(((SetNickname) clientMessage).getNickname(), this);
                 } catch (InterruptedException e) {
                     System.err.println(e.getMessage());
                     Thread.currentThread().interrupt();
@@ -98,7 +100,7 @@ public class ClientConnection implements Runnable {
             if (gameController == null && playerNickname == null){
                 try {
                     server.reconnectClient(((Reconnect) clientMessage).getNickname(), this);
-                    playerNickname = ((SetNickname) clientMessage).getNickname();
+                    playerNickname = ((Reconnect) clientMessage).getNickname();
                 } catch (InterruptedException e) {
                     System.err.println(e.getMessage());
                     Thread.currentThread().interrupt();

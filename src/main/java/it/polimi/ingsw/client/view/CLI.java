@@ -27,6 +27,7 @@ public class CLI implements Observer {
     private final ClientView clientView;
     private final MessageHandler messageHandler;
     private boolean active;
+    private final ActionFactory actionFactory;
     private ClientConnectionSocket connectionSocket;
 
     public CLI() {
@@ -35,6 +36,7 @@ public class CLI implements Observer {
         clientView = new ClientView(this);
         messageHandler = new MessageHandler(clientView);
         active = true;
+        actionFactory = new ActionFactory(output, input, this);
     }
 
     public static void main(String[] args){
@@ -59,9 +61,9 @@ public class CLI implements Observer {
             while(!connectionSocket.setupConnection(clientView)) {
                 output.println("The entered IP/port doesn't match any active server. Please try again!");
                 output.print("Insert the server IP address\n>");
-                Constants.setAddress(input.nextLine());
+                Constants.setAddress(readInputString());
                 output.print("Insert the server port\n>");
-                Constants.setPort(input.nextInt());
+                Constants.setPort(readInputInt());
             }
             System.out.println("Socket Connection setup completed!");
         } catch (IOException e){
@@ -75,7 +77,7 @@ public class CLI implements Observer {
             boolean ok = false;
             while (!ok){
                 output.print("Would you like to start a new match or resume an existing one? [start/resume]\n>");
-                String answer = input.nextLine().toUpperCase();
+                String answer = readInputString().toUpperCase();
                 switch (answer) {
                     case "START" -> {
                         newPlayer = true;
@@ -89,7 +91,7 @@ public class CLI implements Observer {
                 }
             }
             output.print("Insert your nickname:\n>");
-            nickname = input.nextLine();
+            nickname = readInputString();
             if (nickname != null && !nickname.isEmpty() && connectionSocket.setupNickname(nickname, newPlayer))
                 confirmation = true;
         }
@@ -109,7 +111,7 @@ public class CLI implements Observer {
             output.print(m.getMessage() + "\n>");
             int number = 0;
             while (request){
-                number = input.nextInt();
+                number = readInputInt();
                 if (number >= 1 && number <= 4) request = false;
                 else output.print("Please choose a number between 1 and 4:\n>");
             }
@@ -120,8 +122,8 @@ public class CLI implements Observer {
             int index1 = 0;
             int index2 = 0;
             while (request){
-                index1 = input.nextInt();
-                index2 = input.nextInt();
+                index1 = readInputInt();
+                index2 = readInputInt();
                 if (index1 < 1 || index1 > 4 || index2 < 1 || index2 > 4)
                     output.print("Please choose two numbers between 1 and 4:\n>");
                 else request = false;
@@ -147,11 +149,17 @@ public class CLI implements Observer {
             output.print(m.getMessage());
             int n = -1;
             while (request){
-                n = input.nextInt();
-                if (n < 0 || n > 9) output.print("Please choose a number between 0 and 9:\n>");
-                else request = false;
+                n = readInputInt();
+                if (n < 0 || n > 10){
+                    output.print("Please choose a number between 0 and 9:\n>");
+                }
+                else if (n > 5 && n < 10) {
+                    showElements(n);
+                } else {
+                    request = false;
+                }
             }
-            connectionSocket.send(ActionFactory.createAction(n));
+            connectionSocket.send(actionFactory.createAction(n));
         }
         else if (m instanceof NewView){
             printMarket();
@@ -167,11 +175,35 @@ public class CLI implements Observer {
         }
     }
 
+    private void showElements(int n){
+        switch (n){
+            case 6: printGameBoard(clientView.getOwnGameBoard()); break;
+            case 7: askForGameBoard(); break;
+            case 8: printMarket(); break;
+            case 9: printDevDecks(); break;
+        }
+        output.print("Please choose an action (select a number between 0 and 9):\n" +
+                    Constants.getChooseAction() +  "\n>");
+    }
+
+    private void askForGameBoard(){
+        while (true) {
+            output.print("Whose game board would you like to view?"+ "\n>");
+            String s = readInputString().toUpperCase();
+            for (GameBoardInfo g : clientView.getOtherGameBoards()){
+                if (g.getOwner().equals(s.toUpperCase())){
+                    printGameBoard(g); return;
+                }
+            }
+            output.print("Please select the nickname of a player in the match. ");
+        }
+    }
+
     private Resource askForResource(){
         boolean request = true;
         Resource r = null;
         while (request){
-            String s = input.nextLine().toUpperCase();
+            String s = readInputString().toUpperCase();
             try{
                 r = Resource.valueOf(s);
                 request = false;
@@ -182,11 +214,12 @@ public class CLI implements Observer {
         return r;
     }
 
-    private ResourcePosition askForLocation(Resource resource, boolean canDiscard){
+    protected ResourcePosition askForLocation(Resource resource, boolean canDiscard){
         Place p;
-        output.print("Where would you like to put it? [Warehouse, Chest]");
+        output.print("Where would you like to put your " + resource + "? " +
+                "(select warehouse for a leader's depot space) [Warehouse, Chest]");
         while (true){
-            String s = input.nextLine().toUpperCase();
+            String s = readInputString().toUpperCase();
             try{
                 p = Place.valueOf(s);
                 NumOfShelf num = null;
@@ -195,7 +228,7 @@ public class CLI implements Observer {
                         output.print("In which shelf would you like to put it? [ 1 / 2 / 3 (4 & 5 are the depots)]\n>");
                         boolean ok = false;
                         while (!ok){
-                            int n = input.nextInt();
+                            int n = readInputInt();
                             if (n < 1 || n > clientView.getOwnGameBoard().getWarehouse().size())
                                 output.print("Please select a number between 1 and"
                                         + clientView.getOwnGameBoard().getWarehouse().size() + " :\n>");
@@ -394,5 +427,27 @@ public class CLI implements Observer {
         output.println("\n");
     }
 
+    private String readInputString(){
+        try{
+            return input.nextLine();
+        } catch (InputMismatchException e){
+            output.print("Please insert a valid input.\n>");
+            input.next();
+            return readInputString();
+        }
+    }
 
+    private int readInputInt(){
+        try{
+            return input.nextInt();
+        } catch (InputMismatchException e){
+            output.print("Please insert a valid input.\n>");
+            input.next();
+            return readInputInt();
+        }
+    }
+
+    public ClientView getClientView() {
+        return clientView;
+    }
 }
