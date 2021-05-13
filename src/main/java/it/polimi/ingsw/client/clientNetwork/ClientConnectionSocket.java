@@ -40,8 +40,6 @@ public class ClientConnectionSocket implements Runnable{
         }
         output = new ObjectOutputStream(socket.getOutputStream());
         input = new ObjectInputStream(socket.getInputStream());
-        Thread thread = new Thread(this);
-        thread.start();
         return true;
     }
 

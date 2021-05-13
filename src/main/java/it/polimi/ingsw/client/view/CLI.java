@@ -94,6 +94,8 @@ public class CLI implements Observer {
                 confirmation = true;
         }
         clientView.setNickname(nickname);
+        Thread thread = new Thread(connectionSocket);
+        thread.start();
     }
 
     @Override

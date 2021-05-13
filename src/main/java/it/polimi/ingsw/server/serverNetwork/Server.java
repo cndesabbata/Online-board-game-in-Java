@@ -156,15 +156,15 @@ public class Server {
                 port = -1;
             }
             if (port <= 1024){
-                if (port == -1) System.err.println("Numeric format requested, please try again:\n>");
-                else {
+                if (port == -1)
+                    System.err.println("Numeric format requested, please try again:\n>");
+                else
                     System.err.println("Ports accepted started from 1024! Please try again.\n>");
-                    active = false;
-                }
             }
+            active = false;
         }
         Constants.setPort(port);
-        System.err.println("Starting Server...\n");
+        System.out.println("Starting Server...\n");
         Server server = new Server();
         ExecutorService executor = Executors.newCachedThreadPool();
         executor.submit(server.serverConnectionSocket);
