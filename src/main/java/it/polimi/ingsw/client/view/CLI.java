@@ -14,6 +14,7 @@ import it.polimi.ingsw.messages.serverMessages.newElement.NewIndex;
 import it.polimi.ingsw.server.controller.Place;
 import it.polimi.ingsw.server.model.Resource;
 import it.polimi.ingsw.server.model.ResourcePosition;
+import it.polimi.ingsw.server.model.ResourceQuantity;
 import it.polimi.ingsw.server.model.gameboard.NumOfShelf;
 import it.polimi.ingsw.server.observer.Observer;
 
@@ -133,16 +134,18 @@ public class CLI implements Observer {
         else if (m instanceof SetupResources){
             output.print(m.getMessage());
             List<ResourcePosition> rp = new ArrayList<>();
+            List<String> s = new ArrayList<>();
             if (clientView.getPlayerIndex() == 1 || clientView.getPlayerIndex() == 2){
                 Resource r = askForResource();
-                rp.add(askForLocation(r, false));
+                s.add(r.toString());
             }
             else if (clientView.getPlayerIndex() == 3){
                 for (int i = 0; i < 2; i++){
                     Resource r = askForResource();
-                    rp.add(askForLocation(r, false));
+                    s.add(r.toString());
                 }
             }
+            rp = (askForLocation(s, true, false));
             connectionSocket.send(new ResourceSelection(rp));
         }
         else if (m instanceof ChooseAction){
@@ -214,37 +217,62 @@ public class CLI implements Observer {
         return r;
     }
 
-    protected ResourcePosition askForLocation(Resource resource, boolean canDiscard){
-        Place p;
-        output.print("Where would you like to put your " + resource + "? " +
-                "(select warehouse for a leader's depot space) [Warehouse, Chest]");
-        while (true){
-            String s = readInputString().toUpperCase();
-            try{
-                p = Place.valueOf(s);
-                NumOfShelf num = null;
-                if (!(p == Place.TRASH_CAN && !canDiscard)) {
-                    if (p == Place.WAREHOUSE){
-                        output.print("In which shelf would you like to put it? [ 1 / 2 / 3 (4 & 5 are the depots)]\n>");
-                        boolean ok = false;
-                        while (!ok){
-                            int n = readInputInt();
-                            if (n < 1 || n > clientView.getOwnGameBoard().getWarehouse().size())
-                                output.print("Please select a number between 1 and"
-                                        + clientView.getOwnGameBoard().getWarehouse().size() + " :\n>");
-                            else{
-                                ok = true;
-                                num = NumOfShelf.values()[n-1];
+    protected List<ResourcePosition> askForLocation(List<String> stringList, boolean deposit, boolean canDiscard){
+        List<ResourceQuantity> req = new ArrayList<>();
+        List<ResourcePosition> result = new ArrayList<>();
+        for (Resource r : Resource.values())
+            req.add(new ResourceQuantity((int) stringList.
+                    stream().filter(s->s.equalsIgnoreCase(r.toString())).count(), r));
+        String order = "";
+        Place place = null;
+        NumOfShelf shelf = null;
+        for (ResourceQuantity r : req){
+            for (int i = 0; i < r.getQuantity(); i++){
+                if (r.getResource() != Resource.EMPTY && r.getResource() != Resource.FAITHPOINT){
+                    switch (i) {
+                        case 0 -> order = "first ";
+                        case 1 -> order = "second ";
+                        case 2 -> order = "third ";
+                        case 3 -> order = "fourth ";
+                        case 4 -> order = "fifth ";
+                    }
+                    while (true){
+                        if (deposit) output.print("Where would you like to put your " + order +
+                                r.getResource().toString().toLowerCase() + "? [Warehouse/Chest]\n>");
+                        else output.print("Where would you like to take your " + order +
+                                r.getResource().toString().toLowerCase() + " from? [Warehouse/Chest]\n>");
+                        String s = readInputString().toUpperCase();
+                        try{
+                            place = Place.valueOf(s);
+                            if (place == Place.WAREHOUSE){
+                                output.print("Which shelf would you like to take it from? " +
+                                        "[ 1 / 2 / 3 (4 & 5 are the depots)]\n>");
+                                while (true){
+                                    int n = readInputInt();
+                                    int size = getClientView().getOwnGameBoard().getWarehouse().size();
+                                    if (n < 1 || n > size)
+                                        output.print("Please select a number between 1 and" + size + " :\n>");
+                                    else{
+                                        shelf = NumOfShelf.values()[n-1];
+                                        break;
+                                    }
+                                }
                             }
+                            if (place != Place.TRASH_CAN || canDiscard){
+                                result.add(new ResourcePosition(r.getResource(), place, shelf));
+                                break;
+                            }
+                            else if (deposit) output.print("You cannot take resources from the trash-can.");
+                            else output.print("You cannot store resources in the trash-can.");
+                        } catch (InputMismatchException e){
+                            output.print("Please select a valid source.");
                         }
                     }
-                    return new ResourcePosition(resource, p, num);
                 }
-                output.print("You cannot put resources in the trash-can, please select between Warehouse and Chest:\n>");
-            } catch (IllegalArgumentException e){
-                output.print("Please select a valid position:\n>");
+                else result.add(new ResourcePosition(r.getResource(), null, null));
             }
         }
+        return result;
     }
 
     private void printMarket(){
@@ -311,7 +339,7 @@ public class CLI implements Observer {
         output.print("*\n");
     }
 
-    private String buildResourceString(List<String> list){
+    protected String buildResourceString(List<String> list){
         int[] quantity = {0,0,0,0};
         StringBuilder result = new StringBuilder();
         for (String s : list){

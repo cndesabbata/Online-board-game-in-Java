@@ -27,8 +27,9 @@ public class MultiPlayerController extends GameController {
             endGame();
         } else {
             if (getPhase() == GamePhase.SETUP) oldPlayer = null;
-            currentPlayer = nextPlayer();
-            currentPlayer.setTurnActive(true , getPhase() == GamePhase.SETUP, oldPlayer);
+            Player nextPlayer = nextPlayer();
+            nextPlayer.setTurnActive(true , getPhase() == GamePhase.SETUP, oldPlayer);
+            currentPlayer = nextPlayer;
         }
     }
 
