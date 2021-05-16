@@ -57,7 +57,7 @@ public class Player extends Observable {
         return exclusiveActionDone;
     }
 
-    public boolean isTurnActive() {
+    public synchronized boolean isTurnActive() {
         return turnActive;
     }
 
@@ -65,10 +65,10 @@ public class Player extends Observable {
         this.exclusiveActionDone = exclusiveActionDone;
     }
 
-    public void setTurnActive(boolean turnActive , boolean gameSetup, String oldPlayer) {
-        this.turnActive = turnActive;
+    public synchronized void setTurnActive(boolean turnActive , boolean gameSetup, String oldPlayer) {
         if(!gameSetup && turnActive)
             notifyObservers(new TurnChange(nickname, oldPlayer));
+        this.turnActive = turnActive;
     }
 
     public void setLorenzoActionDone(UserAction action){

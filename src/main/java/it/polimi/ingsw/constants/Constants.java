@@ -12,7 +12,8 @@ public class Constants {
                                         "6. Show your game board\n" +
                                         "7. Show other player game board\n" +
                                         "8. Show market\n" +
-                                        "9. Show development card decks";
+                                        "9. Show development card decks\n" +
+                                        "10 End Turn";
 
     public static String getAddress() {
         return address;

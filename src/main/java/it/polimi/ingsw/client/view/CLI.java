@@ -14,6 +14,7 @@ import it.polimi.ingsw.messages.serverMessages.newElement.NewIndex;
 import it.polimi.ingsw.server.controller.Place;
 import it.polimi.ingsw.server.model.Resource;
 import it.polimi.ingsw.server.model.ResourcePosition;
+import it.polimi.ingsw.server.model.ResourceQuantity;
 import it.polimi.ingsw.server.model.gameboard.NumOfShelf;
 import it.polimi.ingsw.server.observer.Observer;
 
@@ -27,6 +28,7 @@ public class CLI implements Observer {
     private final ClientView clientView;
     private final MessageHandler messageHandler;
     private boolean active;
+    private final ActionFactory actionFactory;
     private ClientConnectionSocket connectionSocket;
 
     public CLI() {
@@ -35,6 +37,7 @@ public class CLI implements Observer {
         clientView = new ClientView(this);
         messageHandler = new MessageHandler(clientView);
         active = true;
+        actionFactory = new ActionFactory(output, input, this);
     }
 
     public static void main(String[] args){
@@ -59,9 +62,9 @@ public class CLI implements Observer {
             while(!connectionSocket.setupConnection(clientView)) {
                 output.println("The entered IP/port doesn't match any active server. Please try again!");
                 output.print("Insert the server IP address\n>");
-                Constants.setAddress(input.nextLine());
+                Constants.setAddress(readInputString());
                 output.print("Insert the server port\n>");
-                Constants.setPort(input.nextInt());
+                Constants.setPort(readInputInt());
             }
             System.out.println("Socket Connection setup completed!");
         } catch (IOException e){
@@ -75,7 +78,7 @@ public class CLI implements Observer {
             boolean ok = false;
             while (!ok){
                 output.print("Would you like to start a new match or resume an existing one? [start/resume]\n>");
-                String answer = input.nextLine().toUpperCase();
+                String answer = readInputString().toUpperCase();
                 switch (answer) {
                     case "START" -> {
                         newPlayer = true;
@@ -89,7 +92,7 @@ public class CLI implements Observer {
                 }
             }
             output.print("Insert your nickname:\n>");
-            nickname = input.nextLine();
+            nickname = readInputString();
             if (nickname != null && !nickname.isEmpty() && connectionSocket.setupNickname(nickname, newPlayer))
                 confirmation = true;
         }
@@ -109,7 +112,7 @@ public class CLI implements Observer {
             output.print(m.getMessage() + "\n>");
             int number = 0;
             while (request){
-                number = input.nextInt();
+                number = readInputInt();
                 if (number >= 1 && number <= 4) request = false;
                 else output.print("Please choose a number between 1 and 4:\n>");
             }
@@ -120,8 +123,8 @@ public class CLI implements Observer {
             int index1 = 0;
             int index2 = 0;
             while (request){
-                index1 = input.nextInt();
-                index2 = input.nextInt();
+                index1 = readInputInt();
+                index2 = readInputInt();
                 if (index1 < 1 || index1 > 4 || index2 < 1 || index2 > 4)
                     output.print("Please choose two numbers between 1 and 4:\n>");
                 else request = false;
@@ -131,27 +134,35 @@ public class CLI implements Observer {
         else if (m instanceof SetupResources){
             output.print(m.getMessage());
             List<ResourcePosition> rp = new ArrayList<>();
+            List<String> s = new ArrayList<>();
             if (clientView.getPlayerIndex() == 1 || clientView.getPlayerIndex() == 2){
                 Resource r = askForResource();
-                rp.add(askForLocation(r, false));
+                s.add(r.toString());
             }
             else if (clientView.getPlayerIndex() == 3){
                 for (int i = 0; i < 2; i++){
                     Resource r = askForResource();
-                    rp.add(askForLocation(r, false));
+                    s.add(r.toString());
                 }
             }
+            rp = (askForLocation(s, true, false));
             connectionSocket.send(new ResourceSelection(rp));
         }
         else if (m instanceof ChooseAction){
             output.print(m.getMessage());
             int n = -1;
             while (request){
-                n = input.nextInt();
-                if (n < 0 || n > 9) output.print("Please choose a number between 0 and 9:\n>");
-                else request = false;
+                n = readInputInt();
+                if (n < 0 || n > 10){
+                    output.print("Please choose a number between 0 and 9:\n>");
+                }
+                else if (n > 5 && n < 10) {
+                    showElements(n);
+                } else {
+                    request = false;
+                }
             }
-            connectionSocket.send(ActionFactory.createAction(n));
+            connectionSocket.send(actionFactory.createAction(n));
         }
         else if (m instanceof NewView){
             printMarket();
@@ -167,11 +178,35 @@ public class CLI implements Observer {
         }
     }
 
+    private void showElements(int n){
+        switch (n){
+            case 6: printGameBoard(clientView.getOwnGameBoard()); break;
+            case 7: askForGameBoard(); break;
+            case 8: printMarket(); break;
+            case 9: printDevDecks(); break;
+        }
+        output.print("Please choose an action (select a number between 0 and 9):\n" +
+                    Constants.getChooseAction() +  "\n>");
+    }
+
+    private void askForGameBoard(){
+        while (true) {
+            output.print("Whose game board would you like to view?"+ "\n>");
+            String s = readInputString().toUpperCase();
+            for (GameBoardInfo g : clientView.getOtherGameBoards()){
+                if (g.getOwner().equals(s.toUpperCase())){
+                    printGameBoard(g); return;
+                }
+            }
+            output.print("Please select the nickname of a player in the match. ");
+        }
+    }
+
     private Resource askForResource(){
         boolean request = true;
         Resource r = null;
         while (request){
-            String s = input.nextLine().toUpperCase();
+            String s = readInputString().toUpperCase();
             try{
                 r = Resource.valueOf(s);
                 request = false;
@@ -182,36 +217,62 @@ public class CLI implements Observer {
         return r;
     }
 
-    private ResourcePosition askForLocation(Resource resource, boolean canDiscard){
-        Place p;
-        output.print("Where would you like to put it? [Warehouse, Chest]");
-        while (true){
-            String s = input.nextLine().toUpperCase();
-            try{
-                p = Place.valueOf(s);
-                NumOfShelf num = null;
-                if (!(p == Place.TRASH_CAN && !canDiscard)) {
-                    if (p == Place.WAREHOUSE){
-                        output.print("In which shelf would you like to put it? [ 1 / 2 / 3 (4 & 5 are the depots)]\n>");
-                        boolean ok = false;
-                        while (!ok){
-                            int n = input.nextInt();
-                            if (n < 1 || n > clientView.getOwnGameBoard().getWarehouse().size())
-                                output.print("Please select a number between 1 and"
-                                        + clientView.getOwnGameBoard().getWarehouse().size() + " :\n>");
-                            else{
-                                ok = true;
-                                num = NumOfShelf.values()[n-1];
+    protected List<ResourcePosition> askForLocation(List<String> stringList, boolean deposit, boolean canDiscard){
+        List<ResourceQuantity> req = new ArrayList<>();
+        List<ResourcePosition> result = new ArrayList<>();
+        for (Resource r : Resource.values())
+            req.add(new ResourceQuantity((int) stringList.
+                    stream().filter(s->s.equalsIgnoreCase(r.toString())).count(), r));
+        String order = "";
+        Place place = null;
+        NumOfShelf shelf = null;
+        for (ResourceQuantity r : req){
+            for (int i = 0; i < r.getQuantity(); i++){
+                if (r.getResource() != Resource.EMPTY && r.getResource() != Resource.FAITHPOINT){
+                    switch (i) {
+                        case 0 -> order = "first ";
+                        case 1 -> order = "second ";
+                        case 2 -> order = "third ";
+                        case 3 -> order = "fourth ";
+                        case 4 -> order = "fifth ";
+                    }
+                    while (true){
+                        if (deposit) output.print("Where would you like to put your " + order +
+                                r.getResource().toString().toLowerCase() + "? [Warehouse/Chest]\n>");
+                        else output.print("Where would you like to take your " + order +
+                                r.getResource().toString().toLowerCase() + " from? [Warehouse/Chest]\n>");
+                        String s = readInputString().toUpperCase();
+                        try{
+                            place = Place.valueOf(s);
+                            if (place == Place.WAREHOUSE){
+                                output.print("Which shelf would you like to take it from? " +
+                                        "[ 1 / 2 / 3 (4 & 5 are the depots)]\n>");
+                                while (true){
+                                    int n = readInputInt();
+                                    int size = getClientView().getOwnGameBoard().getWarehouse().size();
+                                    if (n < 1 || n > size)
+                                        output.print("Please select a number between 1 and" + size + " :\n>");
+                                    else{
+                                        shelf = NumOfShelf.values()[n-1];
+                                        break;
+                                    }
+                                }
                             }
+                            if (place != Place.TRASH_CAN || canDiscard){
+                                result.add(new ResourcePosition(r.getResource(), place, shelf));
+                                break;
+                            }
+                            else if (deposit) output.print("You cannot take resources from the trash-can.");
+                            else output.print("You cannot store resources in the trash-can.");
+                        } catch (InputMismatchException e){
+                            output.print("Please select a valid source.");
                         }
                     }
-                    return new ResourcePosition(resource, p, num);
                 }
-                output.print("You cannot put resources in the trash-can, please select between Warehouse and Chest:\n>");
-            } catch (IllegalArgumentException e){
-                output.print("Please select a valid position:\n>");
+                else result.add(new ResourcePosition(r.getResource(), null, null));
             }
         }
+        return result;
     }
 
     private void printMarket(){
@@ -278,7 +339,7 @@ public class CLI implements Observer {
         output.print("*\n");
     }
 
-    private String buildResourceString(List<String> list){
+    protected String buildResourceString(List<String> list){
         int[] quantity = {0,0,0,0};
         StringBuilder result = new StringBuilder();
         for (String s : list){
@@ -394,5 +455,27 @@ public class CLI implements Observer {
         output.println("\n");
     }
 
+    private String readInputString(){
+        try{
+            return input.nextLine();
+        } catch (InputMismatchException e){
+            output.print("Please insert a valid input.\n>");
+            input.next();
+            return readInputString();
+        }
+    }
 
+    private int readInputInt(){
+        try{
+            return input.nextInt();
+        } catch (InputMismatchException e){
+            output.print("Please insert a valid input.\n>");
+            input.next();
+            return readInputInt();
+        }
+    }
+
+    public ClientView getClientView() {
+        return clientView;
+    }
 }
