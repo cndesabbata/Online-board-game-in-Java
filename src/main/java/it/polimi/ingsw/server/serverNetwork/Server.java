@@ -83,9 +83,11 @@ public class Server {
     private void lobby (ClientConnection connection){
         waitingList.add(connection);
         if (waitingList.size() == 1) {
+            System.out.println("Ciao 1");
             connection.sendSocketMessage(new PlayersNumberMessage(connection.getPlayerNickname() +
                     ", you are the lobby host, please choose the number of players: [1...4]"));
         } else if (waitingList.size() == totalPlayers) {
+            System.out.println("Ciao 2");
             VirtualView v = find(connection, clientToConnection);
             v.sendAll(new SetupMessage("Player number reached. The match is starting."));
             waitingList.clear();
