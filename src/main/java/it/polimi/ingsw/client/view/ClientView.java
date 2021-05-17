@@ -64,7 +64,7 @@ public class ClientView extends Observable {
     }
 
     public void setDevDecks(DevCardInfo newCard, int c, int l) {
-        this.devDecks[c][l] = newCard;
+        this.devDecks[l - 1][c] = newCard;
     }
 
     public void setClientMessage(Message clientMessage) {

@@ -158,13 +158,20 @@ public class CLI implements Observer {
                 }
                 else if (n > 5 && n < 10) {
                     showElements(n);
-                } else {
-                    request = false;
+                }
+                else {
+                    if((n == 3 || n == 4) && getClientView().getHand().size() == 0) {
+                        output.print("You don't have any leader card in your hand, " +
+                                "please select a different action.\n>");
+                    }
+                    else
+                        request = false;
                 }
             }
             connectionSocket.send(actionFactory.createAction(n));
         }
         else if (m instanceof NewView){
+            System.out.println(m.getMessage());
             printMarket();
             printDevDecks();
             printHandCards();
@@ -248,6 +255,7 @@ public class CLI implements Observer {
                                 output.print("Which shelf would you like to take it from? " +
                                         "[ 1 / 2 / 3 (4 & 5 are the depots)]\n>");
                                 while (true){
+                                    System.out.println("sono nel while true");
                                     int n = readInputInt();
                                     int size = getClientView().getOwnGameBoard().getWarehouse().size();
                                     if (n < 1 || n > size)
@@ -264,8 +272,8 @@ public class CLI implements Observer {
                             }
                             else if (deposit) output.print("You cannot take resources from the trash-can.");
                             else output.print("You cannot store resources in the trash-can.");
-                        } catch (InputMismatchException e){
-                            output.print("Please select a valid source.");
+                        } catch (IllegalArgumentException e){
+                            output.print("Please select a valid source. ");
                         }
                     }
                 }
@@ -413,7 +421,7 @@ public class CLI implements Observer {
         output.print("CHEST:\n\n| ");
         List<String> resources = new ArrayList<>(g.getChest().keySet());
         for (String res : resources){
-            output.print(res + "s: " + g.getChest().get(res) + " | ");
+            output.print(res + ": " + g.getChest().get(res) + " | ");
         }
         output.println("\n");
     }
@@ -436,7 +444,8 @@ public class CLI implements Observer {
         output.print("DEVELOPMENT SPACE: \n\n");
         for (int i = 0; i < 3; i++){
             output.print("Slot number " + (i+1) + ":\n");
-            printDevCard(g.getDevSpace().get(i).get(0));
+            if(!g.getDevSpace().get(i).isEmpty())
+                printDevCard(g.getDevSpace().get(i).get(0));
         }
         output.println("\n");
     }
@@ -467,8 +476,8 @@ public class CLI implements Observer {
 
     private int readInputInt(){
         try{
-            return input.nextInt();
-        } catch (InputMismatchException e){
+            return Integer.parseInt(input.nextLine());
+        } catch (InputMismatchException | NumberFormatException e){
             output.print("Please insert a valid input.\n>");
             input.next();
             return readInputInt();

@@ -1,8 +1,9 @@
 package it.polimi.ingsw.server.model;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class Card {
+public abstract class Card implements Serializable {
     private final List<ResourceQuantity> resourceRequirements;
     private final int victoryPoints;
 

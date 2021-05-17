@@ -39,6 +39,8 @@ public class MessageHandler {
                 view.setClientMessage(new SetupDiscard(e.getMessage()));
             else if (e.getErrorType() == ErrorType.SETUP_RESOURCE)
                 view.setClientMessage(new SetupResources(e.getMessage()));
+            else if (e.getErrorType() == ErrorType.SOCKET_ERROR)
+                view.setClientMessage(new DisplayMessage(e.getMessage()));
         }
         else if (message instanceof SetupMessage || message instanceof Disconnection){
             view.setClientMessage(new DisplayMessage(((CustomMessage) message).getMessage()));
@@ -51,7 +53,9 @@ public class MessageHandler {
             for (ChangeMessage a : m.getNewElements()){
                 applyChanges(a);
             }
-            if (m.getType() == UserAction.SETUP_DRAW){
+            if(m.getType() == UserAction.INITIAL_DISPOSITION)
+                view.setClientMessage(new NewView("This is the initial disposition."));
+            else if (m.getType() == UserAction.SETUP_DRAW){
                 view.setClientMessage(new NewView("These are your new four leader cards."));
                 view.setClientMessage(new SetupDiscard("Please select the indexes of the two you wish to discard:\n>"));
             }

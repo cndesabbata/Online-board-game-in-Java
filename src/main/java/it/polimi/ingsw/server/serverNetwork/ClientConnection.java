@@ -60,7 +60,8 @@ public class ClientConnection implements Runnable {
 
     public void readInput() throws IOException, ClassNotFoundException {
         Message inputClientMessage = (Message) input.readObject();
-        if (inputClientMessage != null) messageHandler(inputClientMessage);
+        if (inputClientMessage != null)
+            messageHandler(inputClientMessage);
     }
 
     @Override
@@ -71,6 +72,7 @@ public class ClientConnection implements Runnable {
             }
             server.removeClient(this);
         } catch (IOException e) {
+            System.out.println("ioexc");
             if (gameController.getPhase() == GamePhase.STARTED && gameController instanceof MultiPlayerController){
                 if (((MultiPlayerController) getGameController()).getCurrentPlayer().getNickname().equals(playerNickname))
                     ((MultiPlayerController) getGameController()).changeTurn();
@@ -79,6 +81,7 @@ public class ClientConnection implements Runnable {
             else server.removeClient(this);
             System.err.println(e.getMessage());
         } catch (ClassNotFoundException e){
+            System.out.println("classnotfoundex");
             System.err.println(e.getMessage());
         }
     }
@@ -212,6 +215,7 @@ public class ClientConnection implements Runnable {
 
     public void sendSocketMessage(Message message){
         try {
+            output.reset();
             output.writeObject(message);
             output.flush();
         } catch (IOException e) {

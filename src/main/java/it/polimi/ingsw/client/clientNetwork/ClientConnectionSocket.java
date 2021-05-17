@@ -83,6 +83,7 @@ public class ClientConnectionSocket implements Runnable{
                 messageHandler.process(message);
             } catch (IOException | ClassNotFoundException e) {
                 messageHandler.process(new ErrorMessage("Error in reading server message", ErrorType.SOCKET_ERROR));
+                break;
             }
             if(message instanceof CloseMessage) break;
         }

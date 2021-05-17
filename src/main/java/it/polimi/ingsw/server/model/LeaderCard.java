@@ -1,8 +1,9 @@
 package it.polimi.ingsw.server.model;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class LeaderCard extends Card{
+public class LeaderCard extends Card implements Serializable {
     private boolean isPlayed;
     private final List<DevCard> cardRequirements;
     private final Resource resource;
