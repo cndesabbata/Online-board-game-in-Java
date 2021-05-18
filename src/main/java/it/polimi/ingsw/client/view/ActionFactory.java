@@ -139,7 +139,7 @@ public class ActionFactory {
             rp1 = cli.askForLocation(s1, true, true);
             leaderEffects.add(new MarbleEffect(whiteMarbles, res, rp1));
         }
-        return new BuyResources(leaderEffects, source, marketSelection, result);
+        return new BuyResources(leaderEffects, source + 1, marketSelection, result);
     }
 
     private Action buildBuyDevCard() {

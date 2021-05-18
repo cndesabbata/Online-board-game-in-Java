@@ -165,7 +165,10 @@ public class ClientConnection implements Runnable {
         else if (clientMessage instanceof Action){
             if (checkMessageMultiplayer(GamePhase.STARTED) || checkMessageSinglePlayer(GamePhase.STARTED)){
                 try{
-                    ((Action) clientMessage).checkAction(((MultiPlayerController) getGameController()).getCurrentPlayer());
+                    if(getGameController() instanceof MultiPlayerController)
+                        ((Action) clientMessage).checkAction(((MultiPlayerController) getGameController()).getCurrentPlayer());
+                    else
+                        ((Action) clientMessage).checkAction(getGameController().getActivePlayers().get(0));
                 } catch (WrongActionException e){
                     sendSocketMessage(new ErrorMessage(e.getMessage(), ErrorType.WRONG_ACTION));
                 }

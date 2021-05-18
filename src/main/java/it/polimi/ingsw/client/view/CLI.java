@@ -255,7 +255,6 @@ public class CLI implements Observer {
                                 output.print("Which shelf would you like to take it from? " +
                                         "[ 1 / 2 / 3 (4 & 5 are the depots)]\n>");
                                 while (true){
-                                    System.out.println("sono nel while true");
                                     int n = readInputInt();
                                     int size = getClientView().getOwnGameBoard().getWarehouse().size();
                                     if (n < 1 || n > size)
