@@ -242,16 +242,25 @@ public class CLI implements Observer {
                         case 4 -> order = "fifth ";
                     }
                     while (true) {
-                        if (deposit) output.print("Where would you like to put your " + order +
-                                r.getResource().toString().toLowerCase() + "? [Warehouse/Chest]\n>");
-                        else output.print("Where would you like to take your " + order +
-                                r.getResource().toString().toLowerCase() + " from? [Warehouse/Chest]\n>");
-                        String s = readInputString().toUpperCase();
+                        String s;
+                        if (!deposit)
+                            output.print("Where would you like to take your " + order +
+                                    r.getResource().toString().toLowerCase() + " from? [Warehouse/Chest]\n>");
+                        else
+                            output.print("Where would you like to store your " + order +
+                                    r.getResource().toString().toLowerCase() + " in? [Warehouse/Discard]\n>");
+                        s = readInputString().toUpperCase();
+                        if(s.equals("DISCARD"))
+                            s = "TRASH_CAN";
                         try {
                             place = Place.valueOf(s);
-                            if (place == Place.WAREHOUSE) {
-                                output.print("Which shelf would you like to take it from? " +
-                                        "[ 1 / 2 / 3 (4 & 5 are the depots)]\n>");
+                            if(place == Place.WAREHOUSE) {
+                                if (deposit)
+                                    output.print("Which shelf would you like to store it in? " +
+                                            "[ 1 / 2 / 3 (4 & 5 are the depots)]\n>");
+                                else
+                                    output.print("Which shelf would you like to take it from? " +
+                                            "[ 1 / 2 / 3 (4 & 5 are the depots)]\n>");
                                 while (true) {
                                     int n = readInputInt();
                                     int size = getClientView().getOwnGameBoard().getWarehouse().size();
@@ -262,12 +271,28 @@ public class CLI implements Observer {
                                         break;
                                     }
                                 }
-                            }
-                            if (place != Place.TRASH_CAN || canDiscard) {
                                 result.add(new ResourcePosition(r.getResource(), place, shelf));
                                 break;
-                            } else if (deposit) output.print("You cannot take resources from the trash-can.");
-                            else output.print("You cannot store resources in the trash-can.");
+                            }
+                            else if(place == Place.TRASH_CAN) {
+                                if(!deposit)
+                                    output.print("You cannot take resources that have been discarded.\n");
+                                else {
+                                    if(!canDiscard)
+                                        output.print("You cannot discard this resource.\n");
+                                    else {
+                                        result.add(new ResourcePosition(r.getResource(), place, null));
+                                        break;
+                                    }
+                                }
+                            }
+                            else if(place == Place.CHEST) {
+                                if(deposit)
+                                    output.print("This resource cannot be stored in the chest.\n>");
+                                else
+                                    result.add(new ResourcePosition(r.getResource(), place, null));
+                                    break;
+                            }
                         } catch (IllegalArgumentException e) {
                             output.print("Please select a valid source. ");
                         }

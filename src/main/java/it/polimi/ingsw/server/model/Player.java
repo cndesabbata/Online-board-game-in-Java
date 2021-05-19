@@ -93,8 +93,10 @@ public class Player extends Observable {
     }
 
     public void setupDiscard(int index1, int index2, int playerIndex){
-        handLeaderCards.remove(index1 - 1);
-        handLeaderCards.remove(index2 - 1);
+        LeaderCard leaderCard1 = handLeaderCards.get(index1 - 1);
+        LeaderCard leaderCard2 = handLeaderCards.get(index2 - 1);
+        handLeaderCards.remove(leaderCard1);
+        handLeaderCards.remove(leaderCard2);
         notifySingleObserver(new NewHandCards(handLeaderCards, nickname, false), nickname);
         notifySingleObserver(new NewIndex(playerIndex), nickname);
     }
