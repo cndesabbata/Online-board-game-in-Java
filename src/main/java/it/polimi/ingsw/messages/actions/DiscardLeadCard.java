@@ -34,8 +34,8 @@ public class DiscardLeadCard implements Action {
     public void checkAction(Player player) throws WrongActionException {
         hand = player.getHandLeaderCards();
         if (index <= 0 || index > hand.size())
-            throw new WrongActionException("The specified index is out of bounds");
+            throw new WrongActionException("The specified index is out of bounds. ");
         else if (hand.get(index - 1).isPlayed())
-            throw new WrongActionException("The specified Leader Card has already been played, it is impossible to discard it.");
+            throw new WrongActionException("The specified Leader Card has already been played, it is impossible to discard it. ");
     }
 }
