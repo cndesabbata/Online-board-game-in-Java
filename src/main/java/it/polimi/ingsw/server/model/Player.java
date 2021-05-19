@@ -72,7 +72,7 @@ public class Player extends Observable {
     }
 
     public void setLorenzoActionDone(UserAction action){
-        notifyObservers(new ChangesDone("Lorenzo De Medici", action));
+        notifyObservers(new ChangesDone("Lorenzo De Medici ", action));
     }
 
     public void addLeaderCard(LeaderCard card){

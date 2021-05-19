@@ -313,7 +313,10 @@ public class CLI implements Observer {
         output.println("DEVELOPMENT DECKS:\n");
         for (DevCardInfo[] a : clientView.getDevDecks()){
             for (DevCardInfo d : a){
-                printDevCard(d);
+                if(d != null)
+                    printDevCard(d);
+                else
+                    output.print(" empty ");
             }
         }
     }
@@ -409,7 +412,7 @@ public class CLI implements Observer {
         output.println("ITINERARY:\n\n" +
                 "Position: " + g.getPosition() + "/24");
         if (g.getBlackCrossPosition() != null)
-            output.println("Lorenzo De Medici's position: " + g.getPosition() + "/24");
+            output.println("Lorenzo De Medici's position: " + g.getBlackCrossPosition() + "/24");
         output.println("Papal cards status: ");
         for (int i = 0; i < g.getPapalCards().size(); i++)
             output.println(i + " -> " + g.getPapalCards().get(i) + " (value: " + (i + 2) + ")");
