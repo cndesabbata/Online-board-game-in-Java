@@ -5,10 +5,7 @@ import it.polimi.ingsw.messages.Message;
 import it.polimi.ingsw.messages.actions.*;
 import it.polimi.ingsw.messages.clientMessages.EndTurn;
 import it.polimi.ingsw.messages.clientMessages.internal.ChooseAction;
-import it.polimi.ingsw.server.controller.leaders.DepotEffect;
-import it.polimi.ingsw.server.controller.leaders.DiscountEffect;
-import it.polimi.ingsw.server.controller.leaders.LeaderEffect;
-import it.polimi.ingsw.server.controller.leaders.MarbleEffect;
+import it.polimi.ingsw.server.controller.leaders.*;
 import it.polimi.ingsw.server.model.*;
 import it.polimi.ingsw.server.model.gameboard.DevSpaceSlot;
 import it.polimi.ingsw.server.model.gameboard.NumOfShelf;
@@ -158,11 +155,11 @@ public class ActionFactory {
         while (true) {
             while (true) {
                 output.print("What colour is the card you would like to buy? [Green/Blue/Yellow/Purple]\n>");
-                String col = readInputString();
+                String col = readInputString().toUpperCase();
                 try {
                     colour = Colour.valueOf(col);
                     break;
-                } catch (InputMismatchException e) {
+                } catch (IllegalArgumentException e) {
                     output.println("Please insert a valid colour.");
                 }
             }
