@@ -60,7 +60,9 @@ public class ClientConnection implements Runnable {
 
     public void readInput() throws IOException, ClassNotFoundException {
         Message inputClientMessage = (Message) input.readObject();
-        if (inputClientMessage != null) messageHandler(inputClientMessage);
+        if (inputClientMessage != null) {
+            messageHandler(inputClientMessage);
+        }
     }
 
     @Override

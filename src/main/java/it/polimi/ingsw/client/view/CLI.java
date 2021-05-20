@@ -245,8 +245,12 @@ public class CLI implements Observer {
                         try{
                             place = Place.valueOf(s);
                             if (place == Place.WAREHOUSE){
-                                output.print("Which shelf would you like to take it from? " +
-                                        "[ 1 / 2 / 3 (4 & 5 are the depots)]\n>");
+                                if (deposit)
+                                    output.print("Which shelf would you like to store it in? " +
+                                            "[ 1 / 2 / 3 (4 & 5 are the depots)]\n>");
+                                else
+                                    output.print("Which shelf would you like to take it from? " +
+                                            "[ 1 / 2 / 3 (4 & 5 are the depots)]\n>");
                                 while (true){
                                     int n = readInputInt();
                                     int size = getClientView().getOwnGameBoard().getWarehouse().size();

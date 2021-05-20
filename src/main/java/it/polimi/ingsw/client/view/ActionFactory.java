@@ -4,10 +4,9 @@ import it.polimi.ingsw.messages.Message;
 import it.polimi.ingsw.messages.actions.Action;
 import it.polimi.ingsw.messages.actions.BuyDevCard;
 import it.polimi.ingsw.messages.actions.BuyResources;
+import it.polimi.ingsw.messages.actions.StartProduction;
 import it.polimi.ingsw.messages.clientMessages.EndTurn;
-import it.polimi.ingsw.server.controller.leaders.DiscountEffect;
-import it.polimi.ingsw.server.controller.leaders.LeaderEffect;
-import it.polimi.ingsw.server.controller.leaders.MarbleEffect;
+import it.polimi.ingsw.server.controller.leaders.*;
 import it.polimi.ingsw.server.model.*;
 import it.polimi.ingsw.server.model.gameboard.DevSpaceSlot;
 
@@ -131,6 +130,12 @@ public class ActionFactory {
             rp1 = cli.askForLocation(s1, true, true);
             leaderEffects.add(new MarbleEffect(whiteMarbles, res, rp1));
         }
+        if(cli.getClientView().getOwnGameBoard().getPlayedCards().stream().anyMatch(L -> L.getType().equals("Depot"))){ //adding depots leader effects
+            for (LeadCardInfo l : cli.getClientView().getOwnGameBoard().getPlayedCards()){
+                if(l.getType().equals("Depot"))
+                    leaderEffects.add(new DepotEffect(Resource.valueOf(l.getResource())));
+            }
+        }
         return new BuyResources(leaderEffects, source, marketSelection, result);
     }
 
@@ -198,6 +203,12 @@ public class ActionFactory {
         }
         output.println("Your card has the following requirements:\n" + cli.buildResourceString(req));
         res = cli.askForLocation(req, false, false);
+        if(cli.getClientView().getOwnGameBoard().getPlayedCards().stream().anyMatch(L -> L.getType().equals("Depot"))){ //adding depots leader effects
+            for (LeadCardInfo l : cli.getClientView().getOwnGameBoard().getPlayedCards()){
+                if(l.getType().equals("Depot"))
+                    leaders.add(new DepotEffect(Resource.valueOf(l.getResource())));
+            }
+        }
         return new BuyDevCard(lev, colour, DevSpaceSlot.values()[slot], res, leaders);
     }
 
@@ -207,7 +218,113 @@ public class ActionFactory {
     }
 
     private Action buildStartProduction(){
-        return null;
+        List <Integer> slots = new ArrayList<>();
+        List<ResourcePosition> inp = new ArrayList<>();
+        List<ResourcePosition> out = new ArrayList<>();
+        List <LeaderEffect> leaderEffects = new ArrayList<>();
+        boolean request = true;
+        int slot;
+        while(request) {                                                                                                //getting all the devCards the user wants to activate
+            output.print("Select the slot in the development space:\n>");
+            while (true) {
+                slot = readInputInt();
+                if (slot >= 1 && slot <= 3 && !cli.getClientView().getOwnGameBoard().getDevSpace().get(slot).isEmpty())
+                    break;
+                output.print("Please select a number from 1 to 3 and make sure that the selected slot is not empty.\n");
+            }
+            slots.add(slot);
+            DevCardInfo d = cli.getClientView().getOwnGameBoard().getDevSpace().get(slot).get(0);
+            inp.addAll(cli.askForLocation(d.getProductionInput(), false, false));
+            out.addAll(cli.askForLocation(d.getProductionOutput(), true, false));
+            request = askYesNo("Would you like to select another development card? [yes/no]\n>");
+        }
+        if(askYesNo("Would you like to start the board production? [yes/no]\n>")){
+            List <String> boardInput = new ArrayList<>();
+            List <String> boardOutput = new ArrayList<>();
+            for(int i = 0; i < 3; i++) {
+                if (i < 2)                                                                                              //input of boardProduction
+                    output.print("Choose the resource number " +(i+1)+ "that you want to use: " +
+                            "[Coin, Stone, Servant, Shield]\n>");
+                else {                                                                                                  //output of BoardProduction
+                    inp.addAll(cli.askForLocation(boardInput, false, false));
+                    output.print("Choose the resource number " +(i+1)+ "that you want to generate: " +
+                            "[Coin, Stone, Servant, Shield]\n>");
+                }
+                String res;
+                while (true) {
+                    res = readInputString();
+                    if (!res.equalsIgnoreCase("Coin") && !res.equalsIgnoreCase("Shield") &&
+                            !res.equalsIgnoreCase("Servant") && !res.equalsIgnoreCase("Shield"))
+                        output.print("Please select a resource between [Coin / Stone / Servant / Shield]\n>");
+                    else break;
+                }
+                if(i < 2)                                                                                               //input of boardProduction
+                    boardInput.add(res);
+                else                                                                                                    //output of BoardProduction
+                    boardOutput.add(res);
+            }
+            out.addAll(cli.askForLocation(boardOutput, false, false));
+        }
+        if(cli.getClientView().getOwnGameBoard().getPlayedCards().stream().anyMatch(l -> l.getType().equals("Product"))                                          //productLeader
+                && askYesNo("Would you like to use a product leader card?\n>")){
+            List <Integer> indexLead = new ArrayList<>();
+            String resOut = "";
+            for(int i = 0; i < 2; i++) {
+                int n;
+                output.print("Select the index of the product leader card on your game board: [1 / 2]\n>");
+                while (true) {
+                    n = readInputInt();
+                    if (n > cli.getClientView().getOwnGameBoard().getPlayedCards().size())
+                        output.print("There is no played leader card of index " + n + ". Please try again:\n>");
+                    else if (!cli.getClientView().getOwnGameBoard().getPlayedCards().get(n - 1).getType().equalsIgnoreCase("Product"))
+                        output.print("The selected leader card is not a product leader. Please try again: \n>");
+                    else {
+                        indexLead.add(n);
+                        break;
+                    }
+                }
+                output.print("Select the resource you want to generate: [Coin / Stone / Servant / Shield] \n>");
+                while (true) {
+                    resOut = readInputString();
+                    if (!resOut.equalsIgnoreCase("Coin") && !resOut.equalsIgnoreCase("Stone") &&
+                        !resOut.equalsIgnoreCase("Servant") && !resOut.equalsIgnoreCase("Shield"))
+                        output.print("Please select a resource between [Coin / Stone / Servant / Shield]:\n>");
+                    else break;
+                }
+                if(i == 0 && !askYesNo("Would you like to select another product leader card?\n>"))
+                    break;
+            }
+            for(int n : indexLead){                                                                                     //construction of leader effects
+                List<String> i = new ArrayList<>();
+                List<String> o = new ArrayList<>();
+                i.add(cli.getClientView().getOwnGameBoard().getPlayedCards().get(n-1).getResource());
+                List<ResourcePosition> inputLead = new ArrayList<>(cli.askForLocation(i, false, false));
+                o.add(resOut);
+                List<ResourcePosition> outputLead = new ArrayList<>(cli.askForLocation(o, true, false));
+                leaderEffects.add(new ProductionEffect(inputLead.get(0), outputLead.get(0)));
+            }
+        }
+        if(cli.getClientView().getOwnGameBoard().getPlayedCards().stream().anyMatch(L -> L.getType().equals("Depot"))){ //adding depots leader effects
+            for (LeadCardInfo l : cli.getClientView().getOwnGameBoard().getPlayedCards()){
+                if(l.getType().equals("Depot"))
+                    leaderEffects.add(new DepotEffect(Resource.valueOf(l.getResource())));
+            }
+        }
+    return new StartProduction(slots, inp, out, leaderEffects);
+    }
+
+    private boolean askYesNo(String question){
+        output.print(question);
+        while(true) {
+            String s = readInputString();
+            if (s.equalsIgnoreCase("no")) {
+                return false;
+            }
+            else if (s.equalsIgnoreCase("yes"))
+                return true;
+            else
+                output.print("Please type yes or no:\n>");
+        }
     }
 
     private Action buildDiscardLeadCard(){
