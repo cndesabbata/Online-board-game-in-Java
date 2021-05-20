@@ -60,9 +60,8 @@ public class ClientConnection implements Runnable {
 
     public void readInput() throws IOException, ClassNotFoundException {
         Message inputClientMessage = (Message) input.readObject();
-        if (inputClientMessage != null) {
+        if (inputClientMessage != null)
             messageHandler(inputClientMessage);
-        }
     }
 
     @Override
@@ -73,6 +72,7 @@ public class ClientConnection implements Runnable {
             }
             server.removeClient(this);
         } catch (IOException e) {
+            System.out.println("ioexc");
             if (gameController.getPhase() == GamePhase.STARTED && gameController instanceof MultiPlayerController){
                 if (((MultiPlayerController) getGameController()).getCurrentPlayer().getNickname().equals(playerNickname))
                     ((MultiPlayerController) getGameController()).changeTurn();
@@ -81,6 +81,7 @@ public class ClientConnection implements Runnable {
             else server.removeClient(this);
             System.err.println(e.getMessage());
         } catch (ClassNotFoundException e){
+            System.out.println("classnotfoundex");
             System.err.println(e.getMessage());
         }
     }
@@ -156,19 +157,23 @@ public class ClientConnection implements Runnable {
             else if (checkMessageSinglePlayer(GamePhase.STARTED)
                     && getGameController().getActivePlayers().get(0).isExclusiveActionDone()){
                 ((SinglePlayerController) getGameController()).makeTokenAction();
+                ((SinglePlayerController) getGameController()).getGame().getPlayers().get(0).setExclusiveActionDone(false);
             }
             else sendSocketMessage(new ErrorMessage(
-                    "Not a valid action; you cannot end your turn at the moment.", ErrorType.WRONG_MESSAGE));
+                    "Not a valid action; you cannot end your turn at the moment.", ErrorType.INVALID_END_TURN));
         }
 
         else if (clientMessage instanceof Action){
             if (checkMessageMultiplayer(GamePhase.STARTED) || checkMessageSinglePlayer(GamePhase.STARTED)){
                 try{
-                    ((Action) clientMessage).checkAction(((MultiPlayerController) getGameController()).getCurrentPlayer());
+                    if(getGameController() instanceof MultiPlayerController)
+                        ((Action) clientMessage).checkAction(((MultiPlayerController) getGameController()).getCurrentPlayer());
+                    else
+                        ((Action) clientMessage).checkAction(getGameController().getGame().getPlayers().get(0));
+                    getGameController().makeAction((Action) clientMessage);
                 } catch (WrongActionException e){
                     sendSocketMessage(new ErrorMessage(e.getMessage(), ErrorType.WRONG_ACTION));
                 }
-                getGameController().makeAction((Action) clientMessage);
             }
             else sendSocketMessage(new ErrorMessage(
                     "Not a valid action; please wait for your turn.", ErrorType.WRONG_MESSAGE));
@@ -214,6 +219,7 @@ public class ClientConnection implements Runnable {
 
     public void sendSocketMessage(Message message){
         try {
+            output.reset();
             output.writeObject(message);
             output.flush();
         } catch (IOException e) {

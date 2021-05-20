@@ -32,12 +32,10 @@ public class BuyResources implements Action {
     public boolean doAction(Player player) {
         List<ResourcePosition> boughtResources = new ArrayList<>(gainedRes);
         boughtResources.addAll(extraRes);
-        for (ResourcePosition resourcePosition : boughtResources) {
-            if (resourcePosition.getResource() == Resource.FAITHPOINT) {
+        for(int i = 0; i < boughtResources.size(); i++) {
+            if (boughtResources.get(i).getResource() == Resource.FAITHPOINT)
                 player.getBoard().getItinerary().updatePosition(1);
-                boughtResources.remove(resourcePosition);
-            }
-            if(resourcePosition.getPlace() == Place.TRASH_CAN) {
+            if(boughtResources.get(i).getPlace() == Place.TRASH_CAN) {
                 for(Player otherPlayer : player.getGame().getPlayers()) {
                     if(!otherPlayer.equals(player))
                         otherPlayer.getBoard().getItinerary().updatePosition(1);
@@ -57,10 +55,10 @@ public class BuyResources implements Action {
     @Override
     public void checkAction(Player player) throws WrongActionException {
         if (player.isExclusiveActionDone())
-            throw new WrongActionException("The player has already done an exclusive action this turn");
+            throw new WrongActionException("The player has already done an exclusive action this turn. ");
         if (position <= 0 || (marketSelection == MarketSelection.ROW && position > 3) ||
                 (marketSelection == MarketSelection.COLUMN && position > 4)) {
-            throw new WrongActionException("The player must select an existing row or column");
+            throw new WrongActionException("The player must select an existing row or column. ");
         }
         for(LeaderEffect leaderEffect : leaderEffects){
             leaderEffect.doLeaderEffect(player, this);
@@ -105,9 +103,9 @@ public class BuyResources implements Action {
         for (ResourcePosition resourcePosition : gainedRes)
             gainedRes1.add(resourcePosition.getResource());
         if (whiteMarbles != extraRes.size() && leaderUsed)
-            throw new WrongActionException("Extra resources from marble leader do not match white marbles number");
+            throw new WrongActionException("Extra resources from marble leader do not match white marbles number. ");
         if (!marketResources.containsAll(gainedRes1) || marketResources.size() != gainedRes1.size())
-            throw new WrongActionException("Gained resources do not match marbles in the selected row/column");
+            throw new WrongActionException("Gained resources do not match marbles in the selected row/column. ");
         player.getBoard().getWarehouse().checkIncrement(boughtResources);
     }
 

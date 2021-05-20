@@ -49,13 +49,13 @@ public class BuyDevCard implements Action {
     @Override
     public void checkAction(Player player) throws WrongActionException {
         if (player.isExclusiveActionDone())
-            throw new WrongActionException("The player has already done an exclusive action this turn.");
-        if (level <= 0 || level >= 4) throw new WrongActionException("There are no cards of such level.");
+            throw new WrongActionException("The player has already done an exclusive action this turn. ");
+        if (level <= 0 || level >= 4) throw new WrongActionException("There are no cards of such level. ");
         DevDeck deck = player.getGame().getDevDecks()[(level - 1) * Colour.values().length + colour.ordinal()];
         if (deck.isEmpty())
-            throw new WrongActionException("The selected deck is empty.");
+            throw new WrongActionException("The selected deck is empty. ");
         if (!player.getBoard().getDevSpace().checkPlace(level, slot))
-            throw new WrongActionException("Incorrect Development Space placement.");
+            throw new WrongActionException("Incorrect Development Space placement. ");
         checkCost(player);
         player.getBoard().getWarehouse().checkDecrement(cost);
         player.getBoard().getChest().checkDecrement(cost);
@@ -67,16 +67,16 @@ public class BuyDevCard implements Action {
             effect.doLeaderEffect(player, this);
         }
         if (cost.stream().anyMatch(Rp -> Rp.getPlace() == Place.TRASH_CAN))
-            throw new WrongActionException("Resources from the trashcan cannot be withdrawn.");
+            throw new WrongActionException("Resources from the trashcan cannot be withdrawn. ");
         for (ResourceQuantity Rq : req) {
             if (cost.stream().filter(Rp -> Rp.getResource() == Rq.getResource())
                     .map(ResourcePosition::getQuantity).reduce(0, Integer::sum) < Rq.getQuantity())
-                throw new WrongActionException("The resources specified by the user are different from the ones required by the Development Card.");
+                throw new WrongActionException("The resources specified by the user are different from the ones required by the Development Card. ");
         }
         int costQuantity = cost.stream().map(ResourcePosition::getQuantity).reduce(0, Integer::sum);
         int reqQuantity = req.stream().map(ResourceQuantity::getQuantity).reduce(0, Integer::sum);
         if (costQuantity != reqQuantity)
-            throw new WrongActionException("The resources specified by the user are more than the ones required by the Development Card.");
+            throw new WrongActionException("The resources specified by the user are more than the ones required by the Development Card. ");
     }
 
 }

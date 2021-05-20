@@ -55,8 +55,8 @@ public class SinglePlayerController extends GameController {
     public void checkEndGame() {
         List<DevDeck> d;
         for (Colour c : Colour.values()) {
-            d = Arrays.asList(getGame().getDevDecks());
-            d.removeIf(DevDeck -> DevDeck.isEmpty() || DevDeck.getColour() != c);
+            d = new ArrayList<>(Arrays.asList(getGame().getDevDecks()));
+            d.removeIf(DevDeck -> (DevDeck.isEmpty() || DevDeck.getColour() != c));
             if (d.isEmpty()) {
                 win = false;
                 endGame();

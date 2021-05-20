@@ -2,7 +2,6 @@ package it.polimi.ingsw.server.model.gameboard;
 import it.polimi.ingsw.messages.serverMessages.newElement.NewItinerary;
 import it.polimi.ingsw.server.observer.Observable;
 
-//ricorda che le carte papali sono sempre 2, 3 e 4 (in questo ordine)
 public class Itinerary extends Observable {
     private int position;
     private final CardStatus[] cardStatus;
@@ -13,7 +12,7 @@ public class Itinerary extends Observable {
         owner = nickname;
         position = 0;
         blackCrossPosition = null;
-        cardStatus = new CardStatus[3];        //usa il for
+        cardStatus = new CardStatus[3];
         for(int i = 0; i < 3; i++) {
             cardStatus[i] = CardStatus.FACE_DOWN;
         }
@@ -21,6 +20,7 @@ public class Itinerary extends Observable {
 
     public void setBlackCrossPosition(Integer blackCrossPosition) {
         this.blackCrossPosition = blackCrossPosition;
+        notifyObservers(new NewItinerary(position, cardStatus, blackCrossPosition, owner));
     }
 
     public void updateBlackCross(int amount){

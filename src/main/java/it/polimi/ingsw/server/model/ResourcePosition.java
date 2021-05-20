@@ -3,7 +3,9 @@ package it.polimi.ingsw.server.model;
 import it.polimi.ingsw.server.controller.Place;
 import it.polimi.ingsw.server.model.gameboard.NumOfShelf;
 
-public class ResourcePosition extends ResourceQuantity{
+import java.io.Serializable;
+
+public class ResourcePosition extends ResourceQuantity implements Serializable {
     private Place place;
     private NumOfShelf shelf;
 

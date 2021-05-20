@@ -11,7 +11,7 @@ public enum UserAction {
     SELECT_LEADCARD(""),
     INITIAL_DISPOSITION(""),
     RESOURCE_SELECTION(""),
-    DISCARD_DEV_CARD("has discarded development cards from the market."),
+    DISCARD_DEV_CARD("has discarded development cards."),
     UPDATE_AND_SHUFFLE("has advanced on the itinerary."),
     UPDATE_ITINERARY("has advanced on the itinerary.");
 

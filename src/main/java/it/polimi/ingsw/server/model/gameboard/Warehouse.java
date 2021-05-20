@@ -85,11 +85,11 @@ public class Warehouse extends Observable {
                 else dimShelf = 2;                                                                                      //dimension of a "depot"
                 shelf = warehouse.get(numOfShelf.ordinal());
                 if (shelf.getResource() != Resource.EMPTY && shelf.getResource() != Rp.getResource())
-                    throw new WrongActionException("Shelf " +numOfShelf+ " contains " +shelf.getResource()+ "S, not " +Rp.getResource()+ "S.");
+                    throw new WrongActionException("Shelf " +numOfShelf+ " contains " +shelf.getResource()+ "s, not " +Rp.getResource()+ "s. ");
                 else if (!checkOtherShelves(Rp.getResource(), numOfShelf))                                              //example: if I want to add two coins in the third shelf, but there is already one coin in the second shelf, then I have to discard two coins.
-                    throw new WrongActionException("There is already another shelf storing " +Rp.getResource().toString()+ "S and it is not shelf " +Rp.getShelf()+ ".");
+                    throw new WrongActionException("There is already another shelf storing " +Rp.getResource().toString()+ "S and it is not shelf " +Rp.getShelf()+ ". ");
                 else if (calculateQuantity(storableRes, Rp) > dimShelf - shelf.getQuantity())
-                    throw new WrongActionException("Shelf " +numOfShelf+ " does not have enough space to store the indicated " +Rp.getResource()+ "S.");
+                    throw new WrongActionException("Shelf " +numOfShelf+ " does not have enough space to store the indicated " +Rp.getResource()+ "S. ");
             }
         }
     }

@@ -4,7 +4,7 @@ import it.polimi.ingsw.server.controller.UserAction;
 import it.polimi.ingsw.server.model.Colour;
 
 public class DiscardDevCard extends SoloActionToken{
-    private Colour colour;
+    private final Colour colour;
 
     public DiscardDevCard(SinglePlayerController controller, Colour colour) {
         super(controller);

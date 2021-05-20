@@ -40,14 +40,14 @@ public class Server {
         }
     }
 
-    public void removeClient(ClientConnection connection){
+    public void removeClient(ClientConnection connection) {
         connection.getGameController().getGame().getPlayers()
                 .removeIf(p -> p.getNickname().equals(connection.getPlayerNickname()));
         waitingList.removeIf(c -> c == connection);
         unregisterClient(connection);
     }
 
-    public void unregisterClient(ClientConnection connection){
+    public void unregisterClient(ClientConnection connection) {
         VirtualView view = find(connection, clientToConnection);
         String nickname = connection.getPlayerNickname();
         view.sendAllExcept(new Disconnection("Player " + nickname + " disconnected."), nickname);
@@ -65,31 +65,31 @@ public class Server {
 
     public void setTotalPlayers(int totalPlayers, ClientConnection connection) {
         this.totalPlayers = totalPlayers;
-        if (totalPlayers == 1){
+        if (totalPlayers == 1) {
             gameControllers.add(0, new SinglePlayerController(this));
             gameControllers.get(0).setUpPlayer(connection);
             connection.setGameController(gameControllers.get(0));
             waitingList.clear();
             gameControllers.get(0).addObserver(find(connection, clientToConnection));
             gameControllers.get(0).setup();
-        }
-        else {
+        } else {
             gameControllers.add(0, new MultiPlayerController(this));
             gameControllers.get(0).setUpPlayer(connection);
             connection.setGameController(gameControllers.get(0));
         }
     }
 
-    private void lobby (ClientConnection connection){
+    private void lobby(ClientConnection connection) {
         waitingList.add(connection);
         if (waitingList.size() == 1) {
             connection.sendSocketMessage(new PlayersNumberMessage(connection.getPlayerNickname() +
                     ", you are the lobby host, please choose the number of players: [1...4]"));
         } else if (waitingList.size() == totalPlayers) {
+            System.out.println("giocatori raggiunti");
             VirtualView v = find(connection, clientToConnection);
             v.sendAll(new SetupMessage("Player number reached. The match is starting."));
             waitingList.clear();
-            for (ClientConnection c : gameControllers.get(0).getActiveConnections()){
+            for (ClientConnection c : gameControllers.get(0).getActiveConnections()) {
                 gameControllers.get(0).addObserver(find(c, clientToConnection));
             }
             gameControllers.get(0).setup();
@@ -99,7 +99,7 @@ public class Server {
         }
     }
 
-    private VirtualView find(ClientConnection connection, Map<VirtualView, ClientConnection> map){
+    private VirtualView find(ClientConnection connection, Map<VirtualView, ClientConnection> map) {
         return map.entrySet()
                 .stream()
                 .filter(entry -> Objects.equals(entry.getValue(), connection))
@@ -107,10 +107,10 @@ public class Server {
                 .collect(Collectors.toList()).get(0);
     }
 
-    public synchronized void reconnectClient(String nickname, ClientConnection connection) throws InterruptedException{
-        for (GameController gc : gameControllers){
+    public synchronized void reconnectClient(String nickname, ClientConnection connection) throws InterruptedException {
+        for (GameController gc : gameControllers) {
             if (gc.getGame().getPlayers().stream().anyMatch(p -> p.getNickname().equals(nickname)) &&
-                    gc.getActivePlayers().stream().noneMatch(p -> p.getNickname().equals(nickname))){
+                    gc.getActivePlayers().stream().noneMatch(p -> p.getNickname().equals(nickname))) {
                 gc.addActivePlayer(gc.getGame().getPlayerByNickname(nickname));
                 gc.addActiveConnection(connection);
                 connection.setGameController(gc);
@@ -125,9 +125,9 @@ public class Server {
         connection.sendSocketMessage(error);
     }
 
-    public synchronized void registerClient(String nickname, ClientConnection connection) throws InterruptedException{
-        for (GameController gc : gameControllers){
-            if (gc.getGame().getPlayers().stream().anyMatch(p -> p.getNickname().equals(nickname))){
+    public synchronized void registerClient(String nickname, ClientConnection connection) throws InterruptedException {
+        for (GameController gc : gameControllers) {
+            if (gc.getGame().getPlayers().stream().anyMatch(p -> p.getNickname().equals(nickname))) {
                 ErrorMessage error = new ErrorMessage("This nickname is already in use, please choose another one.", ErrorType.DUPLICATE_NICKNAME);
                 connection.sendSocketMessage(error);
             }
@@ -142,26 +142,29 @@ public class Server {
         lobby(connection);
     }
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
         System.out.println("Welcome to our server!");
         Scanner scanner = new Scanner(System.in);
         System.out.println(">Insert the port which the server will listen on.");
         System.out.print(">");
         int port = 0;
         boolean active = true;
-        while (active){
+        while (active) {
             try {
                 port = scanner.nextInt();
             } catch (InputMismatchException e) {
                 port = -1;
             }
-            if (port <= 1024){
-                if (port == -1)
-                    System.err.println("Numeric format requested, please try again:\n>");
-                else
-                    System.err.println("Ports accepted started from 1024! Please try again.\n>");
+            if (port <= 1024) {
+                if (port == -1) {
+                    System.err.print("Numeric format requested, please try again:\n>");
+                } else {
+                    System.err.print("Ports accepted started from 1024! Please try again.\n>");
+                }
+                scanner.next();
             }
-            active = false;
+            else
+                active = false;
         }
         Constants.setPort(port);
         System.out.println("Starting Server...\n");

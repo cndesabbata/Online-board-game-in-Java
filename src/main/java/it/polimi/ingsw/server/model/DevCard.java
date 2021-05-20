@@ -1,9 +1,10 @@
 package it.polimi.ingsw.server.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DevCard extends Card {
+public class DevCard extends Card implements Serializable {
     private final int level;
     private final Colour colour;
     private List<ResourceQuantity> productionInput;
