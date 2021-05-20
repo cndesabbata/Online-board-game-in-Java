@@ -151,11 +151,11 @@ public class ActionFactory {
         while (true) {
             while (true) {
                 output.print("What colour is the card you would like to buy? [Green/Blue/Yellow/Purple]\n>");
-                String col = readInputString();
+                String col = readInputString().toUpperCase();
                 try {
                     colour = Colour.valueOf(col);
                     break;
-                } catch (InputMismatchException e) {
+                } catch (IllegalArgumentException e) {
                     output.println("Please insert a valid colour.");
                 }
             }
