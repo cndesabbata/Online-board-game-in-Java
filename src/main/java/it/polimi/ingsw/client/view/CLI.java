@@ -94,6 +94,7 @@ public class CLI implements Observer {
                 confirmation = true;
         }
         clientView.setNickname(nickname);
+        clientView.getOwnGameBoard().setOwner(nickname);
         Thread thread = new Thread(connectionSocket);
         thread.start();
     }
@@ -350,8 +351,8 @@ public class CLI implements Observer {
         printCardElement("Level: " + d.getLevel(), true);
         printCardElement("Victory Points: " + d.getVictoryPoints(), true);
         printCardElement("Requisites = " + buildResourceString(d.getResourceRequirements()), true);
-        printCardElement("Production input =  " + buildResourceString(d.getProductionInput()), true);
-        printCardElement("Production output =  " + buildResourceString(d.getProductionOutput()), true);
+        printCardElement("Production input = " + buildResourceString(d.getProductionInput()), true);
+        printCardElement("Production output = " + buildResourceString(d.getProductionOutput()), true);
         output.print("*\n");
         for (int i = 0; i < 64; i++)
             output.print("*");
@@ -389,6 +390,7 @@ public class CLI implements Observer {
                     break;
             }
         }
+        int firstNotNull = 0;
         for (int n = 0; n < 4; n++) {
             String resType = "";
             switch (n) {
@@ -405,10 +407,14 @@ public class CLI implements Observer {
                     resType = "Shields: ";
                     break;
             }
-            if (quantity[n] != 0)
+            if (quantity[n] != 0) {
+                if(n != firstNotNull) {
+                    result.append(" + ");
+                }
                 result.append(resType).append(quantity[n]);
-            if (n != 3)
-                result.append(" + ");
+            }
+            else
+                firstNotNull++;
         }
         return result.toString();
     }
@@ -439,7 +445,9 @@ public class CLI implements Observer {
     private String buildDevCardString(List<DevCardInfo> list) {
         StringBuilder result = new StringBuilder();
         for (DevCardInfo d : list) {
-            result.append("Colour: ").append(d.getColour()).append(" Level: ").append(d.getLevel());
+            result.append("Colour: ").append(d.getColour());
+            if(d.getLevel() != 0)
+                result.append(" Level: ").append(d.getLevel());
             if (list.indexOf(d) != list.size() - 1)
                 result.append(" + ");
         }
