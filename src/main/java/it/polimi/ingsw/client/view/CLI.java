@@ -514,23 +514,29 @@ public class CLI implements Observer {
     }
 
     private String readInputString() {
-        try {
-            return input.nextLine();
-        } catch (InputMismatchException e) {
-            output.print("Please insert a valid input.\n>");
-            input.next();
-            return readInputString();
-        }
+        String inputString;
+        do {
+            try {
+                inputString = input.nextLine();
+                break;
+            } catch (InputMismatchException e) {
+                output.print("Please insert a valid input.\n>");
+            }
+        }while(true);
+        return inputString;
     }
 
     private int readInputInt() {
-        try {
-            return Integer.parseInt(input.nextLine());
-        } catch (InputMismatchException | NumberFormatException e) {
-            output.print("Please insert a valid input.\n>");
-            input.next();
-            return readInputInt();
-        }
+        int inputInt;
+        do {
+            try {
+                inputInt = Integer.parseInt(input.nextLine());
+                break;
+            } catch (InputMismatchException | NumberFormatException e) {
+                output.print("Please insert a valid input.\n>");
+            }
+        }while(true);
+        return inputInt;
     }
 
     public ClientView getClientView() {

@@ -175,7 +175,7 @@ public class ActionFactory {
         while (true) {
             output.print("In which slot would you like to put your card? [1/2/3]\n>");
             slot = readInputInt() - 1;
-            if (slot >= 0 && slot <= 2 && checkDevSpaceSlot(slot, lev)) break;
+            if (slot >= 0 && slot <= 2 && checkDevSpaceSlot(slot, lev + 1)) break;
             else if (slot < 0 || slot > 2) output.println("Please insert a valid number.");
             else output.println("The selected slot cannot host your card, please choose another one.");
         }
@@ -214,12 +214,12 @@ public class ActionFactory {
                     leaders.add(new DepotEffect(Resource.valueOf(l.getResource())));
             }
         }
-        return new BuyDevCard(lev, colour, DevSpaceSlot.values()[slot], res, leaders);
+        return new BuyDevCard(lev + 1, colour, DevSpaceSlot.values()[slot], res, leaders);
     }
 
     private boolean checkDevSpaceSlot(int slot, int lev) {
-        return (cli.getClientView().getOwnGameBoard().getDevSpace().get(slot).isEmpty() && lev == 1) ||
-                (cli.getClientView().getOwnGameBoard().getDevSpace().get(slot).get(0).getLevel() == lev - 1);
+        return ((cli.getClientView().getOwnGameBoard().getDevSpace().get(slot).isEmpty() && lev == 1) ||
+                (cli.getClientView().getOwnGameBoard().getDevSpace().get(slot).get(0).getLevel() == lev - 1));
     }
 
     private Action buildStartProduction() {
@@ -402,23 +402,29 @@ public class ActionFactory {
     }
 
     private String readInputString() {
-        try {
-            return input.nextLine();
-        } catch (InputMismatchException e) {
-            output.print("Please insert a valid input.\n>");
-            input.next();
-            return readInputString();
-        }
+        String inputString;
+        do {
+            try {
+                 inputString = input.nextLine();
+                break;
+            } catch (InputMismatchException e) {
+                output.print("Please insert a valid input.\n>");
+            }
+        }while(true);
+        return inputString;
     }
 
     private int readInputInt() {
-        try {
-            return Integer.parseInt(input.nextLine());
-        } catch (InputMismatchException | NumberFormatException e) {
-            output.print("Please insert a valid input.\n>");
-            input.next();
-            return readInputInt();
-        }
+        int inputInt;
+        do {
+            try {
+                inputInt = Integer.parseInt(input.nextLine());
+                break;
+            } catch (InputMismatchException | NumberFormatException e) {
+                output.print("Please insert a valid input.\n>");
+            }
+        }while(true);
+        return inputInt;
     }
 
     public String[] getColumn(String[][] array, int index) {
