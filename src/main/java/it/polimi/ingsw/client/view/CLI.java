@@ -372,7 +372,7 @@ public class CLI implements Observer {
     }
 
     protected String buildResourceString(List<String> list) {
-        int[] quantity = {0, 0, 0, 0};
+        int[] quantity = {0, 0, 0, 0, 0};
         StringBuilder result = new StringBuilder();
         for (String s : list) {
             switch (s.toUpperCase()) {
@@ -388,10 +388,13 @@ public class CLI implements Observer {
                 case "SHIELD":
                     quantity[3]++;
                     break;
+                case "FAITHPOINT":
+                    quantity[4]++;
+                    break;
             }
         }
         int firstNotNull = 0;
-        for (int n = 0; n < 4; n++) {
+        for (int n = 0; n < 5; n++) {
             String resType = "";
             switch (n) {
                 case 0:
@@ -406,6 +409,8 @@ public class CLI implements Observer {
                 case 3:
                     resType = "Shields: ";
                     break;
+                case 4:
+                    resType = "Faithpoints: ";
             }
             if (quantity[n] != 0) {
                 if(n != firstNotNull) {
