@@ -147,9 +147,9 @@ public class CLI implements Observer {
             int n = -1;
             while (request) {
                 n = readInputInt();
-                if (n < 0 || n > 10) {
+                if (n < 0 || n > 11) {
                     output.print("Please choose a number between 0 and 9:\n>");
-                } else if (n > 5 && n < 10) {
+                } else if (n > 5 && n < 11) {
                     showElements(n);
                 } else {
                     if ((n == 3 || n == 4) && getClientView().getHand().size() == 0) {
@@ -189,22 +189,28 @@ public class CLI implements Observer {
             case 9:
                 printDevDecks();
                 break;
+            case 10:
+                printHandCards();
         }
         output.print("Please choose an action (select a number between 0 and 9):\n" +
                 Constants.getChooseAction() + "\n>");
     }
 
     private void askForGameBoard() {
-        while (true) {
-            output.print("Whose game board would you like to view?" + "\n>");
-            String s = readInputString().toUpperCase();
-            for (GameBoardInfo g : clientView.getOtherGameBoards()) {
-                if (g.getOwner().equals(s.toUpperCase())) {
-                    printGameBoard(g);
-                    return;
+        if(clientView.getOwnGameBoard().getBlackCrossPosition() != null)
+            output.println("Lorenzo De Medici's position: " + clientView.getOwnGameBoard().getBlackCrossPosition() + "/24");
+        else {
+            while (true) {
+                output.print("Whose game board would you like to view?" + "\n>");
+                String s = readInputString().toUpperCase();
+                for (GameBoardInfo g : clientView.getOtherGameBoards()) {
+                    if (g.getOwner().equals(s.toUpperCase())) {
+                        printGameBoard(g);
+                        return;
+                    }
                 }
+                output.print("Please select the nickname of a player in the match. ");
             }
-            output.print("Please select the nickname of a player in the match. ");
         }
     }
 

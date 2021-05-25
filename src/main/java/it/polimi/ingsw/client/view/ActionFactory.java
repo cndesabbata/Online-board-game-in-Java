@@ -40,7 +40,7 @@ public class ActionFactory {
                 return buildPlayLeadCard();
             case 5:
                 return buildMoveResources();
-            case 10:
+            case 11:
                 return new EndTurn();
         }
         return null;
@@ -240,9 +240,9 @@ public class ActionFactory {
                 output.print("Select the slot in the development space:\n>");
                 while (true) {
                     slot = readInputInt();
-                    if (slot >= 1 && slot <= 3 && !cli.getClientView().getOwnGameBoard().getDevSpace().get(slot).isEmpty())
+                    if (slot >= 1 && slot <= 3 && !cli.getClientView().getOwnGameBoard().getDevSpace().get(slot - 1).isEmpty())
                         break;
-                    output.print("Please select a number from 1 to 3 and make sure that the selected slot is not empty.\n");
+                    output.print("Please select a number from 1 to 3 and make sure that the selected slot is not empty.\n>");
                 }
                 slots.add(slot);
                 DevCardInfo d = cli.getClientView().getOwnGameBoard().getDevSpace().get(slot).get(0);
@@ -383,13 +383,13 @@ public class ActionFactory {
             output.print("Please select a valid amount of resources.\n>");
             quantity = readInputInt();
         }
-        output.print("Please select the destination shelf. [1/2/3/4/5] (4 and 5 represent the depot leaders\n>");
+        output.print("Please select the destination shelf. [1/2/3/4/5] (4 and 5 represent the depot leaders)\n>");
         int dest = readInputInt();
         while (dest == source || dest < 1 || dest > 5) {
             if (dest == source)
                 output.print("Destination shelf must be different from source shelf.\n>");
             else
-                output.print("Please select a valid destination shelf. [1/2/3/4/5] (4 and 5 represent the depot leaders\n>");
+                output.print("Please select a valid destination shelf. [1/2/3/4/5] (4 and 5 represent the depot leaders)\n>");
             dest = readInputInt();
         }
         List<LeaderEffect> leaders = new ArrayList<>();
