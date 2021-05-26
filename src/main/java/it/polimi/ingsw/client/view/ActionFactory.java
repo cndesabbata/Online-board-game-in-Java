@@ -1,10 +1,8 @@
 package it.polimi.ingsw.client.view;
 
-import it.polimi.ingsw.constants.Constants;
 import it.polimi.ingsw.messages.Message;
 import it.polimi.ingsw.messages.actions.*;
 import it.polimi.ingsw.messages.clientMessages.EndTurn;
-import it.polimi.ingsw.messages.clientMessages.internal.ChooseAction;
 import it.polimi.ingsw.server.controller.Place;
 import it.polimi.ingsw.server.controller.leaders.*;
 import it.polimi.ingsw.server.model.*;
@@ -27,29 +25,22 @@ public class ActionFactory {
     }
 
     public Message createAction(int actionNumber) {
-        switch (actionNumber) {
-            case 0:
-                return buildBuyResources();
-            case 1:
-                return buildBuyDevCard();
-            case 2:
-                return buildStartProduction();
-            case 3:
-                return buildDiscardLeadCard();
-            case 4:
-                return buildPlayLeadCard();
-            case 5:
-                return buildMoveResources();
-            case 11:
-                return new EndTurn();
-        }
-        return null;
+        return switch (actionNumber) {
+            case 0 -> buildBuyResources();
+            case 1 -> buildBuyDevCard();
+            case 2 -> buildStartProduction();
+            case 3 -> buildDiscardLeadCard();
+            case 4 -> buildPlayLeadCard();
+            case 5 -> buildMoveResources();
+            case 11 -> new EndTurn();
+            default -> null;
+        };
     }
 
     private Action buildBuyResources() {
         output.print("Would you like to buy resources from a column or a row? [column/row]\n>");
         String selection = readInputString();
-        MarketSelection marketSelection = null;
+        MarketSelection marketSelection;
         while (true) {
             try {
                 marketSelection = MarketSelection.valueOf(selection.toUpperCase());
@@ -59,10 +50,10 @@ public class ActionFactory {
                 selection = readInputString();
             }
         }
-        int source = -1;
+        int source;
         int whiteMarbles;
-        int firstType = 0;
-        int secondType = 0;
+        int firstType;
+        int secondType;
         List<String> marbleToReceive;
         List<String> resToReceive = new ArrayList<>();
         List<LeaderEffect> leaderEffects = new ArrayList<>();
@@ -128,7 +119,7 @@ public class ActionFactory {
             leaderEffects.add(new MarbleEffect(secondType, Resource.valueOf(res.get(1).toUpperCase()), rp2));
         } else if (marbleLeaderNumber == 1) {
             List<String> s1 = new ArrayList<>();
-            List<ResourcePosition> rp1 = new ArrayList<>();
+            List<ResourcePosition> rp1;
             Resource res = Resource.valueOf(cli.getClientView().getOwnGameBoard().getPlayedCards()
                     .stream().filter(p -> p.getType().equalsIgnoreCase("MARBLE"))
                     .collect(Collectors.toList()).get(0).getResource());
@@ -140,17 +131,17 @@ public class ActionFactory {
         if (cli.getClientView().getOwnGameBoard().getPlayedCards().stream().anyMatch(L -> L.getType().equals("Depot"))) { //adding depots leader effects
             for (LeadCardInfo l : cli.getClientView().getOwnGameBoard().getPlayedCards()) {
                 if (l.getType().equals("Depot"))
-                    leaderEffects.add(new DepotEffect(Resource.valueOf(l.getResource())));
+                    leaderEffects.add(new DepotEffect(Resource.valueOf(l.getResource().toUpperCase())));
             }
         }
         return new BuyResources(leaderEffects, source + 1, marketSelection, result);
     }
 
     private Action buildBuyDevCard() {
-        Colour colour = null;
-        int lev = -1;
-        int slot = -1;
-        List<ResourcePosition> res = new ArrayList<>();
+        Colour colour;
+        int lev;
+        int slot;
+        List<ResourcePosition> res;
         List<LeaderEffect> leaders = new ArrayList<>();
         while (true) {
             while (true) {
@@ -245,7 +236,7 @@ public class ActionFactory {
                     output.print("Please select a number from 1 to 3 and make sure that the selected slot is not empty.\n>");
                 }
                 slots.add(slot);
-                DevCardInfo d = cli.getClientView().getOwnGameBoard().getDevSpace().get(slot).get(0);
+                DevCardInfo d = cli.getClientView().getOwnGameBoard().getDevSpace().get(slot - 1).get(0);
                 inp.addAll(cli.askForLocation(d.getProductionInput(), false, false));
                 out.addAll(cli.askForLocation(d.getProductionOutput(), true, false));
                 request = askYesNo("Would you like to select another development card? [yes/no]\n>");

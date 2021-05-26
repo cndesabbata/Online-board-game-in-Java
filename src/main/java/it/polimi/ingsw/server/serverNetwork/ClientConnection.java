@@ -72,7 +72,6 @@ public class ClientConnection implements Runnable {
             }
             server.removeClient(this);
         } catch (IOException e) {
-            System.out.println("ioexc");
             if (gameController.getPhase() == GamePhase.STARTED && gameController instanceof MultiPlayerController){
                 if (((MultiPlayerController) getGameController()).getCurrentPlayer().getNickname().equals(playerNickname))
                     ((MultiPlayerController) getGameController()).changeTurn();
@@ -81,7 +80,6 @@ public class ClientConnection implements Runnable {
             else server.removeClient(this);
             System.err.println(e.getMessage());
         } catch (ClassNotFoundException e){
-            System.out.println("classnotfoundex");
             System.err.println(e.getMessage());
         }
     }
