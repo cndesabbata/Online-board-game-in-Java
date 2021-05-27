@@ -258,7 +258,7 @@ public class ActionFactory {
                 String res;
                 while (true) {
                     res = readInputString();
-                    if (!res.equalsIgnoreCase("Coin") && !res.equalsIgnoreCase("Shield") &&
+                    if (!res.equalsIgnoreCase("Coin") && !res.equalsIgnoreCase("Stone") &&
                             !res.equalsIgnoreCase("Servant") && !res.equalsIgnoreCase("Shield"))
                         output.print("Please select a resource between [Coin / Stone / Servant / Shield]\n>");
                     else break;
