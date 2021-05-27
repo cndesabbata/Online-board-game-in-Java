@@ -75,6 +75,7 @@ public class Server {
             gameControllers.add(0, new MultiPlayerController(this));
             gameControllers.get(0).setUpPlayer(connection);
             connection.setGameController(gameControllers.get(0));
+            connection.sendSocketMessage(new SetupMessage("Please wait for other players to join...\n"));
         }
     }
 

@@ -18,22 +18,22 @@ public class DevDeck extends Observable {
         this.colour = colour;
         String path = null;
         if (level == 1){
-            if (colour == Colour.YELLOW) path = "/FirstYellow.json";
-            else if (colour == Colour.GREEN) path = "/FirstGreen.json";
-            else if (colour == Colour.BLUE) path = "/FirstBlue.json";
-            else if (colour == Colour.PURPLE) path = "/FirstPurple.json";
+            if (colour == Colour.YELLOW) path = "/Json/FirstYellow.json";
+            else if (colour == Colour.GREEN) path = "/Json/FirstGreen.json";
+            else if (colour == Colour.BLUE) path = "/Json/FirstBlue.json";
+            else if (colour == Colour.PURPLE) path = "/Json/FirstPurple.json";
         }
         else if (level == 2){
-            if (colour == Colour.YELLOW) path = "/SecondYellow.json";
-            else if (colour == Colour.GREEN) path = "/SecondGreen.json";
-            else if (colour == Colour.BLUE) path = "/SecondBlue.json";
-            else if (colour == Colour.PURPLE) path = "/SecondPurple.json";
+            if (colour == Colour.YELLOW) path = "/Json/SecondYellow.json";
+            else if (colour == Colour.GREEN) path = "/Json/SecondGreen.json";
+            else if (colour == Colour.BLUE) path = "/Json/SecondBlue.json";
+            else if (colour == Colour.PURPLE) path = "/Json/SecondPurple.json";
         }
         else if (level == 3){
-            if (colour == Colour.YELLOW) path = "/ThirdYellow.json";
-            else if (colour == Colour.GREEN) path = "/ThirdGreen.json";
-            else if (colour == Colour.BLUE) path = "/ThirdBlue.json";
-            else if (colour == Colour.PURPLE) path = "/ThirdPurple.json";
+            if (colour == Colour.YELLOW) path = "/Json/ThirdYellow.json";
+            else if (colour == Colour.GREEN) path = "/Json/ThirdGreen.json";
+            else if (colour == Colour.BLUE) path = "/Json/ThirdBlue.json";
+            else if (colour == Colour.PURPLE) path = "/Json/ThirdPurple.json";
         }
         Gson gson = new Gson();
         Reader reader = new InputStreamReader(Game.class.getResourceAsStream(path));

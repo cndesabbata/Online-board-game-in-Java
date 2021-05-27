@@ -4,7 +4,6 @@ import it.polimi.ingsw.client.clientNetwork.ClientConnectionSocket;
 import it.polimi.ingsw.constants.Constants;
 import it.polimi.ingsw.client.clientNetwork.MessageHandler;
 import it.polimi.ingsw.messages.Message;
-import it.polimi.ingsw.messages.actions.Action;
 import it.polimi.ingsw.messages.clientMessages.LeaderCardSelection;
 import it.polimi.ingsw.messages.clientMessages.ResourceSelection;
 import it.polimi.ingsw.messages.clientMessages.SetPlayersNumber;
@@ -186,9 +185,6 @@ public class CLI implements Observer {
         } else if (m instanceof NewView){
             printMarket();
             printDevDecks();
-            printHandCards();
-            output.print("YOUR GAME BOARD:\n\n");
-            printGameBoard(clientView.getOwnGameBoard());
         }
     }
 
@@ -228,7 +224,7 @@ public class CLI implements Observer {
                 output.print("Whose game board would you like to view?" + "\n>");
                 String s = readInputString().toUpperCase();
                 for (GameBoardInfo g : clientView.getOtherGameBoards()) {
-                    if (g.getOwner().equals(s.toUpperCase())) {
+                    if (g.getOwner().equalsIgnoreCase(s)) {
                         printGameBoard(g);
                         return;
                     }

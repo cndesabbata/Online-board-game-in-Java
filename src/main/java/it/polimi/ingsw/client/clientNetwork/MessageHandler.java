@@ -16,6 +16,7 @@ import it.polimi.ingsw.server.model.ResourceQuantity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class MessageHandler {
     private final ClientView view;
@@ -78,12 +79,13 @@ public class MessageHandler {
                 };
                 if (view.getPlayerIndex() != 0)
                     view.setClientMessage(new SetupResources(string + "\n>"));
-            }
-            else{
+            } else {
                 String toPrint = "";
-                if (!m.getNickname().equals(view.getNickname())) toPrint = m.getNickname() + m.getType().toString() + " ";
+                if (!m.getNickname().equals(view.getNickname()))
+                    toPrint = m.getNickname().toUpperCase()+ " " + m.getType().toString() + " ";
                 view.setClientMessage(new DisplayMessage(toPrint + "This is the new state of the game."));
-                view.setClientMessage(new ChooseAction("Please choose an action (select a number between 0 and 11):\n" +
+                if (m.getType() != UserAction.RESOURCE_SELECTION && m.getNickname().equals(view.getNickname()))
+                    view.setClientMessage(new ChooseAction("Please choose an action (select a number between 0 and 11):\n" +
                                                 Constants.getChooseAction() +  "\n>"));
             }
         }
@@ -93,7 +95,7 @@ public class MessageHandler {
                 view.setTurnActive(true);
                 String toPrint = "";
                 if (m.getOldPlayer() != null)
-                    toPrint = m.getOldPlayer() + "has ended his turn. ";
+                    toPrint = m.getOldPlayer().toUpperCase() + " has ended his turn. ";
                 view.setClientMessage(new ChooseAction(toPrint +
                         "It's your turn. Please choose an action (select a number between 0 and 11):\n" +
                         Constants.getChooseAction() +  "\n>"));
@@ -101,7 +103,7 @@ public class MessageHandler {
             else {
                 view.setTurnActive(false);
                 view.setClientMessage(new DisplayMessage("It's " + m.getNewPlayer() +
-                        "'s turn. Pleas wait for him/her to make an action..."));
+                        "'s turn. Pleas wait for him/her to make an action...\n"));
             }
         }
     }
