@@ -1,6 +1,5 @@
 package it.polimi.ingsw.controllerTest;
 import it.polimi.ingsw.server.controller.*;
-import it.polimi.ingsw.server.controller.leaders.DepotEffect;
 import it.polimi.ingsw.server.controller.leaders.LeaderEffect;
 import it.polimi.ingsw.server.controller.leaders.ProductionEffect;
 import it.polimi.ingsw.messages.actions.StartProduction;
@@ -451,7 +450,6 @@ public class StartProductionTest {
         List <LeaderEffect> leaderEffects = new ArrayList<>();
         leaderEffects.add(new ProductionEffect(new ResourcePosition(Resource.COIN, Place.WAREHOUSE, NumOfShelf.THREE),
                                                new ResourcePosition(Resource.COIN, Place.CHEST, null)));
-        leaderEffects.add(new DepotEffect(Resource.COIN));
 
         Action production = new StartProduction(slots, inputClient, outputClient, leaderEffects);
 
@@ -478,6 +476,7 @@ public class StartProductionTest {
         me.getBoard().getChest().incrementResource(resInChest);
 
         Warehouse myWarehouse = me.getBoard().getWarehouse();
+        myWarehouse.addDepot(Resource.COIN);
         Chest myChest = me.getBoard().getChest();
         Itinerary myItinerary = me.getBoard().getItinerary();
         assertTrue(myWarehouse.getShelf(NumOfShelf.ONE).getResource() == Resource.STONE && myWarehouse.getShelf(NumOfShelf.ONE).getQuantity() == 1);

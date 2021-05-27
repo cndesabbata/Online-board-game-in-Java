@@ -182,6 +182,10 @@ public class CLI implements Observer {
             printHandCards();
             output.print("YOUR GAME BOARD:\n\n");
             printGameBoard(clientView.getOwnGameBoard());
+        } else if (m instanceof PrintEndGame){
+            output.println(m.getMessage());
+            output.print("Please press any key to close the game: \n>");
+            input.next();
         }
     }
 
@@ -198,7 +202,7 @@ public class CLI implements Observer {
                 }
             }
         }
-        return null;
+    return null;
     }
 
     private void showElements(int n) {

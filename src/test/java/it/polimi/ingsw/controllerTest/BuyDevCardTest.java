@@ -3,7 +3,6 @@ package it.polimi.ingsw.controllerTest;
 import it.polimi.ingsw.messages.actions.Action;
 import it.polimi.ingsw.messages.actions.BuyDevCard;
 import it.polimi.ingsw.server.controller.Place;
-import it.polimi.ingsw.server.controller.leaders.DepotEffect;
 import it.polimi.ingsw.server.controller.leaders.DiscountEffect;
 import it.polimi.ingsw.server.controller.leaders.LeaderEffect;
 import it.polimi.ingsw.server.exceptions.WrongActionException;
@@ -174,15 +173,6 @@ public class BuyDevCardTest {
         assertTrue(me.getBoard().getDevSpace().checkPlace(2, DevSpaceSlot.ONE));
         me.getBoard().getDevSpace().addCard(game.drawDevCard(Colour.YELLOW, 2), DevSpaceSlot.ONE);
 
-        List<DevCard> leadDepotReq = new ArrayList<>();
-        LeaderCard depotLead = new LeaderCard(3, leadDepotReq, Resource.STONE, LeaderType.DEPOT);
-        depotLead.setPlayed(true);
-        me.getHandLeaderCards().add(depotLead);
-
-        LeaderCard depotLead1 = new LeaderCard(3, leadDepotReq, Resource.SERVANT, LeaderType.DEPOT);
-        depotLead1.setPlayed(true);
-        me.getHandLeaderCards().add(depotLead1);
-
         List<ResourcePosition> inputClient = new ArrayList<>();
         inputClient.add(new ResourcePosition(Resource.STONE, Place.WAREHOUSE, NumOfShelf.DEPOT_ONE));
         inputClient.add(new ResourcePosition(Resource.STONE, Place.WAREHOUSE, NumOfShelf.DEPOT_ONE));
@@ -195,6 +185,8 @@ public class BuyDevCardTest {
 
         Warehouse myWarehouse = me.getBoard().getWarehouse();
         Chest myChest = me.getBoard().getChest();
+        myWarehouse.addDepot(Resource.STONE);
+        myWarehouse.addDepot(Resource.SERVANT);
         myWarehouse.addDepot(Resource.STONE);
         myWarehouse.addDepot(Resource.SERVANT);
         List<ResourcePosition> resInWarehouse = new ArrayList<>();
@@ -228,15 +220,11 @@ public class BuyDevCardTest {
 
         myChest.incrementResource(resInChest);
 
-        List<LeaderEffect> leaderEffects = new ArrayList<>();
-        leaderEffects.add(new DepotEffect(Resource.STONE));
-        leaderEffects.add(new DepotEffect(Resource.SERVANT));
-
         game.drawDevCard(Colour.YELLOW, 3);
         game.drawDevCard(Colour.YELLOW, 3);
         game.drawDevCard(Colour.YELLOW, 3);
 
-        Action buyDevCard = new BuyDevCard(3, Colour.YELLOW, DevSpaceSlot.ONE, inputClient, leaderEffects);
+        Action buyDevCard = new BuyDevCard(3, Colour.YELLOW, DevSpaceSlot.ONE, inputClient, new ArrayList<>());
 
         try {
             buyDevCard.checkAction(me);
@@ -329,7 +317,6 @@ public class BuyDevCardTest {
 
         List<LeaderEffect> leaderEffects = new ArrayList<>();
         leaderEffects.add(new DiscountEffect(Resource.STONE));
-        leaderEffects.add(new DepotEffect(Resource.STONE));
 
         //game.drawDevCard(Colour.YELLOW, 3);
         //game.drawDevCard(Colour.YELLOW, 3);

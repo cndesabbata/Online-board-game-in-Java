@@ -129,12 +129,6 @@ public class ActionFactory {
             rp1 = cli.askForLocation(s1, true, true);
             leaderEffects.add(new MarbleEffect(whiteMarbles, res, rp1));
         }
-        if (cli.getClientView().getOwnGameBoard().getPlayedCards().stream().anyMatch(L -> L.getType().equals("Depot"))) { //adding depots leader effects
-            for (LeadCardInfo l : cli.getClientView().getOwnGameBoard().getPlayedCards()) {
-                if (l.getType().equals("Depot"))
-                    leaderEffects.add(new DepotEffect(Resource.valueOf(l.getResource().toUpperCase())));
-            }
-        }
         return new BuyResources(leaderEffects, source + 1, marketSelection, result);
     }
 
@@ -200,12 +194,6 @@ public class ActionFactory {
         }
         output.println("Your card has the following requirements:\n" + cli.buildResourceString(req));
         res = cli.askForLocation(req, false, false);
-        if (cli.getClientView().getOwnGameBoard().getPlayedCards().stream().anyMatch(L -> L.getType().equals("Depot"))) { //adding depots leader effects
-            for (LeadCardInfo l : cli.getClientView().getOwnGameBoard().getPlayedCards()) {
-                if (l.getType().equals("Depot"))
-                    leaders.add(new DepotEffect(Resource.valueOf(l.getResource())));
-            }
-        }
         return new BuyDevCard(lev + 1, colour, DevSpaceSlot.values()[slot], res, leaders);
     }
 
@@ -236,16 +224,19 @@ public class ActionFactory {
                         break;
                     output.print("Please select a number from 1 to 3 and make sure that the selected slot is not empty.\n>");
                 }
-                slots.add(slot-1);
+                slots.add(slot - 1);
                 DevCardInfo d = cli.getClientView().getOwnGameBoard().getDevSpace().get(slot - 1).get(0);
                 inp.addAll(cli.askForLocation(d.getProductionInput(), false, false));
-                out.addAll(cli.askForLocation(d.getProductionOutput(), true, false));
+                List<ResourcePosition> bR = new ArrayList<>();
+                for(String output : d.getProductionOutput())
+                    bR.add(new ResourcePosition(Resource.valueOf(output.toUpperCase()), Place.CHEST, null));
+                out.addAll(bR);
                 request = askYesNo("Would you like to select another development card? [yes/no]\n>");
             }
         }
         if (askYesNo("Would you like to start the board production? [yes/no]\n>")) {
             List<String> boardInput = new ArrayList<>();
-            List<String> boardOutput = new ArrayList<>();
+            String boardOutput = "";
             for (int i = 0; i < 3; i++) {
                 if (i < 2)                                                                                              //input of boardProduction
                     output.print("Choose the resource number " + (i + 1) + " that you want to use: " +
@@ -266,12 +257,9 @@ public class ActionFactory {
                 if (i < 2)                                                                                               //input of boardProduction
                     boardInput.add(res);
                 else                                                                                                    //output of BoardProduction
-                    boardOutput.add(res);
+                    boardOutput = res;
             }
-            List<ResourcePosition> bR = new ArrayList<>();
-            for(String output : boardOutput)
-                bR.add(new ResourcePosition(Resource.valueOf(output.toUpperCase()), Place.CHEST, null));
-            out.addAll(bR);
+            out.add(new ResourcePosition(Resource.valueOf(boardOutput.toUpperCase()), Place.CHEST, null));
         }
         if (cli.getClientView().getOwnGameBoard().getPlayedCards().stream().anyMatch(l -> l.getType().equals("Product"))                                          //productLeader
                 && askYesNo("Would you like to use a product leader card?\n>")) {
@@ -304,18 +292,10 @@ public class ActionFactory {
             }
             for (int n : indexLead) {                                                                                     //construction of leader effects
                 List<String> i = new ArrayList<>();
-                List<String> o = new ArrayList<>();
                 i.add(cli.getClientView().getOwnGameBoard().getPlayedCards().get(n - 1).getResource());
                 List<ResourcePosition> inputLead = new ArrayList<>(cli.askForLocation(i, false, false));
-                o.add(resOut);
-                List<ResourcePosition> outputLead = new ArrayList<>(cli.askForLocation(o, true, false));
-                leaderEffects.add(new ProductionEffect(inputLead.get(0), outputLead.get(0)));
-            }
-        }
-        if (cli.getClientView().getOwnGameBoard().getPlayedCards().stream().anyMatch(L -> L.getType().equals("Depot"))) { //adding depots leader effects
-            for (LeadCardInfo l : cli.getClientView().getOwnGameBoard().getPlayedCards()) {
-                if (l.getType().equals("Depot"))
-                    leaderEffects.add(new DepotEffect(Resource.valueOf(l.getResource())));
+                ResourcePosition outputLead = new ResourcePosition(Resource.valueOf(resOut.toUpperCase()), Place.CHEST, null);
+                leaderEffects.add(new ProductionEffect(inputLead.get(0), outputLead));
             }
         }
         return new StartProduction(slots, inp, out, leaderEffects);
@@ -384,13 +364,7 @@ public class ActionFactory {
                 output.print("Please select a valid destination shelf. [1/2/3/4/5] (4 and 5 represent the depot leaders)\n>");
             dest = readInputInt();
         }
-        List<LeaderEffect> leaders = new ArrayList<>();
-        List<LeadCardInfo> playedCards = cli.getClientView().getOwnGameBoard().getPlayedCards();
-        for (LeadCardInfo leadCardInfo : playedCards) {
-            if (leadCardInfo.getType().equalsIgnoreCase("DEPOT"))
-                leaders.add(new DepotEffect(Resource.valueOf(leadCardInfo.getType())));
-        }
-        return new MoveResources(NumOfShelf.values()[source - 1], NumOfShelf.values()[dest - 1], quantity, leaders);
+        return new MoveResources(NumOfShelf.values()[source - 1], NumOfShelf.values()[dest - 1], quantity);
     }
 
     private String readInputString() {

@@ -104,6 +104,9 @@ public class MessageHandler {
                         "'s turn. Pleas wait for him/her to make an action..."));
             }
         }
+        else if(message instanceof CloseMessage){
+            view.setClientMessage(new DisplayMessage(((CloseMessage) message).getMessage()));
+        }
     }
 
     private GameBoardInfo findBoardByOwner(String owner){
