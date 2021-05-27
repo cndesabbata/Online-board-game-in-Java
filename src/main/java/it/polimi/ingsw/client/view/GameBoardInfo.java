@@ -8,11 +8,11 @@ import java.util.Map;
 public class GameBoardInfo {
     private String owner;
     private Integer position;
-    private Map<Integer, String> papalCards;
-    private Map<String, Integer> chest;
-    private Map<Integer, List<String>> warehouse;
+    private final Map<Integer, String> papalCards;
+    private final Map<String, Integer> chest;
+    private final Map<Integer, List<String>> warehouse;
     private List<LeadCardInfo> playedCards;
-    private Map<Integer, List<DevCardInfo>> devSpace;
+    private final Map<Integer, List<DevCardInfo>> devSpace;
     private Integer blackCrossPosition;
 
     public GameBoardInfo(String nickname) {
@@ -50,6 +50,8 @@ public class GameBoardInfo {
     public void setPapalCardStatus(int index, String newStatus) {
         papalCards.put(index, newStatus);
     }
+
+    public void setOwner(String owner) { this.owner = owner; }
 
     public void changeChest(String type, int newQuantity){
         chest.put(type, newQuantity);

@@ -23,7 +23,6 @@ public class DevCardBlueprint {
         BuildResources(requiredRes, requiredResources);
         BuildResources(inputRes, inputResources);
         BuildResources(outputRes, outputResources);
-        if (outputResources[4] != 0) outputRes.add(new ResourceQuantity(outputResources[4], Resource.FAITHPOINT));
         return new DevCard(requiredRes, victoryPoints, level, colour, inputRes, outputRes);
     }
 

@@ -66,18 +66,18 @@ public class MessageHandler {
             else if (m.getType() == UserAction.SELECT_LEADCARD) {
                 view.setClientMessage(new NewView("These are the cards you chose."));
                 view.setPlayerIndex(((NewIndex) m.getNewElements().get(1)).getPlayerIndex());
-                String string = "";
-                switch (view.getPlayerIndex()){
-                    case 1: string = "You are the second player; this gives you access to an additional resource" +
+                String string = switch (view.getPlayerIndex()) {
+                    case 1 -> "You are the second player; this gives you access to an additional resource" +
                             " of your choice; please write your choice below:" +
-                            " [Coin/Stone/Servant/Shield]"; break;
-                    case 2: string = "You are the third player; this gives you access to an additional faith point and" +
+                            " [Coin/Stone/Servant/Shield]";
+                    case 2 -> "You are the third player; this gives you access to an additional faith point and" +
                             " a resource of your choice; please write your choice below:" +
-                            " [Coin/Stone/Servant/Shield]"; break;
-                    case 3:  string = "You are the fourth player; this gives you access to an additional faith point and" +
+                            " [Coin/Stone/Servant/Shield]";
+                    case 3 -> "You are the fourth player; this gives you access to an additional faith point and" +
                             " two resource of your choice; please write your choices below:" +
-                            " [Coin/Stone/Servant/Shield]"; break;
-                }
+                            " [Coin/Stone/Servant/Shield]";
+                    default -> "";
+                };
                 if (view.getPlayerIndex() != 0)
                     view.setClientMessage(new SetupResources(string + "\n>"));
             }

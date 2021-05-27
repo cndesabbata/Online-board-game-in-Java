@@ -94,6 +94,7 @@ public class CLI implements Observer {
                 confirmation = true;
         }
         clientView.setNickname(nickname);
+        clientView.getOwnGameBoard().setOwner(nickname);
         Thread thread = new Thread(connectionSocket);
         thread.start();
     }
@@ -146,9 +147,9 @@ public class CLI implements Observer {
             int n = -1;
             while (request) {
                 n = readInputInt();
-                if (n < 0 || n > 10) {
-                    output.print("Please choose a number between 0 and 9:\n>");
-                } else if (n > 5 && n < 10) {
+                if (n < 0 || n > 11) {
+                    output.print("Please choose a number between 0 and 11:\n>");
+                } else if (n > 5 && n < 11) {
                     showElements(n);
                 } else {
                     if ((n == 3 || n == 4) && getClientView().getHand().size() == 0) {
@@ -176,34 +177,31 @@ public class CLI implements Observer {
 
     private void showElements(int n) {
         switch (n) {
-            case 6:
-                printGameBoard(clientView.getOwnGameBoard());
-                break;
-            case 7:
-                askForGameBoard();
-                break;
-            case 8:
-                printMarket();
-                break;
-            case 9:
-                printDevDecks();
-                break;
+            case 6 -> printGameBoard(clientView.getOwnGameBoard());
+            case 7 -> askForGameBoard();
+            case 8 -> printMarket();
+            case 9 -> printDevDecks();
+            case 10 -> printHandCards();
         }
         output.print("Please choose an action (select a number between 0 and 9):\n" +
                 Constants.getChooseAction() + "\n>");
     }
 
     private void askForGameBoard() {
-        while (true) {
-            output.print("Whose game board would you like to view?" + "\n>");
-            String s = readInputString().toUpperCase();
-            for (GameBoardInfo g : clientView.getOtherGameBoards()) {
-                if (g.getOwner().equals(s.toUpperCase())) {
-                    printGameBoard(g);
-                    return;
+        if (clientView.getOwnGameBoard().getBlackCrossPosition() != null)
+            output.println("Lorenzo De Medici's position: " + clientView.getOwnGameBoard().getBlackCrossPosition() + "/24\n");
+        else {
+            while (true) {
+                output.print("Whose game board would you like to view?" + "\n>");
+                String s = readInputString().toUpperCase();
+                for (GameBoardInfo g : clientView.getOtherGameBoards()) {
+                    if (g.getOwner().equals(s.toUpperCase())) {
+                        printGameBoard(g);
+                        return;
+                    }
                 }
+                output.print("Please select the nickname of a player in the match. ");
             }
-            output.print("Please select the nickname of a player in the match. ");
         }
     }
 
@@ -229,8 +227,8 @@ public class CLI implements Observer {
             req.add(new ResourceQuantity((int) stringList.
                     stream().filter(s -> s.equalsIgnoreCase(r.toString())).count(), r));
         String order = "";
-        Place place = null;
-        NumOfShelf shelf = null;
+        Place place;
+        NumOfShelf shelf;
         for (ResourceQuantity r : req) {
             for (int i = 0; i < r.getQuantity(); i++) {
                 if (r.getResource() != Resource.EMPTY && r.getResource() != Resource.FAITHPOINT) {
@@ -250,11 +248,11 @@ public class CLI implements Observer {
                             output.print("Where would you like to store your " + order +
                                     r.getResource().toString().toLowerCase() + " in? [Warehouse/Discard]\n>");
                         s = readInputString().toUpperCase();
-                        if(s.equals("DISCARD"))
+                        if (s.equals("DISCARD"))
                             s = "TRASH_CAN";
                         try {
                             place = Place.valueOf(s);
-                            if(place == Place.WAREHOUSE) {
+                            if (place == Place.WAREHOUSE) {
                                 if (deposit)
                                     output.print("Which shelf would you like to store it in? " +
                                             "[ 1 / 2 / 3 (4 & 5 are the depots)]\n>");
@@ -265,7 +263,7 @@ public class CLI implements Observer {
                                     int n = readInputInt();
                                     int size = getClientView().getOwnGameBoard().getWarehouse().size();
                                     if (n < 1 || n > size)
-                                        output.print("Please select a number between 1 and" + size + " :\n>");
+                                        output.print("Please select a number between 1 and " + size + " :\n>");
                                     else {
                                         shelf = NumOfShelf.values()[n - 1];
                                         break;
@@ -273,25 +271,23 @@ public class CLI implements Observer {
                                 }
                                 result.add(new ResourcePosition(r.getResource(), place, shelf));
                                 break;
-                            }
-                            else if(place == Place.TRASH_CAN) {
-                                if(!deposit)
+                            } else if (place == Place.TRASH_CAN) {
+                                if (!deposit)
                                     output.print("You cannot take resources that have been discarded.\n");
                                 else {
-                                    if(!canDiscard)
+                                    if (!canDiscard)
                                         output.print("You cannot discard this resource.\n");
                                     else {
                                         result.add(new ResourcePosition(r.getResource(), place, null));
                                         break;
                                     }
                                 }
-                            }
-                            else if(place == Place.CHEST) {
-                                if(deposit)
+                            } else if (place == Place.CHEST) {
+                                if (deposit)
                                     output.print("This resource cannot be stored in the chest.\n>");
                                 else
                                     result.add(new ResourcePosition(r.getResource(), place, null));
-                                    break;
+                                break;
                             }
                         } catch (IllegalArgumentException e) {
                             output.print("Please select a valid source. ");
@@ -333,113 +329,113 @@ public class CLI implements Observer {
     private void printDevDecks() {
         output.println("DEVELOPMENT DECKS:\n");
         for (DevCardInfo[] a : clientView.getDevDecks()) {
-            for (DevCardInfo d : a) {
-                if (d != null)
-                    printDevCard(d);
-                else {
-                    output.print(" empty ");
-                }
+            for (int i = 0; i < 4; i++)
+                output.print(Constants.devCardBorder + " ");
+            output.print("\n");
+            for (int i = 0; i < 4; i++) {
+                if (a[i] == null)
+                    output.print(Constants.emptyDevCardBorder);
+                else
+                    printCardElement("* COL: " + a[i].getColour(), true);
             }
+            output.print("\n");
+            for (int i = 0; i < 4; i++) {
+                if (a[i] == null)
+                    output.print(Constants.emptyDevCardBorder);
+                else
+                    printCardElement("* LVL: " + a[i].getLevel(), true);
+            }
+            output.print("\n");
+            for (int i = 0; i < 4; i++) {
+                if (a[i] == null)
+                    output.print(Constants.emptyDevCardBorder);
+                else
+                    printCardElement("* VP:  " + a[i].getVictoryPoints(), true);
+            }
+            output.print("\n");
+            for (int i = 0; i < 4; i++) {
+                if (a[i] == null)
+                    output.print(Constants.emptyDevCardBorder);
+                else
+                    printCardElement("* REQ: " + buildResourceString(a[i].getResourceRequirements()), true);
+            }
+            output.print("\n");
+            for (int i = 0; i < 4; i++) {
+                if (a[i] == null)
+                    output.print(Constants.emptyDevCardBorder);
+                else
+                    printCardElement("* IN:  " + buildResourceString(a[i].getProductionInput()), true);
+            }
+            output.print("\n");
+            for (int i = 0; i < 4; i++) {
+                if (a[i] == null)
+                    output.print(Constants.emptyDevCardBorder);
+                else
+                    printCardElement("* OUT: " + buildResourceString(a[i].getProductionOutput()), true);
+            }
+            output.print("\n");
+            for (int i = 0; i < 4; i++)
+                output.print(Constants.devCardBorder + " ");
+            output.print("\n\n");
         }
-    }
-
-    private void printDevCard(DevCardInfo d) {
-        for (int i = 0; i < 64; i++)
-            output.print("*");
-        printCardElement("Colour: " + d.getColour(), true);
-        printCardElement("Level: " + d.getLevel(), true);
-        printCardElement("Victory Points: " + d.getVictoryPoints(), true);
-        printCardElement("Requisites = " + buildResourceString(d.getResourceRequirements()), true);
-        printCardElement("Production input =  " + buildResourceString(d.getProductionInput()), true);
-        printCardElement("Production output =  " + buildResourceString(d.getProductionOutput()), true);
-        output.print("*\n");
-        for (int i = 0; i < 64; i++)
-            output.print("*");
-        output.print("*\n\n");
     }
 
     private void printCardElement(String s, boolean isDevCard) {
-        output.print("*\n* " + s);
-        if(isDevCard) {
-            for (int i = 0; i < 62 - s.length(); i++)
+        output.print(s);
+        if (isDevCard) {
+            for (int i = 0; i < 34 - s.length(); i++)
                 output.print(" ");
-        }
-        else {
+            output.print("* ");
+        } else {
             for (int i = 0; i < 126 - s.length(); i++)
                 output.print(" ");
         }
     }
 
     protected String buildResourceString(List<String> list) {
-        int[] quantity = {0, 0, 0, 0};
+        int[] quantity = {0, 0, 0, 0, 0};
         StringBuilder result = new StringBuilder();
         for (String s : list) {
             switch (s.toUpperCase()) {
-                case "COIN":
-                    quantity[0]++;
-                    break;
-                case "STONE":
-                    quantity[1]++;
-                    break;
-                case "SERVANT":
-                    quantity[2]++;
-                    break;
-                case "SHIELD":
-                    quantity[3]++;
-                    break;
+                case "COIN" -> quantity[0]++;
+                case "STONE" -> quantity[1]++;
+                case "SERVANT" -> quantity[2]++;
+                case "SHIELD" -> quantity[3]++;
+                case "FAITHPOINT" -> quantity[4]++;
             }
         }
-        for (int n = 0; n < 4; n++) {
-            String resType = "";
-            switch (n) {
-                case 0:
-                    resType = "Coins: ";
-                    break;
-                case 1:
-                    resType = "Stones: ";
-                    break;
-                case 2:
-                    resType = "Servants: ";
-                    break;
-                case 3:
-                    resType = "Shields: ";
-                    break;
-            }
-            if (quantity[n] != 0)
-                result.append(resType).append(quantity[n]);
-            if (n != 3)
-                result.append(" + ");
+        int firstNotNull = 0;
+        for (int n = 0; n < 5; n++) {
+            String resType = switch (n) {
+                case 0 -> " CO";
+                case 1 -> " ST";
+                case 2 -> " SE";
+                case 3 -> " SH";
+                case 4 -> " FP";
+                default -> "";
+            };
+            if (quantity[n] != 0) {
+                if (n != firstNotNull) {
+                    result.append(" + ");
+                }
+                result.append(quantity[n]).append(resType);
+            } else
+                firstNotNull++;
         }
         return result.toString();
     }
 
     private void printHandCards() {
         output.println("HAND LEADER CARDS:\n");
-        for (LeadCardInfo l : clientView.getHand()) {
-            printLeadCard(l);
-        }
-    }
-
-    private void printLeadCard(LeadCardInfo l) {
-        for (int i = 0; i < 128; i++)
-            output.print("*");
-        printCardElement("Victory points: " + l.getVictoryPoints(), false);
-        if (l.getCardRequirements() == null)
-            printCardElement("Resource requisites: " + buildResourceString(l.getResourceRequirements()), false);
-        else
-            printCardElement("Card requisites: " + buildDevCardString(l.getCardRequirements()), false);
-        printCardElement("Leader Power Type: " + l.getType(), false);
-        printCardElement("Leader Resource: " + l.getResource(), false);
-        output.print("*\n");
-        for (int i = 0; i < 128; i++)
-            output.print("*");
-        output.print("*\n\n");
+        printLeadCards(clientView.getHand());
     }
 
     private String buildDevCardString(List<DevCardInfo> list) {
         StringBuilder result = new StringBuilder();
         for (DevCardInfo d : list) {
-            result.append("Colour: ").append(d.getColour()).append(" Level: ").append(d.getLevel());
+            result.append(d.getColour());
+            if (d.getLevel() != 0)
+                result.append(" LVL ").append(d.getLevel());
             if (list.indexOf(d) != list.size() - 1)
                 result.append(" + ");
         }
@@ -490,39 +486,118 @@ public class CLI implements Observer {
 
     private void printDevSpace(GameBoardInfo g) {
         output.print("DEVELOPMENT SPACE: \n\n");
+        for (int i = 0; i < 3; i++)
+            output.print(Constants.devCardBorder + " ");
+        output.print("\n");
         for (int i = 0; i < 3; i++) {
-            output.print("Slot number " + (i + 1) + ":\n");
-            if (!g.getDevSpace().get(i).isEmpty())
-                printDevCard(g.getDevSpace().get(i).get(0));
+            if (g.getDevSpace().get(i).isEmpty())
+                output.print(Constants.emptyDevCardBorder);
+            else
+                printCardElement("* COL: " + g.getDevSpace().get(i).get(0).getColour(), true);
         }
-        output.println("\n");
+        output.print("\n");
+        for (int i = 0; i < 3; i++) {
+            if (g.getDevSpace().get(i).isEmpty())
+                output.print(Constants.emptyDevCardBorder);
+            else
+                printCardElement("* LVL: " + g.getDevSpace().get(i).get(0).getLevel(), true);
+        }
+        output.print("\n");
+        for (int i = 0; i < 3; i++) {
+            if (g.getDevSpace().get(i).isEmpty())
+                output.print(Constants.emptyDevCardBorder);
+            else
+                printCardElement("* VP:  " + g.getDevSpace().get(i).get(0).getVictoryPoints(), true);
+        }
+        output.print("\n");
+        for (int i = 0; i < 3; i++) {
+            if (g.getDevSpace().get(i).isEmpty())
+                output.print(Constants.emptyDevCardBorder);
+            else
+                printCardElement("* REQ: " + buildResourceString(g.getDevSpace().get(i).get(0).getResourceRequirements()), true);
+        }
+        output.print("\n");
+        for (int i = 0; i < 3; i++) {
+            if (g.getDevSpace().get(i).isEmpty())
+                output.print(Constants.emptyDevCardBorder);
+            else
+                printCardElement("* IN:  " + buildResourceString(g.getDevSpace().get(i).get(0).getProductionInput()), true);
+        }
+        output.print("\n");
+        for (int i = 0; i < 3; i++) {
+            if (g.getDevSpace().get(i).isEmpty())
+                output.print(Constants.emptyDevCardBorder);
+            else
+                printCardElement("* OUT: " + buildResourceString(g.getDevSpace().get(i).get(0).getProductionOutput()), true);
+        }
+        output.print("\n");
+        for (int i = 0; i < 3; i++)
+            output.print(Constants.devCardBorder + " ");
+        output.print("\n\n");
     }
 
     private void printPlayedLeadCards(GameBoardInfo g) {
         output.println("PLAYED LEADER CARDS:\n");
-        for (LeadCardInfo l : g.getPlayedCards()) {
-            printLeadCard(l);
+        printLeadCards(g.getPlayedCards());
+    }
+
+    private void printLeadCards(List<LeadCardInfo> cards) {
+        if (!(cards.isEmpty())) {
+            for (int i = 0; i < cards.size(); i++) {
+                output.print(Constants.devCardBorder + " ");
+            }
+            output.print("\n");
+            for (LeadCardInfo card : cards) {
+                printCardElement("* VP: " + card.getVictoryPoints(), true);
+            }
+            output.print("\n");
+            for (LeadCardInfo card : cards) {
+                if (card.getCardRequirements() == null)
+                    printCardElement("* RES REQ: " + buildResourceString(card.getResourceRequirements()), true);
+                else
+                    printCardElement("* CARD REQ: " + buildDevCardString(card.getCardRequirements()), true);
+            }
+            output.print("\n");
+            for (LeadCardInfo card : cards) {
+                printCardElement("* TYPE: " + card.getType(), true);
+            }
+            output.print("\n");
+            for (LeadCardInfo card : cards) {
+                printCardElement("* RES: " + card.getResource(), true);
+            }
+            output.print("\n");
+            for (int i = 0; i < cards.size(); i++) {
+                output.print(Constants.devCardBorder + " ");
+            }
+            output.print("\n\n");
         }
+
     }
 
     private String readInputString() {
-        try {
-            return input.nextLine();
-        } catch (InputMismatchException e) {
-            output.print("Please insert a valid input.\n>");
-            input.next();
-            return readInputString();
-        }
+        String inputString;
+        do {
+            try {
+                inputString = input.nextLine();
+                break;
+            } catch (InputMismatchException e) {
+                output.print("Please insert a valid input.\n>");
+            }
+        } while (true);
+        return inputString;
     }
 
     private int readInputInt() {
-        try {
-            return Integer.parseInt(input.nextLine());
-        } catch (InputMismatchException | NumberFormatException e) {
-            output.print("Please insert a valid input.\n>");
-            input.next();
-            return readInputInt();
-        }
+        int inputInt;
+        do {
+            try {
+                inputInt = Integer.parseInt(input.nextLine());
+                break;
+            } catch (InputMismatchException | NumberFormatException e) {
+                output.print("Please insert a valid input.\n>");
+            }
+        } while (true);
+        return inputInt;
     }
 
     public ClientView getClientView() {

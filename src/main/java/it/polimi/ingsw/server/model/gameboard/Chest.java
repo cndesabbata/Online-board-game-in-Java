@@ -44,13 +44,13 @@ public class Chest extends Observable {
     /*controls if the resources can be removed*/
     public void checkDecrement(List <ResourcePosition> inputRes) throws WrongActionException {
         if(inputRes.stream().anyMatch(Rp -> Rp.getResource() == Resource.EMPTY))
-            throw new WrongActionException("EMPTY resource is not removable.");
+            throw new WrongActionException("EMPTY resource is not removable. ");
         else {
             for (ResourcePosition Rp : inputRes) {
                 if(Rp.getPlace() == Place.CHEST) {
                     if (inputRes.stream().filter(R -> R.getResource() == Rp.getResource() && R.getPlace() == Place.CHEST).   //if the required number of resources (of a certain type) is more then the actual value of that type of resources in chest
                         map(ResourcePosition::getQuantity).reduce(0, Integer::sum) > chest.get(getIndexResource(Rp.getResource())).getQuantity())
-                        throw new WrongActionException("The resources in chest are not enough.");
+                        throw new WrongActionException("The resources in chest are not enough. ");
                 }
             }
         }
@@ -69,8 +69,8 @@ public class Chest extends Observable {
     /*controls if the resources can be stored*/
     public void checkIncrement(List <ResourcePosition> outputRes) throws WrongActionException{                          //it is used only by the checkAction in StartProduction
         for(ResourcePosition Rp : outputRes){
-            if(Rp.getResource() == Resource.EMPTY) throw new WrongActionException("EMPTY resource cannot be stored.");
-            else if(Rp.getPlace() != Place.CHEST) throw new WrongActionException("All the resources must be stored in the CHEST.");
+            if(Rp.getResource() == Resource.EMPTY) throw new WrongActionException("EMPTY resource cannot be stored. ");
+            else if(Rp.getPlace() != Place.CHEST) throw new WrongActionException("All the resources must be stored in the CHEST. ");
         }
     }
 

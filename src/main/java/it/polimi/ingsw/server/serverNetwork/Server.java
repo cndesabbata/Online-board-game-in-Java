@@ -6,7 +6,6 @@ import it.polimi.ingsw.server.controller.GameController;
 import it.polimi.ingsw.server.controller.multiplayer.MultiPlayerController;
 import it.polimi.ingsw.server.controller.singleplayer.SinglePlayerController;
 
-import javax.swing.text.html.CSS;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -85,7 +84,6 @@ public class Server {
             connection.sendSocketMessage(new PlayersNumberMessage(connection.getPlayerNickname() +
                     ", you are the lobby host, please choose the number of players: [1...4]"));
         } else if (waitingList.size() == totalPlayers) {
-            System.out.println("giocatori raggiunti");
             VirtualView v = find(connection, clientToConnection);
             v.sendAll(new SetupMessage("Player number reached. The match is starting."));
             waitingList.clear();
@@ -137,6 +135,8 @@ public class Server {
         connection.sendSocketMessage(new SetupMessage("Connection was successfully set-up!" +
                 " You are now connected."));
         if (waitingList.size() > 0) {
+            connection.setGameController(gameControllers.get(0));
+            gameControllers.get(0).setUpPlayer(connection);
             virtualView.sendAll(new SetupMessage(nickname + " joined the game"));
         }
         lobby(connection);
