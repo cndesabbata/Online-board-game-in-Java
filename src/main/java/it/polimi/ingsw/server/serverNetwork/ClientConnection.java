@@ -208,11 +208,11 @@ public class ClientConnection implements Runnable {
         } catch (WrongActionException e){
             return false;
         }
-        switch (getGameController().getActivePlayers().indexOf(((MultiPlayerController) getGameController()).getCurrentPlayer())){
-            case 0: return message.getResources().size() == 0;
-            case 3: return message.getResources().size() == 2;
-            default: return message.getResources().size() == 1;
-        }
+        return switch (getGameController().getActivePlayers().indexOf(((MultiPlayerController) getGameController()).getCurrentPlayer())) {
+            case 0 -> message.getResources().size() == 0;
+            case 3 -> message.getResources().size() == 2;
+            default -> message.getResources().size() == 1;
+        };
     }
 
     public void sendSocketMessage(Message message){
