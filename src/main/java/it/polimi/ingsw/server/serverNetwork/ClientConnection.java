@@ -155,7 +155,7 @@ public class ClientConnection implements Runnable {
             else if (checkMessageSinglePlayer(GamePhase.STARTED)
                     && getGameController().getActivePlayers().get(0).isExclusiveActionDone()){
                 ((SinglePlayerController) getGameController()).makeTokenAction();
-                ((SinglePlayerController) getGameController()).getGame().getPlayers().get(0).setExclusiveActionDone(false);
+                getGameController().getGame().getPlayers().get(0).setExclusiveActionDone(false);
             }
             else sendSocketMessage(new ErrorMessage(
                     "Not a valid action; you cannot end your turn at the moment.", ErrorType.INVALID_END_TURN));
@@ -208,11 +208,11 @@ public class ClientConnection implements Runnable {
         } catch (WrongActionException e){
             return false;
         }
-        switch (getGameController().getActivePlayers().indexOf(((MultiPlayerController) getGameController()).getCurrentPlayer())){
-            case 0: return message.getResources().size() == 0;
-            case 3: return message.getResources().size() == 2;
-            default: return message.getResources().size() == 1;
-        }
+        return switch (getGameController().getActivePlayers().indexOf(((MultiPlayerController) getGameController()).getCurrentPlayer())) {
+            case 0 -> message.getResources().size() == 0;
+            case 3 -> message.getResources().size() == 2;
+            default -> message.getResources().size() == 1;
+        };
     }
 
     public void sendSocketMessage(Message message){
