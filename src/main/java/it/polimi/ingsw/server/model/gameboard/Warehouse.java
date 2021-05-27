@@ -197,6 +197,7 @@ public class Warehouse extends Observable {
     public void addDepot(Resource resource){
         warehouse.add(new ResourceQuantity(0, resource));
     }
+
     /*controls if there is already a depot storing the same resource*/
     public boolean checkDepot(Resource resource){
         boolean check = true;

@@ -41,7 +41,7 @@ public class PlayLeadCardTest {
 
         List<DevCard> leadProdReq = new ArrayList<>();
         leadProdReq.add(devCard);
-        LeaderCard prodLead = new LeaderCard(4, leadProdReq, Resource.COIN, LeaderType.PRODUCT);
+        LeaderCard prodLead = new LeaderCard(4, leadProdReq, Resource.COIN, LeaderType.DEPOT);
         prodLead.setPlayed(false);
 
         Player me = new Player("Gianluca", game);
@@ -53,11 +53,12 @@ public class PlayLeadCardTest {
         try {
             action.checkAction(me);
             action.doAction(me);
-            assertTrue(me.hasPlayedLeaderCard(LeaderType.PRODUCT, Resource.COIN));
+            assertTrue(me.hasPlayedLeaderCard(LeaderType.DEPOT, Resource.COIN));
+            assertEquals(4, me.getBoard().getWarehouse().getWarehouse().size());
         } catch (WrongActionException e)
         {
             System.out.println(e.getMessage());
-            assertTrue(false);
+            fail();
         }
     }
 
@@ -108,7 +109,7 @@ public class PlayLeadCardTest {
         } catch (WrongActionException e)
         {
             System.out.println(e.getMessage());
-            assertTrue(false);
+            fail();
         }
     }
 }

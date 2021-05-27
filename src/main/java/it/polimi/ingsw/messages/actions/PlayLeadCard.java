@@ -23,6 +23,10 @@ public class PlayLeadCard implements Action {
     @Override
     public boolean doAction(Player player) {
         player.playLeadCard(index - 1);
+        LeaderCard l = player.getHandLeaderCards().get(index - 1);
+        if(l.getType() == LeaderType.DEPOT){
+            player.getBoard().getWarehouse().addDepot(l.getResource());
+        }
         return true;
     }
 
@@ -32,7 +36,7 @@ public class PlayLeadCard implements Action {
         if (index <= 0 || index > hand.size())
             throw new WrongActionException("The specified index is out of bounds. ");
         LeaderCard card = hand.get(index - 1);
-        if (null == card.getCardRequirements()){
+        if (card.getCardRequirements() == null){
             List<ResourceQuantity> requirements = card.getResourceRequirements();
             if (!player.getBoard().checkResources(requirements))
                 throw new WrongActionException("The player does not have the required resources. ");
@@ -43,6 +47,10 @@ public class PlayLeadCard implements Action {
                 if (!player.getBoard().getDevSpace().checkCards(dc))
                     throw new WrongActionException("The player does not have the required cards. ");
             }
+        }
+        if (card.getType() == LeaderType.DEPOT){
+            if(!player.getBoard().getWarehouse().checkDepot(card.getResource()))
+                throw new WrongActionException("The player has already played this depot leader card. ");
         }
     }
 }

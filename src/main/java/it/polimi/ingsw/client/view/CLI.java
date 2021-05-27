@@ -185,6 +185,10 @@ public class CLI implements Observer {
         } else if (m instanceof NewView){
             printMarket();
             printDevDecks();
+        } else if (m instanceof PrintEndGame){
+            output.println(m.getMessage());
+            output.print("Please press any key to close the game: \n>");
+            input.next();
         }
     }
 
