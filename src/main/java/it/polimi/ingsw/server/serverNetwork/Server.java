@@ -6,7 +6,6 @@ import it.polimi.ingsw.server.controller.GameController;
 import it.polimi.ingsw.server.controller.multiplayer.MultiPlayerController;
 import it.polimi.ingsw.server.controller.singleplayer.SinglePlayerController;
 
-import javax.swing.text.html.CSS;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -157,9 +156,9 @@ public class Server {
             }
             if (port <= 1024) {
                 if (port == -1) {
-                    System.err.print("Numeric format requested, please try again:\n>");
+                    System.out.print("Numeric format requested, please try again:\n>");
                 } else {
-                    System.err.print("Ports accepted started from 1024! Please try again.\n>");
+                    System.out.print("Ports accepted started from 1024! Please try again.\n>");
                 }
                 scanner.next();
             }

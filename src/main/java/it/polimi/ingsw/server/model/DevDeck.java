@@ -42,7 +42,6 @@ public class DevDeck extends Observable {
             this.cards.add(blueprint.BuildCard(level, colour));
         }
         Collections.shuffle(cards);
-        notifyObservers(new NewDevDeck(colour, level, cards.get(0)));
     }
     public boolean isEmpty(){ return (cards.size()==0); }
 

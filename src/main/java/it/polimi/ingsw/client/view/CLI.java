@@ -160,19 +160,45 @@ public class CLI implements Observer {
                 }
             }
             connectionSocket.send(actionFactory.createAction(n));
-        } else if (m instanceof NewView) {
-            System.out.println(m.getMessage());
+        } else if (m instanceof PrintChest) {
+            printChest(printGameBoardElem(m.getMessage()));
+        } else if (m instanceof PrintDevDecks){
+            printDevDecks();
+        } else if (m instanceof PrintDevSpace){
+            printDevSpace(printGameBoardElem(m.getMessage()));
+        } else if (m instanceof PrintHandCards){
+            printHandCards();
+        } else if (m instanceof PrintItinerary){
+            printItinerary(printGameBoardElem(m.getMessage()));
+        } else if (m instanceof PrintMarket){
+            printMarket();
+        } else if (m instanceof PrintPlayedCards){
+            printPlayedLeadCards(printGameBoardElem(m.getMessage()));
+        } else if (m instanceof PrintWarehouse){
+            printWarehouse(printGameBoardElem(m.getMessage()));
+        } else if (m instanceof NewView){
             printMarket();
             printDevDecks();
             printHandCards();
-            output.println("YOUR GAME BOARD: \n");
+            output.print("YOUR GAME BOARD:\n\n");
             printGameBoard(clientView.getOwnGameBoard());
-            for (GameBoardInfo g : clientView.getOtherGameBoards()) {
-                output.println(g.getOwner().toUpperCase() + "'S GAME BOARD: \n");
-                printGameBoard(g);
-            }
-
         }
+    }
+
+    private GameBoardInfo printGameBoardElem(String owner){
+        if (owner.equals(clientView.getNickname())){
+            output.print("YOUR ");
+            return clientView.getOwnGameBoard();
+        }
+        else {
+            output.print(owner.toUpperCase() + "'S ");
+            for (GameBoardInfo g : getClientView().getOtherGameBoards()){
+                if (g.getOwner().equalsIgnoreCase(owner)){
+                    return g;
+                }
+            }
+        }
+        return null;
     }
 
     private void showElements(int n) {
@@ -285,9 +311,10 @@ public class CLI implements Observer {
                             } else if (place == Place.CHEST) {
                                 if (deposit)
                                     output.print("This resource cannot be stored in the chest.\n>");
-                                else
+                                else{
                                     result.add(new ResourcePosition(r.getResource(), place, null));
-                                break;
+                                    break;
+                                }
                             }
                         } catch (IllegalArgumentException e) {
                             output.print("Please select a valid source. ");

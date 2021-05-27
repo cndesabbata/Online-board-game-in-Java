@@ -235,7 +235,7 @@ public class ActionFactory {
                         break;
                     output.print("Please select a number from 1 to 3 and make sure that the selected slot is not empty.\n>");
                 }
-                slots.add(slot);
+                slots.add(slot-1);
                 DevCardInfo d = cli.getClientView().getOwnGameBoard().getDevSpace().get(slot - 1).get(0);
                 inp.addAll(cli.askForLocation(d.getProductionInput(), false, false));
                 out.addAll(cli.askForLocation(d.getProductionOutput(), true, false));

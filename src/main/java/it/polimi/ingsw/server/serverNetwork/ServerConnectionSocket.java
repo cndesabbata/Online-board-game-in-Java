@@ -25,7 +25,7 @@ public class ServerConnectionSocket implements Runnable {
                 ClientConnection clientConnection = new ClientConnection(serverSocket.accept(), server);
                 executorService.submit(clientConnection);
             } catch (IOException e) {
-                System.err.println("Error during connection initialization, quitting...");
+                System.out.println("Error during connection initialization, quitting...");
             }
         }
     }
@@ -42,7 +42,7 @@ public class ServerConnectionSocket implements Runnable {
             System.out.println("Type \"QUIT\" to close server");
             initializeConnection(serverSocket);
         } catch (IOException e) {
-            System.err.println("Error during Socket initialization, quitting...");
+            System.out.println("Error during Socket initialization, quitting...");
             System.exit(0);
         }
     }

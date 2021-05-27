@@ -1,6 +1,10 @@
 package it.polimi.ingsw.client.view;
 
 import it.polimi.ingsw.messages.Message;
+import it.polimi.ingsw.messages.clientMessages.internal.PrintDevDecks;
+import it.polimi.ingsw.messages.clientMessages.internal.PrintHandCards;
+import it.polimi.ingsw.messages.clientMessages.internal.PrintMarket;
+import it.polimi.ingsw.messages.serverMessages.newElement.NewHandCards;
 import it.polimi.ingsw.server.observer.Observable;
 
 import java.util.ArrayList;
@@ -26,7 +30,7 @@ public class ClientView extends Observable {
         this.devDecks = new DevCardInfo[3][4];
         hand = new ArrayList<>();
         otherGameBoards = new ArrayList<>();
-        ownGameBoard = new GameBoardInfo(nickname);
+        ownGameBoard = new GameBoardInfo(nickname, cli);
         turnActive = false;
     }
 
@@ -53,18 +57,21 @@ public class ClientView extends Observable {
 
     public void setHand(List<LeadCardInfo> hand) {
         this.hand = hand;
+        notifyObservers(new PrintHandCards());
     }
 
     public void addGameBoard(GameBoardInfo newBoard){
         otherGameBoards.add(newBoard);
     }
 
-    public void setMarket(String[][] market) {
+    public void setMarket(String[][] market, boolean toPrint) {
         this.market = market;
+        if (toPrint) notifyObservers(new PrintMarket());
     }
 
-    public void setDevDecks(DevCardInfo newCard, int c, int l) {
+    public void setDevDecks(DevCardInfo newCard, int c, int l, boolean toPrint) {
         this.devDecks[l - 1][c] = newCard;
+        if (toPrint) notifyObservers(new PrintDevDecks());
     }
 
     public void setClientMessage(Message clientMessage) {

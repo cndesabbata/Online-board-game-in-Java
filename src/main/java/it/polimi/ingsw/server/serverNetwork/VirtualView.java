@@ -51,8 +51,8 @@ public class VirtualView implements Observer {
     @Override
     public void update(Message message) {
         if (message instanceof ChangesDone){
-            ((ChangesDone) message).setNewElements(newElements);                                                         //passes the list of new parts of the model to the ActionDone message.
-            clientConnection.sendSocketMessage(message);                                                                //sends ActionDone message with the list of new parts of the model.
+            ((ChangesDone) message).setNewElements(newElements);
+            clientConnection.sendSocketMessage(message);
             newElements.clear();
         }
         else if (message instanceof TurnChange)

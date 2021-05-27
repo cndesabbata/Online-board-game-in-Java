@@ -36,7 +36,7 @@ public class ClientConnection implements Runnable {
             input = new ObjectInputStream(this.socket.getInputStream());
             output = new ObjectOutputStream(this.socket.getOutputStream());
         } catch (IOException e) {
-            System.err.println("Error during initialization of the client!");
+            System.out.println("Error during initialization of the client!");
         }
         this.playerNickname = null;
         this.gameController = null;
@@ -46,7 +46,7 @@ public class ClientConnection implements Runnable {
         try {
             socket.close();
         } catch (IOException e) {
-            System.err.println(e.getMessage());
+            System.out.println(e.getMessage());
         }
     }
 
@@ -78,9 +78,9 @@ public class ClientConnection implements Runnable {
                 server.unregisterClient(this);
             }
             else server.removeClient(this);
-            System.err.println(e.getMessage());
+            System.out.println(e.getMessage());
         } catch (ClassNotFoundException e){
-            System.err.println(e.getMessage());
+            System.out.println(e.getMessage());
         }
     }
 
@@ -91,7 +91,7 @@ public class ClientConnection implements Runnable {
                     playerNickname = ((SetNickname) clientMessage).getNickname();
                     server.registerClient(((SetNickname) clientMessage).getNickname(), this);
                 } catch (InterruptedException e) {
-                    System.err.println(e.getMessage());
+                    System.out.println(e.getMessage());
                     Thread.currentThread().interrupt();
                 }
             }
@@ -103,7 +103,7 @@ public class ClientConnection implements Runnable {
                     server.reconnectClient(((Reconnect) clientMessage).getNickname(), this);
                     playerNickname = ((Reconnect) clientMessage).getNickname();
                 } catch (InterruptedException e) {
-                    System.err.println(e.getMessage());
+                    System.out.println(e.getMessage());
                     Thread.currentThread().interrupt();
                 }
             }
@@ -155,10 +155,10 @@ public class ClientConnection implements Runnable {
             else if (checkMessageSinglePlayer(GamePhase.STARTED)
                     && getGameController().getActivePlayers().get(0).isExclusiveActionDone()){
                 ((SinglePlayerController) getGameController()).makeTokenAction();
-                ((SinglePlayerController) getGameController()).getGame().getPlayers().get(0).setExclusiveActionDone(false);
             }
             else sendSocketMessage(new ErrorMessage(
-                    "Not a valid action; you cannot end your turn at the moment.", ErrorType.INVALID_END_TURN));
+                        "You must do an action before ending your turn. "
+                                + "Please choose an action (select a number between 0 and 11):\n", ErrorType.INVALID_END_TURN));
         }
 
         else if (clientMessage instanceof Action){
