@@ -31,13 +31,12 @@ public class MessageHandler {
                 view.setClientMessage(new RequestPlayersNumber(e.getMessage()));
             else if (e.getErrorType() == ErrorType.WRONG_ACTION)
                 view.setClientMessage(new ChooseAction(e.getMessage()
-                                    + "Please choose an action (select a number between 0 and 9):\n" +
+                                    + "Please choose an action (select a number between 0 and 11):\n" +
                                     Constants.getChooseAction() +  "\n>"));
             else if (e.getErrorType() == ErrorType.WRONG_MESSAGE)
                 view.setClientMessage(new DisplayMessage(e.getMessage()));
             else if(e.getErrorType() == ErrorType.INVALID_END_TURN)
-                view.setClientMessage(new ChooseAction("You must do an action before ending your turn. "
-                        + "Please choose an action (select a number between 0 and 9):\n" +
+                view.setClientMessage(new ChooseAction(e.getMessage() +
                         Constants.getChooseAction() +  "\n>"));
             else if (e.getErrorType() == ErrorType.SETUP_DRAW)
                 view.setClientMessage(new SetupDiscard(e.getMessage()));
@@ -55,16 +54,15 @@ public class MessageHandler {
         else if (message instanceof ChangesDone){
             ChangesDone m = (ChangesDone) message;
             for (ChangeMessage a : m.getNewElements()){
-                applyChanges(a);
+                applyChanges(a, m.getType() == UserAction.INITIAL_DISPOSITION);
             }
             if(m.getType() == UserAction.INITIAL_DISPOSITION)
-                view.setClientMessage(new NewView("This is the initial disposition."));
+                view.setClientMessage(new NewView("This is the initial disposition.\n"));
             else if (m.getType() == UserAction.SETUP_DRAW){
-                view.setClientMessage(new NewView("These are your new four leader cards."));
-                view.setClientMessage(new SetupDiscard("Please select the indexes of the two you wish to discard:\n>"));
+                view.setClientMessage(new SetupDiscard("These are your new four leader cards. Please select the indexes of the two you wish to discard:\n>"));
             }
             else if (m.getType() == UserAction.SELECT_LEADCARD) {
-                view.setClientMessage(new NewView("These are the cards you chose."));
+                view.setClientMessage(new DisplayMessage("These are the cards you chose."));
                 view.setPlayerIndex(((NewIndex) m.getNewElements().get(1)).getPlayerIndex());
                 String string = switch (view.getPlayerIndex()) {
                     case 1 -> "You are the second player; this gives you access to an additional resource" +
@@ -84,8 +82,8 @@ public class MessageHandler {
             else{
                 String toPrint = "";
                 if (!m.getNickname().equals(view.getNickname())) toPrint = m.getNickname() + m.getType().toString();
-                view.setClientMessage(new NewView(toPrint + " This is the new state of the game."));
-                view.setClientMessage(new ChooseAction("Please choose an action (select a number between 0 and 9):\n" +
+                view.setClientMessage(new DisplayMessage(toPrint + " This is the new state of the game."));
+                view.setClientMessage(new ChooseAction("Please choose an action (select a number between 0 and 11):\n" +
                                                 Constants.getChooseAction() +  "\n>"));
             }
         }
@@ -97,7 +95,7 @@ public class MessageHandler {
                 if (m.getOldPlayer() != null)
                     toPrint = m.getOldPlayer() + "has ended his turn. ";
                 view.setClientMessage(new ChooseAction(toPrint +
-                        "It's your turn. Please choose an action (select a number between 0 and 9):\n" +
+                        "It's your turn. Please choose an action (select a number between 0 and 11):\n" +
                         Constants.getChooseAction() +  "\n>"));
             }
             else {
@@ -113,23 +111,25 @@ public class MessageHandler {
         for (GameBoardInfo g : view.getOtherGameBoards()){
             if (g.getOwner().equals(owner)) return g;
         }
-        GameBoardInfo newBoard = new GameBoardInfo(owner);
+        GameBoardInfo newBoard = new GameBoardInfo(owner, view.getCli());
         view.addGameBoard(newBoard);
         return newBoard;
     }
 
-    private void applyChanges(ChangeMessage m){
+    private void applyChanges(ChangeMessage m, boolean initialDisposition){
         if (m instanceof NewChest){
             NewChest c = (NewChest) m;
             for (ResourceQuantity r : c.getChest())
-                findBoardByOwner(c.getOwner()).changeChest(r.getResource().toString() + "s", r.getQuantity());
+                findBoardByOwner(c.getOwner()).changeChest
+                        (r.getResource().toString() + "s", r.getQuantity(),
+                                c.getChest().indexOf(r) == c.getChest().size() - 1);
         }
         else if (m instanceof NewDevDeck){
             NewDevDeck d = (NewDevDeck) m;
             DevCardInfo c = null;
             if (d.getDeck() != null)
                 c = new DevCardInfo(d.getDeck());
-            view.setDevDecks(c, d.getColour().ordinal(), d.getLevel());
+            view.setDevDecks(c, d.getColour().ordinal(), d.getLevel(), !initialDisposition);
         }
         else if (m instanceof NewDevSpace){
             NewDevSpace d = (NewDevSpace) m;
@@ -139,7 +139,7 @@ public class MessageHandler {
                 List<DevCardInfo> i = new ArrayList<>();
                 for (DevCard c : l)
                     i.add(new DevCardInfo(c));
-                g.changeDevSpace(slot, i);
+                g.changeDevSpace(slot, i, slot == 2);
                 slot++;
             }
         }
@@ -161,10 +161,10 @@ public class MessageHandler {
         else if (m instanceof NewItinerary){
             NewItinerary i = (NewItinerary) m;
             GameBoardInfo g = findBoardByOwner(i.getOwner());
-            g.setPosition(i.getPosition());
             g.setBlackCrossPosition(i.getBlackCrossPosition());
             for (int j = 0; j < 3; j++)
                 g.setPapalCardStatus(j, i.getCardStatus()[j].toString());
+            g.setPosition(i.getPosition(), !initialDisposition);
         }
         else if (m instanceof NewMarket){
             NewMarket k = (NewMarket) m;
@@ -173,15 +173,16 @@ public class MessageHandler {
                 for (int j = 0; j < 4; j++)
                     disposition[i][j] = k.getDisposition()[i][j].toString();
             }
-            view.setMarket(disposition);
             view.setExternalMarble(k.getExternal().toString());
+            view.setMarket(disposition, !initialDisposition);
         }
         else if (m instanceof NewWarehouse){
             NewWarehouse w = (NewWarehouse) m;
             GameBoardInfo g = findBoardByOwner(w.getOwner());
             int shelf = 0;
             for (ResourceQuantity r : w.getWarehouse()){
-                g.changeWarehouse(shelf, ResourceQuantity.toStringList(ResourceQuantity.flatten(r)));
+                g.changeWarehouse(shelf, ResourceQuantity.toStringList(ResourceQuantity.flatten(r)),
+                        w.getWarehouse().indexOf(r) == w.getWarehouse().size() - 1);
                 shelf++;
             }
         }

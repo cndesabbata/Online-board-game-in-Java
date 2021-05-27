@@ -40,12 +40,13 @@ public class SinglePlayerController extends GameController {
         tokens.add(tokens.remove(0));
         UserAction actionType = tokens.get(tokens.size() - 1).doSoloAction();
         getActivePlayers().get(0).setLorenzoActionDone(actionType);
+        getGame().getPlayers().get(0).setExclusiveActionDone(false);
     }
 
     @Override
     public void makeAction(Action action) {
         boolean actionDone = action.doAction(getActivePlayers().get(0));
-        getActivePlayers().get(0).setExclusiveActionDone(actionDone);
+        if (actionDone) getActivePlayers().get(0).setExclusiveActionDone(true);
         checkAllPapalReports();
         checkEndGame();
         getActivePlayers().get(0).setActionDone(action.getType());

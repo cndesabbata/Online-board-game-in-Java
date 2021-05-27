@@ -1,11 +1,14 @@
 package it.polimi.ingsw.client.view;
 
+import it.polimi.ingsw.messages.clientMessages.internal.*;
+import it.polimi.ingsw.server.observer.Observable;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class GameBoardInfo {
+public class GameBoardInfo extends Observable {
     private String owner;
     private Integer position;
     private final Map<Integer, String> papalCards;
@@ -15,10 +18,11 @@ public class GameBoardInfo {
     private final Map<Integer, List<DevCardInfo>> devSpace;
     private Integer blackCrossPosition;
 
-    public GameBoardInfo(String nickname) {
+    public GameBoardInfo(String nickname, CLI cli) {
         this.owner = nickname;
         position = 0;
         papalCards = new HashMap<>();
+        addObserver(cli);
         chest = new HashMap<>();
         warehouse = new HashMap<>();
         playedCards = new ArrayList<>();
@@ -53,24 +57,29 @@ public class GameBoardInfo {
 
     public void setOwner(String owner) { this.owner = owner; }
 
-    public void changeChest(String type, int newQuantity){
+    public void changeChest(String type, int newQuantity, boolean last){
         chest.put(type, newQuantity);
+        if (last) notifyObservers(new PrintChest(owner));
     }
 
-    public void changeWarehouse(int shelf, List<String> resources){
+    public void changeWarehouse(int shelf, List<String> resources, boolean last){
         warehouse.put(shelf, resources);
+        if (last) notifyObservers(new PrintWarehouse(owner));
     }
 
     public void setPlayedCards(List<LeadCardInfo> playedCards) {
         this.playedCards = playedCards;
+        if (!playedCards.isEmpty()) notifyObservers(new PrintPlayedCards(owner));
     }
 
-    public void changeDevSpace(int slot, List<DevCardInfo> cards) {
+    public void changeDevSpace(int slot, List<DevCardInfo> cards, boolean last) {
         devSpace.put(slot, cards);
+        if (last) notifyObservers(new PrintDevSpace(owner));
     }
 
-    public void setPosition(Integer position) {
+    public void setPosition(Integer position, boolean toPrint) {
         this.position = position;
+        if (toPrint) notifyObservers(new PrintItinerary(owner));
     }
 
     public Integer getPosition() {

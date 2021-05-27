@@ -40,7 +40,7 @@ public class MultiPlayerController extends GameController {
     @Override
     public void makeAction(Action action) {
         boolean actionDone = action.doAction(currentPlayer);
-        currentPlayer.setExclusiveActionDone(actionDone);
+        if (actionDone) currentPlayer.setExclusiveActionDone(true);
         checkAllPapalReports();
         checkEndGame();
         currentPlayer.setActionDone(action.getType());

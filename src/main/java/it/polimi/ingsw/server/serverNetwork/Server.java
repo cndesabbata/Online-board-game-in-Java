@@ -157,9 +157,9 @@ public class Server {
             }
             if (port <= 1024) {
                 if (port == -1) {
-                    System.err.print("Numeric format requested, please try again:\n>");
+                    System.out.print("Numeric format requested, please try again:\n>");
                 } else {
-                    System.err.print("Ports accepted started from 1024! Please try again.\n>");
+                    System.out.print("Ports accepted started from 1024! Please try again.\n>");
                 }
                 scanner.next();
             }
