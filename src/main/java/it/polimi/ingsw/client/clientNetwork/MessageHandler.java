@@ -54,7 +54,7 @@ public class MessageHandler {
         else if (message instanceof ChangesDone){
             ChangesDone m = (ChangesDone) message;
             for (ChangeMessage a : m.getNewElements()){
-                applyChanges(a, m.getType() == UserAction.INITIAL_DISPOSITION);
+                applyChanges(a, !(m.getType() == UserAction.INITIAL_DISPOSITION) && isLast(m.getNewElements(), a));
             }
             if(m.getType() == UserAction.INITIAL_DISPOSITION)
                 view.setClientMessage(new NewView("This is the initial disposition.\n"));
@@ -81,8 +81,8 @@ public class MessageHandler {
             }
             else{
                 String toPrint = "";
-                if (!m.getNickname().equals(view.getNickname())) toPrint = m.getNickname() + m.getType().toString();
-                view.setClientMessage(new DisplayMessage(toPrint + " This is the new state of the game."));
+                if (!m.getNickname().equals(view.getNickname())) toPrint = m.getNickname() + m.getType().toString() + " ";
+                view.setClientMessage(new DisplayMessage(toPrint + "This is the new state of the game."));
                 view.setClientMessage(new ChooseAction("Please choose an action (select a number between 0 and 11):\n" +
                                                 Constants.getChooseAction() +  "\n>"));
             }
@@ -119,7 +119,16 @@ public class MessageHandler {
         return newBoard;
     }
 
-    private void applyChanges(ChangeMessage m, boolean initialDisposition){
+    private boolean isLast(List<ChangeMessage> elements, ChangeMessage a){
+        if (!(a instanceof NewDevDeck)) return true;
+        int lastIndex = 0;
+        for (ChangeMessage c : elements){
+            if (c instanceof NewDevDeck) lastIndex = elements.indexOf(c);
+        }
+        return elements.indexOf(a) == lastIndex;
+    }
+
+    private void applyChanges(ChangeMessage m, boolean toPrint){
         if (m instanceof NewChest){
             NewChest c = (NewChest) m;
             for (ResourceQuantity r : c.getChest())
@@ -132,7 +141,7 @@ public class MessageHandler {
             DevCardInfo c = null;
             if (d.getDeck() != null)
                 c = new DevCardInfo(d.getDeck());
-            view.setDevDecks(c, d.getColour().ordinal(), d.getLevel(), !initialDisposition);
+            view.setDevDecks(c, d.getColour().ordinal(), d.getLevel(), toPrint);
         }
         else if (m instanceof NewDevSpace){
             NewDevSpace d = (NewDevSpace) m;
@@ -167,7 +176,7 @@ public class MessageHandler {
             g.setBlackCrossPosition(i.getBlackCrossPosition());
             for (int j = 0; j < 3; j++)
                 g.setPapalCardStatus(j, i.getCardStatus()[j].toString());
-            g.setPosition(i.getPosition(), !initialDisposition);
+            g.setPosition(i.getPosition(), toPrint);
         }
         else if (m instanceof NewMarket){
             NewMarket k = (NewMarket) m;
@@ -177,7 +186,7 @@ public class MessageHandler {
                     disposition[i][j] = k.getDisposition()[i][j].toString();
             }
             view.setExternalMarble(k.getExternal().toString());
-            view.setMarket(disposition, !initialDisposition);
+            view.setMarket(disposition, toPrint);
         }
         else if (m instanceof NewWarehouse){
             NewWarehouse w = (NewWarehouse) m;

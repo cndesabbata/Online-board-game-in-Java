@@ -41,20 +41,22 @@ public class ActionFactory {
     private Action buildBuyResources() {
         output.print("Would you like to buy resources from a column or a row? [column/row]\n>");
         String selection = readInputString();
+        if (selection.equalsIgnoreCase("back")) return null;
         MarketSelection marketSelection;
         while (true) {
             try {
                 marketSelection = MarketSelection.valueOf(selection.toUpperCase());
                 break;
             } catch (IllegalArgumentException e) {
-                output.print("Please insert a valid input:\n>");
+                output.print("Please insert a valid input, or type 'back' to quit:\n>");
                 selection = readInputString();
+                if (selection.equalsIgnoreCase("back")) return null;
             }
         }
-        int source;
+        Integer source;
         int whiteMarbles;
-        int firstType;
-        int secondType;
+        Integer firstType;
+        Integer secondType;
         List<String> marbleToReceive;
         List<String> resToReceive = new ArrayList<>();
         List<LeaderEffect> leaderEffects = new ArrayList<>();
@@ -62,8 +64,10 @@ public class ActionFactory {
         if (marketSelection == MarketSelection.ROW) {
             do {
                 output.print("Which row would you like to buy resources from? [1/2/3]\n>");
-                source = readInputInt() - 1;
-                if (source < 0 || source > 2) output.print("Please select a number between 1 and 3:\n>");
+                source = readInputInt();
+                if (source == null) return null;
+                source--;
+                if (source < 0 || source > 2) output.print("Please select a number between 1 and 3, or type 'back' to quit:\n>");
             } while (source < 0 || source > 2);
             whiteMarbles = (int) Arrays.stream(cli.getClientView().getMarket()[source])
                     .filter(s -> s.equalsIgnoreCase("WHITE")).count();
@@ -72,8 +76,10 @@ public class ActionFactory {
         } else {
             do {
                 output.print("Which column would you like to buy resources from? [1/2/3/4]\n>");
-                source = readInputInt() - 1;
-                if (source < 0 || source > 3) output.print("Please select a number between 1 and 4:\n>");
+                source = readInputInt();
+                if (source == null) return null;
+                source--;
+                if (source < 0 || source > 3) output.print("Please select a number between 1 and 4, or type 'back' to quit:\n>");
             } while (source < 0 || source > 3);
             whiteMarbles = (int) Arrays.stream(getColumn(cli.getClientView().getMarket(), source))
                     .filter(s -> s.equalsIgnoreCase("WHITE")).count();
@@ -102,8 +108,10 @@ public class ActionFactory {
             do {
                 output.print("How many of them would you like to convert to " + res.get(0) + "s?\n>");
                 firstType = readInputInt();
+                if (firstType == null) return null;
                 output.print("How many of them would you like to convert to " + res.get(0) + "s?\n>");
                 secondType = readInputInt();
+                if (secondType == null) return null;
                 if (firstType + secondType != whiteMarbles)
                     output.print("Please insert a valid amount (the sum of the resources has to be " +
                             whiteMarbles + ").\n");
@@ -134,25 +142,29 @@ public class ActionFactory {
 
     private Action buildBuyDevCard() {
         Colour colour;
-        int lev;
-        int slot;
+        Integer lev;
+        Integer slot;
         List<ResourcePosition> res;
         List<LeaderEffect> leaders = new ArrayList<>();
         while (true) {
             while (true) {
                 output.print("What colour is the card you would like to buy? [Green/Blue/Yellow/Purple]\n>");
-                String col = readInputString().toUpperCase();
+                String col = readInputString();
+                if (col.equalsIgnoreCase("back")) return null;
+                col = col.toUpperCase();
                 try {
                     colour = Colour.valueOf(col);
                     break;
                 } catch (IllegalArgumentException e) {
-                    output.println("Please insert a valid colour.");
+                    output.println("Please insert a valid colour, or type 'back' to quit.");
                 }
             }
             do {
                 output.print("What level is the card you would like to buy? [1/2/3]\n>");
-                lev = readInputInt() - 1;
-                if (lev < 0 || lev > 2) output.print("Please insert a valid number.");
+                lev = readInputInt();
+                if (lev == null) return null;
+                lev--;
+                if (lev < 0 || lev > 2) output.print("Please insert a valid number, or type 'back' to quit.");
             } while (lev < 0 || lev > 2);
             if (cli.getClientView().getDevDecks()[lev][colour.ordinal()] != null) break;
             else
@@ -160,10 +172,12 @@ public class ActionFactory {
         }
         while (true) {
             output.print("In which slot would you like to put your card? [1/2/3]\n>");
-            slot = readInputInt() - 1;
+            slot = readInputInt();
+            if (slot == null) return null;
+            slot--;
             if (slot >= 0 && slot <= 2 && checkDevSpaceSlot(slot, lev + 1)) break;
-            else if (slot < 0 || slot > 2) output.println("Please insert a valid number.");
-            else output.println("The selected slot cannot host your card, please choose another one.");
+            else if (slot < 0 || slot > 2) output.println("Please insert a valid number, or type 'back' to quit.");
+            else output.println("The selected slot cannot host your card, please choose another one, or type 'back' to quit.");
         }
         List<String> req = cli.getClientView().getDevDecks()[lev][colour.ordinal()].getResourceRequirements();
         for (LeadCardInfo l : cli.getClientView().getOwnGameBoard().getPlayedCards()) {
@@ -175,13 +189,14 @@ public class ActionFactory {
                         boolean discount;
                         while (true) {
                             String answer = readInputString();
+                            if (answer.equalsIgnoreCase("back")) return null;
                             if (answer.equalsIgnoreCase("Y")) {
                                 discount = true;
                                 break;
                             } else if (answer.equalsIgnoreCase("N")) {
                                 discount = false;
                                 break;
-                            } else output.print("Please insert a valid input.\n>");
+                            } else output.print("Please insert a valid input, or type 'back' to quit.\n>");
                         }
                         if (discount) {
                             req.remove(s);
@@ -208,7 +223,7 @@ public class ActionFactory {
         List<ResourcePosition> out = new ArrayList<>();
         List<LeaderEffect> leaderEffects = new ArrayList<>();
         boolean request = true;
-        int slot;
+        Integer slot;
         GameBoardInfo g = cli.getClientView().getOwnGameBoard();
         boolean hasDevCards = false;
         for(int i = 0; i < 3; i++) {
@@ -220,9 +235,10 @@ public class ActionFactory {
                 output.print("Select the slot in the development space:\n>");
                 while (true) {
                     slot = readInputInt();
+                    if (slot == null) return null;
                     if (slot >= 1 && slot <= 3 && !cli.getClientView().getOwnGameBoard().getDevSpace().get(slot - 1).isEmpty())
                         break;
-                    output.print("Please select a number from 1 to 3 and make sure that the selected slot is not empty.\n>");
+                    output.print("Please select a number from 1 to 3 and make sure that the selected slot is not empty, or type 'back' to quit.\n>");
                 }
                 slots.add(slot - 1);
                 DevCardInfo d = cli.getClientView().getOwnGameBoard().getDevSpace().get(slot - 1).get(0);
@@ -249,6 +265,7 @@ public class ActionFactory {
                 String res;
                 while (true) {
                     res = readInputString();
+                    if (res.equalsIgnoreCase("back")) return null;
                     if (!res.equalsIgnoreCase("Coin") && !res.equalsIgnoreCase("Stone") &&
                             !res.equalsIgnoreCase("Servant") && !res.equalsIgnoreCase("Shield"))
                         output.print("Please select a resource between [Coin / Stone / Servant / Shield]\n>");
@@ -266,14 +283,15 @@ public class ActionFactory {
             List<Integer> indexLead = new ArrayList<>();
             String resOut = "";
             for (int i = 0; i < 2; i++) {
-                int n;
+                Integer n;
                 output.print("Select the index of the product leader card on your game board: [1 / 2]\n>");
                 while (true) {
                     n = readInputInt();
+                    if (n == null) return null;
                     if (n > cli.getClientView().getOwnGameBoard().getPlayedCards().size())
-                        output.print("There is no played leader card of index " + n + ". Please try again:\n>");
+                        output.print("There is no played leader card of index " + n + ". Please try again, or type 'back' to quit:\n>");
                     else if (!cli.getClientView().getOwnGameBoard().getPlayedCards().get(n - 1).getType().equalsIgnoreCase("Product"))
-                        output.print("The selected leader card is not a product leader. Please try again: \n>");
+                        output.print("The selected leader card is not a product leader. Please try again, or type 'back' to quit: \n>");
                     else {
                         indexLead.add(n);
                         break;
@@ -282,6 +300,7 @@ public class ActionFactory {
                 output.print("Select the resource you want to generate: [Coin / Stone / Servant / Shield] \n>");
                 while (true) {
                     resOut = readInputString();
+                    if (resOut.equalsIgnoreCase("back")) return null;
                     if (!resOut.equalsIgnoreCase("Coin") && !resOut.equalsIgnoreCase("Stone") &&
                             !resOut.equalsIgnoreCase("Servant") && !resOut.equalsIgnoreCase("Shield"))
                         output.print("Please select a resource between [Coin / Stone / Servant / Shield]:\n>");
@@ -316,53 +335,59 @@ public class ActionFactory {
 
     private Action buildDiscardLeadCard() {
         output.print("Which leader card do you want do discard? [1/2]\n>");
-        int index = readInputInt();
+        Integer index = leadCardSelection();
+        return new DiscardLeadCard(index);
+    }
+
+    private Integer leadCardSelection(){
+        Integer index = readInputInt();
+        if (index == null) return null;
         while (index < 1 || index > 2) {
-            output.println("Please select a valid number. [1/2]\n>");
+            output.println("Please select a valid number [1/2], or type 'back' to quit\n>");
             index = readInputInt();
+            if (index == null) return null;
         }
         while (index > cli.getClientView().getHand().size()) {
-            output.print("Your hand does not contain that leader card. Please select a valid number.\n>");
+            output.print("Your hand does not contain that leader card. Please select a valid number, or type 'back' to quit.\n>");
             index = readInputInt();
+            if (index == null) return null;
         }
-        return new DiscardLeadCard(index);
+        return index;
     }
 
     private Action buildPlayLeadCard() {
         output.print("Which leader card do you want do play? [1/2]\n>");
-        int index = readInputInt();
-        while (index < 1 || index > 2) {
-            output.println("Please select a valid number. [1/2]\n>");
-            index = readInputInt();
-        }
-        while (index > cli.getClientView().getHand().size()) {
-            output.print("Your hand does not contain that leader card. Please select a valid number.\n>");
-            index = readInputInt();
-        }
+        Integer index = leadCardSelection();
         return new PlayLeadCard(index);
     }
 
     private Action buildMoveResources() {
         output.print("Please select the source shelf. [1/2/3/4/5] (4 and 5 represent the depot leaders)\n>");
-        int source = readInputInt();
+        Integer source = readInputInt();
+        if (source == null) return null;
         while (source < 1 || source > 5) {
-            output.print("Please select a valid source shelf. [1/2/3/4/5] (4 and 5 represent the depot leaders)\n>");
+            output.print("Please select a valid source shelf [1/2/3/4/5] (4 and 5 represent the depot leaders), or type 'back' to quit\n>");
             source = readInputInt();
+            if (source == null) return null;
         }
         output.print("Please select the amount of resources you want to move.\n>");
-        int quantity = readInputInt();
+        Integer quantity = readInputInt();
+        if (quantity == null) return null;
         while (quantity < 1 || quantity > 2) {
             output.print("Please select a valid amount of resources.\n>");
             quantity = readInputInt();
+            if (quantity == null) return null;
         }
-        output.print("Please select the destination shelf. [1/2/3/4/5] (4 and 5 represent the depot leaders)\n>");
-        int dest = readInputInt();
+        output.print("Please select the destination shelf [1/2/3/4/5] (4 and 5 represent the depot leaders), or type 'back' to quit\n>");
+        Integer dest = readInputInt();
+        if (dest == null) return null;
         while (dest == source || dest < 1 || dest > 5) {
             if (dest == source)
                 output.print("Destination shelf must be different from source shelf.\n>");
             else
                 output.print("Please select a valid destination shelf. [1/2/3/4/5] (4 and 5 represent the depot leaders)\n>");
             dest = readInputInt();
+            if (dest == null) return null;
         }
         return new MoveResources(NumOfShelf.values()[source - 1], NumOfShelf.values()[dest - 1], quantity);
     }
@@ -380,14 +405,17 @@ public class ActionFactory {
         return inputString;
     }
 
-    private int readInputInt() {
-        int inputInt;
+    private Integer readInputInt() {
+        String line;
+        Integer inputInt;
         do {
             try {
-                inputInt = Integer.parseInt(input.nextLine());
+                line = input.nextLine();
+                if (line.equalsIgnoreCase("back")) return null;
+                inputInt = Integer.parseInt(line);
                 break;
             } catch (InputMismatchException | NumberFormatException e) {
-                output.print("Please insert a valid input.\n>");
+                output.print("Please insert a valid input, or type 'back' to quit.\n>");
             }
         }while(true);
         return inputInt;

@@ -4,6 +4,7 @@ import it.polimi.ingsw.client.clientNetwork.ClientConnectionSocket;
 import it.polimi.ingsw.constants.Constants;
 import it.polimi.ingsw.client.clientNetwork.MessageHandler;
 import it.polimi.ingsw.messages.Message;
+import it.polimi.ingsw.messages.actions.Action;
 import it.polimi.ingsw.messages.clientMessages.LeaderCardSelection;
 import it.polimi.ingsw.messages.clientMessages.ResourceSelection;
 import it.polimi.ingsw.messages.clientMessages.SetPlayersNumber;
@@ -146,6 +147,7 @@ public class CLI implements Observer {
             output.print(m.getMessage());
             int n = -1;
             while (request) {
+                Message toSend = null;
                 n = readInputInt();
                 if (n < 0 || n > 11) {
                     output.print("Please choose a number between 0 and 11:\n>");
@@ -155,11 +157,16 @@ public class CLI implements Observer {
                     if ((n == 3 || n == 4) && getClientView().getHand().size() == 0) {
                         output.print("You don't have any leader card in your hand, " +
                                 "please select a different action.\n>");
-                    } else
-                        request = false;
+                    } else{
+                        toSend = actionFactory.createAction(n);
+                        if (toSend != null){
+                            request = false;
+                            if (toSend!=null) connectionSocket.send(toSend);
+                        }
+                    }
                 }
             }
-            connectionSocket.send(actionFactory.createAction(n));
+
         } else if (m instanceof PrintChest) {
             printChest(printGameBoardElem(m.getMessage()));
         } else if (m instanceof PrintDevDecks){
@@ -283,24 +290,36 @@ public class CLI implements Observer {
                         try {
                             place = Place.valueOf(s);
                             if (place == Place.WAREHOUSE) {
-                                if (deposit)
-                                    output.print("Which shelf would you like to store it in? " +
-                                            "[ 1 / 2 / 3 (4 & 5 are the depots)]\n>");
-                                else
-                                    output.print("Which shelf would you like to take it from? " +
-                                            "[ 1 / 2 / 3 (4 & 5 are the depots)]\n>");
-                                while (true) {
-                                    int n = readInputInt();
-                                    int size = getClientView().getOwnGameBoard().getWarehouse().size();
-                                    if (n < 1 || n > size)
-                                        output.print("Please select a number between 1 and " + size + " :\n>");
+                                Integer loc = inWarehouse(r.getResource().toString());
+                                if (deposit){
+                                    if (clientView.getOwnGameBoard().getWarehouse().size()>3) loc = null;
+                                    if (loc == null){
+                                        output.print("Which shelf would you like to store it in? " +
+                                                "[ 1 / 2 / 3 (4 & 5 are the depots)]\n>");
+                                        while (true) {
+                                            int n = readInputInt();
+                                            int size = getClientView().getOwnGameBoard().getWarehouse().size();
+                                            if (n < 1 || n > size)
+                                                output.print("Please select a number between 1 and " + size + " :\n>");
+                                            else {
+                                                shelf = NumOfShelf.values()[n - 1];
+                                                break;
+                                            }
+                                        }
+                                    }
+                                    else shelf = NumOfShelf.values()[loc];
+                                    result.add(new ResourcePosition(r.getResource(), place, shelf));
+                                    break;
+                                } else {
+                                    if (loc == null){
+                                        output.print("You don't have this resource in the warehouse, please try again:\n>");
+                                    }
                                     else {
-                                        shelf = NumOfShelf.values()[n - 1];
+                                        shelf = NumOfShelf.values()[loc];
+                                        result.add(new ResourcePosition(r.getResource(), place, shelf));
                                         break;
                                     }
                                 }
-                                result.add(new ResourcePosition(r.getResource(), place, shelf));
-                                break;
                             } else if (place == Place.TRASH_CAN) {
                                 if (!deposit)
                                     output.print("You cannot take resources that have been discarded.\n");
@@ -328,6 +347,14 @@ public class CLI implements Observer {
             }
         }
         return result;
+    }
+
+    private Integer inWarehouse (String res){
+        for (int i = 0; i < 3; i++){
+            List<String> l = clientView.getOwnGameBoard().getWarehouse().get(i);
+            if (l != null && !l.isEmpty() && l.get(0).equalsIgnoreCase(res)) return i;
+        }
+        return null;
     }
 
     private void printMarket() {
@@ -482,94 +509,104 @@ public class CLI implements Observer {
     }
 
     private void printItinerary(GameBoardInfo g) {
-        output.println("ITINERARY:\n\n" +
-                "Position: " + g.getPosition() + "/24");
-        if (g.getBlackCrossPosition() != null)
-            output.println("Lorenzo De Medici's position: " + g.getBlackCrossPosition() + "/24");
-        output.println("Papal cards status: ");
-        for (int i = 0; i < g.getPapalCards().size(); i++)
-            output.println(i + " -> " + g.getPapalCards().get(i) + " (value: " + (i + 2) + ")");
-        output.println("\n");
+        if (g != null){
+            output.println("ITINERARY:\n\n" +
+                    "Position: " + g.getPosition() + "/24");
+            if (g.getBlackCrossPosition() != null)
+                output.println("Lorenzo De Medici's position: " + g.getBlackCrossPosition() + "/24");
+            output.println("Papal cards status: ");
+            for (int i = 0; i < g.getPapalCards().size(); i++)
+                output.println(i + " -> " + g.getPapalCards().get(i) + " (value: " + (i + 2) + ")");
+            output.println("\n");
+        }
     }
 
     private void printChest(GameBoardInfo g) {
-        output.print("CHEST:\n\n| ");
-        List<String> resources = new ArrayList<>(g.getChest().keySet());
-        for (String res : resources) {
-            output.print(res + ": " + g.getChest().get(res) + " | ");
+        if (g != null){
+            output.print("CHEST:\n\n| ");
+            List<String> resources = new ArrayList<>(g.getChest().keySet());
+            for (String res : resources) {
+                output.print(res + ": " + g.getChest().get(res) + " | ");
+            }
+            output.println("\n");
         }
-        output.println("\n");
     }
 
     private void printWarehouse(GameBoardInfo g) {
-        output.print("WAREHOUSE: \n\n");
-        for (int i = 0; i < g.getWarehouse().size(); i++) {
-            if (i < 3)
-                output.print("Shelf number " + (i + 1) + ": ");
-            else
-                output.print("Depot number: " + (i - 2) + ": ");
-            for (String s : g.getWarehouse().get(i))
-                output.print(s + " ");
-            output.println();
+        if (g != null){
+            output.print("WAREHOUSE: \n\n");
+            for (int i = 0; i < g.getWarehouse().size(); i++) {
+                if (i < 3)
+                    output.print("Shelf number " + (i + 1) + ": ");
+                else
+                    output.print("Depot number: " + (i - 2) + ": ");
+                for (String s : g.getWarehouse().get(i))
+                    output.print(s + " ");
+                output.println();
+            }
+            output.println("\n");
         }
-        output.println("\n");
     }
 
     private void printDevSpace(GameBoardInfo g) {
-        output.print("DEVELOPMENT SPACE: \n\n");
-        for (int i = 0; i < 3; i++)
-            output.print(Constants.devCardBorder + " ");
-        output.print("\n");
-        for (int i = 0; i < 3; i++) {
-            if (g.getDevSpace().get(i).isEmpty())
-                output.print(Constants.emptyDevCardBorder);
-            else
-                printCardElement("* COL: " + g.getDevSpace().get(i).get(0).getColour(), true);
+        if (g != null){
+            output.print("DEVELOPMENT SPACE: \n\n");
+            for (int i = 0; i < 3; i++)
+                output.print(Constants.devCardBorder + " ");
+            output.print("\n");
+            for (int i = 0; i < 3; i++) {
+                if (g.getDevSpace().get(i).isEmpty())
+                    output.print(Constants.emptyDevCardBorder);
+                else
+                    printCardElement("* COL: " + g.getDevSpace().get(i).get(0).getColour(), true);
+            }
+            output.print("\n");
+            for (int i = 0; i < 3; i++) {
+                if (g.getDevSpace().get(i).isEmpty())
+                    output.print(Constants.emptyDevCardBorder);
+                else
+                    printCardElement("* LVL: " + g.getDevSpace().get(i).get(0).getLevel(), true);
+            }
+            output.print("\n");
+            for (int i = 0; i < 3; i++) {
+                if (g.getDevSpace().get(i).isEmpty())
+                    output.print(Constants.emptyDevCardBorder);
+                else
+                    printCardElement("* VP:  " + g.getDevSpace().get(i).get(0).getVictoryPoints(), true);
+            }
+            output.print("\n");
+            for (int i = 0; i < 3; i++) {
+                if (g.getDevSpace().get(i).isEmpty())
+                    output.print(Constants.emptyDevCardBorder);
+                else
+                    printCardElement("* REQ: " + buildResourceString(g.getDevSpace().get(i).get(0).getResourceRequirements()), true);
+            }
+            output.print("\n");
+            for (int i = 0; i < 3; i++) {
+                if (g.getDevSpace().get(i).isEmpty())
+                    output.print(Constants.emptyDevCardBorder);
+                else
+                    printCardElement("* IN:  " + buildResourceString(g.getDevSpace().get(i).get(0).getProductionInput()), true);
+            }
+            output.print("\n");
+            for (int i = 0; i < 3; i++) {
+                if (g.getDevSpace().get(i).isEmpty())
+                    output.print(Constants.emptyDevCardBorder);
+                else
+                    printCardElement("* OUT: " + buildResourceString(g.getDevSpace().get(i).get(0).getProductionOutput()), true);
+            }
+            output.print("\n");
+            for (int i = 0; i < 3; i++)
+                output.print(Constants.devCardBorder + " ");
+            output.print("\n\n");
         }
-        output.print("\n");
-        for (int i = 0; i < 3; i++) {
-            if (g.getDevSpace().get(i).isEmpty())
-                output.print(Constants.emptyDevCardBorder);
-            else
-                printCardElement("* LVL: " + g.getDevSpace().get(i).get(0).getLevel(), true);
-        }
-        output.print("\n");
-        for (int i = 0; i < 3; i++) {
-            if (g.getDevSpace().get(i).isEmpty())
-                output.print(Constants.emptyDevCardBorder);
-            else
-                printCardElement("* VP:  " + g.getDevSpace().get(i).get(0).getVictoryPoints(), true);
-        }
-        output.print("\n");
-        for (int i = 0; i < 3; i++) {
-            if (g.getDevSpace().get(i).isEmpty())
-                output.print(Constants.emptyDevCardBorder);
-            else
-                printCardElement("* REQ: " + buildResourceString(g.getDevSpace().get(i).get(0).getResourceRequirements()), true);
-        }
-        output.print("\n");
-        for (int i = 0; i < 3; i++) {
-            if (g.getDevSpace().get(i).isEmpty())
-                output.print(Constants.emptyDevCardBorder);
-            else
-                printCardElement("* IN:  " + buildResourceString(g.getDevSpace().get(i).get(0).getProductionInput()), true);
-        }
-        output.print("\n");
-        for (int i = 0; i < 3; i++) {
-            if (g.getDevSpace().get(i).isEmpty())
-                output.print(Constants.emptyDevCardBorder);
-            else
-                printCardElement("* OUT: " + buildResourceString(g.getDevSpace().get(i).get(0).getProductionOutput()), true);
-        }
-        output.print("\n");
-        for (int i = 0; i < 3; i++)
-            output.print(Constants.devCardBorder + " ");
-        output.print("\n\n");
     }
 
     private void printPlayedLeadCards(GameBoardInfo g) {
-        output.println("PLAYED LEADER CARDS:\n");
-        printLeadCards(g.getPlayedCards());
+        if (g != null){
+            output.println("PLAYED LEADER CARDS:\n");
+            printLeadCards(g.getPlayedCards());
+        }
     }
 
     private void printLeadCards(List<LeadCardInfo> cards) {
