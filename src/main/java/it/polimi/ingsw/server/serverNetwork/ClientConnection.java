@@ -89,7 +89,7 @@ public class ClientConnection implements Runnable {
             if (gameController == null && playerNickname == null){
                 try {
                     playerNickname = ((SetNickname) clientMessage).getNickname();
-                    server.registerClient(((SetNickname) clientMessage).getNickname(), this);
+                    server.registerClient(playerNickname, this);
                 } catch (InterruptedException e) {
                     System.out.println(e.getMessage());
                     Thread.currentThread().interrupt();

@@ -145,7 +145,7 @@ public class Server {
     public static void main(String[] args) {
         System.out.println("Welcome to our server!");
         Scanner scanner = new Scanner(System.in);
-        System.out.println(">Insert the port which the server will listen on.");
+        System.out.println("Insert the port which the server will listen on.");
         System.out.print(">");
         int port = 0;
         boolean active = true;
