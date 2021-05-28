@@ -21,8 +21,11 @@ public class DevSpace extends Observable {
 
     /*controls if the player has a DevCard with the same colour of requirement and the same (or greater) level*/
     public boolean checkCards (DevCard requirement){
-        return devSpace.stream().flatMap(Collection::stream)                                                            //it transforms the devspace into a stream of stacks
-                .anyMatch(dc -> dc.getColour() == requirement.getColour() && dc.getLevel() == requirement.getLevel());
+        if (requirement.getLevel() == 0)
+            return devSpace.stream().flatMap(Collection::stream).anyMatch(dc -> dc.getColour() == requirement.getColour());         //it transforms the devspace into a stream of stacks
+        else
+            return devSpace.stream().flatMap(Collection::stream)
+                    .anyMatch(dc -> dc.getColour() == requirement.getColour() && dc.getLevel() == requirement.getLevel());
     }
 
     /*adds a new card "on top" of the deck in the selected slot*/

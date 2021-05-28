@@ -103,17 +103,7 @@ public class Warehouse extends Observable {
     }
     /*remove the resources from the shelves*/
     public void decrementResource (List <ResourcePosition> inputRes) {
-        List<ResourcePosition> removableRes = new ArrayList<>(inputRes);
-        removableRes.removeIf(Rp -> Rp.getPlace() != Place.WAREHOUSE);                                                 //Resources that should be discarded are not interested in this method.
-        NumOfShelf numOfShelf;
-        ResourceQuantity shelf;
-
-        for(ResourcePosition Rp : removableRes){
-            numOfShelf = Rp.getShelf();
-            shelf = warehouse.get(numOfShelf.ordinal());
-            if(shelf.getQuantity() == 1 && numOfShelf.ordinal() < initialDim) shelf.setResource(Resource.EMPTY);
-            shelf.setQuantity(shelf.getQuantity() - Rp.getQuantity());                                                  //Rp.getQuantity() = 1
-        }
+        decrementWithoutNotify(inputRes);
         notifyObservers(new NewWarehouse(warehouse, initialDim, owner));
     }
     /*controls if the resources can be removed*/
@@ -150,8 +140,22 @@ public class Warehouse extends Observable {
             inputRes.add(new ResourcePosition(shelfSrc.getResource(), Place.WAREHOUSE, srcShelf));
             outputRes.add(new ResourcePosition(shelfSrc.getResource(), Place.WAREHOUSE, destShelf));
         }
-        decrementResource(inputRes);
+        decrementWithoutNotify(inputRes);
         incrementResource(outputRes);
+    }
+
+    private void decrementWithoutNotify(List <ResourcePosition> inputRes) {
+        List<ResourcePosition> removableRes = new ArrayList<>(inputRes);
+        removableRes.removeIf(Rp -> Rp.getPlace() != Place.WAREHOUSE);                                                 //Resources that should be discarded are not interested in this method.
+        NumOfShelf numOfShelf;
+        ResourceQuantity shelf;
+
+        for (ResourcePosition Rp : removableRes) {
+            numOfShelf = Rp.getShelf();
+            shelf = warehouse.get(numOfShelf.ordinal());
+            if (shelf.getQuantity() == 1 && numOfShelf.ordinal() < initialDim) shelf.setResource(Resource.EMPTY);
+            shelf.setQuantity(shelf.getQuantity() - Rp.getQuantity());                                                  //Rp.getQuantity() = 1
+        }
     }
     /*controls if the resources can be moved*/
     public void checkMove (NumOfShelf srcShelf, NumOfShelf destShelf, int quantity) throws WrongActionException{
@@ -196,6 +200,7 @@ public class Warehouse extends Observable {
     /*adds a "depot" shelf*/
     public void addDepot(Resource resource){
         warehouse.add(new ResourceQuantity(0, resource));
+        notifyObservers(new NewWarehouse(warehouse, initialDim, owner));
     }
 
     /*controls if there is already a depot storing the same resource*/

@@ -9,12 +9,11 @@ import it.polimi.ingsw.server.model.*;
 import it.polimi.ingsw.server.model.gameboard.*;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.junit.Assert.*;
 
 
 public class StartProductionTest {
@@ -308,7 +307,6 @@ public class StartProductionTest {
         List<DevCard> leadProdReq = new ArrayList<>();
         leadProdReq.add(devCard);
         LeaderCard prodLead = new LeaderCard(4, leadProdReq, Resource.SERVANT, LeaderType.PRODUCT);
-        prodLead.setPlayed(true);
 
         List <ResourcePosition> inputClient = new ArrayList<>();
         inputClient.add(new ResourcePosition(Resource.STONE, Place.CHEST, null));
@@ -336,7 +334,7 @@ public class StartProductionTest {
 
         Player me = new Player("Gianluca", game);
         game.addPlayer(me);
-        me.getHandLeaderCards().add(prodLead);
+        me.getPlayedLeaderCards().add(prodLead);
         me.getBoard().getDevSpace().addCard(devCard, DevSpaceSlot.TWO);
         me.getBoard().getDevSpace().addCard(devCard2, DevSpaceSlot.THREE);
 
@@ -422,12 +420,10 @@ public class StartProductionTest {
         List<DevCard> leadProdReq = new ArrayList<>();
         leadProdReq.add(devCard);
         LeaderCard prodLead = new LeaderCard(4, leadProdReq, Resource.COIN, LeaderType.PRODUCT);
-        prodLead.setPlayed(true);
 
         List<DevCard> leadDepotReq = new ArrayList<>();
         leadDepotReq.add(devCard);
         LeaderCard depotLead = new LeaderCard(3, leadDepotReq, Resource.COIN, LeaderType.DEPOT);
-        depotLead.setPlayed(true);
 
         List <ResourcePosition> inputClient = new ArrayList<>();
         inputClient.add(new ResourcePosition(Resource.STONE, Place.CHEST, null));
@@ -456,8 +452,8 @@ public class StartProductionTest {
         Action production = new StartProduction(slots, inputClient, outputClient, leaderEffects);
 
         Player me = new Player("Gianluca", game);
-        me.getHandLeaderCards().add(prodLead);
-        me.getHandLeaderCards().add(depotLead);
+        me.getPlayedLeaderCards().add(prodLead);
+        me.getPlayedLeaderCards().add(depotLead);
         game.addPlayer(me);
         me.getBoard().getDevSpace().addCard(devCard, DevSpaceSlot.ONE);
         me.getBoard().getDevSpace().addCard(devCard2, DevSpaceSlot.TWO);
@@ -517,7 +513,7 @@ public class StartProductionTest {
         }
         catch (WrongActionException e){
             System.out.println(e.getMessage());
-            assertTrue(false);
+            fail();
         }
     }
 }

@@ -22,11 +22,11 @@ public class PlayLeadCard implements Action {
 
     @Override
     public boolean doAction(Player player) {
-        player.playLeadCard(index - 1);
         LeaderCard l = player.getHandLeaderCards().get(index - 1);
         if(l.getType() == LeaderType.DEPOT){
             player.getBoard().getWarehouse().addDepot(l.getResource());
         }
+        player.playLeadCard(index - 1);
         return true;
     }
 

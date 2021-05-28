@@ -268,12 +268,10 @@ public class BuyDevCardTest {
 
         List<DevCard> leadProdReq = new ArrayList<>();
         LeaderCard discountLead = new LeaderCard(4, leadProdReq, Resource.STONE, LeaderType.DISCOUNT);
-        discountLead.setPlayed(true);
-        me.getHandLeaderCards().add(discountLead);
+        me.getPlayedLeaderCards().add(discountLead);
 
         LeaderCard depotLead = new LeaderCard(4, leadProdReq, Resource.STONE, LeaderType.DEPOT);
-        depotLead.setPlayed(true);
-        me.getHandLeaderCards().add(depotLead);
+        me.getPlayedLeaderCards().add(depotLead);
 
         List<ResourcePosition> inputClient = new ArrayList<>();
         inputClient.add(new ResourcePosition(Resource.STONE, Place.WAREHOUSE, NumOfShelf.DEPOT_ONE));

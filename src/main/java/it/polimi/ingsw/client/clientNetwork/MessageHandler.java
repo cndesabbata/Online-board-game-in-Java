@@ -160,14 +160,19 @@ public class MessageHandler {
         else if (m instanceof NewHandCards){
             NewHandCards h = (NewHandCards) m;
             GameBoardInfo g = findBoardByOwner(h.getOwner());
-            List<LeadCardInfo> played = new ArrayList<>();
             List<LeadCardInfo> hand = new ArrayList<>();
             for (LeaderCard c : h.getHandLeaderCards()){
-                if (c.isPlayed()) played.add(new LeadCardInfo(c));
-                else hand.add(new LeadCardInfo(c));
+                hand.add(new LeadCardInfo(c));
             }
-            g.setPlayedCards(played);
             view.setHand(hand);
+        }
+        else if (m instanceof NewPlayedLeadCards) {
+            NewPlayedLeadCards p = (NewPlayedLeadCards) m;
+            GameBoardInfo g = findBoardByOwner(p.getNickname());
+            List<LeadCardInfo> played = new ArrayList<>();
+            for (LeaderCard c : p.getPlayedLeadCards())
+                played.add(new LeadCardInfo(c));
+            g.setPlayedCards(played);
         }
         else if (m instanceof NewIndex){
             view.setPlayerIndex(((NewIndex) m).getPlayerIndex());

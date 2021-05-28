@@ -125,10 +125,8 @@ public abstract class GameController {
 
     public int addLeaderVP(Player player) {
         int result = 0;
-        for (LeaderCard leaderCard : player.getHandLeaderCards()) {
-            if (leaderCard.isPlayed())
+        for (LeaderCard leaderCard : player.getPlayedLeaderCards())
                 result += leaderCard.getVictoryPoints();
-        }
         return result;
     }
 

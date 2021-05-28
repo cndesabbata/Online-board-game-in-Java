@@ -540,7 +540,7 @@ public class CLI implements Observer {
                 if (i < 3)
                     output.print("Shelf number " + (i + 1) + ": ");
                 else
-                    output.print("Depot number: " + (i - 2) + ": ");
+                    output.print("Depot number " + (i - 2) + ": ");
                 for (String s : g.getWarehouse().get(i))
                     output.print(s + " ");
                 output.println();

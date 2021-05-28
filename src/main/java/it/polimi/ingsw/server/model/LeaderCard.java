@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.List;
 
 public class LeaderCard extends Card implements Serializable {
-    private boolean isPlayed;
     private final List<DevCard> cardRequirements;
     private final Resource resource;
     private final LeaderType type;
@@ -15,13 +14,11 @@ public class LeaderCard extends Card implements Serializable {
         this.cardRequirements = null;
         this.resource = resource;
         this.type = type;
-        this.isPlayed = false;
     }
 
     public LeaderCard(int victoryPoints, List<DevCard> cardRequirements,
                       Resource resource, LeaderType type) {
         super(null, victoryPoints);
-        this.isPlayed = false;
         this.cardRequirements = cardRequirements;
         this.resource = resource;
         this.type = type;
@@ -37,14 +34,6 @@ public class LeaderCard extends Card implements Serializable {
 
     public List<DevCard> getCardRequirements() {
         return cardRequirements;
-    }
-
-    public boolean isPlayed() {
-        return isPlayed;
-    }
-
-    public void setPlayed(boolean played) {
-        this.isPlayed = played;
     }
 
 }

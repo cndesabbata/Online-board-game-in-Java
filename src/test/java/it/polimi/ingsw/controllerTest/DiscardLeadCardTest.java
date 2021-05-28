@@ -30,7 +30,6 @@ public class DiscardLeadCardTest {
         List<DevCard> leadProdReq = new ArrayList<>();
         leadProdReq.add(devCard);
         LeaderCard prodLead = new LeaderCard(4, leadProdReq, Resource.COIN, LeaderType.PRODUCT);
-        prodLead.setPlayed(false);
 
         Player me = new Player("Gianluca", game);
         me.getHandLeaderCards().add(prodLead);
@@ -58,7 +57,6 @@ public class DiscardLeadCardTest {
         requirements.add(new ResourceQuantity(3, Resource.SHIELD));
         requirements.add(new ResourceQuantity(2, Resource.SERVANT));
         LeaderCard prodLead = new LeaderCard(requirements, 4, Resource.COIN, LeaderType.PRODUCT);
-        prodLead.setPlayed(false);
 
         Player me = new Player("Gianluca", game);
         me.getHandLeaderCards().add(prodLead);
@@ -87,10 +85,9 @@ public class DiscardLeadCardTest {
         requirements.add(new ResourceQuantity(3, Resource.SHIELD));
         requirements.add(new ResourceQuantity(2, Resource.SERVANT));
         LeaderCard prodLead = new LeaderCard(requirements, 4, Resource.COIN, LeaderType.PRODUCT);
-        prodLead.setPlayed(true);
 
         Player me = new Player("Gianluca", game);
-        me.getHandLeaderCards().add(prodLead);
+        me.getPlayedLeaderCards().add(prodLead);
         game.addPlayer(me);
 
         assertTrue(me.hasPlayedLeaderCard(LeaderType.PRODUCT, Resource.COIN));
@@ -117,13 +114,11 @@ public class DiscardLeadCardTest {
         requirements.add(new ResourceQuantity(3, Resource.SHIELD));
         requirements.add(new ResourceQuantity(2, Resource.SERVANT));
         LeaderCard prodLead = new LeaderCard(requirements, 4, Resource.COIN, LeaderType.PRODUCT);
-        prodLead.setPlayed(false);
 
         List<ResourceQuantity> requirements1 = new ArrayList<>();
         requirements1.add(new ResourceQuantity(3, Resource.SHIELD));
         requirements1.add(new ResourceQuantity(2, Resource.SERVANT));
         LeaderCard depotLead = new LeaderCard(requirements1, 4, Resource.COIN, LeaderType.DEPOT);
-        prodLead.setPlayed(false);
 
         Player me = new Player("Gianluca", game);
         me.getHandLeaderCards().add(prodLead);

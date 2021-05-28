@@ -171,7 +171,9 @@ public class Server {
         Constants.setPort(port);
         System.out.println("Starting Server...\n");
         Server server = new Server();
-        ExecutorService executor = Executors.newCachedThreadPool();
-        executor.submit(server.serverConnectionSocket);
+        Thread thread = new Thread(server.serverConnectionSocket);
+        thread.start();
+        /*ExecutorService executor = Executors.newCachedThreadPool();
+        executor.submit(server.serverConnectionSocket);*/
     }
 }

@@ -41,13 +41,15 @@ public class PlayLeadCardTest {
 
         List<DevCard> leadProdReq = new ArrayList<>();
         leadProdReq.add(devCard);
-        LeaderCard prodLead = new LeaderCard(4, leadProdReq, Resource.COIN, LeaderType.DEPOT);
-        prodLead.setPlayed(false);
+        leadProdReq.add(devCard2);
+        LeaderCard depotLead = new LeaderCard(4, leadProdReq, Resource.COIN, LeaderType.DEPOT);
 
         Player me = new Player("Gianluca", game);
-        me.getHandLeaderCards().add(prodLead);
+        me.getHandLeaderCards().add(depotLead);
+        assertEquals(1, me.getHandLeaderCards().size());
         game.addPlayer(me);
         me.getBoard().getDevSpace().addCard(devCard, DevSpaceSlot.ONE);
+        me.getBoard().getDevSpace().addCard(devCard2, DevSpaceSlot.THREE);
 
         Action action = new PlayLeadCard(1);
         try {
@@ -70,7 +72,6 @@ public class PlayLeadCardTest {
         leadRes.add(new ResourceQuantity(2, Resource.COIN));
         leadRes.add(new ResourceQuantity(2, Resource.STONE));
         LeaderCard prodLead = new LeaderCard(leadRes, 4, Resource.COIN, LeaderType.PRODUCT);
-        prodLead.setPlayed(false);
 
         Player me = new Player("Gianluca", game);
         me.getHandLeaderCards().add(prodLead);

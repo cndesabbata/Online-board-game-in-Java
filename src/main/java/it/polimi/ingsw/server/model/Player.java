@@ -4,6 +4,7 @@ import it.polimi.ingsw.messages.serverMessages.newElement.NewHandCards;
 import it.polimi.ingsw.messages.serverMessages.newElement.NewIndex;
 import it.polimi.ingsw.messages.serverMessages.ChangesDone;
 import it.polimi.ingsw.messages.serverMessages.TurnChange;
+import it.polimi.ingsw.messages.serverMessages.newElement.NewPlayedLeadCards;
 import it.polimi.ingsw.server.controller.UserAction;
 import it.polimi.ingsw.server.model.gameboard.GameBoard;
 import it.polimi.ingsw.server.observer.Observable;
@@ -16,6 +17,7 @@ public class Player extends Observable {
     private final String nickname;
     private final GameBoard board;
     private final List<LeaderCard> handLeaderCards;
+    private final List<LeaderCard> playedLeaderCards;
     private boolean exclusiveActionDone;
     private UserAction actionDone;
     private boolean turnActive;
@@ -26,6 +28,7 @@ public class Player extends Observable {
         this.nickname = nickname;
         this.game = game;
         handLeaderCards = new ArrayList<>();
+        playedLeaderCards = new ArrayList<>();
     }
 
     public void setActionDone(UserAction actionDone) {
@@ -51,8 +54,9 @@ public class Player extends Observable {
     }
 
     public void playLeadCard(int index){
-        handLeaderCards.get(index).setPlayed(true);
+        playedLeaderCards.add(handLeaderCards.remove(index));
         notifySingleObserver(new NewHandCards(handLeaderCards, nickname, false), nickname);
+        notifyObservers(new NewPlayedLeadCards(playedLeaderCards, nickname));
     }
 
     public boolean isExclusiveActionDone() {
@@ -77,14 +81,14 @@ public class Player extends Observable {
         notifyObservers(new ChangesDone("Lorenzo De Medici ", action));
     }
 
-    public void addLeaderCard(LeaderCard card){
-        handLeaderCards.add(card);
-    }
-
     public List<LeaderCard> getHandLeaderCards() { return handLeaderCards; }
 
+    public List<LeaderCard> getPlayedLeaderCards() {
+        return playedLeaderCards;
+    }
+
     public boolean hasPlayedLeaderCard(LeaderType type, Resource resource) {
-        return handLeaderCards.stream().anyMatch(Lc -> Lc.getResource() == resource && Lc.getType() == type && Lc.isPlayed());
+        return playedLeaderCards.stream().anyMatch(Lc -> Lc.getResource() == resource && Lc.getType() == type);
     }
 
    public void setupDraw(){

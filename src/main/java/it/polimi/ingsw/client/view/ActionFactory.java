@@ -297,7 +297,7 @@ public class ActionFactory {
                         break;
                     }
                 }
-                output.print("Select the resource you want to generate: [Coin / Stone / Servant / Shield] \n>");
+                output.print("Select the resource you want to generate or type 'back' to quit: [Coin / Stone / Servant / Shield] \n>");
                 while (true) {
                     resOut = readInputString();
                     if (resOut.equalsIgnoreCase("back")) return null;
@@ -317,6 +317,7 @@ public class ActionFactory {
                 leaderEffects.add(new ProductionEffect(inputLead.get(0), outputLead));
             }
         }
+        if(inp.isEmpty() && out.isEmpty()) return null;
         return new StartProduction(slots, inp, out, leaderEffects);
     }
 
@@ -358,6 +359,7 @@ public class ActionFactory {
     private Action buildPlayLeadCard() {
         output.print("Which leader card do you want do play? [1/2]\n>");
         Integer index = leadCardSelection();
+        if(index == null) return null;
         return new PlayLeadCard(index);
     }
 

@@ -65,8 +65,7 @@ public class BuyResourcesTest {
         game.getMarket().setFakeExternal(Marble.BLUE);
         extraRes.add(new ResourcePosition(Resource.STONE, Place.WAREHOUSE, NumOfShelf.TWO));
         LeaderCard marbleCard = new LeaderCard(3, null, Resource.STONE, LeaderType.MARBLE);
-        marbleCard.setPlayed(true);
-        player.addLeaderCard(marbleCard);
+        player.getPlayedLeaderCards().add(marbleCard);
         LeaderEffect leaderEffect = new MarbleEffect(1, Resource.STONE, extraRes);
         leaderEffects.add(leaderEffect);
         boughtResources.add(new ResourcePosition(Resource.STONE, Place.WAREHOUSE, NumOfShelf.TWO));
@@ -107,10 +106,8 @@ public class BuyResourcesTest {
         extraRes.add(new ResourcePosition(Resource.STONE, Place.WAREHOUSE, NumOfShelf.TWO));
         LeaderCard marbleCard1 = new LeaderCard(3, null, Resource.STONE, LeaderType.MARBLE);
         LeaderCard marbleCard2 = new LeaderCard(3, null, Resource.SERVANT, LeaderType.MARBLE);
-        marbleCard1.setPlayed(true);
-        marbleCard2.setPlayed(true);
-        player.addLeaderCard(marbleCard1);
-        player.addLeaderCard(marbleCard2);
+        player.getPlayedLeaderCards().add(marbleCard1);
+        player.getPlayedLeaderCards().add(marbleCard2);
         LeaderEffect leaderEffect1 = new MarbleEffect(1, Resource.STONE, extraRes);
         LeaderEffect leaderEffect2 = new MarbleEffect(0, Resource.SERVANT, new ArrayList<>());
         leaderEffects.add(leaderEffect1);
