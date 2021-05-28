@@ -51,7 +51,6 @@ public class StartProduction implements Action {
             int faithpoints = outputRes.stream().filter(Rp -> Rp.getResource() == Resource.FAITHPOINT)
                     .map(ResourcePosition::getQuantity).reduce(0, Integer::sum);
             player.getBoard().getItinerary().updatePosition(faithpoints);
-            outputRes.removeIf(Rp -> Rp.getResource() == Resource.FAITHPOINT);
         }
         player.getBoard().expendResources(inputRes);
         player.getBoard().getChest().incrementResource(outputRes);

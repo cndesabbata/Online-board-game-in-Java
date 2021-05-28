@@ -416,6 +416,7 @@ public class StartProductionTest {
         List <ResourceQuantity> output2 = new ArrayList<>();
         output2.add(new ResourceQuantity(2, Resource.SHIELD));
         output2.add(new ResourceQuantity(1, Resource.STONE));
+        output2.add(new ResourceQuantity(1, Resource.FAITHPOINT));
         DevCard devCard2 = new DevCard(requirements2, 5,1,Colour.PURPLE, input2, output2);
 
         List<DevCard> leadProdReq = new ArrayList<>();
@@ -443,6 +444,7 @@ public class StartProductionTest {
         outputClient.add(new ResourcePosition(Resource.SHIELD, Place.CHEST, null));
         outputClient.add(new ResourcePosition(Resource.SHIELD, Place.CHEST, null));
         outputClient.add(new ResourcePosition(Resource.STONE, Place.CHEST, null));
+        outputClient.add(new ResourcePosition(Resource.FAITHPOINT, Place.CHEST, null));
 
         List <Integer> slots = new ArrayList<>();
         slots.add(0);
@@ -510,7 +512,7 @@ public class StartProductionTest {
             assertEquals(4, myChest.getAvailability(Resource.STONE));
             assertEquals(1, myChest.getAvailability(Resource.COIN));
             assertEquals(3, myChest.getAvailability(Resource.SERVANT));
-            assertEquals(1, myItinerary.getPosition());
+            assertEquals(2, myItinerary.getPosition());
 
         }
         catch (WrongActionException e){

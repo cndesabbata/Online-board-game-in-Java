@@ -58,6 +58,7 @@ public class Chest extends Observable {
 
     /*add resources from the chest*/
     public void incrementResource(List <ResourcePosition> inputRes) {
+        inputRes.removeIf(Rp -> Rp.getResource() == Resource.FAITHPOINT);
         for(ResourcePosition Rp : inputRes){
             int index = getIndexResource(Rp.getResource());
             ResourceQuantity Rq = chest.get(index);
