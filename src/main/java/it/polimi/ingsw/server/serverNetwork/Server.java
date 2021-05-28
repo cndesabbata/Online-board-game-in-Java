@@ -129,6 +129,7 @@ public class Server {
             if (gc.getGame().getPlayers().stream().anyMatch(p -> p.getNickname().equalsIgnoreCase(nickname))) {
                 ErrorMessage error = new ErrorMessage("This nickname is already in use, please choose another one.", ErrorType.DUPLICATE_NICKNAME);
                 connection.sendSocketMessage(error);
+                return;
             }
         }
         VirtualView virtualView = new VirtualView(nickname, connection);
