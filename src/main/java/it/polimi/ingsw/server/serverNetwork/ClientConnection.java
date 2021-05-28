@@ -86,7 +86,7 @@ public class ClientConnection implements Runnable {
 
     public void messageHandler(Message clientMessage){
         if (clientMessage instanceof SetNickname){
-            if (gameController == null && playerNickname == null){
+            if (gameController == null){
                 try {
                     playerNickname = ((SetNickname) clientMessage).getNickname();
                     server.registerClient(playerNickname, this);
@@ -98,7 +98,7 @@ public class ClientConnection implements Runnable {
             else sendSocketMessage(new ErrorMessage("Invalid action: you already have a nickname.", ErrorType.WRONG_MESSAGE));
         }
         else if (clientMessage instanceof Reconnect){
-            if (gameController == null && playerNickname == null){
+            if (gameController == null){
                 try {
                     server.reconnectClient(((Reconnect) clientMessage).getNickname(), this);
                     playerNickname = ((Reconnect) clientMessage).getNickname();

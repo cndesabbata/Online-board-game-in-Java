@@ -83,14 +83,15 @@ public class MessageHandler {
                 if (!m.getNickname().equals(view.getNickname()))
                     toPrint = m.getNickname().toUpperCase()+ " " + m.getType().toString() + " ";
                 view.setClientMessage(new DisplayMessage(toPrint + "This is the new state of the game."));
-                if (m.getType() != UserAction.RESOURCE_SELECTION && m.getNickname().equals(view.getNickname()))
+                if (m.getType() != UserAction.RESOURCE_SELECTION && m.getNickname().equalsIgnoreCase(view.getNickname())
+                        || view.getOwnGameBoard().getBlackCrossPosition() != null)
                     view.setClientMessage(new ChooseAction("Please choose an action (select a number between 0 and 11):\n" +
                                                 Constants.getChooseAction() +  "\n>"));
             }
         }
         else if (message instanceof TurnChange){
             TurnChange m = (TurnChange) message;
-            if (m.getNewPlayer().equals(view.getNickname())){
+            if (m.getNewPlayer().equalsIgnoreCase(view.getNickname())){
                 view.setTurnActive(true);
                 String toPrint = "";
                 if (m.getOldPlayer() != null)
