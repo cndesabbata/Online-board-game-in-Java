@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server.model;
 
+import it.polimi.ingsw.messages.serverMessages.newElement.NewPlayers;
 import it.polimi.ingsw.server.observer.Observable;
 
 import java.util.*;
@@ -38,6 +39,12 @@ public class Game extends Observable {
             }
         }
         return null;
+    }
+
+    public void notifyNewPlayers(){
+        List<String> list = new ArrayList<>();
+        for (Player p : players) list.add(p.getNickname());
+        notifyObservers(new NewPlayers(list));
     }
 
     public List<Player> getPlayers() {

@@ -16,7 +16,6 @@ import it.polimi.ingsw.server.model.ResourceQuantity;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 public class MessageHandler {
     private final ClientView view;
@@ -112,9 +111,9 @@ public class MessageHandler {
     }
 
     private GameBoardInfo findBoardByOwner(String owner){
-        if (view.getNickname().equals(owner)) return view.getOwnGameBoard();
+        if (view.getNickname().equalsIgnoreCase(owner)) return view.getOwnGameBoard();
         for (GameBoardInfo g : view.getOtherGameBoards()){
-            if (g.getOwner().equals(owner)) return g;
+            if (g.getOwner().equalsIgnoreCase(owner)) return g;
         }
         GameBoardInfo newBoard = new GameBoardInfo(owner, view.getCli());
         view.addGameBoard(newBoard);
@@ -199,6 +198,10 @@ public class MessageHandler {
                         w.getWarehouse().indexOf(r) == w.getWarehouse().size() - 1);
                 shelf++;
             }
+        }
+        else if (m instanceof NewPlayers){
+            for (String player : ((NewPlayers) m).getPlayers())
+                findBoardByOwner(player);
         }
     }
 }

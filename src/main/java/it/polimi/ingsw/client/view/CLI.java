@@ -122,8 +122,8 @@ public class CLI implements Observer {
                 index1 = readInputInt();
                 output.print(">");
                 index2 = readInputInt();
-                if (index1 < 1 || index1 > 4 || index2 < 1 || index2 > 4)
-                    output.print("Please choose two numbers between 1 and 4:\n>");
+                if (index1 < 1 || index1 > 4 || index2 < 1 || index2 > 4 || index1 == index2)
+                    output.print("Please choose two distinct numbers between 1 and 4:\n>");
                 else request = false;
             }
             connectionSocket.send(new LeaderCardSelection(new int[]{index1, index2}));
@@ -144,9 +144,9 @@ public class CLI implements Observer {
             connectionSocket.send(new ResourceSelection(rp));
         } else if (m instanceof ChooseAction) {
             output.print(m.getMessage());
-            int n = -1;
+            int n;
             while (request) {
-                Message toSend = null;
+                Message toSend;
                 n = readInputInt();
                 if (n < 0 || n > 11) {
                     output.print("Please choose a number between 0 and 11:\n>");
@@ -160,7 +160,7 @@ public class CLI implements Observer {
                         toSend = actionFactory.createAction(n);
                         if (toSend != null){
                             request = false;
-                            if (toSend!=null) connectionSocket.send(toSend);
+                            connectionSocket.send(toSend);
                         }
                     }
                 }
@@ -225,7 +225,12 @@ public class CLI implements Observer {
             output.println("Lorenzo De Medici's position: " + clientView.getOwnGameBoard().getBlackCrossPosition() + "/24\n");
         else {
             while (true) {
-                output.print("Whose game board would you like to view?" + "\n>");
+                StringBuilder names = new StringBuilder();
+                for (GameBoardInfo gbi : clientView.getOtherGameBoards()){
+                    if (clientView.getOtherGameBoards().indexOf(gbi) != 0) names.append("/");
+                    names.append(gbi.getOwner().toUpperCase());
+                }
+                output.print("Whose game board would you like to view? [" + names + "]\n>");
                 String s = readInputString().toUpperCase();
                 for (GameBoardInfo g : clientView.getOtherGameBoards()) {
                     if (g.getOwner().equalsIgnoreCase(s)) {

@@ -108,8 +108,8 @@ public class Server {
 
     public synchronized void reconnectClient(String nickname, ClientConnection connection) throws InterruptedException {
         for (GameController gc : gameControllers) {
-            if (gc.getGame().getPlayers().stream().anyMatch(p -> p.getNickname().equals(nickname)) &&
-                    gc.getActivePlayers().stream().noneMatch(p -> p.getNickname().equals(nickname))) {
+            if (gc.getGame().getPlayers().stream().anyMatch(p -> p.getNickname().equalsIgnoreCase(nickname)) &&
+                    gc.getActivePlayers().stream().noneMatch(p -> p.getNickname().equalsIgnoreCase(nickname))) {
                 gc.addActivePlayer(gc.getGame().getPlayerByNickname(nickname));
                 gc.addActiveConnection(connection);
                 connection.setGameController(gc);
@@ -126,7 +126,7 @@ public class Server {
 
     public synchronized void registerClient(String nickname, ClientConnection connection) throws InterruptedException {
         for (GameController gc : gameControllers) {
-            if (gc.getGame().getPlayers().stream().anyMatch(p -> p.getNickname().equals(nickname))) {
+            if (gc.getGame().getPlayers().stream().anyMatch(p -> p.getNickname().equalsIgnoreCase(nickname))) {
                 ErrorMessage error = new ErrorMessage("This nickname is already in use, please choose another one.", ErrorType.DUPLICATE_NICKNAME);
                 connection.sendSocketMessage(error);
             }
