@@ -4,15 +4,14 @@ import it.polimi.ingsw.messages.Message;
 import it.polimi.ingsw.messages.clientMessages.internal.PrintDevDecks;
 import it.polimi.ingsw.messages.clientMessages.internal.PrintHandCards;
 import it.polimi.ingsw.messages.clientMessages.internal.PrintMarket;
-import it.polimi.ingsw.messages.serverMessages.newElement.NewHandCards;
 import it.polimi.ingsw.server.observer.Observable;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ClientView extends Observable {
-    private final CLI cli;
-    private final GUI gui;
+    private final Cli cli;
+    private final Gui gui;
     private String nickname;
     private String[][] market;
     private String externalMarble;
@@ -23,7 +22,7 @@ public class ClientView extends Observable {
     private Integer playerIndex;
     private boolean turnActive;
 
-    public ClientView(CLI cli) {
+    public ClientView(Cli cli) {
         this.cli = cli;
         addObserver(cli);
         gui = null;
@@ -42,9 +41,15 @@ public class ClientView extends Observable {
         this.playerIndex = playerIndex;
     }
 
-    public ClientView(GUI gui) {
+    public ClientView(Gui gui) {
         this.gui = gui;
+        addObserver(gui);
         cli = null;
+        this.devDecks = new DevCardInfo[3][4];
+        hand = new ArrayList<>();
+        otherGameBoards = new ArrayList<>();
+        ownGameBoard = new GameBoardInfo(nickname, gui);
+        turnActive = false;
     }
 
     public boolean isTurnActive() {
@@ -86,11 +91,11 @@ public class ClientView extends Observable {
         this.nickname = nickname;
     }
 
-    public CLI getCli() {
+    public Cli getCli() {
         return cli;
     }
 
-    public GUI getGui() {
+    public Gui getGui() {
         return gui;
     }
 

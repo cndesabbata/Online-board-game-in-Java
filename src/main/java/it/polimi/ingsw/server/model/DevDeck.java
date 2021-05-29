@@ -18,22 +18,22 @@ public class DevDeck extends Observable {
         this.colour = colour;
         String path = null;
         if (level == 1){
-            if (colour == Colour.YELLOW) path = "/Json/FirstYellow.json";
-            else if (colour == Colour.GREEN) path = "/Json/FirstGreen.json";
-            else if (colour == Colour.BLUE) path = "/Json/FirstBlue.json";
-            else if (colour == Colour.PURPLE) path = "/Json/FirstPurple.json";
+            if (colour == Colour.YELLOW) path = "/json/FirstYellow.json";
+            else if (colour == Colour.GREEN) path = "/json/FirstGreen.json";
+            else if (colour == Colour.BLUE) path = "/json/FirstBlue.json";
+            else if (colour == Colour.PURPLE) path = "/json/FirstPurple.json";
         }
         else if (level == 2){
-            if (colour == Colour.YELLOW) path = "/Json/SecondYellow.json";
-            else if (colour == Colour.GREEN) path = "/Json/SecondGreen.json";
-            else if (colour == Colour.BLUE) path = "/Json/SecondBlue.json";
-            else if (colour == Colour.PURPLE) path = "/Json/SecondPurple.json";
+            if (colour == Colour.YELLOW) path = "/json/SecondYellow.json";
+            else if (colour == Colour.GREEN) path = "/json/SecondGreen.json";
+            else if (colour == Colour.BLUE) path = "/json/SecondBlue.json";
+            else if (colour == Colour.PURPLE) path = "/json/SecondPurple.json";
         }
         else if (level == 3){
-            if (colour == Colour.YELLOW) path = "/Json/ThirdYellow.json";
-            else if (colour == Colour.GREEN) path = "/Json/ThirdGreen.json";
-            else if (colour == Colour.BLUE) path = "/Json/ThirdBlue.json";
-            else if (colour == Colour.PURPLE) path = "/Json/ThirdPurple.json";
+            if (colour == Colour.YELLOW) path = "/json/ThirdYellow.json";
+            else if (colour == Colour.GREEN) path = "/json/ThirdGreen.json";
+            else if (colour == Colour.BLUE) path = "/json/ThirdBlue.json";
+            else if (colour == Colour.PURPLE) path = "/json/ThirdPurple.json";
         }
         Gson gson = new Gson();
         Reader reader = new InputStreamReader(Game.class.getResourceAsStream(path));

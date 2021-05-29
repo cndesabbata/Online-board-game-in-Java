@@ -1,6 +1,6 @@
 package it.polimi.ingsw.client.clientNetwork;
 
-import it.polimi.ingsw.client.view.CLI;
+import it.polimi.ingsw.client.view.Cli;
 import it.polimi.ingsw.client.view.ClientView;
 import it.polimi.ingsw.constants.Constants;
 import it.polimi.ingsw.messages.Message;
@@ -23,9 +23,9 @@ public class ClientConnectionSocket implements Runnable{
     private ObjectInputStream input;
     private MessageHandler messageHandler;
     private Socket socket;
-    private CLI cli;
+    private Cli cli;
 
-    public ClientConnectionSocket(CLI cli, MessageHandler messageHandler){
+    public ClientConnectionSocket(Cli cli, MessageHandler messageHandler){
         this.cli = cli;
         this.messageHandler = messageHandler;
     }

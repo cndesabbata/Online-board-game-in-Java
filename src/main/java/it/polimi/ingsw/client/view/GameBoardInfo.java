@@ -18,11 +18,32 @@ public class GameBoardInfo extends Observable {
     private final Map<Integer, List<DevCardInfo>> devSpace;
     private Integer blackCrossPosition;
 
-    public GameBoardInfo(String nickname, CLI cli) {
+    public GameBoardInfo(String nickname, Cli cli) {
         this.owner = nickname;
         position = 0;
         papalCards = new HashMap<>();
         addObserver(cli);
+        chest = new HashMap<>();
+        warehouse = new HashMap<>();
+        playedCards = new ArrayList<>();
+        devSpace = new HashMap<>();
+        blackCrossPosition = null;
+        chest.put("Coins", 0);
+        chest.put("Stones", 0);
+        chest.put("Servants", 0);
+        chest.put("Shields", 0);
+        for (int i = 0; i < 3; i++){
+            warehouse.put(i, new ArrayList<>());
+            papalCards.put(i, "Face down");
+            devSpace.put(i, new ArrayList<>());
+        }
+    }
+
+    public GameBoardInfo (String nickname, Gui gui){
+        this.owner = nickname;
+        position = 0;
+        papalCards = new HashMap<>();
+        addObserver(gui);
         chest = new HashMap<>();
         warehouse = new HashMap<>();
         playedCards = new ArrayList<>();

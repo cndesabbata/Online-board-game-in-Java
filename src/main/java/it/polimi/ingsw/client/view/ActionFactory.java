@@ -17,9 +17,9 @@ import java.util.stream.Collectors;
 public class ActionFactory {
     private final PrintStream output;
     private final Scanner input;
-    private final CLI cli;
+    private final Cli cli;
 
-    public ActionFactory(PrintStream output, Scanner input, CLI cli) {
+    public ActionFactory(PrintStream output, Scanner input, Cli cli) {
         this.output = output;
         this.input = input;
         this.cli = cli;

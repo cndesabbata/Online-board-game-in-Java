@@ -19,7 +19,7 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.util.*;
 
-public class CLI implements Observer {
+public class Cli implements Observer {
     private final PrintStream output;
     private final Scanner input;
     private final ClientView clientView;
@@ -28,7 +28,7 @@ public class CLI implements Observer {
     private final ActionFactory actionFactory;
     private ClientConnectionSocket connectionSocket;
 
-    public CLI() {
+    public Cli() {
         input = new Scanner(System.in);
         output = new PrintStream(System.out);
         clientView = new ClientView(this);
@@ -45,7 +45,7 @@ public class CLI implements Observer {
         int port = scanner.nextInt();
         Constants.setAddress(ip);
         Constants.setPort(port);
-        CLI cli = new CLI();
+        Cli cli = new Cli();
         cli.setup();
     }
 

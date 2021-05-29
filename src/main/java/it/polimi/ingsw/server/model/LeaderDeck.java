@@ -13,7 +13,7 @@ public class LeaderDeck {
 
     public LeaderDeck() {
         Gson gson = new Gson();
-        Reader reader = new InputStreamReader(Game.class.getResourceAsStream("/Json/Leaders.json"));
+        Reader reader = new InputStreamReader(Game.class.getResourceAsStream("/json/Leaders.json"));
         LeaderCardBlueprint[] cardBlueprints = gson.fromJson(reader, LeaderCardBlueprint[].class);
         for (LeaderCardBlueprint blueprint : cardBlueprints){
             this.cards.add(blueprint.BuildCard());
