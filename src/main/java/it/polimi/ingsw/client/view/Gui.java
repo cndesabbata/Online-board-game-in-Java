@@ -19,7 +19,7 @@ public class Gui extends Application implements Observer {
 
     public static final String CONNECTION_MENU = "GuiConnectionMenu.fxml";
     public static final String MAIN_MENU = "GuiMainMenu.fxml";
-    public static final String WAIT_MENU = "GuiWaitMenu.fxml";
+    public static final String WAIT_MENU = "GuiLobbyMenu.fxml";
     public static final String GUI_GAME = "GuiGame.fxml";
     private Stage stage;
     private final HashMap<String, Scene> nameToScene = new HashMap<>();
@@ -47,10 +47,15 @@ public class Gui extends Application implements Observer {
     public void start(Stage stage) throws Exception {
         setup();
         this.stage = stage;
-        stage.setTitle("MasterOfRenaissance");
-        stage.setScene(currentScene);
-        stage.getIcons().add(new Image(getClass().getResourceAsStream("graphics/icons/MasterOfReinassance.jpg")));
-        stage.show();
+        try{
+            stage.setTitle("MasterOfRenaissance");
+            stage.setScene(currentScene);
+            stage.getIcons().add(new Image(getClass().getResourceAsStream("/graphics/LorenzoIcon.png")));
+            stage.show();
+        } catch (NullPointerException e){
+            System.out.println("Null pointer exception");
+            e.printStackTrace();
+        }
     }
 
     private void setup() {
@@ -65,6 +70,7 @@ public class Gui extends Application implements Observer {
             }
         } catch (IOException e) {
             System.out.println("Error in Gui configuration.");
+            e.printStackTrace();
         }
         currentScene = nameToScene.get(CONNECTION_MENU);
     }
