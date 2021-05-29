@@ -95,7 +95,8 @@ public class ActionFactory {
                 case "RED" -> resToReceive.add("FAITHPOINT");
             }
         }
-        result = cli.askForLocation(resToReceive, true, true);
+        result = cli.askForLocation(resToReceive, true, true, false);
+        if(result == null) return null;
         int marbleLeaderNumber = (int) cli.getClientView().getOwnGameBoard().getPlayedCards()
                 .stream().filter(p -> p.getType().equalsIgnoreCase("MARBLE")).count();
         if (marbleLeaderNumber == 2) {
@@ -122,8 +123,10 @@ public class ActionFactory {
                 s1.add(res.get(0));
             for (int i = 0; i < firstType; i++)
                 s1.add(res.get(1));
-            List<ResourcePosition> rp1 = cli.askForLocation(s1, true, true);
-            List<ResourcePosition> rp2 = cli.askForLocation(s2, true, true);
+            List<ResourcePosition> rp1 = cli.askForLocation(s1, true, true, false);
+            if(rp1 == null) return null;
+            List<ResourcePosition> rp2 = cli.askForLocation(s2, true, true, false);
+            if(rp2 == null) return null;
             leaderEffects.add(new MarbleEffect(firstType, Resource.valueOf(res.get(0).toUpperCase()), rp1));
             leaderEffects.add(new MarbleEffect(secondType, Resource.valueOf(res.get(1).toUpperCase()), rp2));
         } else if (marbleLeaderNumber == 1) {
@@ -134,7 +137,8 @@ public class ActionFactory {
                     .collect(Collectors.toList()).get(0).getResource());
             for (int i = 0; i < whiteMarbles; i++)
                 s1.add(res.toString());
-            rp1 = cli.askForLocation(s1, true, true);
+            rp1 = cli.askForLocation(s1, true, true, false);
+            if(rp1 == null) return null;
             leaderEffects.add(new MarbleEffect(whiteMarbles, res, rp1));
         }
         return new BuyResources(leaderEffects, source + 1, marketSelection, result);
@@ -208,7 +212,8 @@ public class ActionFactory {
             }
         }
         output.println("Your card has the following requirements:\n" + cli.buildResourceString(req));
-        res = cli.askForLocation(req, false, false);
+        res = cli.askForLocation(req, false, false, false);
+        if(res == null) return null;
         return new BuyDevCard(lev + 1, colour, DevSpaceSlot.values()[slot], res, leaders);
     }
 
@@ -226,31 +231,41 @@ public class ActionFactory {
         Integer slot;
         GameBoardInfo g = cli.getClientView().getOwnGameBoard();
         boolean hasDevCards = false;
-        for(int i = 0; i < 3; i++) {
-            if(!g.getDevSpace().get(i).isEmpty())
+        for (int i = 0; i < 3; i++) {
+            if (!g.getDevSpace().get(i).isEmpty())
                 hasDevCards = true;
         }
-        if (hasDevCards && askYesNo("Would you like to activate a development card? [yes/no]\n>")) {
-            while (request) {                                                                                                //getting all the devCards the user wants to activate
-                output.print("Select the slot in the development space:\n>");
-                while (true) {
-                    slot = readInputInt();
-                    if (slot == null) return null;
-                    if (slot >= 1 && slot <= 3 && !cli.getClientView().getOwnGameBoard().getDevSpace().get(slot - 1).isEmpty())
-                        break;
-                    output.print("Please select a number from 1 to 3 and make sure that the selected slot is not empty, or type 'back' to quit.\n>");
+        if (hasDevCards) {
+            Boolean b1 = askYesNo("Would you like to activate a development card? [yes/no]\n>");
+            if (b1 == null) return null;
+            if (b1) {
+                while (request) {                                                                                                //getting all the devCards the user wants to activate
+                    output.print("Select the slot in the development space:\n>");
+                    while (true) {
+                        slot = readInputInt();
+                        if (slot == null) return null;
+                        if (slot >= 1 && slot <= 3 && !cli.getClientView().getOwnGameBoard().getDevSpace().get(slot - 1).isEmpty())
+                            break;
+                        output.print("Please select a number from 1 to 3 and make sure that the selected slot is not empty, or type 'back' to quit.\n>");
+                    }
+                    slots.add(slot - 1);
+                    DevCardInfo d = cli.getClientView().getOwnGameBoard().getDevSpace().get(slot - 1).get(0);
+                    List <ResourcePosition> prodInp = cli.askForLocation(d.getProductionInput(), false, false, false);
+                    if(prodInp == null) return null;
+                    inp.addAll(prodInp);
+                    List<ResourcePosition> bR = new ArrayList<>();
+                    for (String output : d.getProductionOutput())
+                        bR.add(new ResourcePosition(Resource.valueOf(output.toUpperCase()), Place.CHEST, null));
+                    out.addAll(bR);
+                    Boolean b2 = askYesNo("Would you like to select another development card? [yes/no]\n>");
+                    if (b2 == null) return null;
+                    else request = b2;
                 }
-                slots.add(slot - 1);
-                DevCardInfo d = cli.getClientView().getOwnGameBoard().getDevSpace().get(slot - 1).get(0);
-                inp.addAll(cli.askForLocation(d.getProductionInput(), false, false));
-                List<ResourcePosition> bR = new ArrayList<>();
-                for(String output : d.getProductionOutput())
-                    bR.add(new ResourcePosition(Resource.valueOf(output.toUpperCase()), Place.CHEST, null));
-                out.addAll(bR);
-                request = askYesNo("Would you like to select another development card? [yes/no]\n>");
             }
         }
-        if (askYesNo("Would you like to start the board production? [yes/no]\n>")) {
+        Boolean b3 = askYesNo("Would you like to start the board production? [yes/no]\n>");
+        if (b3 == null) return null;
+        if (b3) {
             List<String> boardInput = new ArrayList<>();
             String boardOutput = "";
             for (int i = 0; i < 3; i++) {
@@ -258,7 +273,9 @@ public class ActionFactory {
                     output.print("Choose the resource number " + (i + 1) + " that you want to use: " +
                             "[Coin, Stone, Servant, Shield]\n>");
                 else {                                                                                                  //output of BoardProduction
-                    inp.addAll(cli.askForLocation(boardInput, false, false));
+                    List <ResourcePosition> boardInp = cli.askForLocation(boardInput, false, false, false);
+                    if(boardInp == null) return null;
+                    inp.addAll(boardInp);
                     output.print("Choose the resource number " + (i + 1) + " that you want to generate: " +
                             "[Coin, Stone, Servant, Shield]\n>");
                 }
@@ -278,54 +295,67 @@ public class ActionFactory {
             }
             out.add(new ResourcePosition(Resource.valueOf(boardOutput.toUpperCase()), Place.CHEST, null));
         }
-        if (cli.getClientView().getOwnGameBoard().getPlayedCards().stream().anyMatch(l -> l.getType().equals("Product"))                                          //productLeader
-                && askYesNo("Would you like to use a product leader card?\n>")) {
-            List<Integer> indexLead = new ArrayList<>();
-            String resOut = "";
-            for (int i = 0; i < 2; i++) {
-                Integer n;
-                output.print("Select the index of the product leader card on your game board: [1 / 2]\n>");
-                while (true) {
-                    n = readInputInt();
-                    if (n == null) return null;
-                    if (n > cli.getClientView().getOwnGameBoard().getPlayedCards().size())
-                        output.print("There is no played leader card of index " + n + ". Please try again, or type 'back' to quit:\n>");
-                    else if (!cli.getClientView().getOwnGameBoard().getPlayedCards().get(n - 1).getType().equalsIgnoreCase("Product"))
-                        output.print("The selected leader card is not a product leader. Please try again, or type 'back' to quit: \n>");
-                    else {
-                        indexLead.add(n);
-                        break;
+        if (cli.getClientView().getOwnGameBoard().getPlayedCards().stream().anyMatch(l -> l.getType().equals("Product"))) {                                          //productLeader
+            Boolean b4 = askYesNo("Would you like to use a product leader card?\n>");
+            if (b4 == null) return null;
+            if (b4) {
+                List<Integer> indexLead = new ArrayList<>();
+                List<String> resOut = new ArrayList<>();
+                String s = "";
+                for (int i = 0; i < cli.getClientView().getOwnGameBoard().getPlayedCards().size(); i++) {
+                    Integer n;
+                    output.print("Select the index of the product leader card on your game board: [1 / 2]\n>");
+                    while (true) {
+                        n = readInputInt();
+                        if (n == null) return null;
+                        if (n > cli.getClientView().getOwnGameBoard().getPlayedCards().size())
+                            output.print("There is no played leader card of index " + n + ". Please try again, or type 'back' to quit:\n>");
+                        else if (!cli.getClientView().getOwnGameBoard().getPlayedCards().get(n - 1).getType().equalsIgnoreCase("Product"))
+                            output.print("The selected leader card is not a product leader. Please try again, or type 'back' to quit: \n>");
+                        else {
+                            indexLead.add(n);
+                            break;
+                        }
                     }
+                    output.print("Select the resource you want to generate or type 'back' to quit: [Coin / Stone / Servant / Shield] \n>");
+                    while (true) {
+                        s = readInputString();
+                        if (s.equalsIgnoreCase("back")) return null;
+                        if (!s.equalsIgnoreCase("Coin") && !s.equalsIgnoreCase("Stone") &&
+                                !s.equalsIgnoreCase("Servant") && !s.equalsIgnoreCase("Shield"))
+                            output.print("Please select a resource between [Coin / Stone / Servant / Shield]:\n>");
+                        else {
+                            resOut.add(s);
+                            break;
+                        }
+                    }
+                    Boolean b5 = askYesNo("Would you like to select another product leader card?\n>");
+                    if (b5 == null) return null;
+                    if (i == 0 && !b5)
+                        break;
                 }
-                output.print("Select the resource you want to generate or type 'back' to quit: [Coin / Stone / Servant / Shield] \n>");
-                while (true) {
-                    resOut = readInputString();
-                    if (resOut.equalsIgnoreCase("back")) return null;
-                    if (!resOut.equalsIgnoreCase("Coin") && !resOut.equalsIgnoreCase("Stone") &&
-                            !resOut.equalsIgnoreCase("Servant") && !resOut.equalsIgnoreCase("Shield"))
-                        output.print("Please select a resource between [Coin / Stone / Servant / Shield]:\n>");
-                    else break;
+                int count = 0;
+                for (int n : indexLead) {                                                                               //construction of leader effects
+                    List<String> i = new ArrayList<>();
+                    i.add(cli.getClientView().getOwnGameBoard().getPlayedCards().get(n - 1).getResource());
+                    List<ResourcePosition> inputLead = cli.askForLocation(i, false, false, false);
+                    if(inputLead == null) return null;
+                    ResourcePosition outputLead = new ResourcePosition(Resource.valueOf(resOut.get(count).toUpperCase()), Place.CHEST, null);
+                    leaderEffects.add(new ProductionEffect(inputLead.get(0), outputLead));
+                    count ++;
                 }
-                if (i == 0 && !askYesNo("Would you like to select another product leader card?\n>"))
-                    break;
-            }
-            for (int n : indexLead) {                                                                                     //construction of leader effects
-                List<String> i = new ArrayList<>();
-                i.add(cli.getClientView().getOwnGameBoard().getPlayedCards().get(n - 1).getResource());
-                List<ResourcePosition> inputLead = new ArrayList<>(cli.askForLocation(i, false, false));
-                ResourcePosition outputLead = new ResourcePosition(Resource.valueOf(resOut.toUpperCase()), Place.CHEST, null);
-                leaderEffects.add(new ProductionEffect(inputLead.get(0), outputLead));
             }
         }
         if(inp.isEmpty() && out.isEmpty()) return null;
         return new StartProduction(slots, inp, out, leaderEffects);
     }
 
-    private boolean askYesNo(String question) {
+    private Boolean askYesNo(String question) {
         output.print(question);
         while (true) {
             String s = readInputString();
-            if (s.equalsIgnoreCase("no")) {
+            if(s.equalsIgnoreCase("back")) return null;
+            else if (s.equalsIgnoreCase("no")) {
                 return false;
             } else if (s.equalsIgnoreCase("yes"))
                 return true;
@@ -398,7 +428,7 @@ public class ActionFactory {
         String inputString;
         do {
             try {
-                 inputString = input.nextLine();
+                inputString = input.nextLine();
                 break;
             } catch (InputMismatchException e) {
                 output.print("Please insert a valid input.\n>");

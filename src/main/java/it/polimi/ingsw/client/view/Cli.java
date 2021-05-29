@@ -61,7 +61,7 @@ public class Cli implements Observer {
                 output.print("Insert the server IP address\n>");
                 Constants.setAddress(readInputString());
                 output.print("Insert the server port\n>");
-                Constants.setPort(readInputInt());
+                Constants.setPort(readInputInt(false));
             }
             System.out.println("Socket Connection setup completed!");
         } catch (IOException e) {
@@ -107,9 +107,9 @@ public class Cli implements Observer {
             output.println(m.getMessage());
         } else if (m instanceof RequestPlayersNumber) {
             output.print(m.getMessage() + "\n>");
-            int number = 0;
+            Integer number = 0;
             while (request) {
-                number = readInputInt();
+                number = readInputInt(false);
                 if (number >= 1 && number <= 4) request = false;
                 else output.print("Please choose a number between 1 and 4:\n>");
             }
@@ -119,9 +119,9 @@ public class Cli implements Observer {
             int index1 = 0;
             int index2 = 0;
             while (request) {
-                index1 = readInputInt();
+                index1 = readInputInt(false);
                 output.print(">");
-                index2 = readInputInt();
+                index2 = readInputInt(false);
                 if (index1 < 1 || index1 > 4 || index2 < 1 || index2 > 4 || index1 == index2)
                     output.print("Please choose two distinct numbers between 1 and 4:\n>");
                 else request = false;
@@ -140,14 +140,14 @@ public class Cli implements Observer {
                     s.add(r.toString());
                 }
             }
-            rp = (askForLocation(s, true, false));
+            rp = (askForLocation(s, true, false, true));
             connectionSocket.send(new ResourceSelection(rp));
         } else if (m instanceof ChooseAction) {
             output.print(m.getMessage());
-            int n;
+            Integer n;
             while (request) {
                 Message toSend;
-                n = readInputInt();
+                n = readInputInt(false);
                 if (n < 0 || n > 11) {
                     output.print("Please choose a number between 0 and 11:\n>");
                 } else if (n > 5 && n < 11) {
@@ -158,7 +158,9 @@ public class Cli implements Observer {
                                 "please select a different action.\n>");
                     } else{
                         toSend = actionFactory.createAction(n);
-                        if (toSend != null){
+                        if(toSend == null)
+                            output.print(Constants.getChooseAction()+ "\n>");
+                        else{
                             request = false;
                             connectionSocket.send(toSend);
                         }
@@ -216,7 +218,7 @@ public class Cli implements Observer {
             case 9 -> printDevDecks();
             case 10 -> printHandCards();
         }
-        output.print("Please choose an action (select a number between 0 and 9):\n" +
+        output.print("Please choose an action (select a number between 0 and 11):\n" +
                 Constants.getChooseAction() + "\n>");
     }
 
@@ -232,6 +234,7 @@ public class Cli implements Observer {
                 }
                 output.print("Whose game board would you like to view? [" + names + "]\n>");
                 String s = readInputString().toUpperCase();
+                if(s.equalsIgnoreCase("back")) return;
                 for (GameBoardInfo g : clientView.getOtherGameBoards()) {
                     if (g.getOwner().equalsIgnoreCase(s)) {
                         printGameBoard(g);
@@ -258,7 +261,7 @@ public class Cli implements Observer {
         return r;
     }
 
-    protected List<ResourcePosition> askForLocation(List<String> stringList, boolean deposit, boolean canDiscard) {
+    protected List<ResourcePosition> askForLocation(List<String> stringList, boolean deposit, boolean canDiscard, boolean setupResources) {
         List<ResourceQuantity> req = new ArrayList<>();
         List<ResourcePosition> result = new ArrayList<>();
         for (Resource r : Resource.values())
@@ -282,23 +285,41 @@ public class Cli implements Observer {
                         if (!deposit)
                             output.print("Where would you like to take your " + order +
                                     r.getResource().toString().toLowerCase() + " from? [Warehouse/Chest]\n>");
-                        else
+                        else {
+                            if(!setupResources)
                             output.print("Where would you like to store your " + order +
                                     r.getResource().toString().toLowerCase() + " in? [Warehouse/Discard]\n>");
+                            else
+                                output.print("Where would you like to store your " + order +
+                                        r.getResource().toString().toLowerCase() + " in? [Warehouse]\n>");
+                        }
                         s = readInputString().toUpperCase();
-                        if (s.equals("DISCARD"))
+                        if(s.equalsIgnoreCase("back") && !setupResources) return null;
+                        if (s.equalsIgnoreCase("DISCARD"))
                             s = "TRASH_CAN";
                         try {
                             place = Place.valueOf(s);
                             if (place == Place.WAREHOUSE) {
                                 Integer loc = inWarehouse(r.getResource().toString());
                                 if (deposit){
-                                    if (clientView.getOwnGameBoard().getWarehouse().size()>3) loc = null;
+                                    if (clientView.getOwnGameBoard().getWarehouse().size() > 3) loc = null;
                                     if (loc == null){
+                                        if(clientView.getOwnGameBoard().getWarehouse().size() == 3)
                                         output.print("Which shelf would you like to store it in? " +
-                                                "[ 1 / 2 / 3 (4 & 5 are the depots)]\n>");
+                                                "[1/2/3]\n>");
+                                        else if(clientView.getOwnGameBoard().getWarehouse().size() == 4)
+                                            output.print("Which shelf would you like to store it in? " +
+                                                    "[1/2/3/4] (4 is the first depot)\n>");
+                                        else
+                                            output.print("Which shelf would you like to store it in? " +
+                                                    "[1/2/3/4/5] (4, 5 are the depots)\n>");
                                         while (true) {
-                                            int n = readInputInt();
+                                            Integer n;
+                                            if(setupResources)
+                                                n = readInputInt(false);
+                                            else
+                                                n = readInputInt(true);
+                                            if(n == null) return null;
                                             int size = getClientView().getOwnGameBoard().getWarehouse().size();
                                             if (n < 1 || n > size)
                                                 output.print("Please select a number between 1 and " + size + " :\n>");
@@ -313,7 +334,7 @@ public class Cli implements Observer {
                                     break;
                                 } else {
                                     if (loc == null){
-                                        output.print("You don't have this resource in the warehouse, please try again:\n>");
+                                        output.print("You don't have this resource in the warehouse, please try again:\n");
                                     }
                                     else {
                                         shelf = NumOfShelf.values()[loc];
@@ -334,7 +355,7 @@ public class Cli implements Observer {
                                 }
                             } else if (place == Place.CHEST) {
                                 if (deposit)
-                                    output.print("This resource cannot be stored in the chest.\n>");
+                                    output.print("This resource cannot be stored in the chest.\n");
                                 else{
                                     result.add(new ResourcePosition(r.getResource(), place, null));
                                     break;
@@ -656,11 +677,14 @@ public class Cli implements Observer {
         return inputString;
     }
 
-    private int readInputInt() {
+    private Integer readInputInt(boolean canQuit) {
         int inputInt;
+        String line;
         do {
             try {
-                inputInt = Integer.parseInt(input.nextLine());
+                line = input.nextLine();
+                if(line.equalsIgnoreCase("back") && canQuit) return null;
+                inputInt = Integer.parseInt(line);
                 break;
             } catch (InputMismatchException | NumberFormatException e) {
                 output.print("Please insert a valid input.\n>");

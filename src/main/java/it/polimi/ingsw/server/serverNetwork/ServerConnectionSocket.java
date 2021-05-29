@@ -9,13 +9,11 @@ public class ServerConnectionSocket implements Runnable {
     private int port;
     private Server server;
     private boolean active;
-    private ExecutorService executorService;
     private ServerSocket serverSocket;
 
     public ServerConnectionSocket(int port, Server server) {
         this.port = port;
         this.server = server;
-        executorService = Executors.newCachedThreadPool();
         active = true;
     }
 
@@ -23,7 +21,8 @@ public class ServerConnectionSocket implements Runnable {
         while (active) {
             try {
                 ClientConnection clientConnection = new ClientConnection(serverSocket.accept(), server);
-                executorService.submit(clientConnection);
+                Thread newThread = new Thread(clientConnection);
+                newThread.start();
             } catch (IOException e) {
                 System.out.println("Error during connection initialization, quitting...");
             }

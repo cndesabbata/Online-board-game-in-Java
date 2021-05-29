@@ -10,10 +10,7 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class Gui extends Application implements Observer {
 
@@ -29,7 +26,7 @@ public class Gui extends Application implements Observer {
     private boolean active;
     private Scene currentScene;
 
-    public static void main(String[] args) {
+    public static void main(String[] args){
         launch(args);
     }
 
@@ -50,7 +47,7 @@ public class Gui extends Application implements Observer {
         try{
             stage.setTitle("MasterOfRenaissance");
             stage.setScene(currentScene);
-            stage.getIcons().add(new Image(getClass().getResourceAsStream("/graphics/LorenzoIcon.png")));
+            stage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/graphics/LorenzoIcon.png"))));
             stage.show();
         } catch (NullPointerException e){
             System.out.println("Null pointer exception");
