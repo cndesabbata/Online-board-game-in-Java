@@ -2,6 +2,7 @@ package it.polimi.ingsw.client.clientNetwork;
 
 import it.polimi.ingsw.client.view.Cli;
 import it.polimi.ingsw.client.view.ClientView;
+import it.polimi.ingsw.client.view.Gui;
 import it.polimi.ingsw.constants.Constants;
 import it.polimi.ingsw.messages.Message;
 import it.polimi.ingsw.messages.clientMessages.Reconnect;
@@ -24,13 +25,21 @@ public class ClientConnectionSocket implements Runnable{
     private MessageHandler messageHandler;
     private Socket socket;
     private Cli cli;
+    private Gui gui;
 
     public ClientConnectionSocket(Cli cli, MessageHandler messageHandler){
         this.cli = cli;
+        this.gui = null;
         this.messageHandler = messageHandler;
     }
 
-    public boolean setupConnection(ClientView view) throws IOException {
+    public ClientConnectionSocket(Gui gui, MessageHandler messageHandler){
+        this.gui = gui;
+        this.cli = null;
+        this.messageHandler = messageHandler;
+    }
+
+    public boolean setupConnection() throws IOException {
         serverIP = Constants.getAddress();
         serverPort = Constants.getPort();
         try {
@@ -54,14 +63,8 @@ public class ClientConnectionSocket implements Runnable{
             return false;
         }
         Message message = (Message) inputObject;
-        if (message instanceof SetupMessage){
-            System.out.println(((SetupMessage) message).getMessage());
-            return true;
-        }
-        else if (message instanceof ErrorMessage){
-            System.out.println(((ErrorMessage) message).getMessage());
-        }
-        return false;
+        messageHandler.process(message);
+        return (message instanceof SetupMessage);
     }
 
     public void send(Message message) {

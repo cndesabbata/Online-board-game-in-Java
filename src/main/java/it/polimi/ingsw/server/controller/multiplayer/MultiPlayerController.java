@@ -28,7 +28,7 @@ public class MultiPlayerController extends GameController {
         } else {
             if (getPhase() == GamePhase.SETUP) oldPlayer = null;
             Player nextPlayer = nextPlayer();
-            nextPlayer.setTurnActive(true , getPhase() == GamePhase.SETUP, oldPlayer);
+            nextPlayer.setTurnActive(true, getPhase() == GamePhase.SETUP, oldPlayer);
             currentPlayer = nextPlayer;
         }
     }
@@ -65,13 +65,13 @@ public class MultiPlayerController extends GameController {
         }
     }
 
-    public void setup(){
+    public void setup() {
         setPhase(GamePhase.SETUP);
         Collections.shuffle(getActivePlayers());
         currentPlayer = getActivePlayers().get(0);
         currentPlayerIndex = 0;
         getGame().getMarket().notifyNew();
-        for (DevDeck d : getGame().getDevDecks()){
+        for (DevDeck d : getGame().getDevDecks()) {
             d.notifyNew();
         }
         getGame().notifyNewPlayers();
@@ -79,27 +79,27 @@ public class MultiPlayerController extends GameController {
         initialDraw();
     }
 
-    private void initialDraw(){
+    private void initialDraw() {
         currentPlayer.setupDraw();
         currentPlayer.setActionDone(UserAction.SETUP_DRAW);
     }
 
-    public void initialDiscardLeader(int[] indexes){
+    public void initialDiscardLeader(int[] indexes) {
         currentPlayer.setupDiscard(indexes[0], indexes[1], currentPlayerIndex);
         currentPlayer.setActionDone(UserAction.SELECT_LEADCARD);
-        if(currentPlayerIndex == 0) {                                                                                   //the first player will not receive any resources, hence, after having sent the new LeadCards to him, we can move on to the next player.
+        if (currentPlayerIndex == 0) {                                                                                   //the first player will not receive any resources, hence, after having sent the new LeadCards to him, we can move on to the next player.
             changeTurn();
             initialDraw();
         }
     }
 
-    public void addInitialResources(List<ResourcePosition> rps){
+    public void addInitialResources(List<ResourcePosition> rps) {
         currentPlayer.getBoard().getWarehouse().incrementResource(rps);
-        if(currentPlayerIndex == 2 || currentPlayerIndex == 3)
+        if (currentPlayerIndex == 2 || currentPlayerIndex == 3)
             currentPlayer.getBoard().getItinerary().updatePosition(1);
         currentPlayer.setActionDone(UserAction.RESOURCE_SELECTION);
         changeTurn();
-        if(currentPlayer.getActionDone() == UserAction.INITIAL_DISPOSITION) initialDraw();
+        if (currentPlayer.getActionDone() == UserAction.INITIAL_DISPOSITION) initialDraw();
     }
 
     /* computes victory points for every player and sets the game winner */

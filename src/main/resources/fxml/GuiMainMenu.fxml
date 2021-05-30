@@ -7,7 +7,6 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.view.GuiMenuController">
    <children>
       <ImageView fitHeight="400.0" fitWidth="600.0">
@@ -15,9 +14,9 @@
             <Image url="@../graphics/menu_background.png" />
          </image>
       </ImageView>
-      <TextField layoutX="220.0" layoutY="188.0" promptText="Nickname" />
-      <Label layoutX="220.0" layoutY="171.0" text="Please choose your nickname" textFill="#cecece" />
-      <Button layoutX="167.0" layoutY="264.0" mnemonicParsing="false" text="Start new match" />
-      <Button layoutX="332.0" layoutY="264.0" mnemonicParsing="false" text="Resume match" />
+      <TextField fx:id="nickname" layoutX="220.0" layoutY="188.0" promptText="Nickname" />
+      <Label fx:id="mainMessage" layoutX="220.0" layoutY="160.0" text="Please choose your nickname" textFill="#d2d2d2" />
+      <Button id="start" layoutX="167.0" layoutY="264.0" mnemonicParsing="false" onAction="#start" text="Start new match" />
+      <Button id="resume" layoutX="332.0" layoutY="264.0" mnemonicParsing="false" onAction="#resume" text="Resume match" />
    </children>
 </AnchorPane>

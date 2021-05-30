@@ -56,7 +56,7 @@ public class Cli implements Observer {
     private void setup() {
         connectionSocket = new ClientConnectionSocket(this, messageHandler);
         try {
-            while (!connectionSocket.setupConnection(clientView)) {
+            while (!connectionSocket.setupConnection()) {
                 output.println("The entered IP/port doesn't match any active server. Please try again!");
                 output.print("Insert the server IP address\n>");
                 Constants.setAddress(readInputString());

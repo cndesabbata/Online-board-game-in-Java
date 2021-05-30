@@ -1,7 +1,9 @@
 package it.polimi.ingsw.client.view;
 
+import it.polimi.ingsw.client.clientNetwork.ClientConnectionSocket;
 import it.polimi.ingsw.client.clientNetwork.MessageHandler;
 import it.polimi.ingsw.messages.Message;
+import it.polimi.ingsw.messages.clientMessages.internal.DisplayMessage;
 import it.polimi.ingsw.server.observer.Observer;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -20,9 +22,10 @@ public class Gui extends Application implements Observer {
     public static final String GUI_GAME = "GuiGame.fxml";
     private Stage stage;
     private final HashMap<String, Scene> nameToScene = new HashMap<>();
-    private final HashMap<String, GuiController> nameMapController = new HashMap<>();
+    private final HashMap<String, GuiController> nameToController = new HashMap<>();
     private final ClientView view;
     private final MessageHandler messageHandler;
+    private final ClientConnectionSocket connectionSocket;
     private boolean active;
     private Scene currentScene;
 
@@ -32,12 +35,17 @@ public class Gui extends Application implements Observer {
 
     public Gui() {
         this.view = new ClientView(this);
-        messageHandler = new MessageHandler(view);
-        active = true;
+        this.messageHandler = new MessageHandler(view);
+        this.active = true;
+        this.connectionSocket = new ClientConnectionSocket(this, messageHandler);
     }
 
     public ClientView getView() {
         return view;
+    }
+
+    public ClientConnectionSocket getConnectionSocket() {
+        return connectionSocket;
     }
 
     @Override
@@ -63,7 +71,7 @@ public class Gui extends Application implements Observer {
                 nameToScene.put(path, new Scene(loader.load()));
                 GuiController controller = loader.getController();
                 controller.setGui(this);
-                nameMapController.put(path, controller);
+                nameToController.put(path, controller);
             }
         } catch (IOException e) {
             System.out.println("Error in Gui configuration.");
@@ -72,8 +80,18 @@ public class Gui extends Application implements Observer {
         currentScene = nameToScene.get(CONNECTION_MENU);
     }
 
+    public void changeStage(String newScene) {
+        currentScene = nameToScene.get(newScene);
+        stage.setScene(currentScene);
+        stage.show();
+    }
+
     @Override
     public void update(Message message) {
-
+        if (message instanceof DisplayMessage){
+            DisplayMessage m = (DisplayMessage) message;
+            if (currentScene.equals(MAIN_MENU))
+                ((GuiMenuController) nameToController.get(MAIN_MENU)).setMainMessage(m.getMessage());
+        }
     }
 }

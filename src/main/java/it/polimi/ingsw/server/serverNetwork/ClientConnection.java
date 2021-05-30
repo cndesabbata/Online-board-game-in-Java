@@ -72,7 +72,7 @@ public class ClientConnection implements Runnable {
             }
             server.removeClient(this);
         } catch (IOException e) {
-            if (gameController.getPhase() == GamePhase.STARTED && gameController instanceof MultiPlayerController){
+            if (gameController!=null && gameController.getPhase() == GamePhase.STARTED && gameController instanceof MultiPlayerController){
                 if (((MultiPlayerController) getGameController()).getCurrentPlayer().getNickname().equals(playerNickname))
                     ((MultiPlayerController) getGameController()).changeTurn();
                 server.unregisterClient(this);

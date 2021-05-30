@@ -44,6 +44,8 @@ public class MessageHandler {
                 view.setClientMessage(new SetupResources(e.getMessage()));
             else if (e.getErrorType() == ErrorType.SOCKET_ERROR)
                 view.setClientMessage(new DisplayMessage(e.getMessage()));
+            else
+                view.setClientMessage(new DisplayMessage(e.getMessage()));
         }
         else if (message instanceof SetupMessage || message instanceof Disconnection){
             view.setClientMessage(new DisplayMessage(((CustomMessage) message).getMessage()));
