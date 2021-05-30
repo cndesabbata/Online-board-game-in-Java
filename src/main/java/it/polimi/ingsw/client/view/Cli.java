@@ -4,6 +4,7 @@ import it.polimi.ingsw.client.clientNetwork.ClientConnectionSocket;
 import it.polimi.ingsw.constants.Constants;
 import it.polimi.ingsw.client.clientNetwork.MessageHandler;
 import it.polimi.ingsw.messages.Message;
+import it.polimi.ingsw.messages.clientMessages.JoinLobby;
 import it.polimi.ingsw.messages.clientMessages.LeaderCardSelection;
 import it.polimi.ingsw.messages.clientMessages.ResourceSelection;
 import it.polimi.ingsw.messages.clientMessages.SetPlayersNumber;
@@ -42,11 +43,17 @@ public class Cli implements Observer {
         System.out.print("Insert the server IP address\n>");
         String ip = scanner.nextLine();
         System.out.print("Insert the server port\n>");
-        int port = scanner.nextInt();
-        Constants.setAddress(ip);
-        Constants.setPort(port);
-        Cli cli = new Cli();
-        cli.setup();
+        try {
+            int port = scanner.nextInt();
+            Constants.setAddress(ip);
+            Constants.setPort(port);
+            Cli cli = new Cli();
+            cli.setup();
+        }
+        catch (InputMismatchException e){
+            System.out.println("Numeric format requested for the port. Application will now close.");
+            System.exit(0);
+        }
     }
 
     public boolean isActive() {
@@ -106,14 +113,38 @@ public class Cli implements Observer {
         if (m instanceof DisplayMessage) {
             output.println(m.getMessage());
         } else if (m instanceof RequestPlayersNumber) {
-            output.print(m.getMessage() + "\n>");
-            Integer number = 0;
-            while (request) {
-                number = readInputInt(false);
-                if (number >= 1 && number <= 4) request = false;
-                else output.print("Please choose a number between 1 and 4:\n>");
+            RequestPlayersNumber r = (RequestPlayersNumber) m;
+            output.println(r.getMessage() +"[start/join]");
+            for(int i = 0; i < r.getInfoLobbies().size(); i++){
+                output.println((i+1) + ". " +r.getInfoLobbies().get(i));
             }
-            connectionSocket.send(new SetPlayersNumber(number));
+            output.print(">");
+            String answer = null;
+            while (request) {
+                answer = readInputString();
+                if (answer.equalsIgnoreCase("join")) {
+                    output.print("Type the number of the lobby you want to join: \n>");
+                    boolean lobbySel = true;
+                    int l = 0;
+                    while (lobbySel) {
+                        l = readInputInt(false);
+                        if (l >= 1 && l <= r.getInfoLobbies().size()) lobbySel = false;
+                        else output.print("Please choose a number between 1 and " + r.getInfoLobbies().size());
+                    }
+                    connectionSocket.send(new JoinLobby(r.getOwners().get(l - 1)));
+                    request = false;
+                } else if (answer.equalsIgnoreCase("start")) {
+                    Integer number = 0;
+                    output.print("Please choose a number of players:\n>");
+                    while (request) {
+                        number = readInputInt(false);
+                        if (number >= 1 && number <= 4) request = false;
+                        else output.print("Please choose a number between 1 and 4:\n>");
+                    }
+                    connectionSocket.send(new SetPlayersNumber(number));
+                    request = false;
+                }
+            }
         } else if (m instanceof SetupDiscard) {
             output.print(m.getMessage());
             int index1 = 0;

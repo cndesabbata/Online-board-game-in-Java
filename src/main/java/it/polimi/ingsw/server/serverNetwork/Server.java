@@ -7,28 +7,26 @@ import it.polimi.ingsw.server.controller.multiplayer.MultiPlayerController;
 import it.polimi.ingsw.server.controller.singleplayer.SinglePlayerController;
 
 import java.util.*;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
 public class Server {
     private final Map<VirtualView, ClientConnection> clientToConnection;
     private final ServerConnectionSocket serverConnectionSocket;
     private final List<GameController> gameControllers;
-    private int totalPlayers;
-    private final ArrayList<ClientConnection> waitingList;
+    private final ArrayList<String> totalNicknames;                                                                     //used to check the availability of a nickname
+    private final ArrayList<Lobby> lobbies;
 
     public Server() {
         this.clientToConnection = new HashMap<>();
         this.gameControllers = new ArrayList<>();
         this.serverConnectionSocket = new ServerConnectionSocket(Constants.getPort(), this);
-        this.totalPlayers = -1;
-        this.waitingList = new ArrayList<>();
+        this.totalNicknames = new ArrayList<>();
+        this.lobbies = new ArrayList<>();
         Thread thread = new Thread(this::serverQuitter);
         thread.start();
     }
 
-    public void serverQuitter() {
+    public void serverQuitter() {                                                                                       //DO NOT SYNCHRONIZE
         Scanner scanner = new Scanner(System.in);
         while (true) {
             if (scanner.next().equalsIgnoreCase("QUIT")) {
@@ -39,14 +37,46 @@ public class Server {
         }
     }
 
-    public void removeClient(ClientConnection connection) {
+    public synchronized ArrayList<String> getTotalNicknames() {
+        return totalNicknames;
+    }
+
+    public synchronized ArrayList<Lobby> getLobbies() {
+        return lobbies;
+    }
+
+    public synchronized void removeClient(ClientConnection connection) {
         connection.getGameController().getGame().getPlayers()
                 .removeIf(p -> p.getNickname().equals(connection.getPlayerNickname()));
-        waitingList.removeIf(c -> c == connection);
+        totalNicknames.removeIf(n -> n.equalsIgnoreCase(connection.getPlayerNickname()));
+        for(int i = 0; i < lobbies.size(); i++){
+            Lobby l = lobbies.get(i);
+            if(l.getOwner().equalsIgnoreCase(connection.getPlayerNickname())){
+                lobbies.remove(l);
+                for(ClientConnection c : l.getWaitingList()){
+                    if(c != connection)
+                        c.sendSocketMessage(new PlayersNumberMessage("The host of the selected lobby " +
+                                "has disconnected, please select another one", lobbies));
+                }
+                break;
+            }
+            else {
+                for(int j = 1; j < l.getWaitingList().size(); j++){
+                    ClientConnection c = l.getWaitingList().get(j);
+                    if(c == connection){
+                        l.removeFromWaitingList(connection);
+                        find(l.getWaitingList().get(0), clientToConnection).sendAllExcept
+                                (new SetupMessage("PLayer " +connection.getPlayerNickname()+ " has disconnected"),
+                                        connection.getPlayerNickname());
+                        break;
+                    }
+                }
+            }
+        }
         unregisterClient(connection);
     }
 
-    public void unregisterClient(ClientConnection connection) {
+    public synchronized void unregisterClient(ClientConnection connection) {
         VirtualView view = find(connection, clientToConnection);
         String nickname = connection.getPlayerNickname();
         view.sendAllExcept(new Disconnection("Player " + nickname + " disconnected."), nickname);
@@ -55,46 +85,51 @@ public class Server {
         connection.getGameController().removeObserver(find(connection, clientToConnection));
         connection.getGameController().getActivePlayers().removeIf(p -> p.getNickname().equals(nickname));
         view.setClientConnection(null);
-        clientToConnection.remove(connection);
+        clientToConnection.remove(view);
     }
 
-    public ServerConnectionSocket getSocketServer() {
+    public synchronized ServerConnectionSocket getSocketServer() {
         return serverConnectionSocket;
     }
 
-    public void setTotalPlayers(int totalPlayers, ClientConnection connection) {
-        this.totalPlayers = totalPlayers;
+    public synchronized void setTotalPlayers(int totalPlayers, ClientConnection connection) {
         if (totalPlayers == 1) {
             gameControllers.add(0, new SinglePlayerController(this));
             gameControllers.get(0).setUpPlayer(connection);
             connection.setGameController(gameControllers.get(0));
-            waitingList.clear();
             gameControllers.get(0).addObserver(find(connection, clientToConnection));
             gameControllers.get(0).setup();
         } else {
             gameControllers.add(0, new MultiPlayerController(this));
+            Lobby newLobby = new Lobby(totalPlayers, connection, gameControllers.get(0));
+            lobbies.add(newLobby);
             gameControllers.get(0).setUpPlayer(connection);
             connection.setGameController(gameControllers.get(0));
             connection.sendSocketMessage(new SetupMessage("Please wait for other players to join...\n"));
         }
     }
 
-    private void lobby(ClientConnection connection) {
-        waitingList.add(connection);
-        if (waitingList.size() == 1) {
-            connection.sendSocketMessage(new PlayersNumberMessage(connection.getPlayerNickname() +
-                    ", you are the lobby host, please choose the number of players: [1...4]"));
-        } else if (waitingList.size() == totalPlayers) {
-            VirtualView v = find(connection, clientToConnection);
-            v.sendAll(new SetupMessage("Player number reached. The match is starting."));
-            waitingList.clear();
-            for (ClientConnection c : gameControllers.get(0).getActiveConnections()) {
-                gameControllers.get(0).addObserver(find(c, clientToConnection));
+    public synchronized void join(ClientConnection connection, String lobbyHost){
+        Lobby lobby = null;
+        for(Lobby l : lobbies){
+            if(l.getOwner().equalsIgnoreCase(lobbyHost)){
+                l.addToWaitingList(connection);
+                lobby = l;
+                break;
             }
-            gameControllers.get(0).setup();
-        } else {
-            VirtualView v = find(connection, clientToConnection);
-            v.sendAll(new SetupMessage((totalPlayers - waitingList.size()) + " slots left."));
+        }
+        if(lobby != null ){
+            lobby.getGameController().setUpPlayer(connection);
+            connection.setGameController(lobby.getGameController());
+            if(lobby.getWaitingList().size() == lobby.getTotalPlayers()) {
+                VirtualView v = find(connection, clientToConnection);
+                v.sendAll(new SetupMessage("Player number reached. The match is starting."));
+                for(ClientConnection c : lobby.getWaitingList()){
+                    lobby.getGameController().addObserver(find(c,clientToConnection));
+                }
+                lobbies.remove(lobby);
+                lobby.getGameController().setup();
+            }
         }
     }
 
@@ -125,23 +160,20 @@ public class Server {
     }
 
     public synchronized void registerClient(String nickname, ClientConnection connection) throws InterruptedException {
-        for (GameController gc : gameControllers) {
-            if (gc.getGame().getPlayers().stream().anyMatch(p -> p.getNickname().equalsIgnoreCase(nickname))) {
+        for (String s : totalNicknames) {
+            if (s.equalsIgnoreCase(nickname)) {
                 ErrorMessage error = new ErrorMessage("This nickname is already in use, please choose another one.", ErrorType.DUPLICATE_NICKNAME);
                 connection.sendSocketMessage(error);
                 return;
             }
         }
+        totalNicknames.add(nickname);
         VirtualView virtualView = new VirtualView(nickname, connection);
         clientToConnection.put(virtualView, connection);
         connection.sendSocketMessage(new SetupMessage("Connection was successfully set-up!" +
                 " You are now connected."));
-        if (waitingList.size() > 0) {
-            connection.setGameController(gameControllers.get(0));
-            gameControllers.get(0).setUpPlayer(connection);
-            virtualView.sendAll(new SetupMessage(nickname + " joined the game"));
-        }
-        lobby(connection);
+        connection.sendSocketMessage(new PlayersNumberMessage(connection.getPlayerNickname() +
+                ", please choose whether you want to create a new lobby or join an existing one.", lobbies));
     }
 
     public static void main(String[] args) {
@@ -173,7 +205,5 @@ public class Server {
         Server server = new Server();
         Thread thread = new Thread(server.serverConnectionSocket);
         thread.start();
-        /*ExecutorService executor = Executors.newCachedThreadPool();
-        executor.submit(server.serverConnectionSocket);*/
     }
 }
