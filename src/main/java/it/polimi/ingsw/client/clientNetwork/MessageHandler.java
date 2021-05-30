@@ -27,9 +27,7 @@ public class MessageHandler {
     public void process(Message message){
         if (message instanceof ErrorMessage){
             ErrorMessage e = (ErrorMessage) message;
-            if ((e.getErrorType() == ErrorType.PLAYER_NUMBER))
-                view.setClientMessage(new RequestPlayersNumber(e.getMessage()));
-            else if (e.getErrorType() == ErrorType.WRONG_ACTION)
+            if (e.getErrorType() == ErrorType.WRONG_ACTION)
                 view.setClientMessage(new ChooseAction(e.getMessage()
                                     + "Please choose an action (select a number between 0 and 11):\n" +
                                     Constants.getChooseAction() +  "\n>"));
@@ -51,7 +49,8 @@ public class MessageHandler {
             view.setClientMessage(new DisplayMessage(((CustomMessage) message).getMessage()));
         }
         else if (message instanceof PlayersNumberMessage){
-            view.setClientMessage(new RequestPlayersNumber(((PlayersNumberMessage) message).getMessage()));
+            PlayersNumberMessage p = (PlayersNumberMessage) message;
+            view.setClientMessage(new RequestPlayersNumber(p.getMessage(), p.getInfoLobbies(), p.getOwners()));
         }
         else if (message instanceof ChangesDone){
             ChangesDone m = (ChangesDone) message;
@@ -161,7 +160,6 @@ public class MessageHandler {
         }
         else if (m instanceof NewHandCards){
             NewHandCards h = (NewHandCards) m;
-            GameBoardInfo g = findBoardByOwner(h.getOwner());
             List<LeadCardInfo> hand = new ArrayList<>();
             for (LeaderCard c : h.getHandLeaderCards()){
                 hand.add(new LeadCardInfo(c));

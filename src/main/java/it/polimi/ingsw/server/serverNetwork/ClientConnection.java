@@ -3,6 +3,7 @@ package it.polimi.ingsw.server.serverNetwork;
 import it.polimi.ingsw.messages.actions.Action;
 import it.polimi.ingsw.messages.clientMessages.*;
 import it.polimi.ingsw.messages.serverMessages.ErrorType;
+import it.polimi.ingsw.messages.serverMessages.PlayersNumberMessage;
 import it.polimi.ingsw.server.controller.GameController;
 import it.polimi.ingsw.messages.*;
 import it.polimi.ingsw.messages.serverMessages.ErrorMessage;
@@ -117,6 +118,16 @@ public class ClientConnection implements Runnable {
                         "Not a valid input, please provide a number between 1 and 4.", ErrorType.PLAYER_NUMBER));
             }
             else server.setTotalPlayers(((SetPlayersNumber) clientMessage).getNumOfPlayers(), this);
+        }
+        else if (clientMessage instanceof JoinLobby){
+            synchronized (server.getLobbies()) {
+                JoinLobby j = (JoinLobby) clientMessage;
+                if (server.getLobbies().stream().noneMatch(L -> L.getOwner().equalsIgnoreCase(j.getLobbyHost())))
+                    sendSocketMessage(new PlayersNumberMessage(
+                            "Not a valid lobby, please select another one.", server.getLobbies()));
+                else
+                    server.join(this, j.getLobbyHost());
+            }
         }
         else if (clientMessage instanceof LeaderCardSelection){
             if (checkMessageMultiplayer(GamePhase.SETUP)
