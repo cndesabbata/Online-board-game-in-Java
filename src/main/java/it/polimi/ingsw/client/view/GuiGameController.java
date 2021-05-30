@@ -9,4 +9,8 @@ public class GuiGameController implements GuiController{
         this.gui = gui;
         view = gui.getView();
     }
+
+    public void initializeGame(){
+
+    }
 }

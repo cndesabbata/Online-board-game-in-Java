@@ -46,8 +46,10 @@ public class Server {
     }
 
     public synchronized void removeClient(ClientConnection connection) {
-        connection.getGameController().getGame().getPlayers()
-                .removeIf(p -> p.getNickname().equals(connection.getPlayerNickname()));
+        if (connection.getGameController() != null){
+            connection.getGameController().getGame().getPlayers()
+                    .removeIf(p -> p.getNickname().equals(connection.getPlayerNickname()));
+        }
         totalNicknames.removeIf(n -> n.equalsIgnoreCase(connection.getPlayerNickname()));
         for(int i = 0; i < lobbies.size(); i++){
             Lobby l = lobbies.get(i);
@@ -79,11 +81,13 @@ public class Server {
     public synchronized void unregisterClient(ClientConnection connection) {
         VirtualView view = find(connection, clientToConnection);
         String nickname = connection.getPlayerNickname();
-        view.sendAllExcept(new Disconnection("Player " + nickname + " disconnected."), nickname);
         connection.close();
-        connection.getGameController().getActiveConnections().removeIf(c -> c == connection);
-        connection.getGameController().removeObserver(find(connection, clientToConnection));
-        connection.getGameController().getActivePlayers().removeIf(p -> p.getNickname().equals(nickname));
+        if (connection.getGameController() != null) {
+            view.sendAllExcept(new Disconnection("Player " + nickname + " disconnected."), nickname);
+            connection.getGameController().getActiveConnections().removeIf(c -> c == connection);
+            connection.getGameController().removeObserver(find(connection, clientToConnection));
+            connection.getGameController().getActivePlayers().removeIf(p -> p.getNickname().equals(nickname));
+        }
         view.setClientConnection(null);
         clientToConnection.remove(view);
     }
@@ -119,6 +123,8 @@ public class Server {
             }
         }
         if(lobby != null ){
+            find(lobby.getWaitingList().get(0), clientToConnection)
+                    .sendAll(new SetupMessage(connection.getPlayerNickname().toUpperCase() + "joined the game."));
             lobby.getGameController().setUpPlayer(connection);
             connection.setGameController(lobby.getGameController());
             if(lobby.getWaitingList().size() == lobby.getTotalPlayers()) {

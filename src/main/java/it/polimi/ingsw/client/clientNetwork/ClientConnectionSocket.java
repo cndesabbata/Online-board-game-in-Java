@@ -80,7 +80,7 @@ public class ClientConnectionSocket implements Runnable{
     @Override
     public void run() {
         Message message = null;
-        while (cli.isActive()){
+        while (true){
             try {
                 message = (Message) input.readObject();
                 messageHandler.process(message);

@@ -1,11 +1,18 @@
 package it.polimi.ingsw.client.view;
 
 import it.polimi.ingsw.constants.Constants;
+import it.polimi.ingsw.messages.clientMessages.JoinLobby;
+import it.polimi.ingsw.messages.clientMessages.SetPlayersNumber;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.InputMismatchException;
+import java.util.List;
 
 public class GuiMenuController implements GuiController{
     private Gui gui;
@@ -14,6 +21,10 @@ public class GuiMenuController implements GuiController{
     @FXML private Label connectionMessage;
     @FXML private TextField nickname;
     @FXML private Label mainMessage;
+    @FXML private ChoiceBox<String> playersNumber;
+    @FXML private ChoiceBox<String> lobbies;
+    @FXML private Label lobbyMessage;
+    private final String[] numberOptions = {"1","2","3","4"};
 
 
     @Override
@@ -46,23 +57,23 @@ public class GuiMenuController implements GuiController{
         }
     }
 
-    public void start(){
+
+    public void start() throws InterruptedException {
         if (nicknameCheck(true)) {
             gui.getView().setNickname(nickname.getText());
             gui.getView().getOwnGameBoard().setOwner(nickname.getText());
             Thread thread = new Thread(gui.getConnectionSocket());
             thread.start();
-            gui.changeStage("GuiLobbyMenu.fxml");
         }
     }
 
-    public void resume(){
+
+    public void resume() throws InterruptedException {
         if (nicknameCheck(false)){
             gui.getView().setNickname(nickname.getText());
             gui.getView().getOwnGameBoard().setOwner(nickname.getText());
             Thread thread = new Thread(gui.getConnectionSocket());
             thread.start();
-            gui.changeStage("GuiGame.fxml");
         }
     }
 
@@ -79,14 +90,35 @@ public class GuiMenuController implements GuiController{
     }
 
     public void join(){
-
+        String lobbyJoined = lobbies.getValue();
+        if (lobbyJoined == null || lobbyJoined.isEmpty()){
+            lobbyMessage.setText("Error: missing parameters.");
+            return;
+        }
+        gui.getConnectionSocket().send(new JoinLobby(lobbyJoined));
     }
 
     public void newLobby(){
+        int players;
+        try{
+            players = Integer.parseInt(playersNumber.getValue());
+        } catch (InputMismatchException e){
+            lobbyMessage.setText("Error: missing parameters.");
+            return;
+        }
+        gui.getConnectionSocket().send(new SetPlayersNumber(players));
+    }
 
+    public void setLobbyMessage(String message){
+        mainMessage.setText(message);
     }
 
     public void setMainMessage(String message) {
         mainMessage.setText(message);
+    }
+
+    public void initializeLobby(List<String> lobbyList){
+        playersNumber.getItems().addAll(numberOptions);
+        lobbies.getItems().addAll(lobbyList);
     }
 }

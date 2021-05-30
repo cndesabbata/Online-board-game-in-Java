@@ -73,13 +73,18 @@ public class ClientConnection implements Runnable {
             }
             server.removeClient(this);
         } catch (IOException e) {
-            if (gameController!=null && gameController.getPhase() == GamePhase.STARTED && gameController instanceof MultiPlayerController){
-                if (((MultiPlayerController) getGameController()).getCurrentPlayer().getNickname().equals(playerNickname))
-                    ((MultiPlayerController) getGameController()).changeTurn();
-                server.unregisterClient(this);
+            if (playerNickname != null){
+                if (gameController!=null && gameController.getPhase() == GamePhase.STARTED && gameController instanceof MultiPlayerController){
+                    if (((MultiPlayerController) getGameController()).getCurrentPlayer().getNickname().equals(playerNickname))
+                        ((MultiPlayerController) getGameController()).changeTurn();
+                    server.unregisterClient(this);
+                }
+                else server.removeClient(this);
+                System.out.println(playerNickname + " disconnected.");
             }
-            else server.removeClient(this);
-            System.out.println(e.getMessage());
+            else {
+                System.out.println("A player disconnected.");
+            }
         } catch (ClassNotFoundException e){
             System.out.println(e.getMessage());
         }
