@@ -3,16 +3,12 @@ package it.polimi.ingsw.client.view;
 import it.polimi.ingsw.constants.Constants;
 import it.polimi.ingsw.messages.clientMessages.JoinLobby;
 import it.polimi.ingsw.messages.clientMessages.SetPlayersNumber;
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.image.ImageView;
-import javafx.stage.Screen;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
 
@@ -56,7 +52,7 @@ public class GuiMenuController implements GuiController{
                 System.err.println("Error during socket configuration! Application will now close.");
                 System.exit(0);
             }
-            gui.changeStage("GuiMainMenu.fxml");
+            gui.changeScene("GuiMainMenu.fxml");
         }
     }
 

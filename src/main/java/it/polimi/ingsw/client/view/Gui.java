@@ -64,7 +64,6 @@ public class Gui extends Application implements Observer {
             stage.setResizable(false);
             stage.setMaximized(true);
             stage.setFullScreen(true);
-            stage.setFullScreenExitHint("");
             stage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
             stage.show();
         } catch (NullPointerException e){
@@ -90,13 +89,12 @@ public class Gui extends Application implements Observer {
         currentScene = nameToScene.get(CONNECTION_MENU);
     }
 
-    public void changeStage(String newScene) {
+    public void changeScene(String newScene) {
         currentScene = nameToScene.get(newScene);
         stage.setScene(currentScene);
         stage.setResizable(false);
         stage.setMaximized(true);
         stage.setFullScreen(true);
-        stage.setFullScreenExitHint("");
         stage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
         stage.show();
     }
@@ -116,7 +114,7 @@ public class Gui extends Application implements Observer {
             }
             else if (currentScene.equals(nameToScene.get(LOBBY_MENU))){
                 Platform.runLater(() -> {
-                    changeStage(WAIT_PLAYERS);
+                    changeScene(WAIT_PLAYERS);
                 });
             }
             else if (currentScene.equals(nameToScene.get(WAIT_PLAYERS)))
@@ -128,13 +126,13 @@ public class Gui extends Application implements Observer {
             RequestPlayersNumber r = (RequestPlayersNumber) message;
             Platform.runLater(() -> {
                 ((GuiMenuController) nameToController.get(LOBBY_MENU)).initializeLobby(r.getOwners());
-                changeStage(LOBBY_MENU);
+                changeScene(LOBBY_MENU);
             });
         }
         else if (message instanceof NewView){
             Platform.runLater(() -> {
                 ((GuiGameController) nameToController.get(GUI_GAME)).initializeGame();
-                changeStage(GUI_GAME);
+                changeScene(GUI_GAME);
             });
         }
     }
