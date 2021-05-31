@@ -72,7 +72,7 @@ public class Gui extends Application implements Observer {
             e.printStackTrace();
         }
     }
-
+    //setup method
     private void setup() {
         List<String> fxmList = new ArrayList<>(Arrays.asList(CONNECTION_MENU, MAIN_MENU, LOBBY_MENU, GUI_GAME, WAIT_PLAYERS));
         try {
