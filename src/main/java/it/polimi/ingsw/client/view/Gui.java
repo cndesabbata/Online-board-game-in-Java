@@ -58,9 +58,9 @@ public class Gui extends Application implements Observer {
         setup();
         this.stage = stage;
         try{
-            stage.setTitle("MasterOfRenaissance");
+            stage.setTitle("Master Of Renaissance");
             stage.setScene(currentScene);
-            stage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/graphics/LorenzoIcon.png"))));
+            stage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/graphics/GiglioFirenze.png"))));
             stage.setResizable(false);
             stage.setMaximized(true);
             stage.setFullScreen(true);
