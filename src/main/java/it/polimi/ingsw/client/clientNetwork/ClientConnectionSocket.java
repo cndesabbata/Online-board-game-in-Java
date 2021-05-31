@@ -1,7 +1,6 @@
 package it.polimi.ingsw.client.clientNetwork;
 
 import it.polimi.ingsw.client.view.Cli;
-import it.polimi.ingsw.client.view.ClientView;
 import it.polimi.ingsw.client.view.Gui;
 import it.polimi.ingsw.constants.Constants;
 import it.polimi.ingsw.messages.Message;
@@ -57,7 +56,7 @@ public class ClientConnectionSocket implements Runnable{
         else send(new Reconnect(nickname));
         Object inputObject;
         try {
-             inputObject = input.readObject();
+            inputObject = input.readObject();
         } catch (IOException | ClassNotFoundException e) {
             messageHandler.process(new ErrorMessage("Error in reading server answer", ErrorType.SOCKET_ERROR));
             return false;

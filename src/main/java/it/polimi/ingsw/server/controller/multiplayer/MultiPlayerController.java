@@ -7,7 +7,6 @@ import it.polimi.ingsw.server.controller.UserAction;
 import it.polimi.ingsw.server.model.*;
 import it.polimi.ingsw.server.serverNetwork.Server;
 
-import javax.print.attribute.standard.Finishings;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -99,7 +98,7 @@ public class MultiPlayerController extends GameController {
             currentPlayer.getBoard().getItinerary().updatePosition(1);
         currentPlayer.setActionDone(UserAction.RESOURCE_SELECTION);
         changeTurn();
-        if (currentPlayer.getActionDone() == UserAction.INITIAL_DISPOSITION) initialDraw();
+        if (getPhase() == GamePhase.SETUP) initialDraw();
     }
 
     /* computes victory points for every player and sets the game winner */

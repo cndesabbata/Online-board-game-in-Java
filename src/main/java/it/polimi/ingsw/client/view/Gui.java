@@ -14,7 +14,10 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCombination;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.io.IOException;
 import java.util.*;
@@ -34,6 +37,7 @@ public class Gui extends Application implements Observer {
     private final ClientConnectionSocket connectionSocket;
     private boolean active;
     private Scene currentScene;
+    private MediaPlayer mediaPlayer;                                                                                    //this attribute is needed to keep the music going after the end of method start
 
     public static void main(String[] args){
         launch(args);
@@ -61,17 +65,23 @@ public class Gui extends Application implements Observer {
         try{
             stage.setTitle("Master Of Renaissance");
             stage.setScene(currentScene);
-            stage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/graphics/GiglioFirenze.png"))));
+            stage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/graphics/IrisFlorence.png"))));
             stage.setResizable(false);
             stage.setMaximized(true);
             stage.setFullScreen(true);
             stage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
+            Media audio = new Media(Objects.requireNonNull(getClass().getClassLoader()
+                    .getResource("audio/Intro.mp3")).toExternalForm());
+            mediaPlayer = new MediaPlayer(audio);
+            mediaPlayer.setAutoPlay(true);
+            mediaPlayer.setCycleCount(1);
+            mediaPlayer.setVolume(35);
             stage.show();
         } catch (NullPointerException e){
             System.out.println("Null pointer exception");
-            e.printStackTrace();
         }
     }
+
     //setup method
     private void setup() {
         List<String> fxmList = new ArrayList<>(Arrays.asList(CONNECTION_MENU, MAIN_MENU, LOBBY_MENU, GUI_GAME, WAIT_PLAYERS));

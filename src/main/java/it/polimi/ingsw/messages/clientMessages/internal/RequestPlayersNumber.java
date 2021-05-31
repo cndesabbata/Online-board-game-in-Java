@@ -1,3 +1,4 @@
+
 package it.polimi.ingsw.messages.clientMessages.internal;
 
 import java.util.List;

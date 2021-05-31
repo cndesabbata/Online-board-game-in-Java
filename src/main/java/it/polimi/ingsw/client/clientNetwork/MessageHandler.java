@@ -39,7 +39,7 @@ public class MessageHandler {
             else if (e.getErrorType() == ErrorType.SETUP_DRAW)
                 view.setClientMessage(new SetupDiscard(e.getMessage()));
             else if (e.getErrorType() == ErrorType.SETUP_RESOURCE)
-                view.setClientMessage(new SetupResources(e.getMessage()));
+                view.setClientMessage(new SetupResources(e.getMessage() + "\n>"));
             else if (e.getErrorType() == ErrorType.SOCKET_ERROR)
                 view.setClientMessage(new DisplayMessage(e.getMessage()));
             else
@@ -103,7 +103,7 @@ public class MessageHandler {
             }
             else {
                 view.setTurnActive(false);
-                view.setClientMessage(new DisplayMessage("It's " + m.getNewPlayer() +
+                view.setClientMessage(new DisplayMessage("It's " + m.getNewPlayer().toUpperCase() +
                         "'s turn. Pleas wait for him/her to make an action...\n"));
             }
         }

@@ -2,9 +2,9 @@ package it.polimi.ingsw.client.view;
 
 import it.polimi.ingsw.client.clientNetwork.ClientConnectionSocket;
 import it.polimi.ingsw.constants.Constants;
+import it.polimi.ingsw.messages.clientMessages.JoinLobby;
 import it.polimi.ingsw.client.clientNetwork.MessageHandler;
 import it.polimi.ingsw.messages.Message;
-import it.polimi.ingsw.messages.clientMessages.JoinLobby;
 import it.polimi.ingsw.messages.clientMessages.LeaderCardSelection;
 import it.polimi.ingsw.messages.clientMessages.ResourceSelection;
 import it.polimi.ingsw.messages.clientMessages.SetPlayersNumber;
@@ -114,10 +114,16 @@ public class Cli implements Observer {
             output.println(m.getMessage());
         } else if (m instanceof RequestPlayersNumber) {
             RequestPlayersNumber r = (RequestPlayersNumber) m;
-            output.println(r.getMessage());
+            if(r.getInfoLobbies().isEmpty())
+                output.println(r.getMessage()+ " Please type start to begin: [start]");
+            else
+                output.println(r.getMessage());
             for(int i = 0; i < r.getInfoLobbies().size(); i++){
                 output.println((i+1) + ". " +r.getInfoLobbies().get(i));
             }
+            if(!r.getInfoLobbies().isEmpty())
+                output.println("Please type start if you want to create a new lobby, " +
+                        "or join if you want to join an existing one: [start/join]");
             output.print(">");
             String answer = null;
             while (request) {
@@ -147,10 +153,12 @@ public class Cli implements Observer {
                     }
                     connectionSocket.send(new SetPlayersNumber(number));
                     request = false;
-                }
-                else
-                    if(r.getInfoLobbies().isEmpty())
+                } else {
+                    if (r.getInfoLobbies().isEmpty())
                         output.print("Invalid input. There is no lobby available at the moment, please type start.\n>");
+                    else
+                        output.print("Invalid input. Please type the number of the lobby you want to join:\n>");
+                }
             }
         } else if (m instanceof SetupDiscard) {
             output.print(m.getMessage());
@@ -175,6 +183,8 @@ public class Cli implements Observer {
             } else if (clientView.getPlayerIndex() == 3) {
                 for (int i = 0; i < 2; i++) {
                     Resource r = askForResource();
+                    if(i == 0)
+                        output.print(">");
                     s.add(r.toString());
                 }
             }
@@ -325,8 +335,8 @@ public class Cli implements Observer {
                                     r.getResource().toString().toLowerCase() + " from? [Warehouse/Chest]\n>");
                         else {
                             if(!setupResources)
-                            output.print("Where would you like to store your " + order +
-                                    r.getResource().toString().toLowerCase() + " in? [Warehouse/Discard]\n>");
+                                output.print("Where would you like to store your " + order +
+                                        r.getResource().toString().toLowerCase() + " in? [Warehouse/Discard]\n>");
                             else
                                 output.print("Where would you like to store your " + order +
                                         r.getResource().toString().toLowerCase() + " in? [Warehouse]\n>");
@@ -343,8 +353,8 @@ public class Cli implements Observer {
                                     if (clientView.getOwnGameBoard().getWarehouse().size() > 3) loc = null;
                                     if (loc == null){
                                         if(clientView.getOwnGameBoard().getWarehouse().size() == 3)
-                                        output.print("Which shelf would you like to store it in? " +
-                                                "[1/2/3]\n>");
+                                            output.print("Which shelf would you like to store it in? " +
+                                                    "[1/2/3]\n>");
                                         else if(clientView.getOwnGameBoard().getWarehouse().size() == 4)
                                             output.print("Which shelf would you like to store it in? " +
                                                     "[1/2/3/4] (4 is the first depot)\n>");

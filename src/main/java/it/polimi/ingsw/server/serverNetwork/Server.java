@@ -124,7 +124,7 @@ public class Server {
         }
         if(lobby != null ){
             find(lobby.getWaitingList().get(0), clientToConnection)
-                    .sendAll(new SetupMessage(connection.getPlayerNickname().toUpperCase() + "joined the game."));
+                    .sendAll(new SetupMessage(connection.getPlayerNickname().toUpperCase() + " joined the game."));
             lobby.getGameController().setUpPlayer(connection);
             connection.setGameController(lobby.getGameController());
             connection.sendSocketMessage(new SetupMessage("You have successfully joined the match."));
@@ -180,11 +180,11 @@ public class Server {
         connection.sendSocketMessage(new SetupMessage("Connection was successfully set-up!" +
                 " You are now connected."));
         if(!lobbies.isEmpty())
-        connection.sendSocketMessage(new PlayersNumberMessage(connection.getPlayerNickname() +
-                ", please choose whether you want to create a new lobby or join an existing one. [start/join]", lobbies));
+            connection.sendSocketMessage(new PlayersNumberMessage(connection.getPlayerNickname().toUpperCase() +
+                    ", these are the available lobbies: ", lobbies));
         else
-            connection.sendSocketMessage(new PlayersNumberMessage(connection.getPlayerNickname() +
-                    ", there is no lobby available, please type start to begin. [start]", lobbies));
+            connection.sendSocketMessage(new PlayersNumberMessage(connection.getPlayerNickname().toUpperCase() +
+                    ", there is no lobby available.", lobbies));
     }
 
     public static void main(String[] args) {

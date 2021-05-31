@@ -2,6 +2,7 @@ package it.polimi.ingsw.server.serverNetwork;
 
 import it.polimi.ingsw.messages.actions.Action;
 import it.polimi.ingsw.messages.clientMessages.*;
+import it.polimi.ingsw.messages.clientMessages.JoinLobby;
 import it.polimi.ingsw.messages.serverMessages.ErrorType;
 import it.polimi.ingsw.messages.serverMessages.PlayersNumberMessage;
 import it.polimi.ingsw.server.controller.GameController;
@@ -127,9 +128,15 @@ public class ClientConnection implements Runnable {
         else if (clientMessage instanceof JoinLobby){
             synchronized (server) {
                 JoinLobby j = (JoinLobby) clientMessage;
-                if (server.getLobbies().stream().noneMatch(L -> L.getOwner().equalsIgnoreCase(j.getLobbyHost())))
-                    sendSocketMessage(new PlayersNumberMessage(
-                            "Not a valid lobby, please select another one.", server.getLobbies()));
+                if (server.getLobbies().stream().noneMatch(L -> L.getOwner().equalsIgnoreCase(j.getLobbyHost()))){
+                    if(!server.getLobbies().isEmpty())
+                        sendSocketMessage(new PlayersNumberMessage(
+                                "Not a valid lobby, please select another one.", server.getLobbies()));
+                    else
+                        sendSocketMessage(new PlayersNumberMessage(
+                                "There is no available lobby.", server.getLobbies()));
+                }
+
                 else
                     server.join(this, j.getLobbyHost());
             }
