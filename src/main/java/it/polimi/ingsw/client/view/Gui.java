@@ -57,9 +57,10 @@ public class Gui extends Application implements Observer {
         setup();
         this.stage = stage;
         try{
-            stage.setTitle("MasterOfRenaissance");
+            stage.setTitle("Master Of Renaissance");
             stage.setScene(currentScene);
-            stage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/graphics/LorenzoIcon.png"))));
+            stage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/graphics/GiglioFirenze.png"))));
+            stage.setResizable(false);
             stage.show();
         } catch (NullPointerException e){
             System.out.println("Null pointer exception");
@@ -101,7 +102,9 @@ public class Gui extends Application implements Observer {
             if (currentScene.equals(nameToScene.get(MAIN_MENU)))
                 ((GuiMenuController) nameToController.get(MAIN_MENU)).setMainMessage(m.getMessage());
             else if (currentScene.equals(nameToScene.get(LOBBY_MENU)))
-                changeStage(WAIT_PLAYERS);
+                Platform.runLater(() -> {
+                    changeStage("GuiWaitingPlayers.fxml");
+                });
             else if (currentScene.equals(nameToScene.get(WAIT_PLAYERS)))
                 ((GuiMenuController) nameToController.get(WAIT_PLAYERS)).setLobbyMessage(m.getMessage());
         }
@@ -113,7 +116,9 @@ public class Gui extends Application implements Observer {
             });
         }
         else if (message instanceof NewView){
-
+            Platform.runLater(() -> {
+                changeStage("GuiGame.fxml");
+            });
         }
     }
 }

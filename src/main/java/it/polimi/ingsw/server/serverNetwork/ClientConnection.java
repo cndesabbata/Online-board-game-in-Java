@@ -125,7 +125,7 @@ public class ClientConnection implements Runnable {
             else server.setTotalPlayers(((SetPlayersNumber) clientMessage).getNumOfPlayers(), this);
         }
         else if (clientMessage instanceof JoinLobby){
-            synchronized (server.getLobbies()) {
+            synchronized (server) {
                 JoinLobby j = (JoinLobby) clientMessage;
                 if (server.getLobbies().stream().noneMatch(L -> L.getOwner().equalsIgnoreCase(j.getLobbyHost())))
                     sendSocketMessage(new PlayersNumberMessage(

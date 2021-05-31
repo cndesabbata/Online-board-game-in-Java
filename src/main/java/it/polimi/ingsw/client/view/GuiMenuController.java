@@ -24,6 +24,7 @@ public class GuiMenuController implements GuiController{
     @FXML private ChoiceBox<String> playersNumber;
     @FXML private ChoiceBox<String> lobbies;
     @FXML private Label lobbyMessage;
+    @FXML private Label waitingMessage;
     private final String[] numberOptions = {"1","2","3","4"};
 
 
@@ -110,7 +111,7 @@ public class GuiMenuController implements GuiController{
     }
 
     public void setLobbyMessage(String message){
-        mainMessage.setText(message);
+        waitingMessage.setText(message);
     }
 
     public void setMainMessage(String message) {

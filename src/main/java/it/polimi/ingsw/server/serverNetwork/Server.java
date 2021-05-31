@@ -113,7 +113,7 @@ public class Server {
         }
     }
 
-    public synchronized void join(ClientConnection connection, String lobbyHost){
+    public void join(ClientConnection connection, String lobbyHost){
         Lobby lobby = null;
         for(Lobby l : lobbies){
             if(l.getOwner().equalsIgnoreCase(lobbyHost)){
@@ -127,6 +127,7 @@ public class Server {
                     .sendAll(new SetupMessage(connection.getPlayerNickname().toUpperCase() + "joined the game."));
             lobby.getGameController().setUpPlayer(connection);
             connection.setGameController(lobby.getGameController());
+            connection.sendSocketMessage(new SetupMessage("You have successfully joined the match."));
             if(lobby.getWaitingList().size() == lobby.getTotalPlayers()) {
                 VirtualView v = find(connection, clientToConnection);
                 v.sendAll(new SetupMessage("Player number reached. The match is starting."));
@@ -178,8 +179,12 @@ public class Server {
         clientToConnection.put(virtualView, connection);
         connection.sendSocketMessage(new SetupMessage("Connection was successfully set-up!" +
                 " You are now connected."));
+        if(!lobbies.isEmpty())
         connection.sendSocketMessage(new PlayersNumberMessage(connection.getPlayerNickname() +
-                ", please choose whether you want to create a new lobby or join an existing one.", lobbies));
+                ", please choose whether you want to create a new lobby or join an existing one. [start/join]", lobbies));
+        else
+            connection.sendSocketMessage(new PlayersNumberMessage(connection.getPlayerNickname() +
+                    ", there is no lobby available, please type start to begin. [start]", lobbies));
     }
 
     public static void main(String[] args) {

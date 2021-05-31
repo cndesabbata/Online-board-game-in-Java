@@ -114,7 +114,7 @@ public class Cli implements Observer {
             output.println(m.getMessage());
         } else if (m instanceof RequestPlayersNumber) {
             RequestPlayersNumber r = (RequestPlayersNumber) m;
-            output.println(r.getMessage() +"[start/join]");
+            output.println(r.getMessage());
             for(int i = 0; i < r.getInfoLobbies().size(); i++){
                 output.println((i+1) + ". " +r.getInfoLobbies().get(i));
             }
@@ -123,16 +123,20 @@ public class Cli implements Observer {
             while (request) {
                 answer = readInputString();
                 if (answer.equalsIgnoreCase("join")) {
-                    output.print("Type the number of the lobby you want to join: \n>");
-                    boolean lobbySel = true;
-                    int l = 0;
-                    while (lobbySel) {
-                        l = readInputInt(false);
-                        if (l >= 1 && l <= r.getInfoLobbies().size()) lobbySel = false;
-                        else output.print("Please choose a number between 1 and " + r.getInfoLobbies().size());
+                    if(r.getInfoLobbies().isEmpty())
+                        output.print("There is no lobby available at the moment, please type start.\n>");
+                    else {
+                        output.print("Type the number of the lobby you want to join: \n>");
+                        boolean lobbySel = true;
+                        int l = 0;
+                        while (lobbySel) {
+                            l = readInputInt(false);
+                            if (l >= 1 && l <= r.getInfoLobbies().size()) lobbySel = false;
+                            else output.print("Please choose a number between 1 and " + r.getInfoLobbies().size() + ":\n>");
+                        }
+                        connectionSocket.send(new JoinLobby(r.getOwners().get(l - 1)));
+                        request = false;
                     }
-                    connectionSocket.send(new JoinLobby(r.getOwners().get(l - 1)));
-                    request = false;
                 } else if (answer.equalsIgnoreCase("start")) {
                     Integer number = 0;
                     output.print("Please choose a number of players:\n>");
@@ -144,6 +148,9 @@ public class Cli implements Observer {
                     connectionSocket.send(new SetPlayersNumber(number));
                     request = false;
                 }
+                else
+                    if(r.getInfoLobbies().isEmpty())
+                        output.print("Invalid input. There is no lobby available at the moment, please type start.\n>");
             }
         } else if (m instanceof SetupDiscard) {
             output.print(m.getMessage());
