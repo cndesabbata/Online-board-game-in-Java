@@ -1,27 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.URL?>
+<?import javafx.scene.Group?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-
 <?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.Group?>
-<StackPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1"
-           fx:controller="it.polimi.ingsw.client.view.GuiMenuController" styleClass="rootPane" stylesheets="@../css/menu_scene.css">
-   <children>
-      <Group StackPane.alignment="CENTER">
-         <children>
-            <Button layoutX="315.0" layoutY="211.0" mnemonicParsing="false" onAction="#newLobby" text="New lobby" />
-            <Label fx:id="lobbyMessage" layoutX="133.0" layoutY="155.0" alignment="CENTER" prefHeight="20.0" prefWidth="500.0" text="Please choose whether to join an existing lobby or create a new one" textFill="#d5d5d5" />
-            <Button layoutX="314.0" layoutY="286.0" mnemonicParsing="false" onAction="#join" text="Join Lobby" />
-            <ChoiceBox fx:id="playersNumber" layoutX="111.0" layoutY="211.0" prefWidth="150.0" />
-            <ChoiceBox fx:id="lobbies" layoutX="111.0" layoutY="286.0" prefWidth="150.0" />
-            <Label layoutX="108.0" layoutY="192.0" text="Select the number of players" textFill="#cccccc" />
-            <Label layoutX="78.0" layoutY="260.0" prefHeight="26.0" prefWidth="216.0" text="Select the lobby you would like to join" textFill="#cccccc" />
-         </children>
-      </Group>
-   </children>
+
+<StackPane prefHeight="400.0" prefWidth="600.0" styleClass="rootPane" xmlns="http://javafx.com/javafx/11"
+           xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.view.GuiMenuController">
+   <stylesheets>
+      <URL value="@../css/global.css" />
+      <URL value="@../css/menu_scene.css" />
+   </stylesheets>
+   <Group StackPane.alignment="CENTER">
+      <Button layoutX="400.0" layoutY="220.0" mnemonicParsing="false" onAction="#newLobby" prefHeight="40.0" prefWidth="200.0" styleClass="button" text="New lobby" />
+      <Label fx:id="lobbyMessage" alignment="CENTER" layoutX="115.0" layoutY="155.0" prefHeight="20.0" prefWidth="500.0" text="Please choose whether to join an existing lobby or create a new one" textFill="#d5d5d5" />
+      <Button layoutX="400.0" layoutY="320.0" mnemonicParsing="false" onAction="#join" prefHeight="40.0" prefWidth="200.0" styleClass="button" text="Join Lobby" />
+      <ChoiceBox fx:id="playersNumber" layoutX="130.0" layoutY="220.0" prefHeight="40.0" prefWidth="200.0" styleClass="choiceBox" />
+      <ChoiceBox fx:id="lobbies" layoutX="130.0" layoutY="320.0" prefHeight="40.0" prefWidth="200.0" styleClass="choiceBox" />
+      <Label layoutX="130.0" layoutY="190.0" prefHeight="20.0" prefWidth="300.0" styleClass="label" text="Select the number of players" textFill="#cccccc" />
+      <Label layoutX="130.0" layoutY="290.0" prefHeight="20.0" prefWidth="300.0" styleClass="label" text="Select the lobby you would like to join" textFill="#cccccc" />
+   </Group>
 </StackPane>

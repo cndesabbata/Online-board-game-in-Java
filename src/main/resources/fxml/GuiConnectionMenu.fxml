@@ -7,30 +7,23 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
+<?import java.net.URL?>
 <StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="404.0"
-           prefWidth="475.0" styleClass="rootPane" stylesheets="@../css/menu_scene.css"
+           prefWidth="475.0" styleClass="rootPane"
            xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1"
            fx:controller="it.polimi.ingsw.client.view.GuiMenuController">
-   <children>
-      <Group StackPane.alignment="CENTER">
-         <children>
-            <TextField fx:id="serverIP" layoutX="225.0" layoutY="220.0" opacity="0.9" prefHeight="40.0" prefWidth="200.0" promptText="Server IP">
-               <font>
-                  <Font name="Luminari" size="13.0" />
-               </font></TextField>
-            <TextField fx:id="serverPort" layoutX="225.0" layoutY="280.0" opacity="0.9" prefHeight="40.0" prefWidth="200.0" promptText="Server Port">
-               <font>
-                  <Font name="Luminari" size="13.0" />
-               </font></TextField>
-            <Button id="connect" alignment="CENTER" layoutX="225.0" layoutY="340.0" mnemonicParsing="false" onAction="#connect" opacity="0.9" prefHeight="40.0" prefWidth="200.0" text="Connect">
-               <font>
-                  <Font name="Luminari" size="13.0" />
-               </font></Button>
-            <Label fx:id="connectionMessage" alignment="CENTER" layoutX="75.0" layoutY="180.0" prefHeight="20.0" prefWidth="500.0" text="Insert Server IP address and Port and click on Join!" textFill="#cccccc">
-               <font>
-                  <Font name="Luminari" size="15.0" />
-               </font></Label>
-         </children>
-      </Group>
-      </children>
+   <stylesheets>
+      <URL value="@../css/global.css"/>
+      <URL value="@../css/menu_scene.css"/>
+   </stylesheets>
+   <Group StackPane.alignment="CENTER">
+      <TextField fx:id="serverIP" layoutX="225.0" layoutY="220.0" styleClass="text" opacity="0.9" prefHeight="40.0"
+                 prefWidth="200.0" promptText="Server IP"/>
+      <TextField fx:id="serverPort" layoutX="225.0" layoutY="280.0" styleClass="text" opacity="0.9" prefHeight="40.0"
+                 prefWidth="200.0" promptText="Server Port"/>
+      <Button id="connect" alignment="CENTER" styleClass="button" layoutX="225.0" layoutY="340.0" mnemonicParsing="false"
+              onAction="#connect" opacity="0.9" prefHeight="40.0" prefWidth="200.0" text="Connect"/>
+      <Label fx:id="connectionMessage" alignment="CENTER" layoutX="75.0" layoutY="180.0" styleClass="label" prefHeight="20.0"
+             prefWidth="500.0" text="Insert Server IP address and Port and click on Join!" textFill="#cccccc"/>
+   </Group>
 </StackPane>

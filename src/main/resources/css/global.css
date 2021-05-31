@@ -1,0 +1,8 @@
+@font-face {
+    font-family: 'Luminari';
+    src: url("../fonts/Luminari.ttf");
+}
+
+.label, .text, .choice-box, .button{
+    -fx-font-family: 'Luminari';
+}

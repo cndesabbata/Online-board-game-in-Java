@@ -10,6 +10,7 @@ import it.polimi.ingsw.server.observer.Observer;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCombination;
@@ -26,7 +27,7 @@ public class Gui extends Application implements Observer {
     public static final String GUI_GAME = "GuiGame.fxml";
     public static final String WAIT_PLAYERS = "GuiWaitingPlayers.fxml";
     private Stage stage;
-    private final HashMap<String, Scene> nameToScene = new HashMap<>();
+    private final HashMap<String, Parent> nameToRoot = new HashMap<>();
     private final HashMap<String, GuiController> nameToController = new HashMap<>();
     private final ClientView view;
     private final MessageHandler messageHandler;
@@ -77,7 +78,7 @@ public class Gui extends Application implements Observer {
         try {
             for (String path : fxmList) {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/" + path));
-                nameToScene.put(path, new Scene(loader.load()));
+                nameToRoot.put(path, loader.load());
                 GuiController controller = loader.getController();
                 controller.setGui(this);
                 nameToController.put(path, controller);
@@ -86,11 +87,15 @@ public class Gui extends Application implements Observer {
             System.out.println("Error in Gui configuration.");
             e.printStackTrace();
         }
-        currentScene = nameToScene.get(CONNECTION_MENU);
+        currentScene = new Scene(nameToRoot.get(CONNECTION_MENU));
+    }
+
+    public void changeRoot(String newScene) {
+       currentScene.setRoot(nameToRoot.get(newScene));
     }
 
     public void changeScene(String newScene) {
-        currentScene = nameToScene.get(newScene);
+        currentScene = new Scene(nameToRoot.get(newScene));
         stage.setScene(currentScene);
         stage.setResizable(false);
         stage.setMaximized(true);
@@ -107,17 +112,17 @@ public class Gui extends Application implements Observer {
     public void update(Message message) {
         if (message instanceof DisplayMessage){
             DisplayMessage m = (DisplayMessage) message;
-            if (currentScene.equals(nameToScene.get(MAIN_MENU))){
+            if (currentScene.getRoot().equals(nameToRoot.get(MAIN_MENU))){
                 Platform.runLater(() -> {
                     ((GuiMenuController) nameToController.get(MAIN_MENU)).setMainMessage(m.getMessage());
                 });
             }
-            else if (currentScene.equals(nameToScene.get(LOBBY_MENU))){
+            else if (currentScene.getRoot().equals(nameToRoot.get(LOBBY_MENU))){
                 Platform.runLater(() -> {
-                    changeScene(WAIT_PLAYERS);
+                    changeRoot(WAIT_PLAYERS);
                 });
             }
-            else if (currentScene.equals(nameToScene.get(WAIT_PLAYERS)))
+            else if (currentScene.getRoot().equals(nameToRoot.get(WAIT_PLAYERS)))
                 Platform.runLater(() -> {
                     ((GuiMenuController) nameToController.get(WAIT_PLAYERS)).setWaitingMessage(m.getMessage());
                 });
@@ -126,13 +131,13 @@ public class Gui extends Application implements Observer {
             RequestPlayersNumber r = (RequestPlayersNumber) message;
             Platform.runLater(() -> {
                 ((GuiMenuController) nameToController.get(LOBBY_MENU)).initializeLobby(r.getOwners());
-                changeScene(LOBBY_MENU);
+                changeRoot(LOBBY_MENU);
             });
         }
         else if (message instanceof NewView){
             Platform.runLater(() -> {
                 ((GuiGameController) nameToController.get(GUI_GAME)).initializeGame();
-                changeScene(GUI_GAME);
+                changeRoot(GUI_GAME);
             });
         }
     }

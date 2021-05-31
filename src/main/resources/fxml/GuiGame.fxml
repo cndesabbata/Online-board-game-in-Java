@@ -8,15 +8,13 @@
 
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.image.Image?>
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="it.polimi.ingsw.client.view.GuiGameController"
-            prefHeight="400.0" prefWidth="600.0">
-    <children>
-        <ImageView fitHeight="400.0" fitWidth="600.0">
-            <image>
-                <Image url="@../graphics/background.png" />
-            </image>
-        </ImageView>
-        </children>
-</AnchorPane>
+<?import java.net.URL?>
+<StackPane prefHeight="400.0" prefWidth="600.0" styleClass="rootPane" xmlns="http://javafx.com/javafx/11"
+           xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.view.GuiMenuController">
+    <stylesheets>
+        <URL value="@../css/global.css" />
+    </stylesheets>
+    <Group StackPane.alignment="CENTER">
+
+    </Group>
+</StackPane>

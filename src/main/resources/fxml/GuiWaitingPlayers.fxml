@@ -1,16 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.URL?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ProgressBar?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="it.polimi.ingsw.client.view.GuiMenuController" styleClass="rootPane" stylesheets="@../css/menu_scene.css">
-    <children>
-
-      <Label fx:id="waitingMessage" layoutX="202.0" layoutY="192.0" text="Please wait for other players to join." textFill="#d2d2d2" />
-      <ProgressBar layoutX="200.0" layoutY="240.0" prefWidth="200.0" style="-fx-padding: 7;"/>
-        </children>
-</AnchorPane>
+<?import javafx.scene.Group?>
+<?import javafx.scene.layout.StackPane?>
+<StackPane prefHeight="400.0" prefWidth="600.0" styleClass="rootPane" xmlns="http://javafx.com/javafx/11"
+           xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.view.GuiMenuController">
+    <stylesheets>
+        <URL value="@../css/global.css" />
+        <URL value="@../css/menu_scene.css" />
+    </stylesheets>
+    <Group StackPane.alignment="CENTER">
+        <Label fx:id="waitingMessage" alignment="CENTER" layoutX="60.0" layoutY="190.0" prefHeight="20.0" prefWidth="500.0" text="Please wait for other players to join." textFill="#d2d2d2" />
+        <ProgressBar layoutX="210.0" layoutY="250.0" prefWidth="200.0" style="-fx-padding: 7;" />
+    </Group>
+</StackPane>

@@ -52,7 +52,7 @@ public class GuiMenuController implements GuiController{
                 System.err.println("Error during socket configuration! Application will now close.");
                 System.exit(0);
             }
-            gui.changeScene("GuiMainMenu.fxml");
+            gui.changeRoot("GuiMainMenu.fxml");
         }
     }
 
