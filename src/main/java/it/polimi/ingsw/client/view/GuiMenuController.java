@@ -8,6 +8,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
+import javafx.stage.Screen;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -110,12 +112,12 @@ public class GuiMenuController implements GuiController{
         gui.getConnectionSocket().send(new SetPlayersNumber(players));
     }
 
-    public void setLobbyMessage(String message){
-        waitingMessage.setText(message);
-    }
-
     public void setMainMessage(String message) {
         mainMessage.setText(message);
+    }
+
+    public void setWaitingMessage(String message) {
+        waitingMessage.setText(message);
     }
 
     public void initializeLobby(List<String> lobbyList){

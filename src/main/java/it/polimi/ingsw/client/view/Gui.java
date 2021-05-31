@@ -12,6 +12,7 @@ import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyCombination;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -57,10 +58,14 @@ public class Gui extends Application implements Observer {
         setup();
         this.stage = stage;
         try{
-            stage.setTitle("Master Of Renaissance");
+            stage.setTitle("MasterOfRenaissance");
             stage.setScene(currentScene);
-            stage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/graphics/GiglioFirenze.png"))));
+            stage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/graphics/LorenzoIcon.png"))));
             stage.setResizable(false);
+            stage.setMaximized(true);
+            stage.setFullScreen(true);
+            stage.setFullScreenExitHint("");
+            stage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
             stage.show();
         } catch (NullPointerException e){
             System.out.println("Null pointer exception");
@@ -88,6 +93,11 @@ public class Gui extends Application implements Observer {
     public void changeStage(String newScene) {
         currentScene = nameToScene.get(newScene);
         stage.setScene(currentScene);
+        stage.setResizable(false);
+        stage.setMaximized(true);
+        stage.setFullScreen(true);
+        stage.setFullScreenExitHint("");
+        stage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
         stage.show();
     }
 
@@ -99,25 +109,32 @@ public class Gui extends Application implements Observer {
     public void update(Message message) {
         if (message instanceof DisplayMessage){
             DisplayMessage m = (DisplayMessage) message;
-            if (currentScene.equals(nameToScene.get(MAIN_MENU)))
-                ((GuiMenuController) nameToController.get(MAIN_MENU)).setMainMessage(m.getMessage());
-            else if (currentScene.equals(nameToScene.get(LOBBY_MENU)))
+            if (currentScene.equals(nameToScene.get(MAIN_MENU))){
                 Platform.runLater(() -> {
-                    changeStage("GuiWaitingPlayers.fxml");
+                    ((GuiMenuController) nameToController.get(MAIN_MENU)).setMainMessage(m.getMessage());
                 });
+            }
+            else if (currentScene.equals(nameToScene.get(LOBBY_MENU))){
+                Platform.runLater(() -> {
+                    changeStage(WAIT_PLAYERS);
+                });
+            }
             else if (currentScene.equals(nameToScene.get(WAIT_PLAYERS)))
-                ((GuiMenuController) nameToController.get(WAIT_PLAYERS)).setLobbyMessage(m.getMessage());
+                Platform.runLater(() -> {
+                    ((GuiMenuController) nameToController.get(WAIT_PLAYERS)).setWaitingMessage(m.getMessage());
+                });
         }
         else if (message instanceof RequestPlayersNumber){
             RequestPlayersNumber r = (RequestPlayersNumber) message;
-            ((GuiMenuController) nameToController.get(LOBBY_MENU)).initializeLobby(r.getOwners());
             Platform.runLater(() -> {
-                changeStage("GuiLobbyMenu.fxml");
+                ((GuiMenuController) nameToController.get(LOBBY_MENU)).initializeLobby(r.getOwners());
+                changeStage(LOBBY_MENU);
             });
         }
         else if (message instanceof NewView){
             Platform.runLater(() -> {
-                changeStage("GuiGame.fxml");
+                ((GuiGameController) nameToController.get(GUI_GAME)).initializeGame();
+                changeStage(GUI_GAME);
             });
         }
     }
