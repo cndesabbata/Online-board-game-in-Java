@@ -1,0 +1,4 @@
+.rootPane {
+    -fx-background-image: url("../graphics/background.png");
+    -fx-background-size: stretch;
+}

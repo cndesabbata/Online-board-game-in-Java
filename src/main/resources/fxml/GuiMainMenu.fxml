@@ -7,16 +7,29 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.view.GuiMenuController">
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.Group?>
+<?import javafx.scene.text.Font?>
+<StackPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="it.polimi.ingsw.client.view.GuiMenuController" styleClass="rootPane" stylesheets="@../css/menu_scene.css">
    <children>
-      <ImageView fitHeight="400.0" fitWidth="600.0">
-         <image>
-            <Image url="@../graphics/menu_background.png" />
-         </image>
-      </ImageView>
-      <TextField fx:id="nickname" layoutX="220.0" layoutY="188.0" promptText="Nickname" />
-      <Label fx:id="mainMessage" layoutX="220.0" layoutY="160.0" text="Please choose your nickname" textFill="#d2d2d2" />
-      <Button id="start" layoutX="167.0" layoutY="264.0" mnemonicParsing="false" onAction="#start" text="Start new match" />
-      <Button id="resume" layoutX="332.0" layoutY="264.0" mnemonicParsing="false" onAction="#resume" text="Resume match" />
-   </children>
-</AnchorPane>
+      <Group StackPane.alignment="CENTER">
+         <children>
+            <TextField fx:id="nickname" prefHeight="40.0" prefWidth="200.0" layoutX="220.0" layoutY="188.0" promptText="Nickname">
+            <font>
+               <Font name="Luminari" size="13.0" />
+            </font></TextField>
+            <Label fx:id="mainMessage" layoutX="220.0" layoutY="160.0" alignment="CENTER" prefHeight="20.0" prefWidth="500.0"
+                   text="Please choose your nickname" textFill="#d2d2d2" />
+            <Button id="start" prefHeight="40.0" prefWidth="200.0" layoutX="167.0" layoutY="264.0" mnemonicParsing="false" onAction="#start" text="Start new match">
+               <font>
+                  <Font name="Luminari" size="13.0" />
+               </font></Button>
+            <Button id="resume" prefHeight="40.0" prefWidth="200.0" layoutX="332.0" layoutY="264.0" mnemonicParsing="false" onAction="#resume" text="Resume match" >
+               <font>
+                  <Font name="Luminari" size="13.0" />
+               </font></Button>
+         </children>
+      </Group>
+      </children>
+</StackPane>

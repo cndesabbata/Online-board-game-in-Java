@@ -15,7 +15,7 @@
     <children>
         <ImageView fitHeight="400.0" fitWidth="600.0">
             <image>
-                <Image url="@../graphics/menu_background.png" />
+                <Image url="@../graphics/background.png" />
             </image>
         </ImageView>
         </children>
