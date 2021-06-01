@@ -1,0 +1,27 @@
+.rootPane {
+    -fx-background-image: url("../graphics/game_background.png");
+    -fx-background-size: stretch;
+}
+
+.imagePane{
+    -fx-padding: 6;
+    -fx-background-color: wheat;
+    -fx-background-radius: 4;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);
+}
+
+.marketBackground{
+    -fx-background-color: #252525;
+}
+
+.rightButton {
+    -fx-background-image: url("../graphics/right_arrow.png");
+    -fx-background-size: stretch;
+    -fx-background-color: transparent;
+}
+
+.leftButton {
+    -fx-background-image: url("../graphics/left_arrow.png");
+    -fx-background-size: stretch;
+    -fx-background-color: transparent;
+}

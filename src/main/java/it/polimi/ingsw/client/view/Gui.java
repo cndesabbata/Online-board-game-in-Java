@@ -17,7 +17,6 @@ import javafx.scene.input.KeyCombination;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 
 import java.io.IOException;
 import java.util.*;
@@ -70,12 +69,12 @@ public class Gui extends Application implements Observer {
             stage.setMaximized(true);
             stage.setFullScreen(true);
             stage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
-            Media audio = new Media(Objects.requireNonNull(getClass().getClassLoader()
+            /*Media audio = new Media(Objects.requireNonNull(getClass().getClassLoader()
                     .getResource("audio/Intro.mp3")).toExternalForm());
             mediaPlayer = new MediaPlayer(audio);
             mediaPlayer.setAutoPlay(true);
             mediaPlayer.setCycleCount(1);
-            mediaPlayer.setVolume(35);
+            mediaPlayer.setVolume(35);*/
             stage.show();
         } catch (NullPointerException e){
             System.out.println("Null pointer exception");
@@ -147,7 +146,7 @@ public class Gui extends Application implements Observer {
         else if (message instanceof NewView){
             Platform.runLater(() -> {
                 ((GuiGameController) nameToController.get(GUI_GAME)).initializeGame();
-                changeRoot(GUI_GAME);
+                changeScene(GUI_GAME);
             });
         }
     }
