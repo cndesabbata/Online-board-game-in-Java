@@ -18,6 +18,8 @@ public class MultiPlayerController extends GameController {
         super(server);
     }
 
+
+
     public void changeTurn() {
         String oldPlayer = currentPlayer.getNickname();
         currentPlayer.setTurnActive(false, true, oldPlayer);
@@ -30,6 +32,13 @@ public class MultiPlayerController extends GameController {
             nextPlayer.setTurnActive(true, getPhase() == GamePhase.SETUP, oldPlayer);
             currentPlayer = nextPlayer;
         }
+    }
+
+    @Override
+    public void sendReloadedView(String nickname) {
+        reloadView(nickname);
+        Player p = getGame().getPlayerByNickname(nickname);
+        p.setActionDone(UserAction.INITIAL_DISPOSITION);
     }
 
     public Player getCurrentPlayer() {

@@ -24,6 +24,10 @@ public class Warehouse extends Observable {
         notifyObservers(new NewWarehouse(warehouse, initialDim, owner));
     }
 
+    public void notifyNew(String nickname){
+        notifySingleObserver(new NewWarehouse(warehouse, initialDim, owner), nickname);
+    }
+
     /*returns a copy of the warehouse*/
     public List<ResourceQuantity> getWarehouse(){
         return new ArrayList<>(warehouse);

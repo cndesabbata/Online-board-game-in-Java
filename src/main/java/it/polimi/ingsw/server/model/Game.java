@@ -34,7 +34,7 @@ public class Game extends Observable {
 
     public Player getPlayerByNickname(String nickname) {
         for (Player player : players) {
-            if (nickname.equals(player.getNickname())) {
+            if (nickname.equalsIgnoreCase(player.getNickname())) {
                 return player;
             }
         }

@@ -24,6 +24,10 @@ public class Chest extends Observable {
         notifyObservers(new NewChest(chest, owner));
     }
 
+    public void notifyNew(String nickname){
+        notifySingleObserver(new NewChest(chest, owner), nickname);
+    }
+
     /*returns a copy of the chest*/
     public List<ResourceQuantity> getChest() {
         return new ArrayList<>(chest);

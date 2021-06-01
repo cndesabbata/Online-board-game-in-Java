@@ -23,6 +23,10 @@ public class Itinerary extends Observable {
         notifyObservers(new NewItinerary(position, cardStatus, blackCrossPosition, owner));
     }
 
+    public void notifyNew(String nickname){
+        notifySingleObserver(new NewItinerary(position, cardStatus, blackCrossPosition, owner), nickname);
+    }
+
     public void updateBlackCross(int amount){
         if (blackCrossPosition + amount > 24) blackCrossPosition = 24;
         else blackCrossPosition += amount;

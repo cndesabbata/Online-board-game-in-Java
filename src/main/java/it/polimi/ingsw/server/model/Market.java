@@ -45,6 +45,10 @@ public class Market extends Observable {
         notifyObservers(new NewMarket(disposition, external));
     }
 
+    public void notifyNew (String nickname){
+        notifySingleObserver(new NewMarket(disposition, external), nickname);
+    }
+
     /* return the external marble */
     public Marble getExternal() {
         return external;

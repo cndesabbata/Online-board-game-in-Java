@@ -26,6 +26,20 @@ public abstract class GameController {
         phase = GamePhase.NOT_STARTED;
     }
 
+    public void reloadView(String nickname){
+        game.getMarket().notifyNew(nickname);
+        for (DevDeck d : game.getDevDecks()){
+            d.notifyNew(nickname);
+        }
+        for (Player p : activePlayers){
+            p.notifyNew(nickname);
+            p.getBoard().getChest().notifyNew(nickname);
+            p.getBoard().getDevSpace().notifyNew(nickname);
+            p.getBoard().getWarehouse().notifyNew(nickname);
+            p.getBoard().getItinerary().notifyNew(nickname);
+        }
+    }
+
     public void setUpPlayer(ClientConnection connection){
         Player newPlayer = new Player(connection.getPlayerNickname(), game);
         addActivePlayer(newPlayer);
@@ -52,6 +66,8 @@ public abstract class GameController {
     public void addActivePlayer(Player player){
         activePlayers.add(player);
     }
+
+    public abstract void sendReloadedView(String nickname);
 
     public abstract void makeAction(Action action);
 

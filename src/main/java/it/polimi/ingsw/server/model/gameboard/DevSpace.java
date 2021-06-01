@@ -19,6 +19,10 @@ public class DevSpace extends Observable {
         notifyObservers(new NewDevSpace(devSpace, owner));
     }
 
+    public void notifyNew(String nickname){
+        notifySingleObserver(new NewDevSpace(devSpace, owner), nickname);
+    }
+
     /*controls if the player has a DevCard with the same colour of requirement and the same (or greater) level*/
     public boolean checkCards (DevCard requirement){
         if (requirement.getLevel() == 0)

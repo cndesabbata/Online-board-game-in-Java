@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server.controller.singleplayer;
 
+import it.polimi.ingsw.messages.serverMessages.ChangesDone;
 import it.polimi.ingsw.messages.serverMessages.CloseMessage;
 import it.polimi.ingsw.server.controller.GameController;
 import it.polimi.ingsw.messages.actions.Action;
@@ -27,6 +28,13 @@ public class SinglePlayerController extends GameController {
             tokens.add(new DiscardDevCard(this, c));
         }
         Collections.shuffle(tokens);
+    }
+
+    @Override
+    public void sendReloadedView(String nickname){
+        reloadView(nickname);
+        Player p = getGame().getPlayerByNickname(nickname);
+        p.setActionDone(p.getActionDone());
     }
 
     public List<SoloActionToken> getTokens() {

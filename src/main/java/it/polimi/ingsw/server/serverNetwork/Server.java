@@ -159,6 +159,7 @@ public class Server {
                 clientToConnection.put(virtualView, connection);
                 connection.sendSocketMessage(new SetupMessage("Connection was successfully set-up!" +
                         " You are now reconnected."));
+                gc.sendReloadedView(nickname);
                 return;
             }
         }

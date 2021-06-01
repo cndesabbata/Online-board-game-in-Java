@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server.model;
 
+import it.polimi.ingsw.messages.serverMessages.newElement.NewDevDeck;
 import it.polimi.ingsw.messages.serverMessages.newElement.NewHandCards;
 import it.polimi.ingsw.messages.serverMessages.newElement.NewIndex;
 import it.polimi.ingsw.messages.serverMessages.ChangesDone;
@@ -38,6 +39,8 @@ public class Player extends Observable {
         else notifyObservers(new ChangesDone(nickname, actionDone));
     }
 
+
+
     public String getNickname() {
         return nickname;
     }
@@ -57,6 +60,11 @@ public class Player extends Observable {
         playedLeaderCards.add(handLeaderCards.remove(index));
         notifySingleObserver(new NewHandCards(handLeaderCards, nickname, false), nickname);
         notifyObservers(new NewPlayedLeadCards(playedLeaderCards, nickname));
+    }
+
+    public void notifyNew (String nickname){
+        notifySingleObserver(new NewPlayedLeadCards(playedLeaderCards, nickname), nickname);
+        notifySingleObserver(new NewHandCards(handLeaderCards, nickname, false), nickname);
     }
 
     public boolean isExclusiveActionDone() {

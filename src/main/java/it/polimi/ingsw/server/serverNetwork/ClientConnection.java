@@ -75,8 +75,9 @@ public class ClientConnection implements Runnable {
             server.removeClient(this);
         } catch (IOException e) {
             if (playerNickname != null){
-                if (gameController!=null && gameController.getPhase() == GamePhase.STARTED && gameController instanceof MultiPlayerController){
-                    if (((MultiPlayerController) getGameController()).getCurrentPlayer().getNickname().equals(playerNickname))
+                if (gameController!=null && gameController.getPhase() == GamePhase.STARTED ){
+                    if (gameController instanceof MultiPlayerController &&
+                            ((MultiPlayerController) getGameController()).getCurrentPlayer().getNickname().equalsIgnoreCase(playerNickname))
                         ((MultiPlayerController) getGameController()).changeTurn();
                     server.unregisterClient(this);
                 }
@@ -107,8 +108,8 @@ public class ClientConnection implements Runnable {
         else if (clientMessage instanceof Reconnect){
             if (gameController == null){
                 try {
-                    server.reconnectClient(((Reconnect) clientMessage).getNickname(), this);
                     playerNickname = ((Reconnect) clientMessage).getNickname();
+                    server.reconnectClient(((Reconnect) clientMessage).getNickname(), this);
                 } catch (InterruptedException e) {
                     System.out.println(e.getMessage());
                     Thread.currentThread().interrupt();
