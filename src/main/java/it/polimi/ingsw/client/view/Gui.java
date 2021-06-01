@@ -145,7 +145,7 @@ public class Gui extends Application implements Observer {
         }
         else if (message instanceof NewView){
             Platform.runLater(() -> {
-                ((GuiGameController) nameToController.get(GUI_GAME)).initializeGame();
+                //((GuiGameController) nameToController.get(GUI_GAME)).initializeGame();
                 changeScene(GUI_GAME);
             });
         }
