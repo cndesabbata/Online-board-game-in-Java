@@ -25,3 +25,21 @@
     -fx-background-size: stretch;
     -fx-background-color: transparent;
 }
+
+.backButton{
+    -fx-background-image: url("../graphics/back_arrow.png");
+    -fx-background-size: stretch;
+    -fx-background-color: transparent;
+}
+
+.turnButton{
+    -fx-background-image: url("../graphics/next_turn.png");
+    -fx-background-size: stretch;
+    -fx-background-color: transparent;
+}
+
+.confirmButton{
+    -fx-background-image: url("../graphics/check_icon.png");
+    -fx-background-size: stretch;
+    -fx-background-color: transparent;
+}
