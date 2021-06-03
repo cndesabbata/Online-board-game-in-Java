@@ -6,10 +6,12 @@ import java.util.List;
 public abstract class Card implements Serializable {
     private final List<ResourceQuantity> resourceRequirements;
     private final int victoryPoints;
+    private final String url;
 
-    public Card(List<ResourceQuantity> resourceRequirements, int victoryPoints) {
+    public Card(List<ResourceQuantity> resourceRequirements, int victoryPoints, String url) {
         this.resourceRequirements = resourceRequirements;
         this.victoryPoints = victoryPoints;
+        this.url = url;
     }
 
     public List<ResourceQuantity> getResourceRequirements() {
@@ -19,5 +21,9 @@ public abstract class Card implements Serializable {
 
     public int getVictoryPoints() {
         return victoryPoints;
+    }
+
+    public String getUrl() {
+        return url;
     }
 }

@@ -84,7 +84,9 @@ public class GuiGameController implements GuiController{
     private void updateDevDecks() {
         for (int i = 0; i < 3; i++){
             for (int j = 0; j < 4; j++){
-
+                String url = "/graphics/marbles/" + view.getMarket()[i][j] + ".png";
+                Image m = new Image(getClass().getResourceAsStream(url));
+                devDecks.get(i*4+j).setImage(m);
             }
         }
     }

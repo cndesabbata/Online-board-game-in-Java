@@ -13,12 +13,14 @@ public class LeadCardInfo {
     private final List<DevCardInfo> cardRequirements;
     private final String type;
     private final String resource;
+    private final String url;
 
 
     public LeadCardInfo(LeaderCard l){
         this.victoryPoints = l.getVictoryPoints();
         this.type = l.getType().toString();
         this.resource = l.getResource().toString();
+        this.url = l.getUrl();
         if (l.getCardRequirements() == null){
             this.resourceRequirements = ResourceQuantity.toStringList(ResourceQuantity.flatten(l.getResourceRequirements()));
             this.cardRequirements = null;
@@ -30,15 +32,6 @@ public class LeadCardInfo {
             this.resourceRequirements = null;
         }
     }
-
-    public LeadCardInfo(List<DevCardInfo> cardRequirements, int victoryPoints, String type, String resource) {
-        this.victoryPoints = victoryPoints;
-        this.cardRequirements = cardRequirements;
-        this.type = type;
-        this.resource = resource;
-        this.resourceRequirements = null;
-    }
-
     public int getVictoryPoints() {
         return victoryPoints;
     }
@@ -57,5 +50,9 @@ public class LeadCardInfo {
 
     public String getResource() {
         return resource;
+    }
+
+    public String getUrl() {
+        return url;
     }
 }

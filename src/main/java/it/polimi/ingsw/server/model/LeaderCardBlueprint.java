@@ -15,11 +15,12 @@ public class LeaderCardBlueprint {
     private final String secondCardColour;
     private final String thirdCardColour;
     private final String resource;
+    private final String url;
 
     public LeaderCardBlueprint(String type, boolean hasResourceRequirements, int victoryPoints,
                                int[] resourceRequirements, int firstCardLevel, int secondCardLevel,
                                int thirdCardLevel, String firstCardColour, String secondCardColour,
-                               String thirdCardColour, String resource) {
+                               String thirdCardColour, String resource, String url) {
         this.type = type;
         this.hasResourceRequirements = hasResourceRequirements;
         this.victoryPoints = victoryPoints;
@@ -31,6 +32,7 @@ public class LeaderCardBlueprint {
         this.secondCardColour = secondCardColour;
         this.thirdCardColour = thirdCardColour;
         this.resource = resource;
+        this.url = url;
     }
 
     public LeaderCard BuildCard (){
@@ -48,9 +50,9 @@ public class LeaderCardBlueprint {
             }
         }
         if (hasResourceRequirements)
-            return new LeaderCard(resQuantities, victoryPoints, resourceType, LeaderType.valueOf(type.toUpperCase()));
+            return new LeaderCard(resQuantities, victoryPoints, resourceType, LeaderType.valueOf(type.toUpperCase()), url);
         else
-            return new LeaderCard(victoryPoints, cardsReqs, resourceType, LeaderType.valueOf(type.toUpperCase()));
+            return new LeaderCard(victoryPoints, cardsReqs, resourceType, LeaderType.valueOf(type.toUpperCase()), url);
     }
 
     private void BuildResources(List<ResourceQuantity> resourceList, int[] array){

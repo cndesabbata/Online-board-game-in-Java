@@ -12,6 +12,7 @@ public class DevCardInfo {
     private final String colour;
     private final List<String> productionInput;
     private final List<String> productionOutput;
+    private final String url;
 
     public DevCardInfo(DevCard c){
         if (c.getResourceRequirements() == null){
@@ -19,17 +20,22 @@ public class DevCardInfo {
             this.productionInput = null;
             this.productionOutput = null;
             this.victoryPoints = null;
+            this.url = null;
         }
         else {
             this.resourceRequirements = ResourceQuantity.toStringList(ResourceQuantity.flatten(c.getResourceRequirements()));
             this.productionInput = ResourceQuantity.toStringList(ResourceQuantity.flatten(c.getProductionInput()));
             this.productionOutput = ResourceQuantity.toStringList(ResourceQuantity.flatten(c.getProductionOutput()));
             this.victoryPoints = c.getVictoryPoints();
+            this.url = c.getUrl();
         }
         this.colour = c.getColour().toString();
         this.level = c.getLevel();
     }
 
+    public String getUrl() {
+        return url;
+    }
 
     public List<String> getResourceRequirements() {
         return resourceRequirements;

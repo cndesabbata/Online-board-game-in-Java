@@ -8,12 +8,14 @@ public class DevCardBlueprint {
     private final int[] requiredResources;
     private final int[] inputResources;
     private final int[] outputResources;
+    private final String url;
 
-    public DevCardBlueprint(int victoryPoints, int[] requiredResources, int[] inputResources, int[] outputResources) {
+    public DevCardBlueprint(int victoryPoints, int[] requiredResources, int[] inputResources, int[] outputResources, String url) {
         this.victoryPoints = victoryPoints;
         this.requiredResources = requiredResources;
         this.inputResources = inputResources;
         this.outputResources = outputResources;
+        this.url = url;
     }
 
     public DevCard BuildCard (int level, Colour colour){
@@ -23,7 +25,7 @@ public class DevCardBlueprint {
         BuildResources(requiredRes, requiredResources);
         BuildResources(inputRes, inputResources);
         BuildResources(outputRes, outputResources);
-        return new DevCard(requiredRes, victoryPoints, level, colour, inputRes, outputRes);
+        return new DevCard(requiredRes, victoryPoints, level, colour, inputRes, outputRes, url);
     }
 
     private void BuildResources(List<ResourceQuantity> resourceList, int[] array){

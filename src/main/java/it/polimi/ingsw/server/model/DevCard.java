@@ -11,8 +11,8 @@ public class DevCard extends Card implements Serializable {
     private List<ResourceQuantity> productionOutput;
 
     public DevCard(List<ResourceQuantity> resourceRequirements, int victoryPoints, int level, Colour colour,
-                   List<ResourceQuantity> productionInput, List<ResourceQuantity> productionOutput) {
-        super(resourceRequirements, victoryPoints);
+                   List<ResourceQuantity> productionInput, List<ResourceQuantity> productionOutput, String url) {
+        super(resourceRequirements, victoryPoints, url);
         this.level = level;
         this.colour = colour;
         this.productionInput = productionInput;
@@ -20,7 +20,7 @@ public class DevCard extends Card implements Serializable {
     }
 
     public DevCard(int level, Colour colour) {
-        super(null, 0);
+        super(null, 0, null);
         this.level = level;
         this.colour = colour;
     }
