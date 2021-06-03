@@ -259,6 +259,7 @@ public class GuiGameController implements GuiController{
     }
 
     private void initializeCoordinates(){
+        this.coordinates = new ArrayList<>();
         coordinates.add( new Integer[]{33, 153});
         coordinates.add( new Integer[]{65, 153});
         coordinates.add( new Integer[]{97, 153});
