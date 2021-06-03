@@ -5,6 +5,7 @@ import it.polimi.ingsw.messages.serverMessages.*;
 import it.polimi.ingsw.server.controller.GameController;
 import it.polimi.ingsw.server.controller.multiplayer.MultiPlayerController;
 import it.polimi.ingsw.server.controller.singleplayer.SinglePlayerController;
+import it.polimi.ingsw.server.model.Player;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -83,10 +84,17 @@ public class Server {
         String nickname = connection.getPlayerNickname();
         connection.close();
         if (connection.getGameController() != null) {
+            GameController gc = connection.getGameController();
             view.sendAllExcept(new Disconnection("Player " + nickname + " disconnected."), nickname);
-            connection.getGameController().getActiveConnections().removeIf(c -> c == connection);
-            connection.getGameController().removeObserver(find(connection, clientToConnection));
-            connection.getGameController().getActivePlayers().removeIf(p -> p.getNickname().equals(nickname));
+            gc.getActiveConnections().removeIf(c -> c == connection);
+            gc.removeObserver(find(connection, clientToConnection));
+            List<Player> unregistered = gc.getActivePlayers().stream().filter(p ->
+                    p.getNickname().equalsIgnoreCase(connection.getPlayerNickname())).collect(Collectors.toList());
+            if(gc instanceof MultiPlayerController) {                                                                   //currentPLayerIndex must be updated
+                if (((MultiPlayerController) gc).getCurrentPlayerIndex() > gc.getActivePlayers().indexOf(unregistered.get(0)))
+                    ((MultiPlayerController) gc).setCurrentPlayerIndex(((MultiPlayerController) gc).getCurrentPlayerIndex() - 1);
+            }
+            gc.getActivePlayers().removeIf(p -> p.getNickname().equals(nickname));
         }
         view.setClientConnection(null);
         clientToConnection.remove(view);

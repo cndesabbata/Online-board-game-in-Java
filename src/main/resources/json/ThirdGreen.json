@@ -3,24 +3,28 @@
     "victoryPoints": 9,
     "requiredResources" : [0,0,0,6],
     "inputResources": [2,0,0,0],
-    "outputResources": [0,3,0,0,2]
+    "outputResources": [0,3,0,0,2],
+    "url": "devcard33.png"
   },
   {
     "victoryPoints": 10,
     "requiredResources" : [0,0,2,5],
     "inputResources": [1,0,1,0],
-    "outputResources": [0,2,0,2,1]
+    "outputResources": [0,2,0,2,1],
+    "url": "devcard37.png"
   },
   {
     "victoryPoints": 11,
     "requiredResources" : [0,0,0,7],
     "inputResources": [0,0,1,0],
-    "outputResources": [1,0,0,0,3]
+    "outputResources": [1,0,0,0,3],
+    "url": "devcard41.png"
   },
   {
     "victoryPoints": 12,
     "requiredResources" : [4,0,0,4],
     "inputResources": [0,1,0,0],
-    "outputResources": [3,0,0,1,0]
+    "outputResources": [3,0,0,1,0],
+    "url": "devcard45.png"
   }
 ]

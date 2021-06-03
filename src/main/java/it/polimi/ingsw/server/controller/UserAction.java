@@ -10,6 +10,7 @@ public enum UserAction {
     SETUP_DRAW(""),
     SELECT_LEADCARD(""),
     INITIAL_DISPOSITION(""),
+    RECONNECT_DISPOSITION(""),
     RESOURCE_SELECTION("has chosen his initial resources."),
     DISCARD_DEV_CARD("has discarded development cards."),
     UPDATE_AND_SHUFFLE("has advanced on the itinerary."),

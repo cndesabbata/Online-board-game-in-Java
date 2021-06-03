@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
-<StackPane prefHeight="504.0" prefWidth="612.0" styleClass="rootPane" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.view.GuiGameController">
+<StackPane prefHeight="504.0" prefWidth="612.0" styleClass="rootPane" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.view.GuiGameController">
     <stylesheets>
         <URL value="@../css/global.css" />
         <URL value="@../css/game.css" />
@@ -37,52 +37,52 @@
          <Label alignment="CENTER" layoutX="523.0" layoutY="535.0" text="Played Leader Cards" />
          <Label alignment="CENTER" layoutX="523.0" layoutY="710.0" text="Hand Leader Cards" />
          <ImageView fx:id="first_green" fitHeight="110.0" fitWidth="88.0" layoutX="760.0" layoutY="38.0">
-            <Image url="@../graphics/One_Green_1.png" />
+            <Image url="@../graphics/devcards/devcard1.png" />
          </ImageView>
          <ImageView fx:id="first_blue" fitHeight="110.0" fitWidth="88.0" layoutX="760.0" layoutY="158.0">
-            <Image url="@../graphics/One_Green_1.png" />
+            <Image url="@../graphics/devcards/devcard1.png" />
          </ImageView>
          <ImageView fx:id="second_green" fitHeight="110.0" fitWidth="88.0" layoutX="858.0" layoutY="38.0">
-            <Image url="@../graphics/One_Green_1.png" />
+            <Image url="@../graphics/devcards/devcard1.png" />
          </ImageView>
          <ImageView fx:id="first_yellow" fitHeight="110.0" fitWidth="88.0" layoutX="760.0" layoutY="278.0">
-            <Image url="@../graphics/One_Green_1.png" />
+            <Image url="@../graphics/devcards/devcard1.png" />
          </ImageView>
          <ImageView fx:id="first_purple" fitHeight="110.0" fitWidth="88.0" layoutX="760.0" layoutY="398.0">
-            <Image url="@../graphics/One_Green_1.png" />
+            <Image url="@../graphics/devcards/devcard1.png" />
          </ImageView>
          <ImageView fx:id="second_blue" fitHeight="110.0" fitWidth="88.0" layoutX="858.0" layoutY="158.0">
-            <Image url="@../graphics/One_Green_1.png" />
+            <Image url="@../graphics/devcards/devcard1.png" />
          </ImageView>
          <ImageView fx:id="third_green" fitHeight="110.0" fitWidth="88.0" layoutX="956.0" layoutY="38.0">
-            <Image url="@../graphics/One_Green_1.png" />
+            <Image url="@../graphics/devcards/devcard1.png" />
          </ImageView>
          <ImageView fx:id="second_yellow" fitHeight="110.0" fitWidth="88.0" layoutX="858.0" layoutY="278.0">
-            <Image url="@../graphics/One_Green_1.png" />
+            <Image url="@../graphics/devcards/devcard1.png" />
          </ImageView>
          <ImageView fx:id="second_purple" fitHeight="110.0" fitWidth="88.0" layoutX="858.0" layoutY="398.0">
-            <Image url="@../graphics/One_Green_1.png" />
+            <Image url="@../graphics/devcards/devcard1.png" />
          </ImageView>
          <ImageView fx:id="third_blue" fitHeight="110.0" fitWidth="88.0" layoutX="956.0" layoutY="158.0">
-            <Image url="@../graphics/One_Green_1.png" />
+            <Image url="@../graphics/devcards/devcard1.png" />
          </ImageView>
          <ImageView fx:id="third_yellow" fitHeight="110.0" fitWidth="88.0" layoutX="956.0" layoutY="278.0">
-            <Image url="@../graphics/One_Green_1.png" />
+            <Image url="@../graphics/devcards/devcard1.png" />
          </ImageView>
          <ImageView fx:id="third_purple" fitHeight="110.0" fitWidth="88.0" layoutX="956.0" layoutY="398.0">
-            <Image url="@../graphics/One_Green_1.png" />
+            <Image url="@../graphics/devcards/devcard1.png" />
          </ImageView>
          <ImageView fx:id="second_hand" fitHeight="110.0" fitWidth="88.0" layoutX="582.0" layoutY="740.0">
-            <Image url="@../graphics/One_Green_1.png" />
+            <Image url="@../graphics/devcards/devcard1.png" />
          </ImageView>
          <ImageView fx:id="first_played" fitHeight="110.0" fitWidth="88.0" layoutX="484.0" layoutY="566.0">
-            <Image url="@../graphics/One_Green_1.png" />
+            <Image url="@../graphics/devcards/devcard1.png" />
          </ImageView>
          <ImageView fx:id="second_played" fitHeight="110.0" fitWidth="88.0" layoutX="582.0" layoutY="566.0">
-            <Image url="@../graphics/One_Green_1.png" />
+            <Image url="@../graphics/devcards/devcard1.png" />
          </ImageView>
          <ImageView fx:id="first_hand" fitHeight="110.0" fitWidth="88.0" layoutX="484.0" layoutY="740.0">
-            <Image url="@../graphics/One_Green_1.png" />
+            <Image url="@../graphics/devcards/devcard1.png" />
          </ImageView>
          <ImageView fx:id="market_20" fitHeight="28.0" fitWidth="28.0" layoutX="845.0" layoutY="665.0">
             <Image url="@../graphics/marbles/Blue.png" />
@@ -163,31 +163,31 @@
             </font>
          </Label>
          <ImageView fx:id="first_slot_0" fitHeight="110.0" fitWidth="88.0" layoutX="278.0" layoutY="325.0">
-            <Image url="@../graphics/One_Green_1.png" />
+            <Image url="@../graphics/devcards/devcard1.png" />
          </ImageView>
          <ImageView fx:id="second_slot_0" fitHeight="110.0" fitWidth="88.0" layoutX="405.0" layoutY="325.0">
-            <Image url="@../graphics/One_Green_1.png" />
+            <Image url="@../graphics/devcards/devcard1.png" />
          </ImageView>
          <ImageView fx:id="third_slot_0" fitHeight="110.0" fitWidth="88.0" layoutX="534.0" layoutY="325.0">
-            <Image url="@../graphics/One_Green_1.png" />
+            <Image url="@../graphics/devcards/devcard1.png" />
          </ImageView>
          <ImageView fx:id="first_slot_1" fitHeight="110.0" fitWidth="88.0" layoutX="278.0" layoutY="305.0">
-            <Image url="@../graphics/One_Green_1.png" />
+            <Image url="@../graphics/devcards/devcard1.png" />
          </ImageView>
          <ImageView fx:id="first_slot_2" fitHeight="110.0" fitWidth="88.0" layoutX="278.0" layoutY="285.0">
-            <Image url="@../graphics/One_Green_1.png" />
+            <Image url="@../graphics/devcards/devcard1.png" />
          </ImageView>
          <ImageView fx:id="second_slot_1" fitHeight="110.0" fitWidth="88.0" layoutX="405.0" layoutY="305.0">
-            <Image url="@../graphics/One_Green_1.png" />
+            <Image url="@../graphics/devcards/devcard1.png" />
          </ImageView>
          <ImageView fx:id="second_slot_2" fitHeight="110.0" fitWidth="88.0" layoutX="405.0" layoutY="285.0">
-            <Image url="@../graphics/One_Green_1.png" />
+            <Image url="@../graphics/devcards/devcard1.png" />
          </ImageView>
          <ImageView fx:id="third_slot_1" fitHeight="110.0" fitWidth="88.0" layoutX="534.0" layoutY="305.0">
-            <Image url="@../graphics/One_Green_1.png" />
+            <Image url="@../graphics/devcards/devcard1.png" />
          </ImageView>
          <ImageView fx:id="third_slot_3" fitHeight="110.0" fitWidth="88.0" layoutX="534.0" layoutY="285.0">
-            <Image url="@../graphics/One_Green_1.png" />
+            <Image url="@../graphics/devcards/devcard1.png" />
          </ImageView>
          <ImageView fx:id="papald2" fitHeight="50.0" fitWidth="50.0" layoutX="332.0" layoutY="98.0">
             <Image url="@../graphics/itinerary/papal2.png" />
