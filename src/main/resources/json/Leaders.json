@@ -10,7 +10,8 @@
     "firstCardColour": "yellow",
     "secondCardColour": "green",
     "thirdCardColour": "",
-    "resource": "servant"
+    "resource": "servant",
+    "url": "leadcard1.png"
   },
   {
     "type": "Discount",
@@ -23,7 +24,8 @@
     "firstCardColour": "blue",
     "secondCardColour": "purple",
     "thirdCardColour": "",
-    "resource": "shield"
+    "resource": "shield",
+    "url": "leadcard2.png"
   },
   {
     "type": "Discount",
@@ -36,7 +38,8 @@
     "firstCardColour": "green",
     "secondCardColour": "blue",
     "thirdCardColour": "",
-    "resource": "stone"
+    "resource": "stone",
+    "url": "leadcard3.png"
   },
   {
     "type": "Discount",
@@ -49,7 +52,8 @@
     "firstCardColour": "yellow",
     "secondCardColour": "purple",
     "thirdCardColour": "",
-    "resource": "coin"
+    "resource": "coin",
+    "url": "leadcard4.png"
   },
   {
     "type": "Depot",
@@ -62,7 +66,8 @@
     "firstCardColour": "",
     "secondCardColour": "",
     "thirdCardColour": "",
-    "resource": "stone"
+    "resource": "stone",
+    "url": "leadcard5.png"
   },
   {
     "type": "Depot",
@@ -75,7 +80,8 @@
     "firstCardColour": "",
     "secondCardColour": "",
     "thirdCardColour": "",
-    "resource": "servant"
+    "resource": "servant",
+    "url": "leadcard6.png"
   },
   {
     "type": "Depot",
@@ -88,7 +94,8 @@
     "firstCardColour": "",
     "secondCardColour": "",
     "thirdCardColour": "",
-    "resource": "shield"
+    "resource": "shield",
+    "url": "leadcard7.png"
   },
   {
     "type": "Depot",
@@ -101,7 +108,8 @@
     "firstCardColour": "",
     "secondCardColour": "",
     "thirdCardColour": "",
-    "resource": "coin"
+    "resource": "coin",
+    "url": "leadcard8.png"
   },
   {
     "type": "Marble",
@@ -114,7 +122,8 @@
     "firstCardColour": "yellow",
     "secondCardColour": "yellow",
     "thirdCardColour": "blue",
-    "resource": "servant"
+    "resource": "servant",
+    "url": "leadcard9.png"
   },
   {
     "type": "Marble",
@@ -127,7 +136,8 @@
     "firstCardColour": "green",
     "secondCardColour": "green",
     "thirdCardColour": "purple",
-    "resource": "shield"
+    "resource": "shield",
+    "url": "leadcard10.png"
   },
   {
     "type": "Marble",
@@ -140,7 +150,8 @@
     "firstCardColour": "blue",
     "secondCardColour": "blue",
     "thirdCardColour": "yellow",
-    "resource": "stone"
+    "resource": "stone",
+    "url": "leadcard11.png"
   },
   {
     "type": "Marble",
@@ -153,7 +164,8 @@
     "firstCardColour": "purple",
     "secondCardColour": "purple",
     "thirdCardColour": "green",
-    "resource": "coin"
+    "resource": "coin",
+    "url": "leadcard12.png"
   },
   {
     "type": "Product",
@@ -166,7 +178,8 @@
     "firstCardColour": "yellow",
     "secondCardColour": "",
     "thirdCardColour": "",
-    "resource": "shield"
+    "resource": "shield",
+    "url": "leadcard13.png"
   },
   {
     "type": "Product",
@@ -179,7 +192,8 @@
     "firstCardColour": "blue",
     "secondCardColour": "",
     "thirdCardColour": "",
-    "resource": "servant"
+    "resource": "servant",
+    "url": "leadcard14.png"
   },
   {
     "type": "Product",
@@ -192,7 +206,8 @@
     "firstCardColour": "purple",
     "secondCardColour": "",
     "thirdCardColour": "",
-    "resource": "stone"
+    "resource": "stone",
+    "url": "leadcard15.png"
   },
   {
     "type": "Product",
@@ -205,6 +220,7 @@
     "firstCardColour": "green",
     "secondCardColour": "",
     "thirdCardColour": "",
-    "resource": "coin"
+    "resource": "coin",
+    "url": "leadcard16.png"
   }
 ]
