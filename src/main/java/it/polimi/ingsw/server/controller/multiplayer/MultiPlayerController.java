@@ -19,6 +19,13 @@ public class MultiPlayerController extends GameController {
     }
 
 
+    public void setCurrentPlayerIndex(int currentPlayerIndex) {
+        this.currentPlayerIndex = currentPlayerIndex;
+    }
+
+    public int getCurrentPlayerIndex() {
+        return currentPlayerIndex;
+    }
 
     public void changeTurn() {
         String oldPlayer = currentPlayer.getNickname();
@@ -38,7 +45,7 @@ public class MultiPlayerController extends GameController {
     public void sendReloadedView(String nickname) {
         reloadView(nickname);
         Player p = getGame().getPlayerByNickname(nickname);
-        p.setActionDone(UserAction.INITIAL_DISPOSITION);
+        p.setActionDone(UserAction.RECONNECT_DISPOSITION);
     }
 
     public Player getCurrentPlayer() {

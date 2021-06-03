@@ -34,7 +34,8 @@ public class Player extends Observable {
 
     public void setActionDone(UserAction actionDone) {
         this.actionDone = actionDone;
-        if (actionDone == UserAction.SETUP_DRAW || actionDone == UserAction.SELECT_LEADCARD)
+        if (actionDone == UserAction.SETUP_DRAW || actionDone == UserAction.SELECT_LEADCARD
+                || actionDone == UserAction.RECONNECT_DISPOSITION)
             notifySingleObserver(new ChangesDone(nickname, actionDone), nickname);
         else notifyObservers(new ChangesDone(nickname, actionDone));
     }
@@ -64,7 +65,8 @@ public class Player extends Observable {
 
     public void notifyNew (String nickname){
         notifySingleObserver(new NewPlayedLeadCards(playedLeaderCards, nickname), nickname);
-        notifySingleObserver(new NewHandCards(handLeaderCards, nickname, false), nickname);
+        if(nickname.equalsIgnoreCase(this.nickname))
+            notifySingleObserver(new NewHandCards(handLeaderCards, nickname, false), nickname);
     }
 
     public boolean isExclusiveActionDone() {

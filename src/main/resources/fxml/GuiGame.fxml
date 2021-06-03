@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
-<StackPane prefHeight="504.0" prefWidth="612.0" styleClass="rootPane" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.view.GuiGameController">
+<StackPane prefHeight="504.0" prefWidth="612.0" styleClass="rootPane" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.view.GuiGameController">
     <stylesheets>
         <URL value="@../css/global.css" />
         <URL value="@../css/game.css" />

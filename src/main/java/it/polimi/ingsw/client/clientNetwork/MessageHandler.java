@@ -57,7 +57,7 @@ public class MessageHandler {
             for (ChangeMessage a : m.getNewElements()){
                 applyChanges(a, !(m.getType() == UserAction.INITIAL_DISPOSITION) && isLast(m.getNewElements(), a));
             }
-            if(m.getType() == UserAction.INITIAL_DISPOSITION)
+            if(m.getType() == UserAction.INITIAL_DISPOSITION || m.getType() == UserAction.RECONNECT_DISPOSITION)
                 view.setClientMessage(new NewView("This is the initial disposition.\n"));
             else if (m.getType() == UserAction.SETUP_DRAW){
                 view.setClientMessage(new SetupDiscard("These are your new four leader cards. Please select the indexes of the two you wish to discard:\n>"));
