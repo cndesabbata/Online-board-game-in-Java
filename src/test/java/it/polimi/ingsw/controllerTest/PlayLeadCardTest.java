@@ -27,7 +27,7 @@ public class PlayLeadCardTest {
         input.add(new ResourceQuantity(1, Resource.STONE));
         List <ResourceQuantity> output = new ArrayList<>();
         output.add(new ResourceQuantity(3, Resource.STONE));
-        DevCard devCard = new DevCard(requirements, 6,1,Colour.GREEN, input, output);
+        DevCard devCard = new DevCard(requirements, 6,1,Colour.GREEN, input, output, null);
 
         List <ResourceQuantity> requirements2 = new ArrayList<>();
         requirements2.add(new ResourceQuantity(3, Resource.SHIELD));
@@ -37,12 +37,13 @@ public class PlayLeadCardTest {
         input2.add(new ResourceQuantity(1, Resource.STONE));
         List <ResourceQuantity> output2 = new ArrayList<>();
         output2.add(new ResourceQuantity(3, Resource.STONE));
-        DevCard devCard2 = new DevCard(requirements, 6,1, Colour.PURPLE, input2, output2);
+        DevCard devCard2 = new DevCard(requirements, 6,1, Colour.PURPLE, input2, output2, null);
 
         List<DevCard> leadProdReq = new ArrayList<>();
         leadProdReq.add(devCard);
         leadProdReq.add(devCard2);
-        LeaderCard depotLead = new LeaderCard(4, leadProdReq, Resource.COIN, LeaderType.DEPOT);
+        LeaderCard depotLead = new LeaderCard(4, leadProdReq, Resource.COIN, LeaderType.DEPOT, null
+        );
 
         Player me = new Player("Gianluca", game);
         me.getHandLeaderCards().add(depotLead);
@@ -71,7 +72,7 @@ public class PlayLeadCardTest {
         List<ResourceQuantity> leadRes = new ArrayList<>();
         leadRes.add(new ResourceQuantity(2, Resource.COIN));
         leadRes.add(new ResourceQuantity(2, Resource.STONE));
-        LeaderCard prodLead = new LeaderCard(leadRes, 4, Resource.COIN, LeaderType.PRODUCT);
+        LeaderCard prodLead = new LeaderCard(leadRes, 4, Resource.COIN, LeaderType.PRODUCT, null);
 
         Player me = new Player("Gianluca", game);
         me.getHandLeaderCards().add(prodLead);

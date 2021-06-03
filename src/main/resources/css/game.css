@@ -43,3 +43,7 @@
     -fx-background-size: stretch;
     -fx-background-color: transparent;
 }
+
+.clickable{
+    -fx-cursor: hand;
+}

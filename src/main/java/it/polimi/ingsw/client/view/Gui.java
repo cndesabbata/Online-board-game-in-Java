@@ -3,9 +3,7 @@ package it.polimi.ingsw.client.view;
 import it.polimi.ingsw.client.clientNetwork.ClientConnectionSocket;
 import it.polimi.ingsw.client.clientNetwork.MessageHandler;
 import it.polimi.ingsw.messages.Message;
-import it.polimi.ingsw.messages.clientMessages.internal.DisplayMessage;
-import it.polimi.ingsw.messages.clientMessages.internal.NewView;
-import it.polimi.ingsw.messages.clientMessages.internal.RequestPlayersNumber;
+import it.polimi.ingsw.messages.clientMessages.internal.*;
 import it.polimi.ingsw.server.observer.Observer;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -99,6 +97,10 @@ public class Gui extends Application implements Observer {
         currentScene = new Scene(nameToRoot.get(CONNECTION_MENU));
     }
 
+    public MessageHandler getMessageHandler() {
+        return messageHandler;
+    }
+
     public void changeRoot(String newScene) {
        currentScene.setRoot(nameToRoot.get(newScene));
     }
@@ -147,6 +149,56 @@ public class Gui extends Application implements Observer {
             Platform.runLater(() -> {
                 ((GuiGameController) nameToController.get(GUI_GAME)).initializeGame();
                 changeScene(GUI_GAME);
+            });
+        }
+        else if (message instanceof SetupDiscard){
+            Platform.runLater(() -> {
+                ((GuiGameController) nameToController.get(GUI_GAME)).showSetupCards(((SetupDiscard) message).getMessage());
+            });
+        }
+        else if (message instanceof PrintHandCards){
+            Platform.runLater(() -> {
+                ((GuiGameController) nameToController.get(GUI_GAME)).updateHandCards();
+            });
+        }
+        else if (message instanceof PrintChest){
+            Platform.runLater(() -> {
+                ((GuiGameController) nameToController.get(GUI_GAME)).updateChest(((PrintChest) message).getMessage());
+            });
+        }
+        else if (message instanceof PrintDevDecks){
+            Platform.runLater(() -> {
+                ((GuiGameController) nameToController.get(GUI_GAME)).updateDevDecks();
+            });
+        }
+        else if (message instanceof PrintDevSpace){
+            Platform.runLater(() -> {
+                ((GuiGameController) nameToController.get(GUI_GAME)).updateDevSpace(((PrintDevSpace) message).getMessage());
+            });
+        }
+        else if (message instanceof PrintItinerary){
+            Platform.runLater(() -> {
+                ((GuiGameController) nameToController.get(GUI_GAME)).updateItinerary(((PrintItinerary) message).getMessage());
+            });
+        }
+        else if (message instanceof PrintMarket){
+            Platform.runLater(() -> {
+                ((GuiGameController) nameToController.get(GUI_GAME)).updateMarket();
+            });
+        }
+        else if (message instanceof PrintPlayedCards){
+            Platform.runLater(() -> {
+                ((GuiGameController) nameToController.get(GUI_GAME)).updatePlayedCards(((PrintPlayedCards) message).getMessage());
+            });
+        }
+        else if (message instanceof PrintWarehouse){
+            Platform.runLater(() -> {
+                ((GuiGameController) nameToController.get(GUI_GAME)).updateWarehouse(((PrintWarehouse) message).getMessage());
+            });
+        }
+        else if (message instanceof ChooseAction){
+            Platform.runLater(() -> {
+                ((GuiGameController) nameToController.get(GUI_GAME)).enableAction();
             });
         }
     }

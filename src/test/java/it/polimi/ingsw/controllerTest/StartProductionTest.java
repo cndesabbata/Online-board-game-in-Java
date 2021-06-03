@@ -100,7 +100,7 @@ public class StartProductionTest {
         input.add(new ResourceQuantity(1, Resource.COIN));
         List <ResourceQuantity> output = new ArrayList<>();
         output.add(new ResourceQuantity(3, Resource.STONE));
-        DevCard devCard = new DevCard(requirements, 6,1,Colour.GREEN, input, output);
+        DevCard devCard = new DevCard(requirements, 6,1,Colour.GREEN, input, output, null);
 
         List <ResourcePosition> inputClient = new ArrayList<>();
         inputClient.add(new ResourcePosition(Resource.STONE, Place.WAREHOUSE, NumOfShelf.ONE));
@@ -188,7 +188,7 @@ public class StartProductionTest {
         input.add(new ResourceQuantity(1, Resource.COIN));
         List <ResourceQuantity> output = new ArrayList<>();
         output.add(new ResourceQuantity(3, Resource.STONE));
-        DevCard devCard = new DevCard(requirements, 6,1,Colour.GREEN, input, output);
+        DevCard devCard = new DevCard(requirements, 6,1,Colour.GREEN, input, output, null);
 
         List <ResourceQuantity> requirements2 = new ArrayList<>();
         requirements2.add(new ResourceQuantity(3, Resource.SHIELD));
@@ -198,7 +198,7 @@ public class StartProductionTest {
         List <ResourceQuantity> output2 = new ArrayList<>();
         output2.add(new ResourceQuantity(2, Resource.SHIELD));
         output2.add(new ResourceQuantity(1, Resource.STONE));
-        DevCard devCard2 = new DevCard(requirements2, 5,1,Colour.PURPLE, input2, output2);
+        DevCard devCard2 = new DevCard(requirements2, 5,1,Colour.PURPLE, input2, output2, null);
 
         List <ResourcePosition> inputClient = new ArrayList<>();
         inputClient.add(new ResourcePosition(Resource.STONE, Place.WAREHOUSE, NumOfShelf.ONE));
@@ -292,7 +292,7 @@ public class StartProductionTest {
         input.add(new ResourceQuantity(1, Resource.COIN));
         List <ResourceQuantity> output = new ArrayList<>();
         output.add(new ResourceQuantity(3, Resource.STONE));
-        DevCard devCard = new DevCard(requirements, 6,1,Colour.GREEN, input, output);
+        DevCard devCard = new DevCard(requirements, 6,1,Colour.GREEN, input, output, null);
 
         List <ResourceQuantity> requirements2 = new ArrayList<>();
         requirements2.add(new ResourceQuantity(3, Resource.SHIELD));
@@ -302,11 +302,11 @@ public class StartProductionTest {
         List <ResourceQuantity> output2 = new ArrayList<>();
         output2.add(new ResourceQuantity(2, Resource.SHIELD));
         output2.add(new ResourceQuantity(1, Resource.STONE));
-        DevCard devCard2 = new DevCard(requirements2, 5,1,Colour.PURPLE, input2, output2);
+        DevCard devCard2 = new DevCard(requirements2, 5,1,Colour.PURPLE, input2, output2, null);
 
         List<DevCard> leadProdReq = new ArrayList<>();
         leadProdReq.add(devCard);
-        LeaderCard prodLead = new LeaderCard(4, leadProdReq, Resource.SERVANT, LeaderType.PRODUCT);
+        LeaderCard prodLead = new LeaderCard(4, leadProdReq, Resource.SERVANT, LeaderType.PRODUCT, null);
 
         List <ResourcePosition> inputClient = new ArrayList<>();
         inputClient.add(new ResourcePosition(Resource.STONE, Place.CHEST, null));
@@ -404,7 +404,7 @@ public class StartProductionTest {
         input.add(new ResourceQuantity(1, Resource.STONE));
         List <ResourceQuantity> output = new ArrayList<>();
         output.add(new ResourceQuantity(3, Resource.STONE));
-        DevCard devCard = new DevCard(requirements, 6,1,Colour.GREEN, input, output);
+        DevCard devCard = new DevCard(requirements, 6,1,Colour.GREEN, input, output, null);
 
         List <ResourceQuantity> requirements2 = new ArrayList<>();
         requirements2.add(new ResourceQuantity(3, Resource.SHIELD));
@@ -415,15 +415,15 @@ public class StartProductionTest {
         output2.add(new ResourceQuantity(2, Resource.SHIELD));
         output2.add(new ResourceQuantity(1, Resource.STONE));
         output2.add(new ResourceQuantity(1, Resource.FAITHPOINT));
-        DevCard devCard2 = new DevCard(requirements2, 5,1,Colour.PURPLE, input2, output2);
+        DevCard devCard2 = new DevCard(requirements2, 5,1,Colour.PURPLE, input2, output2, null);
 
         List<DevCard> leadProdReq = new ArrayList<>();
         leadProdReq.add(devCard);
-        LeaderCard prodLead = new LeaderCard(4, leadProdReq, Resource.COIN, LeaderType.PRODUCT);
+        LeaderCard prodLead = new LeaderCard(4, leadProdReq, Resource.COIN, LeaderType.PRODUCT, null);
 
         List<DevCard> leadDepotReq = new ArrayList<>();
         leadDepotReq.add(devCard);
-        LeaderCard depotLead = new LeaderCard(3, leadDepotReq, Resource.COIN, LeaderType.DEPOT);
+        LeaderCard depotLead = new LeaderCard(3, leadDepotReq, Resource.COIN, LeaderType.DEPOT, null);
 
         List <ResourcePosition> inputClient = new ArrayList<>();
         inputClient.add(new ResourcePosition(Resource.STONE, Place.CHEST, null));
