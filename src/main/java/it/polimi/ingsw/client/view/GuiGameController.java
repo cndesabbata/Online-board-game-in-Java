@@ -386,20 +386,20 @@ public class GuiGameController implements GuiController{
         if (currentAction != UserAction.SETUP_DRAW && currentGameboard.getOwner().equalsIgnoreCase(view.getNickname())){
             String url;
             Image m;
-            if (view.getHand().size()>0){
+            if (view.getHand().size() > 0){
                 url = "/graphics/leadcards/" + view.getHand().get(0).getUrl();
                 m = new Image(getClass().getResourceAsStream(url));
                 first_hand.setImage(m);
                 hand_1.setDisable(false);
             }
             else first_hand.imageProperty().set(null);
-            if (view.getHand().size()>1){
+            if (view.getHand().size() > 1){
                 url = "/graphics/leadcards/" + view.getHand().get(1).getUrl();
                 m = new Image(getClass().getResourceAsStream(url));
                 second_hand.setImage(m);
                 hand_2.setDisable(false);
             }
-            else first_hand.imageProperty().set(null);
+            else second_hand.imageProperty().set(null);
         }
     }
 
