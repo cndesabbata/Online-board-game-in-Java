@@ -2,7 +2,13 @@ package it.polimi.ingsw.client.view;
 
 import it.polimi.ingsw.client.clientNetwork.ClientConnectionSocket;
 import it.polimi.ingsw.messages.clientMessages.LeaderCardSelection;
+import it.polimi.ingsw.messages.clientMessages.ResourceSelection;
+import it.polimi.ingsw.server.controller.GamePhase;
+import it.polimi.ingsw.server.controller.Place;
 import it.polimi.ingsw.server.controller.UserAction;
+import it.polimi.ingsw.server.model.Resource;
+import it.polimi.ingsw.server.model.ResourcePosition;
+import it.polimi.ingsw.server.model.gameboard.NumOfShelf;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
@@ -12,9 +18,13 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class GuiGameController implements GuiController{
+
 
     //Market
     @FXML private Button market_c1;
@@ -37,7 +47,8 @@ public class GuiGameController implements GuiController{
     @FXML private ImageView market_21;
     @FXML private ImageView market_22;
     @FXML private ImageView market_23;
-    private List<ImageView> marbles = new ArrayList<>();
+    private final List<ImageView> marbles = new ArrayList<>();
+    private final List<Button> marketButtons = new ArrayList<>();
 
     //DevDecks
     @FXML private Button devspace_00;
@@ -64,19 +75,25 @@ public class GuiGameController implements GuiController{
     @FXML private ImageView third_blue;
     @FXML private ImageView third_yellow;
     @FXML private ImageView third_purple;
-    private List<ImageView> devDecks = new ArrayList<>();
+    private final List<ImageView> devDecks = new ArrayList<>();
+    private final List<Button> devDeckButtons = new ArrayList<>();
 
     //PlayedCards
     @FXML private Button played_1;
     @FXML private Button played_2;
     @FXML private ImageView first_played;
     @FXML private ImageView second_played;
+    private final List<Button> playedCardsButtons = new ArrayList<>();
+
 
     //HandCards
     @FXML private Button hand_1;
     @FXML private Button hand_2;
     @FXML private ImageView second_hand;
     @FXML private ImageView first_hand;
+    private List<ImageView> hand;
+    private final List<Button> handButtons = new ArrayList<>();
+
 
     //Itinerary
     @FXML private ImageView papal2;
@@ -101,8 +118,14 @@ public class GuiGameController implements GuiController{
     @FXML private ImageView third_shelf_0;
     @FXML private ImageView third_shelf_1;
     @FXML private ImageView third_shelf_2;
-    private List<ImageView> second_shelf = new ArrayList<>();
-    private List<ImageView> third_shelf = new ArrayList<>();
+    private final List<ImageView> second_shelf = new ArrayList<>();
+    private final List<ImageView> third_shelf = new ArrayList<>();
+    private int resourceToSelect;
+    private String selectedResource;
+    private final List<Button> warehouseButtons = new ArrayList<>();
+    private final List<Button> chestButtons = new ArrayList<>();
+    private List<ResourcePosition> resourcesForAction = new ArrayList<>();
+
 
     //DevSpace
     @FXML private Button slot_1;
@@ -118,9 +141,11 @@ public class GuiGameController implements GuiController{
     @FXML private ImageView third_slot_0;
     @FXML private ImageView third_slot_1;
     @FXML private ImageView third_slot_2;
-    private List<ImageView> firstSlot = new ArrayList<>();
-    private List<ImageView> secondSlot = new ArrayList<>();
-    private List<ImageView> thirdSlot = new ArrayList<>();
+    private final List<ImageView> firstSlot = new ArrayList<>();
+    private final List<ImageView> secondSlot = new ArrayList<>();
+    private final List<ImageView> thirdSlot = new ArrayList<>();
+    private final List<Button> devSpaceButtons = new ArrayList<>();                                                           //also contains board_production
+
 
     //Message & Board
     @FXML private Group group;
@@ -141,6 +166,20 @@ public class GuiGameController implements GuiController{
     @FXML private Button setupdraw_button2;
     @FXML private Button setupdraw_button3;
     @FXML private Button setupdraw_button4;
+    private final List<Button> setupDrawButtons = new ArrayList<>();
+
+
+    //SetupResources
+    @FXML private Button coin_button;
+    @FXML private Button stone_button;
+    @FXML private Button servant_button;
+    @FXML private Button shield_button;
+    @FXML private ImageView message_coin;
+    @FXML private ImageView message_stone;
+    @FXML private ImageView message_servant;
+    @FXML private ImageView message_shield;
+    private final List<ImageView> setupResources = new ArrayList<>();
+    private final List<Button> setupResourcesButtons = new ArrayList<>();
 
 
     private Gui gui;
@@ -159,12 +198,58 @@ public class GuiGameController implements GuiController{
         this.currentGameboard = view.getOwnGameBoard();
     }
 
+    private void handleButtons(List<Button> buttons, boolean b){
+        for(Button button : buttons){
+            button.setDisable(b);
+        }
+    }
+
     public void initializeGame(){
         initializeMarket();
         initializeDevDecks();
         initializeDevSpaceSlots();
         initializeCoordinates();
         initializeWarehouse();
+        initializeHandCards();
+        initializePlayedCards();
+        initializeMessagePanel();
+    }
+
+    public void initializeMessagePanel() {
+        setupResources.add(message_coin);                                                                            //DO NOT MODIFY THIS ORDER
+        setupResources.add(message_servant);
+        setupResources.add(message_shield);
+        setupResources.add(message_stone);
+        message_coin.imageProperty().set(null);
+        message_stone.imageProperty().set(null);
+        message_servant.imageProperty().set(null);
+        message_shield.imageProperty().set(null);
+        setupDrawButtons.add(setupdraw_button1);
+        setupDrawButtons.add(setupdraw_button2);
+        setupDrawButtons.add(setupdraw_button3);
+        setupDrawButtons.add(setupdraw_button4);
+        handleButtons(setupDrawButtons, false);
+        setupResourcesButtons.add(coin_button);
+        setupResourcesButtons.add(stone_button);
+        setupResourcesButtons.add(servant_button);
+        setupResourcesButtons.add(shield_button);
+        handleButtons(setupResourcesButtons, true);
+    }
+
+    private void initializePlayedCards() {
+        first_played.imageProperty().set(null);
+        second_played.imageProperty().set(null);
+        playedCardsButtons.add(played_1);
+        playedCardsButtons.add(played_2);
+        handleButtons(playedCardsButtons, true);
+    }
+
+    private void initializeHandCards() {
+        first_hand.imageProperty().set(null);
+        second_hand.imageProperty().set(null);
+        handButtons.add(hand_1);
+        handButtons.add(hand_2);
+        handleButtons(handButtons, true);
     }
 
     private void initializeWarehouse() {
@@ -173,6 +258,9 @@ public class GuiGameController implements GuiController{
         third_shelf.add(third_shelf_0);
         third_shelf.add(third_shelf_1);
         third_shelf.add(third_shelf_2);
+        warehouseButtons.add(shelf1);
+        warehouseButtons.add(shelf2);
+        warehouseButtons.add(shelf3);
     }
 
     private void disableButtons(){
@@ -227,6 +315,13 @@ public class GuiGameController implements GuiController{
         marbles.add(market_21);
         marbles.add(market_22);
         marbles.add(market_23);
+        marketButtons.add(market_c1);
+        marketButtons.add(market_c2);
+        marketButtons.add(market_c3);
+        marketButtons.add(market_c4);
+        marketButtons.add(market_r1);
+        marketButtons.add(market_r2);
+        marketButtons.add(market_r3);
         updateMarket();
     }
 
@@ -243,6 +338,18 @@ public class GuiGameController implements GuiController{
         devDecks.add(third_blue);
         devDecks.add(third_yellow);
         devDecks.add(third_purple);
+        devDeckButtons.add(devspace_00);
+        devDeckButtons.add(devspace_01);
+        devDeckButtons.add(devspace_02);
+        devDeckButtons.add(devspace_10);
+        devDeckButtons.add(devspace_11);
+        devDeckButtons.add(devspace_12);
+        devDeckButtons.add(devspace_20);
+        devDeckButtons.add(devspace_21);
+        devDeckButtons.add(devspace_22);
+        devDeckButtons.add(devspace_30);
+        devDeckButtons.add(devspace_31);
+        devDeckButtons.add(devspace_32);
         updateDevDecks();
     }
 
@@ -256,6 +363,10 @@ public class GuiGameController implements GuiController{
         thirdSlot.add(third_slot_0);
         thirdSlot.add(third_slot_1);
         thirdSlot.add(third_slot_2);
+        devSpaceButtons.add(slot_1);
+        devSpaceButtons.add(slot_2);
+        devSpaceButtons.add(slot_3);
+        devSpaceButtons.add(board_production);
     }
 
     private void initializeCoordinates(){
@@ -312,9 +423,9 @@ public class GuiGameController implements GuiController{
         external.setImage(m);
     }
 
-    public void showSetupCards(String s) {
-        currentAction = UserAction.SETUP_DRAW;
-        message.setText(s);
+    public void showSetupCards() {
+        currentAction = UserAction.SELECT_LEADCARD;
+        message.setText("These are your new hand cards.\nPlease select the two you want to discard.");
         String url;
         Image m;
         url = "/graphics/leadcards/" + view.getHand().get(0).getUrl();
@@ -342,10 +453,7 @@ public class GuiGameController implements GuiController{
         }
         else{
             leadCardIndexes[1] = i;
-            setupdraw_button1.setDisable(true);
-            setupdraw_button2.setDisable(true);
-            setupdraw_button3.setDisable(true);
-            setupdraw_button4.setDisable(true);
+            handleButtons(setupDrawButtons, true);
             connectionSocket.send(new LeaderCardSelection(leadCardIndexes));
             message.setText("");
             group.getChildren().remove(setupdraw1);
@@ -383,7 +491,8 @@ public class GuiGameController implements GuiController{
     }
 
     public void updateHandCards() {
-        if (currentAction != UserAction.SETUP_DRAW && currentGameboard.getOwner().equalsIgnoreCase(view.getNickname())){
+        if (view.getGamePhase() != GamePhase.SETUP || (view.getGamePhase() == GamePhase.SETUP && view.getHand().size() <= 2)
+                && currentGameboard.getOwner().equalsIgnoreCase(view.getNickname())){
             String url;
             Image m;
             if (view.getHand().size() > 0){
@@ -453,7 +562,7 @@ public class GuiGameController implements GuiController{
         if (currentGameboard.getOwner().equalsIgnoreCase(owner)){
             if(currentGameboard.getBlackCrossPosition()!= null){
                 if (blackcross.getImage() == null){
-                    Image m = new Image(getClass().getResourceAsStream("/graphics/itinerary/black_cross"));
+                    Image m = new Image(getClass().getResourceAsStream("/graphics/itinerary/black_cross.png"));
                     blackcross.setImage(m);
                 }
                 Integer[] loc = coordinates.get(currentGameboard.getBlackCrossPosition());
@@ -488,24 +597,27 @@ public class GuiGameController implements GuiController{
         if (currentGameboard.getOwner().equalsIgnoreCase(owner)){
             String url;
             Image m;
-            if (currentGameboard.getWarehouse().get(0).get(0).isEmpty()){
-                url = "/graphics/resources/" + currentGameboard.getWarehouse().get(0).get(0);
-                m = new Image(getClass().getResourceAsStream(url));
+            if (!currentGameboard.getWarehouse().get(0).isEmpty()
+                    && !currentGameboard.getWarehouse().get(0).get(0).isEmpty()){
+                url = "/graphics/resources/" + currentGameboard.getWarehouse().get(0).get(0).toLowerCase() + ".png";
+                m = new Image(Objects.requireNonNull(getClass().getResourceAsStream(url)));
                 first_shelf.setImage(m);
             }
             else first_shelf.imageProperty().set(null);
             for (int i = 0; i < 2; i++){
-                if (!currentGameboard.getWarehouse().get(1).get(i).isEmpty()){
-                    url = "/graphics/resources/" + currentGameboard.getWarehouse().get(1).get(i);
-                    m = new Image(getClass().getResourceAsStream(url));
+                if (currentGameboard.getWarehouse().get(1).size() > i
+                        && !currentGameboard.getWarehouse().get(1).get(i).isEmpty()){
+                    url = "/graphics/resources/" + currentGameboard.getWarehouse().get(1).get(i).toLowerCase() + ".png";
+                    m = new Image(Objects.requireNonNull(getClass().getResourceAsStream(url)));
                     second_shelf.get(i).setImage(m);
                 }
                 else second_shelf.get(i).imageProperty().set(null);
             }
             for (int i = 0; i < 3; i++){
-                if (!currentGameboard.getWarehouse().get(2).get(i).isEmpty()){
-                    url = "/graphics/resources/" + currentGameboard.getWarehouse().get(2).get(i);
-                    m = new Image(getClass().getResourceAsStream(url));
+                if (currentGameboard.getWarehouse().get(2).size() > i
+                        && !currentGameboard.getWarehouse().get(2).get(i).isEmpty()){
+                    url = "/graphics/resources/" + currentGameboard.getWarehouse().get(2).get(i).toLowerCase() + ".png";
+                    m = new Image(Objects.requireNonNull(getClass().getResourceAsStream(url)));
                     third_shelf.get(i).setImage(m);
                 }
                 else third_shelf.get(i).imageProperty().set(null);
@@ -517,6 +629,227 @@ public class GuiGameController implements GuiController{
         message.setText(s);
     }
 
-    public void enableAction() {
+    public void enableAction(String s) {
+        message.setText(s);
+        handleButtons(marketButtons, false);
+        handleButtons(devSpaceButtons, false);
+        for(int i = 0; i < 3; i++){
+            devSpaceButtons.get(i).setDisable(view.getOwnGameBoard().getDevSpace().get(i).isEmpty());
+            for (int j = 0; j < 4; j++){
+                devDeckButtons.get(i + j*3).setDisable(view.getDevDecks()[i][j] == null);
+            }
+        }
+        handleButtons(handButtons, false);
+        handleButtons(playedCardsButtons, false);
+        for(int i = 0; i < 2; i++){
+            handButtons.get(i).setDisable(view.getHand().size() <= i);
+            playedCardsButtons.get(i).setDisable(view.getOwnGameBoard().getPlayedCards().size() <= i);
+        }
+        checkWarehouseButtons(false);
+        handleButtons(chestButtons, true);
+        currentAction = null;
     }
+
+    public void selectSetupResources() {
+        currentAction = UserAction.RESOURCE_SELECTION;
+        handleButtons(setupResourcesButtons, false);
+        List <String> resourcesUrl = new ArrayList<>();
+        resourcesUrl.add("/graphics/resources/coin.png");
+        resourcesUrl.add("/graphics/resources/servant.png");
+        resourcesUrl.add("/graphics/resources/shield.png");
+        resourcesUrl.add("/graphics/resources/stone.png");
+        int i = 0;
+        for (String s : resourcesUrl) {
+            Image m = new Image(Objects.requireNonNull(getClass().getResourceAsStream(s)));
+            setupResources.get(i).setImage(m);
+            i++;
+        }
+        Integer index = view.getPlayerIndex();
+        if(index > 0) {
+            String s;
+            s = "You are player number " +(index+1)+ ",\nthis gives you access to";
+            switch (index){
+                case 1 -> {s = s + "an additional resource,\nplease select one:";
+                    resourceToSelect = 1;}
+                case 2 -> {s = s +"one faithpoint and an additional resource,\nplease select one:";
+                    resourceToSelect = 1;}
+                case 3 -> {s = s +"one faithpoint and two additional resources,\nplease select them:";
+                    resourceToSelect = 2;}
+                default -> s = s + "";
+            }
+            message.setText(s);
+        }
+    }
+
+    private void checkWarehouseButtons(boolean toStore){
+        shelf1.setDisable((toStore && first_shelf.getImage() != null)
+                || (!toStore && first_shelf.getImage() == null));
+        shelf2.setDisable((toStore && second_shelf.get(1).getImage() != null)
+                || (!toStore && second_shelf.get(0).getImage() == null));
+        shelf3.setDisable((toStore && third_shelf.get(2).getImage() != null)
+                || (!toStore && third_shelf.get(0).getImage() == null));
+    }
+
+    /*used when some resources are needed*/
+    private void selectResourcesPosition(boolean toStore, boolean alsoChest){
+        checkWarehouseButtons(toStore);
+        handleButtons(chestButtons, !alsoChest);
+        handleButtons(devSpaceButtons, true);
+        handleButtons(devDeckButtons, true);
+        handleButtons(marketButtons, true);
+        handleButtons(handButtons, true);
+        handleButtons(playedCardsButtons, true);
+        right_gameboard.setDisable(true);
+        left_gameboard.setDisable(true);
+    }
+
+    public void select_coin(ActionEvent actionEvent) {
+        selectedResource = "Coin";
+        handleButtons(setupResourcesButtons, true);
+        selectResourcesPosition(true, false);
+        message.setText("Now click on one of the warehouse shelves");
+    }
+
+    public void select_stone(ActionEvent actionEvent) {
+        selectedResource = "Stone";
+        selectResourcesPosition(true,false);
+        handleButtons(setupResourcesButtons, true);
+        message.setText("Now click on one of the warehouse shelves");
+    }
+
+    public void select_servant(ActionEvent actionEvent) {
+        selectedResource = "Servant";
+        selectResourcesPosition(true, false);
+        handleButtons(setupResourcesButtons, true);
+        message.setText("Now click on one of the warehouse shelves");
+    }
+
+    public void select_shield(ActionEvent actionEvent) {
+        selectedResource = "Shield";
+        selectResourcesPosition(true, false);
+        handleButtons(setupResourcesButtons, true);
+        message.setText("Now click on one of the warehouse shelves");
+    }
+
+    private void selectWarehouse(String shelf){
+        if(view.getGamePhase() == GamePhase.SETUP){
+            resourcesForAction.add(new ResourcePosition(Resource.valueOf(selectedResource.toUpperCase()),
+                    Place.WAREHOUSE, NumOfShelf.valueOf(shelf)));
+            switch (shelf){
+                case "ONE" -> {Image image = new Image("/graphics/resources/" +selectedResource.toLowerCase()+ ".png");
+                                first_shelf.setImage(image);}
+                case "TWO" -> {
+                    for (ImageView i : second_shelf) {
+                        if (i.getImage() == null) {
+                            Image image = new Image("/graphics/resources/" + selectedResource.toLowerCase() + ".png");
+                            i.setImage(image);
+                            break;
+                        }
+                    }
+                }
+                case "THREE" -> {
+                    for(ImageView i : third_shelf){
+                        if(i.getImage() == null){
+                            Image image = new Image("/graphics/resources/" +selectedResource.toLowerCase()+ ".png");
+                            i.setImage(image);
+                            break;
+                        }
+                    }
+                }
+            }
+            resourceToSelect--;
+            if(resourceToSelect == 0) {
+                connectionSocket.send(new ResourceSelection(resourcesForAction));
+                for (int i = 0; i < setupResourcesButtons.size(); i++) {
+                    setupResourcesButtons.get(i).setDisable(true);
+                    setupResources.get(i).imageProperty().set(null);
+                    message.setText("");
+                }
+            }
+            else
+                handleButtons(setupResourcesButtons, false);
+        }
+        else if(currentAction == UserAction.BUY_RESOURCES){
+
+        }
+        else if(currentAction == UserAction.START_PRODUCTION){
+
+        }
+        else if(currentAction == UserAction.BUY_DEVCARD){
+
+        }
+        else{
+            currentAction = UserAction.MOVE_RESOURCES;
+        }
+    }
+
+    public void selectFirstShelf(ActionEvent actionEvent) {
+        selectWarehouse("ONE");
+    }
+
+    public void selectSecondShelf(ActionEvent actionEvent) {
+        selectWarehouse("TWO");
+    }
+
+    public void selectThirdShelf(ActionEvent actionEvent) {
+        selectWarehouse("THREE");
+    }
+
+    private void selectMarket(boolean isRow, int n){
+        List <String> colours = new ArrayList<>();
+        List <String> resToReceive = new ArrayList<>();
+        if(isRow)
+            colours = Arrays.stream(view.getMarket()[n])
+                    .filter(s -> !s.equalsIgnoreCase("WHITE")).collect(Collectors.toList());
+        else
+            colours = Arrays.stream(getColumn(view.getMarket(), n))
+                    .filter(s -> !s.equalsIgnoreCase("WHITE")).collect(Collectors.toList());
+        for (String s : colours) {
+            switch (s.toUpperCase()) {
+                case "GREY" -> resToReceive.add("STONE");
+                case "YELLOW" -> resToReceive.add("COIN");
+                case "BLUE" -> resToReceive.add("SHIELD");
+                case "PURPLE" -> resToReceive.add("SERVANT");
+                case "RED" -> resToReceive.add("FAITHPOINT");
+            }
+        }
+    }
+
+
+    public String[] getColumn(String[][] array, int index) {
+        String[] column = new String[3];
+        for (int i = 0; i < column.length; i++) {
+            column[i] = array[i][index];
+        }
+        return column;
+    }
+
+    public void selectMarketC1(ActionEvent actionEvent) {
+        selectMarket(false, 1);
+    }
+
+    public void selectMarketC2(ActionEvent actionEvent) {
+        selectMarket(false, 2);
+    }
+
+    public void selectMarketC3(ActionEvent actionEvent) {
+        selectMarket(false, 3);
+    }
+
+    public void selectMarketC4(ActionEvent actionEvent) {
+        selectMarket(false, 4);
+    }
+
+    public void selectMarketR1(ActionEvent actionEvent) {
+        selectMarket(true, 1);
+    }
+
+    public void selectMarketR2(ActionEvent actionEvent) {
+        selectMarket(true, 2);
+    }
+
+    public void selectMarketR3(ActionEvent actionEvent) {
+        selectMarket(true, 3);
+    }
+
 }

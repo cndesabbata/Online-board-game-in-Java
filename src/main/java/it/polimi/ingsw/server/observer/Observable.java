@@ -23,6 +23,10 @@ public class Observable {
         }
     }
 
+    public List<Observer> getObservers() {
+        return observers;
+    }
+
     protected void notifySingleObserver(Message message, String nickname){
         for (Observer observer : observers) {
             if (observer instanceof VirtualView){

@@ -9,6 +9,7 @@ import it.polimi.ingsw.messages.Message;
 import it.polimi.ingsw.messages.clientMessages.internal.*;
 import it.polimi.ingsw.messages.serverMessages.newElement.*;
 import it.polimi.ingsw.messages.serverMessages.*;
+import it.polimi.ingsw.server.controller.GamePhase;
 import it.polimi.ingsw.server.controller.UserAction;
 import it.polimi.ingsw.server.model.DevCard;
 import it.polimi.ingsw.server.model.LeaderCard;
@@ -29,13 +30,11 @@ public class MessageHandler {
             ErrorMessage e = (ErrorMessage) message;
             if (e.getErrorType() == ErrorType.WRONG_ACTION)
                 view.setClientMessage(new ChooseAction(e.getMessage()
-                                    + "Please choose an action (select a number between 0 and 11):\n" +
-                                    Constants.getChooseAction() +  "\n>"));
+                                    + "Please choose an action"));
             else if (e.getErrorType() == ErrorType.WRONG_MESSAGE)
                 view.setClientMessage(new DisplayMessage(e.getMessage()));
             else if(e.getErrorType() == ErrorType.INVALID_END_TURN)
-                view.setClientMessage(new ChooseAction(e.getMessage() +
-                        Constants.getChooseAction() +  "\n>"));
+                view.setClientMessage(new ChooseAction(e.getMessage()));
             else if (e.getErrorType() == ErrorType.SETUP_DRAW)
                 view.setClientMessage(new SetupDiscard(e.getMessage()));
             else if (e.getErrorType() == ErrorType.SETUP_RESOURCE)
@@ -46,6 +45,8 @@ public class MessageHandler {
                 view.setClientMessage(new DisplayMessage(e.getMessage()));
         }
         else if (message instanceof SetupMessage || message instanceof Disconnection){
+            if(message instanceof SetupMessage)
+                view.setGamePhase(GamePhase.SETUP);
             view.setClientMessage(new DisplayMessage(((CustomMessage) message).getMessage()));
         }
         else if (message instanceof PlayersNumberMessage){
@@ -86,11 +87,11 @@ public class MessageHandler {
                 view.setClientMessage(new DisplayMessage(toPrint + "This is the new state of the game."));
                 if (m.getType() != UserAction.RESOURCE_SELECTION && m.getNickname().equalsIgnoreCase(view.getNickname())
                         || view.getOwnGameBoard().getBlackCrossPosition() != null)
-                    view.setClientMessage(new ChooseAction("Please choose an action (select a number between 0 and 11):\n" +
-                                                Constants.getChooseAction() +  "\n>"));
+                    view.setClientMessage(new ChooseAction("Please choose an action"));
             }
         }
         else if (message instanceof TurnChange){
+            view.setGamePhase(GamePhase.STARTED);
             TurnChange m = (TurnChange) message;
             if (m.getNewPlayer().equalsIgnoreCase(view.getNickname())){
                 view.setTurnActive(true);
@@ -98,8 +99,7 @@ public class MessageHandler {
                 if (m.getOldPlayer() != null)
                     toPrint = m.getOldPlayer().toUpperCase() + " has ended his turn. ";
                 view.setClientMessage(new ChooseAction(toPrint +
-                        "It's your turn. Please choose an action (select a number between 0 and 11):\n" +
-                        Constants.getChooseAction() +  "\n>"));
+                        "It's your turn. Please choose an action"));
             }
             else {
                 view.setTurnActive(false);
@@ -117,7 +117,11 @@ public class MessageHandler {
         for (GameBoardInfo g : view.getOtherGameBoards()){
             if (g.getOwner().equalsIgnoreCase(owner)) return g;
         }
-        GameBoardInfo newBoard = new GameBoardInfo(owner, view.getCli());
+        GameBoardInfo newBoard;
+        if(view.getCli() != null)
+            newBoard = new GameBoardInfo(owner, view.getCli());
+        else
+            newBoard = new GameBoardInfo(owner, view.getGui());
         view.addGameBoard(newBoard);
         return newBoard;
     }

@@ -123,7 +123,7 @@
          <ImageView fx:id="market_21" fitHeight="28.0" fitWidth="28.0" layoutX="878.0" layoutY="665.0">
             <Image url="@../graphics/marbles/Blue.png" />
          </ImageView>
-         <Label fx:id="message" alignment="CENTER" layoutX="10.0" layoutY="540.0" prefHeight="20.0" prefWidth="430.0" />
+         <Label fx:id="message" alignment="TOP_LEFT" graphicTextGap="0.0" layoutX="10.0" layoutY="540.0" prefHeight="60.0" prefWidth="428.0" />
          <ImageView fx:id="second_shelf_1" fitHeight="28.0" fitWidth="28.0" layoutX="95.0" layoutY="295.0">
          </ImageView>
          <ImageView fx:id="second_shelf_0" fitHeight="28.0" fitWidth="28.0" layoutX="68.0" layoutY="295.0">
@@ -148,7 +148,7 @@
          <ImageView fitHeight="28.0" fitWidth="28.0" layoutX="96.0" layoutY="439.0">
             <Image url="@../graphics/resources/shield.png" />
          </ImageView>
-         <Label fx:id="chest_coin" alignment="CENTER" layoutX="52.0" layoutY="408.0" prefHeight="20.0" prefWidth="20.0" text="0" />
+         <Label fx:id="chest_coin" alignment="CENTER" layoutX="52.0" layoutY="409.0" prefHeight="20.0" prefWidth="20.0" text="0" />
          <Label fx:id="chest_stone" alignment="CENTER" layoutX="98.0" layoutY="409.0" prefHeight="20.0" prefWidth="20.0" text="0" />
          <Label fx:id="chest_shield" alignment="CENTER" layoutX="98.0" layoutY="441.0" prefHeight="20.0" prefWidth="20.0" text="0" />
          <Label fx:id="chest_servant" alignment="CENTER" layoutX="51.0" layoutY="441.0" prefHeight="20.0" prefWidth="20.0" text="0" textFill="#050505">
@@ -191,21 +191,21 @@
          <ImageView fx:id="inkwell" fitHeight="40.0" fitWidth="40.0" layoutX="560.0" layoutY="10.0">
             <Image url="@../graphics/calamaio.png" />
          </ImageView>
-         <Button fx:id="market_c1" layoutX="850.0" layoutY="720.0" mnemonicParsing="false" opacity="0.0" prefHeight="40.0" prefWidth="20.0" styleClass="clickable" />
-         <Button fx:id="market_c2" layoutX="882.0" layoutY="720.0" mnemonicParsing="false" opacity="0.0" prefHeight="40.0" prefWidth="20.0" styleClass="clickable" />
-         <Button fx:id="market_c3" layoutX="915.0" layoutY="720.0" mnemonicParsing="false" opacity="0.0" prefHeight="40.0" prefWidth="20.0" styleClass="clickable" />
-         <Button fx:id="market_c4" layoutX="948.0" layoutY="720.0" mnemonicParsing="false" opacity="0.0" prefHeight="40.0" prefWidth="20.0" styleClass="clickable" />
-         <Button fx:id="market_r3" layoutX="1010.0" layoutY="667.0" mnemonicParsing="false" opacity="0.0" prefHeight="20.0" prefWidth="30.0" styleClass="clickable">
+         <Button fx:id="market_c1" layoutX="850.0" layoutY="720.0" mnemonicParsing="false" onAction="#selectMarketC1" opacity="0.0" prefHeight="40.0" prefWidth="20.0" styleClass="clickable" />
+         <Button fx:id="market_c2" layoutX="882.0" layoutY="720.0" mnemonicParsing="false" onAction="#selectMarketC2" opacity="0.0" prefHeight="40.0" prefWidth="20.0" styleClass="clickable" />
+         <Button fx:id="market_c3" layoutX="915.0" layoutY="720.0" mnemonicParsing="false" onAction="#selectMarketC3" opacity="0.0" prefHeight="40.0" prefWidth="20.0" styleClass="clickable" />
+         <Button fx:id="market_c4" layoutX="948.0" layoutY="720.0" mnemonicParsing="false" onAction="#selectMarketC4" opacity="0.0" prefHeight="40.0" prefWidth="20.0" styleClass="clickable" />
+         <Button fx:id="market_r3" layoutX="1010.0" layoutY="667.0" mnemonicParsing="false" onAction="#selectMarketR3" opacity="0.0" prefHeight="20.0" prefWidth="30.0" styleClass="clickable">
             <font>
                <Font size="1.0" />
             </font>
          </Button>
-         <Button fx:id="market_r1" layoutX="1010.0" layoutY="641.0" mnemonicParsing="false" opacity="0.0" prefHeight="20.0" prefWidth="30.0" styleClass="clickable">
+         <Button fx:id="market_r1" layoutX="1010.0" layoutY="641.0" mnemonicParsing="false" onAction="#selectMarketR1" opacity="0.0" prefHeight="20.0" prefWidth="30.0" styleClass="clickable">
             <font>
                <Font size="1.0" />
             </font>
          </Button>
-         <Button fx:id="market_r2" layoutX="1010.0" layoutY="612.0" mnemonicParsing="false" opacity="0.0" prefHeight="20.0" prefWidth="30.0" styleClass="clickable">
+         <Button fx:id="market_r2" layoutX="1010.0" layoutY="612.0" mnemonicParsing="false" onAction="#selectMarketR2" opacity="0.0" prefHeight="20.0" prefWidth="30.0" styleClass="clickable">
             <font>
                <Font size="1.0" />
             </font>
@@ -235,17 +235,17 @@
                <Font size="1.0" />
             </font>
          </Button>
-         <Button fx:id="shelf3" layoutX="53.0" layoutY="335.0" mnemonicParsing="false" opacity="0.0" prefHeight="25.0" prefWidth="90.0" styleClass="clickable">
+         <Button fx:id="shelf3" layoutX="53.0" layoutY="335.0" mnemonicParsing="false" onAction="#selectThirdShelf" opacity="0.0" prefHeight="25.0" prefWidth="90.0" styleClass="clickable">
             <font>
                <Font size="1.0" />
             </font>
          </Button>
-         <Button fx:id="shelf2" layoutX="68.0" layoutY="297.0" mnemonicParsing="false" opacity="0.0" prefHeight="25.0" prefWidth="60.0" styleClass="clickable">
+         <Button fx:id="shelf2" layoutX="68.0" layoutY="297.0" mnemonicParsing="false" onAction="#selectSecondShelf" opacity="0.0" prefHeight="25.0" prefWidth="60.0" styleClass="clickable">
             <font>
                <Font size="1.0" />
             </font>
          </Button>
-         <Button fx:id="shelf1" layoutX="84.0" layoutY="257.0" mnemonicParsing="false" opacity="0.0" prefHeight="25.0" prefWidth="25.0" styleClass="clickable">
+         <Button fx:id="shelf1" layoutX="84.0" layoutY="257.0" mnemonicParsing="false" onAction="#selectFirstShelf" opacity="0.0" prefHeight="25.0" prefWidth="25.0" styleClass="clickable">
             <font>
                <Font size="1.0" />
             </font>
@@ -265,5 +265,49 @@
          <Button fx:id="setupdraw_button2" layoutX="131.0" layoutY="640.0" mnemonicParsing="false" onAction="#select_sd2" opacity="0.0" prefHeight="100.0" prefWidth="80.0" />
          <Button fx:id="setupdraw_button3" layoutX="239.0" layoutY="640.0" mnemonicParsing="false" onAction="#select_sd3" opacity="0.0" prefHeight="100.0" prefWidth="80.0" />
          <Button fx:id="setupdraw_button4" layoutX="347.0" layoutY="640.0" mnemonicParsing="false" onAction="#select_sd4" opacity="0.0" prefHeight="100.0" prefWidth="80.0" />
+         <ImageView fx:id="message_stone" fitHeight="28.0" fitWidth="28.0" layoutX="157.0" layoutY="605.0">
+            <image>
+               <Image url="@../graphics/resources/stone.png" />
+            </image>
+         </ImageView>
+         <ImageView fx:id="message_servant" fitHeight="28.0" fitWidth="28.0" layoutX="265.0" layoutY="605.0">
+            <image>
+               <Image url="@../graphics/resources/servant.png" />
+            </image>
+         </ImageView>
+         <ImageView fx:id="message_shield" fitHeight="28.0" fitWidth="28.0" layoutX="373.0" layoutY="605.0">
+            <image>
+               <Image url="@../graphics/resources/shield.png" />
+            </image>
+         </ImageView>
+         <ImageView fx:id="message_coin" fitHeight="28.0" fitWidth="28.0" layoutX="49.0" layoutY="605.0">
+            <image>
+               <Image url="@../graphics/resources/coin.png" />
+            </image>
+         </ImageView>
+         <Button fx:id="coin_button" layoutX="49.0" layoutY="605.0" mnemonicParsing="false" onAction="#select_coin" opacity="0.0" prefHeight="26.0" prefWidth="26.0" styleClass="clickable" />
+         <Button fx:id="stone_button" layoutX="158.0" layoutY="605.0" mnemonicParsing="false" onAction="#select_stone" opacity="0.0" prefHeight="26.0" prefWidth="26.0" styleClass="clickable" />
+         <Button fx:id="servant_button" layoutX="266.0" layoutY="605.0" mnemonicParsing="false" onAction="#select_servant" opacity="0.0" prefHeight="26.0" prefWidth="26.0" styleClass="clickable" />
+         <Button fx:id="shield_button" layoutX="375.0" layoutY="605.0" mnemonicParsing="false" onAction="#select_shield" opacity="0.0" prefHeight="26.0" prefWidth="26.0" styleClass="clickable" />
+         <Label fx:id="chest_coin1" alignment="CENTER" layoutX="52.0" layoutY="630.0" prefHeight="20.0" prefWidth="20.0" text="0">
+            <font>
+               <Font size="13.0" />
+            </font>
+         </Label>
+         <Label fx:id="chest_coin11" alignment="CENTER" layoutX="159.0" layoutY="630.0" prefHeight="20.0" prefWidth="20.0" text="0">
+            <font>
+               <Font size="13.0" />
+            </font>
+         </Label>
+         <Label fx:id="chest_coin111" alignment="CENTER" layoutX="268.0" layoutY="630.0" prefHeight="20.0" prefWidth="20.0" text="0" textFill="#050505">
+            <font>
+               <Font size="13.0" />
+            </font>
+         </Label>
+         <Label fx:id="chest_coin12" alignment="CENTER" layoutX="375.0" layoutY="630.0" prefHeight="20.0" prefWidth="20.0" text="0">
+            <font>
+               <Font size="13.0" />
+            </font>
+         </Label>
       </children></Group>
 </StackPane>

@@ -153,7 +153,12 @@ public class Gui extends Application implements Observer {
         }
         else if (message instanceof SetupDiscard){
             Platform.runLater(() -> {
-                ((GuiGameController) nameToController.get(GUI_GAME)).showSetupCards(((SetupDiscard) message).getMessage());
+                ((GuiGameController) nameToController.get(GUI_GAME)).showSetupCards();
+            });
+        }
+        else if (message instanceof SetupResources){
+            Platform.runLater(() -> {
+                ((GuiGameController) nameToController.get(GUI_GAME)).selectSetupResources();
             });
         }
         else if (message instanceof PrintHandCards){
@@ -198,7 +203,7 @@ public class Gui extends Application implements Observer {
         }
         else if (message instanceof ChooseAction){
             Platform.runLater(() -> {
-                ((GuiGameController) nameToController.get(GUI_GAME)).enableAction();
+                ((GuiGameController) nameToController.get(GUI_GAME)).enableAction(((ChooseAction) message).getMessage());
             });
         }
     }

@@ -4,6 +4,8 @@ import it.polimi.ingsw.messages.Message;
 import it.polimi.ingsw.messages.clientMessages.internal.PrintDevDecks;
 import it.polimi.ingsw.messages.clientMessages.internal.PrintHandCards;
 import it.polimi.ingsw.messages.clientMessages.internal.PrintMarket;
+import it.polimi.ingsw.server.controller.GamePhase;
+import it.polimi.ingsw.server.controller.UserAction;
 import it.polimi.ingsw.server.observer.Observable;
 
 import java.util.ArrayList;
@@ -21,6 +23,7 @@ public class ClientView extends Observable {
     private GameBoardInfo ownGameBoard;
     private Integer playerIndex;
     private boolean turnActive;
+    private GamePhase gamePhase;
 
     public ClientView(Cli cli) {
         this.cli = cli;
@@ -50,6 +53,14 @@ public class ClientView extends Observable {
         otherGameBoards = new ArrayList<>();
         ownGameBoard = new GameBoardInfo(nickname, gui);
         turnActive = false;
+    }
+
+    public GamePhase getGamePhase() {
+        return gamePhase;
+    }
+
+    public void setGamePhase(GamePhase gamePhase) {
+        this.gamePhase = gamePhase;
     }
 
     public boolean isTurnActive() {

@@ -191,7 +191,8 @@ public class Cli implements Observer {
             rp = (askForLocation(s, true, false, true));
             connectionSocket.send(new ResourceSelection(rp));
         } else if (m instanceof ChooseAction) {
-            output.print(m.getMessage());
+            output.print(m.getMessage()+ " (select a number between 0 and 11):\n" +
+                                            Constants.getChooseAction() + "\n>");
             Integer n;
             while (request) {
                 Message toSend;

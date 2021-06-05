@@ -40,8 +40,6 @@ public class Player extends Observable {
         else notifyObservers(new ChangesDone(nickname, actionDone));
     }
 
-
-
     public String getNickname() {
         return nickname;
     }
