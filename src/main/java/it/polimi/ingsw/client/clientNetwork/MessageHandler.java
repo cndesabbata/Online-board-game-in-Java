@@ -30,7 +30,7 @@ public class MessageHandler {
             ErrorMessage e = (ErrorMessage) message;
             if (e.getErrorType() == ErrorType.WRONG_ACTION)
                 view.setClientMessage(new ChooseAction(e.getMessage()
-                                    + "Please choose an action"));
+                                    + "\nPlease choose an action"));
             else if (e.getErrorType() == ErrorType.WRONG_MESSAGE)
                 view.setClientMessage(new DisplayMessage(e.getMessage()));
             else if(e.getErrorType() == ErrorType.INVALID_END_TURN)

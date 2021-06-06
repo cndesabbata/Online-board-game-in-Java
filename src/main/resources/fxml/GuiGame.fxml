@@ -195,17 +195,17 @@
          <Button fx:id="market_c2" layoutX="882.0" layoutY="720.0" mnemonicParsing="false" onAction="#selectMarketC2" opacity="0.0" prefHeight="40.0" prefWidth="20.0" styleClass="clickable" />
          <Button fx:id="market_c3" layoutX="915.0" layoutY="720.0" mnemonicParsing="false" onAction="#selectMarketC3" opacity="0.0" prefHeight="40.0" prefWidth="20.0" styleClass="clickable" />
          <Button fx:id="market_c4" layoutX="948.0" layoutY="720.0" mnemonicParsing="false" onAction="#selectMarketC4" opacity="0.0" prefHeight="40.0" prefWidth="20.0" styleClass="clickable" />
-         <Button fx:id="market_r3" layoutX="1010.0" layoutY="667.0" mnemonicParsing="false" onAction="#selectMarketR3" opacity="0.0" prefHeight="20.0" prefWidth="30.0" styleClass="clickable">
+         <Button fx:id="market_r3" layoutX="1010.0" layoutY="670.0" mnemonicParsing="false" onAction="#selectMarketR3" opacity="0.0" prefHeight="15.0" prefWidth="30.0" styleClass="clickable">
             <font>
                <Font size="1.0" />
             </font>
          </Button>
-         <Button fx:id="market_r1" layoutX="1010.0" layoutY="641.0" mnemonicParsing="false" onAction="#selectMarketR1" opacity="0.0" prefHeight="20.0" prefWidth="30.0" styleClass="clickable">
+         <Button fx:id="market_r2" layoutX="1010.0" layoutY="643.0" mnemonicParsing="false" onAction="#selectMarketR2" opacity="0.0" prefHeight="15.0" prefWidth="30.0" styleClass="clickable">
             <font>
                <Font size="1.0" />
             </font>
          </Button>
-         <Button fx:id="market_r2" layoutX="1010.0" layoutY="612.0" mnemonicParsing="false" onAction="#selectMarketR2" opacity="0.0" prefHeight="20.0" prefWidth="30.0" styleClass="clickable">
+         <Button fx:id="market_r1" layoutX="1010.0" layoutY="615.0" mnemonicParsing="false" onAction="#selectMarketR1" opacity="0.0" prefHeight="15.0" prefWidth="30.0" styleClass="clickable">
             <font>
                <Font size="1.0" />
             </font>
@@ -250,8 +250,8 @@
                <Font size="1.0" />
             </font>
          </Button>
-         <Button fx:id="back_button" layoutX="10.0" layoutY="815.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0" styleClass="backButton, clickable" />
-         <Button fx:id="confirm_button" layoutX="210.0" layoutY="810.0" onAction="#selectConfirmButton" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" styleClass="confirmButton, clickable" />
+         <Button fx:id="back_button" layoutX="10.0" layoutY="815.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0" onAction="#quitAction" styleClass="backButton, clickable" />
+         <Button fx:id="confirm_button" layoutX="210.0" layoutY="810.0" mnemonicParsing="false" onAction="#selectConfirmButton" prefHeight="40.0" prefWidth="40.0" styleClass="confirmButton, clickable" />
          <Button fx:id="end_turn" layoutX="410.0" layoutY="815.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0" styleClass="turnButton, clickable" />
          <ImageView fx:id="setupdraw1" fitHeight="110.0" fitWidth="88.0" layoutX="19.0" layoutY="635.0">
          </ImageView>
@@ -289,22 +289,22 @@
          <Button fx:id="stone_button" layoutX="158.0" layoutY="605.0" mnemonicParsing="false" onAction="#select_stone" opacity="0.0" prefHeight="26.0" prefWidth="26.0" styleClass="clickable" />
          <Button fx:id="servant_button" layoutX="266.0" layoutY="605.0" mnemonicParsing="false" onAction="#select_servant" opacity="0.0" prefHeight="26.0" prefWidth="26.0" styleClass="clickable" />
          <Button fx:id="shield_button" layoutX="375.0" layoutY="605.0" mnemonicParsing="false" onAction="#select_shield" opacity="0.0" prefHeight="26.0" prefWidth="26.0" styleClass="clickable" />
-         <Label fx:id = "message_coin_number" alignment="CENTER" layoutX="52.0" layoutY="630.0" prefHeight="20.0" prefWidth="20.0">
+         <Label fx:id="message_coin_number" alignment="CENTER" layoutX="52.0" layoutY="630.0" prefHeight="20.0" prefWidth="20.0">
             <font>
                <Font size="13.0" />
             </font>
          </Label>
-         <Label fx:id = "message_stone_number" alignment="CENTER" layoutX="159.0" layoutY="630.0" prefHeight="20.0" prefWidth="20.0">
+         <Label fx:id="message_stone_number" alignment="CENTER" layoutX="159.0" layoutY="630.0" prefHeight="20.0" prefWidth="20.0">
             <font>
                <Font size="13.0" />
             </font>
          </Label>
-         <Label fx:id = "message_servant_number" alignment="CENTER" layoutX="268.0" layoutY="630.0" prefHeight="20.0" prefWidth="20.0" textFill="#050505">
+         <Label fx:id="message_servant_number" alignment="CENTER" layoutX="268.0" layoutY="630.0" prefHeight="20.0" prefWidth="20.0" textFill="#050505">
             <font>
                <Font size="13.0" />
             </font>
          </Label>
-         <Label fx:id = "message_shield_number" alignment="CENTER" layoutX="375.0" layoutY="630.0" prefHeight="20.0" prefWidth="20.0">
+         <Label fx:id="message_shield_number" alignment="CENTER" layoutX="375.0" layoutY="630.0" prefHeight="20.0" prefWidth="20.0">
             <font>
                <Font size="13.0" />
             </font>
