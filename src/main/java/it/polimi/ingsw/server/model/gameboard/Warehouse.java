@@ -164,7 +164,7 @@ public class Warehouse extends Observable {
     /*controls if the resources can be moved*/
     public void checkMove (NumOfShelf srcShelf, NumOfShelf destShelf, int quantity) throws WrongActionException{
         if (srcShelf.ordinal() >= warehouse.size() || destShelf.ordinal() >= warehouse.size())
-            throw new WrongActionException("One of the specified shelves does not exist. ");
+            throw new WrongActionException("One of the specified shelves does not exist.");
         else {
             ResourceQuantity shelfSrc = warehouse.get(srcShelf.ordinal());
             ResourceQuantity shelfDest = warehouse.get(destShelf.ordinal());

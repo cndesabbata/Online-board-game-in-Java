@@ -1,8 +1,6 @@
 package it.polimi.ingsw.server.model;
 
-import it.polimi.ingsw.messages.serverMessages.newElement.NewDevDeck;
 import it.polimi.ingsw.messages.serverMessages.newElement.NewHandCards;
-import it.polimi.ingsw.messages.serverMessages.newElement.NewIndex;
 import it.polimi.ingsw.messages.serverMessages.ChangesDone;
 import it.polimi.ingsw.messages.serverMessages.TurnChange;
 import it.polimi.ingsw.messages.serverMessages.newElement.NewPlayedLeadCards;
@@ -112,11 +110,11 @@ public class Player extends Observable {
         handLeaderCards.remove(leaderCard1);
         handLeaderCards.remove(leaderCard2);
         notifySingleObserver(new NewHandCards(handLeaderCards, nickname, false), nickname);
-        notifySingleObserver(new NewIndex(playerIndex), nickname);
     }
 
     public UserAction getActionDone() {
         return actionDone;
     }
+
 
 }

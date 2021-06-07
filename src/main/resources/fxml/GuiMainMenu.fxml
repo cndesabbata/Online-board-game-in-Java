@@ -20,9 +20,9 @@
                  promptText="Nickname"/>
       <Label fx:id="mainMessage" alignment="CENTER" layoutX="75.0" layoutY="160.0" styleClass="label" prefHeight="20.0"
              prefWidth="500.0" text="Please choose your nickname" textFill="#d2d2d2"/>
-      <Button id="start" layoutX="100.0" layoutY="270.0" styleClass="button" mnemonicParsing="false" onAction="#start"
+      <Button id="start" layoutX="100.0" layoutY="270.0" styleClass="button, clickable" mnemonicParsing="false" onAction="#start"
               prefHeight="40.0" prefWidth="200.0" text="Start new match"/>
-      <Button id="resume" layoutX="345.0" layoutY="270.0" styleClass="button" mnemonicParsing="false" onAction="#resume"
+      <Button id="resume" layoutX="345.0" layoutY="270.0" styleClass="button, clickable" mnemonicParsing="false" onAction="#resume"
               prefHeight="40.0" prefWidth="200.0" text="Resume match"/>
    </Group>
 </StackPane>

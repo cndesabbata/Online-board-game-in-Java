@@ -177,10 +177,10 @@ public class Cli implements Observer {
             output.print(m.getMessage());
             List<ResourcePosition> rp;
             List<String> s = new ArrayList<>();
-            if (clientView.getPlayerIndex() == 1 || clientView.getPlayerIndex() == 2) {
+            if (clientView.getOwnGameBoard().getIndex() == 1 || clientView.getOwnGameBoard().getIndex() == 2) {
                 Resource r = askForResource();
                 s.add(r.toString());
-            } else if (clientView.getPlayerIndex() == 3) {
+            } else if (clientView.getOwnGameBoard().getIndex() == 3) {
                 for (int i = 0; i < 2; i++) {
                     Resource r = askForResource();
                     if(i == 0)

@@ -137,6 +137,11 @@ public class Gui extends Application implements Observer {
                 Platform.runLater(() -> {
                     ((GuiMenuController) nameToController.get(WAIT_PLAYERS)).setWaitingMessage(m.getMessage());
                 });
+            else{
+                Platform.runLater(() -> {
+                    ((GuiGameController) nameToController.get(GUI_GAME)).setMessage(m.getMessage());
+                });
+            }
         }
         else if (message instanceof RequestPlayersNumber){
             RequestPlayersNumber r = (RequestPlayersNumber) message;

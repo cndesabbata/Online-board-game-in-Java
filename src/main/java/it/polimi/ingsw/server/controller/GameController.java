@@ -147,6 +147,7 @@ public abstract class GameController {
     }
 
     public void addObserver(Observer observer){
+        game.addObserver(observer);
         for (DevDeck d : game.getDevDecks()){
             d.addObserver(observer);
         }

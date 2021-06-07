@@ -65,8 +65,7 @@ public class MessageHandler {
             }
             else if (m.getType() == UserAction.SELECT_LEADCARD) {
                 view.setClientMessage(new DisplayMessage("These are the cards you chose."));
-                view.setPlayerIndex(((NewIndex) m.getNewElements().get(1)).getPlayerIndex());
-                String string = switch (view.getPlayerIndex()) {
+                String string = switch (view.getOwnGameBoard().getIndex()) {
                     case 1 -> "You are the second player; this gives you access to an additional resource" +
                             " of your choice; please write your choice below:" +
                             " [Coin/Stone/Servant/Shield]";
@@ -78,7 +77,7 @@ public class MessageHandler {
                             " [Coin/Stone/Servant/Shield]";
                     default -> "";
                 };
-                if (view.getPlayerIndex() != 0)
+                if (view.getOwnGameBoard().getIndex() != 0)
                     view.setClientMessage(new SetupResources(string + "\n>"));
             } else {
                 String toPrint = "";
@@ -104,7 +103,7 @@ public class MessageHandler {
             else {
                 view.setTurnActive(false);
                 view.setClientMessage(new DisplayMessage("It's " + m.getNewPlayer().toUpperCase() +
-                        "'s turn. Pleas wait for him/her to make an action...\n"));
+                        "'s turn. Please wait for him/her to make an action...\n"));
             }
         }
         else if(message instanceof CloseMessage){
@@ -178,9 +177,6 @@ public class MessageHandler {
                 played.add(new LeadCardInfo(c));
             g.setPlayedCards(played);
         }
-        else if (m instanceof NewIndex){
-            view.setPlayerIndex(((NewIndex) m).getPlayerIndex());
-        }
         else if (m instanceof NewItinerary){
             NewItinerary i = (NewItinerary) m;
             GameBoardInfo g = findBoardByOwner(i.getOwner());
@@ -210,8 +206,10 @@ public class MessageHandler {
             }
         }
         else if (m instanceof NewPlayers){
-            for (String player : ((NewPlayers) m).getPlayers())
-                findBoardByOwner(player);
+            for (String player : ((NewPlayers) m).getPlayers()) {
+                GameBoardInfo g = findBoardByOwner(player);
+                g.setIndex(((NewPlayers) m).getPlayers().indexOf(player));
+            }
         }
     }
 }

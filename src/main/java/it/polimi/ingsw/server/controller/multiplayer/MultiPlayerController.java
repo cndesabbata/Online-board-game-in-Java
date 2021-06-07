@@ -89,7 +89,7 @@ public class MultiPlayerController extends GameController {
         for (DevDeck d : getGame().getDevDecks()) {
             d.notifyNew();
         }
-        getGame().notifyNewPlayers();
+        getGame().notifyNewPlayers(getActivePlayers());
         currentPlayer.setActionDone(UserAction.INITIAL_DISPOSITION);
         initialDraw();
     }

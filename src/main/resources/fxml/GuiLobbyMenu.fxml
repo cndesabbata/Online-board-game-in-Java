@@ -14,9 +14,9 @@
       <URL value="@../css/menu_scene.css" />
    </stylesheets>
    <Group StackPane.alignment="CENTER">
-      <Button layoutX="400.0" layoutY="220.0" mnemonicParsing="false" onAction="#newLobby" prefHeight="40.0" prefWidth="200.0" styleClass="button" text="New lobby" />
+      <Button layoutX="400.0" layoutY="220.0" mnemonicParsing="false" onAction="#newLobby" prefHeight="40.0" prefWidth="200.0" styleClass="button, clickable" text="New lobby" />
       <Label fx:id="lobbyMessage" alignment="CENTER" layoutX="115.0" layoutY="155.0" prefHeight="20.0" prefWidth="500.0" text="Please choose whether to join an existing lobby or create a new one" textFill="#d5d5d5" />
-      <Button layoutX="400.0" layoutY="320.0" mnemonicParsing="false" onAction="#join" prefHeight="40.0" prefWidth="200.0" styleClass="button" text="Join Lobby" />
+      <Button layoutX="400.0" layoutY="320.0" mnemonicParsing="false" onAction="#join" prefHeight="40.0" prefWidth="200.0" styleClass="button, clickable" text="Join Lobby" />
       <ChoiceBox fx:id="playersNumber" layoutX="130.0" layoutY="220.0" prefHeight="40.0" prefWidth="200.0" styleClass="choiceBox" />
       <ChoiceBox fx:id="lobbies" layoutX="130.0" layoutY="320.0" prefHeight="40.0" prefWidth="200.0" styleClass="choiceBox" />
       <Label layoutX="130.0" layoutY="190.0" prefHeight="20.0" prefWidth="300.0" styleClass="label" text="Select the number of players" textFill="#cccccc" />

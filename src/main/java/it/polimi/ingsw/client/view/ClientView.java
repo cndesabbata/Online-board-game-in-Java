@@ -21,7 +21,6 @@ public class ClientView extends Observable {
     private List<LeadCardInfo> hand;
     private List<GameBoardInfo> otherGameBoards;
     private GameBoardInfo ownGameBoard;
-    private Integer playerIndex;
     private boolean turnActive;
     private GamePhase gamePhase;
 
@@ -34,14 +33,6 @@ public class ClientView extends Observable {
         otherGameBoards = new ArrayList<>();
         ownGameBoard = new GameBoardInfo(nickname, cli);
         turnActive = false;
-    }
-
-    public Integer getPlayerIndex() {
-        return playerIndex;
-    }
-
-    public void setPlayerIndex(Integer playerIndex) {
-        this.playerIndex = playerIndex;
     }
 
     public ClientView(Gui gui) {

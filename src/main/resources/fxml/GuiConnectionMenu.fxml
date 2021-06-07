@@ -21,8 +21,8 @@
                  prefWidth="200.0" promptText="Server IP"/>
       <TextField fx:id="serverPort" layoutX="225.0" layoutY="280.0" styleClass="text" opacity="0.9" prefHeight="40.0"
                  prefWidth="200.0" promptText="Server Port"/>
-      <Button id="connect" alignment="CENTER" styleClass="button" layoutX="225.0" layoutY="340.0" mnemonicParsing="false"
-              onAction="#connect" opacity="0.9" prefHeight="40.0" prefWidth="200.0" text="Connect"/>
+      <Button id="connect" alignment="CENTER" styleClass="button, clickable" layoutX="225.0" layoutY="340.0" mnemonicParsing="false"
+              onAction="#connect" opacity="0.9" prefHeight="40.0" prefWidth="200.0" text="Connect" />
       <Label fx:id="connectionMessage" alignment="CENTER" layoutX="75.0" layoutY="180.0" styleClass="label" prefHeight="20.0"
              prefWidth="500.0" text="Insert Server IP address and Port and click on Join!" textFill="#cccccc"/>
    </Group>

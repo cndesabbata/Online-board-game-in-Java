@@ -219,7 +219,8 @@ public class ActionFactory {
 
     private boolean checkDevSpaceSlot(int slot, int lev) {
         return ((cli.getClientView().getOwnGameBoard().getDevSpace().get(slot).isEmpty() && lev == 1) ||
-                (cli.getClientView().getOwnGameBoard().getDevSpace().get(slot).get(0).getLevel() == lev - 1));
+                (!cli.getClientView().getOwnGameBoard().getDevSpace().get(slot).isEmpty() &&
+                        cli.getClientView().getOwnGameBoard().getDevSpace().get(slot).get(0).getLevel() == lev - 1));
     }
 
     private Action buildStartProduction() {

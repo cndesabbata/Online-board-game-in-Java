@@ -41,10 +41,12 @@ public class Game extends Observable {
         return null;
     }
 
-    public void notifyNewPlayers(){
-        List<String> list = new ArrayList<>();
-        for (Player p : players) list.add(p.getNickname());
-        notifyObservers(new NewPlayers(list));
+    public void notifyNewPlayers(List<Player> activePlayers){
+        List <String> nicknames = new ArrayList<>();
+        for(Player p : activePlayers){
+            nicknames.add(p.getNickname());
+        }
+        notifyObservers(new NewPlayers(nicknames));
     }
 
     public List<Player> getPlayers() {
