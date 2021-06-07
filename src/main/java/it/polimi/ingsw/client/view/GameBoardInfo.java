@@ -1,6 +1,7 @@
 package it.polimi.ingsw.client.view;
 
 import it.polimi.ingsw.messages.clientMessages.internal.*;
+import it.polimi.ingsw.server.model.Resource;
 import it.polimi.ingsw.server.observer.Observable;
 
 import java.util.ArrayList;
@@ -135,4 +136,42 @@ public class GameBoardInfo extends Observable {
     public void setIndex(int index) {
         this.index = index;
     }
+
+    public boolean totalResourceCheck(List<String> requirements){
+        List <String> total = new ArrayList<>();
+        for(String s : chest.keySet()){
+            String s1 = s.substring(0, s.length() - 1);
+            for(int n = chest.get(s); n > 0; n--) {
+                total.add(s1);
+            }
+        }
+        for(int n = 0; n < warehouse.size(); n++){
+            total.addAll(warehouse.get(n));
+        }
+        for(String s : chest.keySet()){                                                                                 //it's just an easy way out to not use Resource
+            String s1 = s.substring(0, s.length() - 1);
+            if(total.stream().filter(t -> t.equalsIgnoreCase(s1)).count() <
+                    requirements.stream().filter(t -> t.equalsIgnoreCase(s1)).count())
+                return false;
+        }
+        return true;
+    }
+
+    public boolean devCardsCheck(List<DevCardInfo> requirements){
+        for(DevCardInfo d : requirements){
+            if(!devCardCheck(d))
+                return false;
+        }
+        return true;
+    }
+
+    private boolean devCardCheck(DevCardInfo d){
+        for(int i = 0; i < devSpace.size(); i++){
+            if(devSpace.get(i).stream().anyMatch(c -> c.getColour().equalsIgnoreCase(d.getColour()) &&
+                    (d.getLevel() == 0 || c.getLevel().equals(d.getLevel()))))
+                return true;
+        }
+        return false;
+    }
+
 }

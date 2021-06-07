@@ -127,6 +127,8 @@ public class GuiGameController implements GuiController{
     @FXML private ImageView third_shelf_0;
     @FXML private ImageView third_shelf_1;
     @FXML private ImageView third_shelf_2;
+    @FXML private ImageView trashcan;
+    @FXML private Button trashcan_button;
     private final List<ImageView> second_shelf = new ArrayList<>();
     private final List<ImageView> third_shelf = new ArrayList<>();
     private final List<List<ImageView>> warehouse = new ArrayList<>();
@@ -294,6 +296,8 @@ public class GuiGameController implements GuiController{
         warehouseButtons.add(shelf3);
         sourceShelf = -1;
         destinationShelf = 1;
+        trashcan.setImage(null);
+        trashcan_button.setDisable(true);
         chestButtons.add(chest);
     }
 
@@ -546,7 +550,7 @@ public class GuiGameController implements GuiController{
                 else {
                     String url = "/graphics/devcards/" + slot1.get(i).getUrl();
                     Image m = new Image(getClass().getResourceAsStream(url));
-                    firstSlot.get(i).setImage(m);
+                    firstSlot.get(slot1.size() - 1 - i).setImage(m);
                 }
             }
             List<DevCardInfo> slot2 = currentGameboard.getDevSpace().get(1);
@@ -555,7 +559,7 @@ public class GuiGameController implements GuiController{
                 else {
                     String url = "/graphics/devcards/" + slot2.get(i).getUrl();
                     Image m = new Image(getClass().getResourceAsStream(url));
-                    secondSlot.get(i).setImage(m);
+                    secondSlot.get(slot2.size() - 1 - i).setImage(m);
                 }
             }
             List<DevCardInfo> slot3 = currentGameboard.getDevSpace().get(2);
@@ -564,7 +568,7 @@ public class GuiGameController implements GuiController{
                 else {
                     String url = "/graphics/devcards/" + slot3.get(i).getUrl();
                     Image m = new Image(getClass().getResourceAsStream(url));
-                    thirdSlot.get(i).setImage(m);
+                    thirdSlot.get(slot3.size() - 1 - i).setImage(m);
                 }
             }
         }
@@ -657,6 +661,41 @@ public class GuiGameController implements GuiController{
         }
     }
 
+    private void checkWarehouseButtons(boolean toStore){
+        shelf1.setDisable((toStore && first_shelf.getImage() != null)
+                || (!toStore && first_shelf.getImage() == null));
+        shelf2.setDisable((toStore && second_shelf.get(1).getImage() != null)
+                || (!toStore && second_shelf.get(0).getImage() == null));
+        shelf3.setDisable((toStore && third_shelf.get(2).getImage() != null)
+                || (!toStore && third_shelf.get(0).getImage() == null));
+    }
+
+    private void checkDevDeckButtons(){
+        for (int j = 0; j < 4; j++){
+            for (int i = 0; i < 3; i++) {
+                if (view.getDevDecks()[i][j] != null) {
+                    devDeckButtons.get(j * 3 + i).setDisable(
+                            !view.getOwnGameBoard().totalResourceCheck(view.getDevDecks()[i][j].getResourceRequirements()));
+                }
+                else
+                    devDeckButtons.get(j * 3 + i).setDisable(true);
+            }
+        }
+    }
+
+    private void checkHandButtons(){
+        for(int i = 0; i < handButtons.size(); i++) {
+            if (view.getHand().get(i) != null) {
+                if (view.getHand().get(i).getResourceRequirements() != null) {
+                    handButtons.get(i).setDisable(
+                            !view.getOwnGameBoard().totalResourceCheck(view.getHand().get(i).getResourceRequirements()));
+                } else
+                    handButtons.get(i).setDisable(!view.getOwnGameBoard().devCardsCheck(view.getHand().get(i).getCardRequirements()));
+            } else
+                handButtons.get(i).setDisable(true);
+        }
+    }
+
     public void enableAction(String s) {
         updateGUI(view.getNickname());
         message.setText(s);
@@ -667,14 +706,11 @@ public class GuiGameController implements GuiController{
         end_turn.setDisable(false);
         for(int i = 0; i < 3; i++){
             devSpaceButtons.get(i).setDisable(view.getOwnGameBoard().getDevSpace().get(i).isEmpty());
-            for (int j = 0; j < 4; j++){
-                devDeckButtons.get(i + j*3).setDisable(view.getDevDecks()[i][j] == null);
-            }
         }
-        handleButtons(handButtons, false);
+        checkHandButtons();
+        checkDevDeckButtons();
         handleButtons(playedCardsButtons, false);
         for(int i = 0; i < 2; i++){
-            handButtons.get(i).setDisable(view.getHand().size() <= i);
             playedCardsButtons.get(i).setDisable(view.getOwnGameBoard().getPlayedCards().size() <= i);
         }
         checkWarehouseButtons(false);
@@ -689,6 +725,8 @@ public class GuiGameController implements GuiController{
         column = -1;
         resourceRequirements.clear();
         selectedSlot = -1;
+        trashcan.setImage(null);
+        trashcan_button.setDisable(true);
     }
 
     public void selectSetupResources() {
@@ -717,15 +755,6 @@ public class GuiGameController implements GuiController{
         }
     }
 
-    private void checkWarehouseButtons(boolean toStore){
-        shelf1.setDisable((toStore && first_shelf.getImage() != null)
-                || (!toStore && first_shelf.getImage() == null));
-        shelf2.setDisable((toStore && second_shelf.get(1).getImage() != null)
-                || (!toStore && second_shelf.get(0).getImage() == null));
-        shelf3.setDisable((toStore && third_shelf.get(2).getImage() != null)
-                || (!toStore && third_shelf.get(0).getImage() == null));
-    }
-
     /*used when some resources are needed*/
     private void selectResourcesPosition(boolean toStore){
         checkWarehouseButtons(toStore);
@@ -738,30 +767,33 @@ public class GuiGameController implements GuiController{
         right_gameboard.setDisable(true);
         left_gameboard.setDisable(true);
         handleButtons(messageResourcesButtons, true);
+        if(currentAction == UserAction.BUY_RESOURCES){
+            message.setText("Now click on one of the warehouse shelves or on the trashcan");
+            trashcan.setImage(new Image("/graphics/trashcan.png"));
+            trashcan_button.setDisable(false);
+        }
+        else
+            message.setText("Now click on one of the warehouse shelves");
     }
 
     public void select_coin() {
         selectedResource = "Coin";
         selectResourcesPosition(true );
-        message.setText("Now click on one of the warehouse shelves");
     }
 
     public void select_stone() {
         selectedResource = "Stone";
         selectResourcesPosition(true);
-        message.setText("Now click on one of the warehouse shelves");
     }
 
     public void select_servant() {
         selectedResource = "Servant";
         selectResourcesPosition(true );
-        message.setText("Now click on one of the warehouse shelves");
     }
 
     public void select_shield() {
         selectedResource = "Shield";
         selectResourcesPosition(true );
-        message.setText("Now click on one of the warehouse shelves");
     }
 
     private void selectWarehouse(String shelf){
@@ -795,6 +827,8 @@ public class GuiGameController implements GuiController{
             else message.setText("Select the next resource to place");
             handleButtons(warehouseButtons, true);
             enableMessageResourceButtons();
+            trashcan_button.setDisable(true);
+            trashcan.setImage(null);
         }
         else if(currentAction == UserAction.START_PRODUCTION){
 
@@ -802,21 +836,23 @@ public class GuiGameController implements GuiController{
         else if(currentAction == UserAction.BUY_DEVCARD) {
             String resStored = view.getOwnGameBoard().getWarehouse().get(NumOfShelf.valueOf(shelf).ordinal()).get(0);
             int quantity = (int) warehouse.get(NumOfShelf.valueOf(shelf).ordinal()).stream().filter(i -> i.getImage() != null).count();
-            if (!resourceRequirements.isEmpty()) {
-                for (String s : resourceRequirements) {
-                    if (resStored.equalsIgnoreCase(s)) {
-                        resourcesForAction.add(new ResourcePosition(Resource.valueOf(s.toUpperCase()),
-                                Place.WAREHOUSE, NumOfShelf.valueOf(shelf.toUpperCase())));
-                        resourceRequirements.remove(s);
-                        warehouse.get(NumOfShelf.valueOf(shelf).ordinal()).get(quantity - 1).setImage(null);
-                        messageResourcesNumbers.get(Resource.valueOf(s.toUpperCase()).ordinal()).setText(String.valueOf
-                                (Integer.parseInt(messageResourcesNumbers.get(Resource.valueOf(s.toUpperCase()).ordinal()).getText()) + 1));
-                        break;
-                    }
+            for (String s : resourceRequirements) {
+                if (resStored.equalsIgnoreCase(s)) {
+                    resourcesForAction.add(new ResourcePosition(Resource.valueOf(s.toUpperCase()),
+                            Place.WAREHOUSE, NumOfShelf.valueOf(shelf.toUpperCase())));
+                    resourceRequirements.remove(s);
+                    warehouse.get(NumOfShelf.valueOf(shelf).ordinal()).get(quantity - 1).setImage(null);
+                    String oldQuantity = messageResourcesNumbers.get(Resource.valueOf(s.toUpperCase()).ordinal())
+                            .getText().substring(0, 1);
+                    int newQuantity = Integer.parseInt(oldQuantity) + 1;
+                    String max = String.valueOf(messageResourcesNumbers.get(Resource.valueOf(s.toUpperCase()).ordinal())
+                            .getText().charAt(2));
+                    messageResourcesNumbers.get(Resource.valueOf(s.toUpperCase()).ordinal()).setText(newQuantity + "/" +max);
+                    break;
                 }
-                checkWarehouseButtons(false);
             }
-            else{
+            checkWarehouseButtons(false);
+            if(resourceRequirements.isEmpty()){
                 confirm_button.setDisable(false);
                 message.setText("Click on the check button below to confirm your choice");
                 handleButtons(warehouseButtons, true);
@@ -841,6 +877,7 @@ public class GuiGameController implements GuiController{
                     }
                 destinationShelf = NumOfShelf.valueOf(shelf).ordinal();
                 confirm_button.setDisable(false);
+                handleButtons(warehouseButtons, true);
                 message.setText("Click on the check button below to confirm your choice");
             }
         }
@@ -905,7 +942,7 @@ public class GuiGameController implements GuiController{
 
     private void selectMarket(boolean isRow, int n){
         message.setText("You have chosen to buy resources from the market," +
-                " please place\nthe gained resources in the warehouse.");
+                " please place\n the gained resources in the warehouse or in the trashcan");
         resourceToSelect = 0;
         currentAction = UserAction.BUY_RESOURCES;
         handleButtons(marketButtons, true);
@@ -945,6 +982,8 @@ public class GuiGameController implements GuiController{
         }
         if (colours.stream().anyMatch(s -> s.equalsIgnoreCase("red")))
             resourcesForAction.add(new ResourcePosition(Resource.FAITHPOINT, null, null));
+        if(colours.size() == 1 && colours.get(0).equalsIgnoreCase("red"))
+            confirm_button.setDisable(false);
     }
 
     private void enableMessageResourceButtons(){
@@ -1097,19 +1136,23 @@ public class GuiGameController implements GuiController{
         if(currentAction == UserAction.BUY_DEVCARD){
             DevCardInfo d = view.getDevDecks()[column][row];
             selectedSlot = slot;
-            if(!(view.getOwnGameBoard().getDevSpace().get(slot).isEmpty() && d.getLevel() == 1) ||
+            if(!((view.getOwnGameBoard().getDevSpace().get(slot).isEmpty() && d.getLevel() == 1) ||
                     (!view.getOwnGameBoard().getDevSpace().get(slot).isEmpty() &&
-                            view.getOwnGameBoard().getDevSpace().get(slot).get(0).getLevel() == d.getLevel() - 1)){
+                            view.getOwnGameBoard().getDevSpace().get(slot).get(0).getLevel() == d.getLevel() - 1))){
                 enableAction("This slot cannot host the selected development card\nPlease choose an action");
             }
             else{
+                devSpace.get(slot).get(view.getOwnGameBoard().getDevSpace().get(slot).size()).
+                        setImage(devDecks.get(row + column * 4).getImage());
+                devDecks.get(row + column * 4).setImage(null);
                 handleButtons(devSpaceButtons, true);
                 checkWarehouseButtons(false);
                 chest.setDisable(false);
                 for(String s : d.getResourceRequirements()){
                     messageResources.get(Resource.valueOf(s.toUpperCase()).ordinal()).setImage
                             (new Image("/graphics/resources/" +s.toLowerCase()+ ".png"));
-                    messageResourcesNumbers.get(Resource.valueOf(s.toUpperCase()).ordinal()).setText("0");
+                    messageResourcesNumbers.get(Resource.valueOf(s.toUpperCase()).ordinal()).setText("0/"
+                            +d.getResourceRequirements().stream().filter(c -> c.equalsIgnoreCase(s)).count());
                 }
                 message.setText("You have selected slot number " +(slot+1)+ ", now click on the warehouse or chest" +
                         "\nto select where you want to take the needed resources from");
@@ -1129,4 +1172,30 @@ public class GuiGameController implements GuiController{
     public void selectSlot3() {
         selectDevSpace(2);
     }
+
+    public void selectTrashcan() {
+        if(currentAction == UserAction.BUY_RESOURCES){
+            resourcesForAction.add(new ResourcePosition(Resource.valueOf(selectedResource.toUpperCase()),
+                    Place.TRASH_CAN, null));
+            int newQuantity = Integer.parseInt(messageResourcesNumbers.
+                    get(Resource.valueOf(selectedResource.toUpperCase()).ordinal()).getText()) - 1;
+            resourceToSelect--;
+            if(newQuantity == 0) {
+                messageResourcesButtons.get(Resource.valueOf(selectedResource.toUpperCase()).ordinal()).setDisable(true);
+                messageResourcesNumbers.get(Resource.valueOf(selectedResource.toUpperCase()).ordinal()).setText("");
+                messageResources.get(Resource.valueOf(selectedResource.toUpperCase()).ordinal()).setImage(null);
+                if (resourceToSelect == 0) {
+                    confirm_button.setDisable(false);
+                    message.setText("Click on the check button below to confirm your choice");
+                }
+            }
+            else
+                messageResourcesNumbers.get(Resource.valueOf(selectedResource.toUpperCase()).ordinal()).
+                        setText(String.valueOf(newQuantity));
+            message.setText("Select the next resource to place");
+            trashcan_button.setDisable(true);
+            enableMessageResourceButtons();
+        }
+    }
+
 }

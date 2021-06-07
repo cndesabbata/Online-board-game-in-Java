@@ -210,25 +210,25 @@
                <Font size="1.0" />
             </font>
          </Button>
-         <Button fx:id="devdeck_30" layoutX="764.0" layoutY="402.0" onAction="#selectDev30" mnemonicParsing="false" opacity="0.0" prefHeight="100.0" prefWidth="80.0" styleClass="clickable" />
-         <Button fx:id="devdeck_31" layoutX="862.0" layoutY="402.0" onAction="#selectDev31" mnemonicParsing="false" opacity="0.0" prefHeight="100.0" prefWidth="80.0" styleClass="clickable" />
-         <Button fx:id="devdeck_32" layoutX="960.0" layoutY="402.0" onAction="#selectDev32" mnemonicParsing="false" opacity="0.0" prefHeight="100.0" prefWidth="80.0" styleClass="clickable" />
-         <Button fx:id="devdeck_20" layoutX="764.0" layoutY="283.0" onAction="#selectDev20" mnemonicParsing="false" opacity="0.0" prefHeight="100.0" prefWidth="80.0" styleClass="clickable" />
-         <Button fx:id="devdeck_21" layoutX="862.0" layoutY="283.0" onAction="#selectDev21" mnemonicParsing="false" opacity="0.0" prefHeight="100.0" prefWidth="80.0" styleClass="clickable" />
-         <Button fx:id="devdeck_22" layoutX="960.0" layoutY="283.0" onAction="#selectDev22" mnemonicParsing="false" opacity="0.0" prefHeight="100.0" prefWidth="80.0" styleClass="clickable" />
-         <Button fx:id="devdeck_12" layoutX="960.0" layoutY="163.0" onAction="#selectDev12" mnemonicParsing="false" opacity="0.0" prefHeight="100.0" prefWidth="80.0" styleClass="clickable" />
-         <Button fx:id="devdeck_11" layoutX="862.0" layoutY="163.0" onAction="#selectDev11" mnemonicParsing="false" opacity="0.0" prefHeight="100.0" prefWidth="80.0" styleClass="clickable" />
-         <Button fx:id="devdeck_10" layoutX="764.0" layoutY="163.0" onAction="#selectDev10" mnemonicParsing="false" opacity="0.0" prefHeight="100.0" prefWidth="80.0" styleClass="clickable" />
-         <Button fx:id="devdeck_00" layoutX="764.0" layoutY="43.0" onAction="#selectDev00" mnemonicParsing="false" opacity="0.0" prefHeight="100.0" prefWidth="80.0" styleClass="clickable" />
-         <Button fx:id="devdeck_01" layoutX="862.0" layoutY="43.0" onAction="#selectDev01" mnemonicParsing="false" opacity="0.0" prefHeight="100.0" prefWidth="80.0" styleClass="clickable" />
-         <Button fx:id="devdeck_02" layoutX="960.0" layoutY="43.0" onAction="#selectDev02" mnemonicParsing="false" opacity="0.0" prefHeight="100.0" prefWidth="80.0" styleClass="clickable" />
+         <Button fx:id="devdeck_30" layoutX="764.0" layoutY="402.0" mnemonicParsing="false" onAction="#selectDev30" opacity="0.0" prefHeight="100.0" prefWidth="80.0" styleClass="clickable" />
+         <Button fx:id="devdeck_31" layoutX="862.0" layoutY="402.0" mnemonicParsing="false" onAction="#selectDev31" opacity="0.0" prefHeight="100.0" prefWidth="80.0" styleClass="clickable" />
+         <Button fx:id="devdeck_32" layoutX="960.0" layoutY="402.0" mnemonicParsing="false" onAction="#selectDev32" opacity="0.0" prefHeight="100.0" prefWidth="80.0" styleClass="clickable" />
+         <Button fx:id="devdeck_20" layoutX="764.0" layoutY="283.0" mnemonicParsing="false" onAction="#selectDev20" opacity="0.0" prefHeight="100.0" prefWidth="80.0" styleClass="clickable" />
+         <Button fx:id="devdeck_21" layoutX="862.0" layoutY="283.0" mnemonicParsing="false" onAction="#selectDev21" opacity="0.0" prefHeight="100.0" prefWidth="80.0" styleClass="clickable" />
+         <Button fx:id="devdeck_22" layoutX="960.0" layoutY="283.0" mnemonicParsing="false" onAction="#selectDev22" opacity="0.0" prefHeight="100.0" prefWidth="80.0" styleClass="clickable" />
+         <Button fx:id="devdeck_12" layoutX="960.0" layoutY="163.0" mnemonicParsing="false" onAction="#selectDev12" opacity="0.0" prefHeight="100.0" prefWidth="80.0" styleClass="clickable" />
+         <Button fx:id="devdeck_11" layoutX="862.0" layoutY="163.0" mnemonicParsing="false" onAction="#selectDev11" opacity="0.0" prefHeight="100.0" prefWidth="80.0" styleClass="clickable" />
+         <Button fx:id="devdeck_10" layoutX="764.0" layoutY="163.0" mnemonicParsing="false" onAction="#selectDev10" opacity="0.0" prefHeight="100.0" prefWidth="80.0" styleClass="clickable" />
+         <Button fx:id="devdeck_00" layoutX="764.0" layoutY="43.0" mnemonicParsing="false" onAction="#selectDev00" opacity="0.0" prefHeight="100.0" prefWidth="80.0" styleClass="clickable" />
+         <Button fx:id="devdeck_01" layoutX="862.0" layoutY="43.0" mnemonicParsing="false" onAction="#selectDev01" opacity="0.0" prefHeight="100.0" prefWidth="80.0" styleClass="clickable" />
+         <Button fx:id="devdeck_02" layoutX="960.0" layoutY="43.0" mnemonicParsing="false" onAction="#selectDev02" opacity="0.0" prefHeight="100.0" prefWidth="80.0" styleClass="clickable" />
          <Button fx:id="played_1" layoutX="488.0" layoutY="571.0" mnemonicParsing="false" opacity="0.0" prefHeight="100.0" prefWidth="80.0" styleClass="clickable" />
          <Button fx:id="played_2" layoutX="586.0" layoutY="571.0" mnemonicParsing="false" opacity="0.0" prefHeight="100.0" prefWidth="80.0" styleClass="clickable" />
          <Button fx:id="hand_1" layoutX="488.0" layoutY="744.0" mnemonicParsing="false" opacity="0.0" prefHeight="100.0" prefWidth="80.0" styleClass="clickable" />
          <Button fx:id="hand_2" layoutX="586.0" layoutY="744.0" mnemonicParsing="false" opacity="0.0" prefHeight="100.0" prefWidth="80.0" styleClass="clickable" />
-         <Button fx:id="slot_1" layoutX="302.0" layoutY="450.0" onAction="#selectSlot1" mnemonicParsing="false" opacity="0.0" prefHeight="40.0" prefWidth="40.0" styleClass="clickable" />
-         <Button fx:id="slot_3" layoutX="565.0" layoutY="450.0" onAction="#selectSlot3" mnemonicParsing="false" opacity="0.0" prefHeight="40.0" prefWidth="40.0" styleClass="clickable" />
-         <Button fx:id="slot_2" layoutX="430.0" layoutY="450.0" onAction="#selectSlot2" mnemonicParsing="false" opacity="0.0" prefHeight="40.0" prefWidth="40.0" styleClass="clickable" />
+         <Button fx:id="slot_1" layoutX="302.0" layoutY="450.0" mnemonicParsing="false" onAction="#selectSlot1" opacity="0.0" prefHeight="40.0" prefWidth="40.0" styleClass="clickable" />
+         <Button fx:id="slot_3" layoutX="565.0" layoutY="450.0" mnemonicParsing="false" onAction="#selectSlot3" opacity="0.0" prefHeight="40.0" prefWidth="40.0" styleClass="clickable" />
+         <Button fx:id="slot_2" layoutX="430.0" layoutY="450.0" mnemonicParsing="false" onAction="#selectSlot2" opacity="0.0" prefHeight="40.0" prefWidth="40.0" styleClass="clickable" />
          <Button fx:id="board_production" layoutX="200.0" layoutY="450.0" mnemonicParsing="false" opacity="0.0" prefHeight="40.0" prefWidth="40.0" styleClass="clickable" />
          <Button fx:id="chest" layoutX="31.0" layoutY="392.0" mnemonicParsing="false" opacity="0.0" prefHeight="80.0" prefWidth="110.0" styleClass="clickable">
             <font>
@@ -252,7 +252,7 @@
          </Button>
          <Button fx:id="back_button" layoutX="10.0" layoutY="815.0" mnemonicParsing="false" onAction="#quitAction" prefHeight="30.0" prefWidth="30.0" styleClass="backButton, clickable" />
          <Button fx:id="confirm_button" layoutX="210.0" layoutY="810.0" mnemonicParsing="false" onAction="#selectConfirmButton" prefHeight="40.0" prefWidth="40.0" styleClass="confirmButton, clickable" />
-         <Button fx:id="end_turn" layoutX="410.0" layoutY="815.0" mnemonicParsing="false" onAction ="#endTurn" prefHeight="30.0" prefWidth="30.0" styleClass="turnButton, clickable" />
+         <Button fx:id="end_turn" layoutX="410.0" layoutY="815.0" mnemonicParsing="false" onAction="#endTurn" prefHeight="30.0" prefWidth="30.0" styleClass="turnButton, clickable" />
          <ImageView fx:id="setupdraw1" fitHeight="110.0" fitWidth="88.0" layoutX="19.0" layoutY="635.0">
          </ImageView>
          <ImageView fx:id="setupdraw2" fitHeight="110.0" fitWidth="88.0" layoutX="127.0" layoutY="635.0">
@@ -261,10 +261,8 @@
          </ImageView>
          <ImageView fx:id="setupdraw4" fitHeight="110.0" fitWidth="88.0" layoutX="343.0" layoutY="635.0">
          </ImageView>
-         <Button fx:id="setupdraw_button1" layoutX="23.0" layoutY="640.0" mnemonicParsing="false" onAction="#select_sd1" opacity="0.0" prefHeight="100.0" prefWidth="80.0" />
-         <Button fx:id="setupdraw_button2" layoutX="131.0" layoutY="640.0" mnemonicParsing="false" onAction="#select_sd2" opacity="0.0" prefHeight="100.0" prefWidth="80.0" />
-         <Button fx:id="setupdraw_button3" layoutX="239.0" layoutY="640.0" mnemonicParsing="false" onAction="#select_sd3" opacity="0.0" prefHeight="100.0" prefWidth="80.0" />
-         <Button fx:id="setupdraw_button4" layoutX="347.0" layoutY="640.0" mnemonicParsing="false" onAction="#select_sd4" opacity="0.0" prefHeight="100.0" prefWidth="80.0" />
+         <Button fx:id="setupdraw_button1" layoutX="23.0" layoutY="640.0" mnemonicParsing="false" onAction="#select_sd1" opacity="0.0" prefHeight="100.0" prefWidth="80.0" styleClass="clickable" />
+         <Button fx:id="setupdraw_button4" layoutX="347.0" layoutY="640.0" mnemonicParsing="false" onAction="#select_sd4" opacity="0.0" prefHeight="100.0" prefWidth="80.0" styleClass="clickable" />
          <ImageView fx:id="message_stone" fitHeight="28.0" fitWidth="28.0" layoutX="157.0" layoutY="605.0">
             <image>
                <Image url="@../graphics/resources/stone.png" />
@@ -309,5 +307,13 @@
                <Font size="13.0" />
             </font>
          </Label>
+         <ImageView fx:id="trashcan" fitHeight="53.0" fitWidth="50.0" layoutX="208.0" layoutY="678.0">
+            <image>
+               <Image url="@../graphics/trashcan.png" />
+            </image>
+         </ImageView>
+         <Button fx:id="trashcan_button" layoutX="208.0" layoutY="678.0" mnemonicParsing="false" onAction="#selectTrashcan" opacity="0.0" prefHeight="53.0" prefWidth="50.0" styleClass="clickable"/>
+         <Button fx:id="setupdraw_button3" layoutX="239.0" layoutY="640.0" mnemonicParsing="false" onAction="#select_sd3" opacity="0.0" prefHeight="100.0" prefWidth="80.0" styleClass="clickable" />
+         <Button fx:id="setupdraw_button2" layoutX="131.0" layoutY="640.0" mnemonicParsing="false" onAction="#select_sd2" opacity="0.0" prefHeight="100.0" prefWidth="80.0" styleClass="clickable"/>
       </children></Group>
 </StackPane>
