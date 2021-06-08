@@ -25,7 +25,7 @@ public class EndGameTest {
         game.addPlayer(player2);
         Player player3 = new Player("Desa", game);
         game.addPlayer(player3);
-        player1.getBoard().getItinerary().updatePosition(17);
+        player1.getBoard().getItinerary().updatePosition(17, null, false);
         List<ResourcePosition> player1Warehouse = new ArrayList<>();
         player1Warehouse.add(new ResourcePosition(Resource.SERVANT, Place.WAREHOUSE, NumOfShelf.ONE));
         player1Warehouse.add(new ResourcePosition(Resource.COIN, Place.WAREHOUSE, NumOfShelf.TWO));
@@ -65,8 +65,8 @@ public class EndGameTest {
         game.addPlayer(player2);
         Player player3 = new Player("Gianlu", game);
         game.addPlayer(player3);
-        player1.getBoard().getItinerary().updatePosition(17);
-        player2.getBoard().getItinerary().updatePosition(17);
+        player1.getBoard().getItinerary().updatePosition(17, null, false);
+        player2.getBoard().getItinerary().updatePosition(17, null, false);
         List<ResourcePosition> player1Warehouse = new ArrayList<>();
         player1Warehouse.add(new ResourcePosition(Resource.SERVANT, Place.WAREHOUSE, NumOfShelf.ONE));
         player1Warehouse.add(new ResourcePosition(Resource.COIN, Place.WAREHOUSE, NumOfShelf.TWO));

@@ -27,12 +27,6 @@ public class Itinerary extends Observable {
         notifySingleObserver(new NewItinerary(position, cardStatus, blackCrossPosition, owner), nickname);
     }
 
-    public void updateBlackCross(int amount){
-        if (blackCrossPosition + amount > 24) blackCrossPosition = 24;
-        else blackCrossPosition += amount;
-        notifyObservers(new NewItinerary(position, cardStatus, blackCrossPosition, owner));
-    }
-
     public Integer getBlackCrossPosition() {
         return blackCrossPosition;
     }
@@ -52,9 +46,25 @@ public class Itinerary extends Observable {
         notifyObservers(new NewItinerary(position, this.cardStatus, blackCrossPosition, owner));
     }
 
-    public void updatePosition(int amount) {
-        if (position + amount > 24) position = 24;
-        else position += amount;
-        notifyObservers(new NewItinerary(position, cardStatus, blackCrossPosition, owner));
+    public void updatePosition(int amountCross, Integer amountBlack, boolean toNotify) {
+        if (position + amountCross > 24) position = 24;
+        else position += amountCross;
+        if(amountBlack != null) {
+            if (blackCrossPosition + amountBlack > 24) blackCrossPosition = 24;
+            else blackCrossPosition += amountBlack;
+        }
+        if(toNotify)
+            notifyObservers(new NewItinerary(position, cardStatus, blackCrossPosition, owner));
     }
+
+    public boolean toNotify(int oldPosition, int amount){
+        if(oldPosition < 8 && oldPosition + amount >= 8 && cardStatus[0] == CardStatus.FACE_DOWN)
+            return false;
+        else if(oldPosition < 16 && oldPosition + amount >= 16 && cardStatus[1] == CardStatus.FACE_DOWN)
+            return false;
+        else if(oldPosition < 24 && oldPosition + amount >= 24 && cardStatus[2] == CardStatus.FACE_DOWN)
+            return false;
+        return true;
+    }
+
 }

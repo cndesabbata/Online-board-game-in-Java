@@ -111,7 +111,7 @@ public class MultiPlayerController extends GameController {
     public void addInitialResources(List<ResourcePosition> rps) {
         currentPlayer.getBoard().getWarehouse().incrementResource(rps);
         if (currentPlayerIndex == 2 || currentPlayerIndex == 3)
-            currentPlayer.getBoard().getItinerary().updatePosition(1);
+            currentPlayer.getBoard().getItinerary().updatePosition(1, null, true);
         currentPlayer.setActionDone(UserAction.RESOURCE_SELECTION);
         changeTurn();
         if (getPhase() == GamePhase.SETUP) initialDraw();

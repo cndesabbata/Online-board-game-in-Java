@@ -90,6 +90,20 @@ public abstract class GameController {
     private void checkPapalReport(int vaticanReportTrigger, int vaticanReportStart, int cardStatusIndex) {
         List<Player> players = game.getPlayers();
 
+        if(players.get(0).getBoard().getItinerary().getBlackCrossPosition() != null){
+            int blackPosiion = players.get(0).getBoard().getItinerary().getBlackCrossPosition();
+            CardStatus[] cardStatuses = players.get(0).getBoard().getItinerary().getCardStatus();
+            if (blackPosiion >= vaticanReportTrigger) {
+                if (cardStatuses[cardStatusIndex] == CardStatus.FACE_DOWN) {
+                        int playerPosition = players.get(0).getBoard().getItinerary().getPosition();
+                        if (playerPosition >= vaticanReportStart)
+                            players.get(0).getBoard().getItinerary().setCardStatus(CardStatus.FACE_UP, cardStatusIndex);
+                        else
+                            players.get(0).getBoard().getItinerary().setCardStatus(CardStatus.DISCARDED, cardStatusIndex);
+                }
+            }
+        }
+
         for (Player player : players) {
             int position = player.getBoard().getItinerary().getPosition();
             CardStatus[] cardStatuses = player.getBoard().getItinerary().getCardStatus();

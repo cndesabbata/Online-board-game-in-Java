@@ -23,7 +23,8 @@ public class ProductionEffect implements LeaderEffect {
                 throw new WrongActionException("The user does not have the played Product Leader Card.");
             ((StartProduction) action).addInputRes(inputRes);
             ((StartProduction) action).addOutputRes(outputRes);
-            player.getBoard().getItinerary().updatePosition(1);
+            player.getBoard().getItinerary().updatePosition(1, null,
+                    player.getBoard().getItinerary().toNotify(player.getBoard().getItinerary().getPosition(), 1));
         }
     }
 }

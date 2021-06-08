@@ -21,7 +21,8 @@ public class DiscardLeadCard implements Action {
     @Override
     public boolean doAction(Player player) {
         player.discardLeadCard(index - 1);
-        player.getBoard().getItinerary().updatePosition(1);
+        player.getBoard().getItinerary().updatePosition(1, null,
+                player.getBoard().getItinerary().toNotify(player.getBoard().getItinerary().getPosition(), 1));
         return false;
     }
 

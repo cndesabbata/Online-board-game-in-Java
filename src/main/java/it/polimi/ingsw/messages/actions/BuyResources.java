@@ -8,6 +8,7 @@ import it.polimi.ingsw.server.model.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class BuyResources implements Action {
     private final int position;
@@ -32,15 +33,31 @@ public class BuyResources implements Action {
     public boolean doAction(Player player) {
         List<ResourcePosition> boughtResources = new ArrayList<>(gainedRes);
         boughtResources.addAll(extraRes);
-        for(int i = 0; i < boughtResources.size(); i++) {
-            if (boughtResources.get(i).getResource() == Resource.FAITHPOINT)
-                player.getBoard().getItinerary().updatePosition(1);
-            if(boughtResources.get(i).getPlace() == Place.TRASH_CAN) {
-                for(Player otherPlayer : player.getGame().getPlayers()) {
-                    if(!otherPlayer.equals(player))
-                        otherPlayer.getBoard().getItinerary().updatePosition(1);
+        int updateOthers = (int) boughtResources.stream().filter(r -> r.getPlace() == Place.TRASH_CAN).count();
+        int updateOwn = (int) boughtResources.stream().filter(r -> r.getResource() == Resource.FAITHPOINT).count();
+        boolean notify = true;
+        if(player.getBoard().getItinerary().getBlackCrossPosition() == null) {                                          //case Multiplayer
+            for(Player p : player.getGame().getPlayers()){                                                              //check if a papal report will be triggered
+                if (!p.getNickname().equalsIgnoreCase(player.getNickname())){
+                    int oldPosition = p.getBoard().getItinerary().getPosition();
+                    notify = notify && p.getBoard().getItinerary().toNotify(oldPosition, updateOthers);
                 }
+                else
+                    notify = notify && player.getBoard().getItinerary().toNotify(player.getBoard().getItinerary().getPosition(), updateOwn);
             }
+            for (Player otherPlayer : player.getGame().getPlayers()) {
+                if (!otherPlayer.equals(player))
+                    otherPlayer.getBoard().getItinerary().updatePosition(updateOthers, null, notify);
+                else
+                    player.getBoard().getItinerary().updatePosition(updateOwn, null, notify);
+            }
+        }
+        else {
+            int ownOldPosition = player.getBoard().getItinerary().getPosition();
+            int oldBlackPosition = player.getBoard().getItinerary().getBlackCrossPosition();
+            notify = player.getBoard().getItinerary().toNotify(ownOldPosition, updateOwn)
+                    && player.getBoard().getItinerary().toNotify(oldBlackPosition, updateOthers);
+            player.getBoard().getItinerary().updatePosition(updateOwn, updateOthers, notify);
         }
         player.getBoard().getWarehouse().incrementResource(boughtResources);
         player.getGame().getMarket().setDisposition(marketSelection, position);
@@ -117,5 +134,6 @@ public class BuyResources implements Action {
     public void setLeaderUsed(boolean leaderUsed) {
         this.leaderUsed = leaderUsed;
     }
+
 }
 
