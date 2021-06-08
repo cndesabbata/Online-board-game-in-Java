@@ -183,6 +183,7 @@ public class GuiGameController implements GuiController{
     @FXML private Label message_servant_number;
     @FXML private Label message_shield_number;
     @FXML private ImageView inkwell;
+    @FXML private Label board_label;
     private final List<ImageView> messageResources = new ArrayList<>();
     private final List<Button> messageResourcesButtons = new ArrayList<>();
     private final List<Label> messageResourcesNumbers = new ArrayList<>();
@@ -231,6 +232,10 @@ public class GuiGameController implements GuiController{
         initializePlayedCards();
         initializeMessagePanel();
         disableButtons();
+        if (view.getOtherGameBoards().isEmpty()){
+            group.getChildren().remove(left_gameboard);
+            group.getChildren().remove(right_gameboard);
+        }
     }
 
     public void initializeMessagePanel() {
@@ -305,8 +310,6 @@ public class GuiGameController implements GuiController{
         back_button.setDisable(true);
         confirm_button.setDisable(true);
         end_turn.setDisable(true);
-        right_gameboard.setDisable(true);
-        left_gameboard.setDisable(true);
         handleButtons(messageResourcesButtons, true);
         handleButtons(marketButtons, true);
         handleButtons(devSpaceButtons, true);
@@ -661,6 +664,33 @@ public class GuiGameController implements GuiController{
         }
     }
 
+    private void changeGameboard(int d){
+        int newIndex = currentGameboard.getIndex() + d;
+        if (newIndex > view.getOtherGameBoards().size()) newIndex = 0;
+        else if (newIndex < 0) newIndex = view.getOtherGameBoards().size();
+        currentGameboard = findGameboardById(newIndex);
+        updateGUI(currentGameboard.getOwner());
+    }
+
+    private GameBoardInfo findGameboardById(int id){
+        for( GameBoardInfo g : view.getOtherGameBoards()){
+            if (g.getIndex() == id){
+                board_label.setText(g.getOwner() + "'s Gameboard");
+                return g;
+            }
+        }
+        board_label.setText("Your Gameboard");
+        return view.getOwnGameBoard();
+    }
+
+    public void select_right_gameboard(){
+        changeGameboard(1);
+    }
+
+    public void select_left_gameboard(){
+        changeGameboard(-1);
+    }
+
     private void checkWarehouseButtons(boolean toStore){
         shelf1.setDisable((toStore && first_shelf.getImage() != null)
                 || (!toStore && first_shelf.getImage() == null));
@@ -764,8 +794,6 @@ public class GuiGameController implements GuiController{
         handleButtons(marketButtons, true);
         handleButtons(handButtons, true);
         handleButtons(playedCardsButtons, true);
-        right_gameboard.setDisable(true);
-        left_gameboard.setDisable(true);
         handleButtons(messageResourcesButtons, true);
         if(currentAction == UserAction.BUY_RESOURCES){
             message.setText("Now click on one of the warehouse shelves or on the trashcan");
@@ -799,6 +827,7 @@ public class GuiGameController implements GuiController{
     private void selectWarehouse(String shelf){
         if(view.getGamePhase() == GamePhase.SETUP){
             updateWarehouseInAction(shelf);
+            resourceToSelect--;
             if(resourceToSelect == 0) {
                 connectionSocket.send(new ResourceSelection(resourcesForAction));
                 for (int i = 0; i < messageResourcesButtons.size(); i++) {
@@ -813,22 +842,7 @@ public class GuiGameController implements GuiController{
         }
         else if(currentAction == UserAction.BUY_RESOURCES){
             updateWarehouseInAction(shelf);
-            int index = Arrays.asList(Resource.values()).indexOf(Resource.valueOf(selectedResource.toUpperCase()));
-            messageResourcesNumbers.get(index).setText
-                    (String.valueOf(Integer.parseInt(messageResourcesNumbers.get(index).getText()) - 1));
-            if(messageResourcesNumbers.get(index).getText().equalsIgnoreCase("0")) {
-                messageResourcesNumbers.get(index).setText("");
-                messageResources.get(index).setImage(null);
-            }
-            if(resourceToSelect == 0) {
-                confirm_button.setDisable(false);
-                message.setText("Click on the check button below to confirm your choice");
-            }
-            else message.setText("Select the next resource to place");
-            handleButtons(warehouseButtons, true);
-            enableMessageResourceButtons();
-            trashcan_button.setDisable(true);
-            trashcan.setImage(null);
+            updateMessageResources();
         }
         else if(currentAction == UserAction.START_PRODUCTION){
 
@@ -898,6 +912,26 @@ public class GuiGameController implements GuiController{
         }
     }
 
+    private void updateMessageResources(){
+        resourceToSelect--;
+        int index = Arrays.asList(Resource.values()).indexOf(Resource.valueOf(selectedResource.toUpperCase()));
+        messageResourcesNumbers.get(index).setText
+                (String.valueOf(Integer.parseInt(messageResourcesNumbers.get(index).getText()) - 1));
+        if(messageResourcesNumbers.get(index).getText().equalsIgnoreCase("0")) {
+            messageResourcesNumbers.get(index).setText("");
+            messageResources.get(index).setImage(null);
+        }
+        if(resourceToSelect == 0) {
+            confirm_button.setDisable(false);
+            message.setText("Click on the check button below to confirm your choice");
+        }
+        else message.setText("Select the next resource to place");
+        handleButtons(warehouseButtons, true);
+        enableMessageResourceButtons();
+        trashcan_button.setDisable(true);
+        trashcan.setImage(null);
+    }
+
 
     private void updateWarehouseInAction(String shelf) {
         resourcesForAction.add(new ResourcePosition(Resource.valueOf(selectedResource.toUpperCase()),
@@ -925,7 +959,6 @@ public class GuiGameController implements GuiController{
                 }
             }
         }
-        resourceToSelect--;
     }
 
     public void selectFirstShelf() {
@@ -1177,24 +1210,7 @@ public class GuiGameController implements GuiController{
         if(currentAction == UserAction.BUY_RESOURCES){
             resourcesForAction.add(new ResourcePosition(Resource.valueOf(selectedResource.toUpperCase()),
                     Place.TRASH_CAN, null));
-            int newQuantity = Integer.parseInt(messageResourcesNumbers.
-                    get(Resource.valueOf(selectedResource.toUpperCase()).ordinal()).getText()) - 1;
-            resourceToSelect--;
-            if(newQuantity == 0) {
-                messageResourcesButtons.get(Resource.valueOf(selectedResource.toUpperCase()).ordinal()).setDisable(true);
-                messageResourcesNumbers.get(Resource.valueOf(selectedResource.toUpperCase()).ordinal()).setText("");
-                messageResources.get(Resource.valueOf(selectedResource.toUpperCase()).ordinal()).setImage(null);
-                if (resourceToSelect == 0) {
-                    confirm_button.setDisable(false);
-                    message.setText("Click on the check button below to confirm your choice");
-                }
-            }
-            else
-                messageResourcesNumbers.get(Resource.valueOf(selectedResource.toUpperCase()).ordinal()).
-                        setText(String.valueOf(newQuantity));
-            message.setText("Select the next resource to place");
-            trashcan_button.setDisable(true);
-            enableMessageResourceButtons();
+            updateMessageResources();
         }
     }
 
