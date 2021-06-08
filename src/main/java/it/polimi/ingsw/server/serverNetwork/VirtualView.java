@@ -10,9 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class VirtualView implements Observer {
-    private String nickname;
+    private final String nickname;
     private ClientConnection clientConnection;
-    private List<ChangeMessage> newElements;                                                                            //List of new parts of the model, which will be send when an ActionDone message is received.
+    private final List<ChangeMessage> newElements;                                                                            //List of new parts of the model, which will be send when an ActionDone message is received.
 
     public VirtualView(String nickname, ClientConnection clientConnection) {
         this.nickname = nickname;

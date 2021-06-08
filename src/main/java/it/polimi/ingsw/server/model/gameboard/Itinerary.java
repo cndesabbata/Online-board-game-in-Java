@@ -6,7 +6,7 @@ public class Itinerary extends Observable {
     private int position;
     private final CardStatus[] cardStatus;
     private Integer blackCrossPosition;
-    private String owner;
+    private final String owner;
 
     public Itinerary(String nickname){
         owner = nickname;

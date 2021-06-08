@@ -118,6 +118,17 @@ public abstract class GameController {
                     }
                 }
             }
+            if(player.getBoard().getItinerary().getBlackCrossPosition() != null) {
+                int blackCrossPos = player.getBoard().getItinerary().getBlackCrossPosition();
+                if(blackCrossPos >= vaticanReportTrigger) {
+                    if(cardStatuses[cardStatusIndex] == CardStatus.FACE_DOWN) {
+                        if(position >= vaticanReportStart)
+                            player.getBoard().getItinerary().setCardStatus(CardStatus.FACE_UP, cardStatusIndex);
+                        else
+                            player.getBoard().getItinerary().setCardStatus(CardStatus.DISCARDED, cardStatusIndex);
+                    }
+                }
+            }
         }
     }
 

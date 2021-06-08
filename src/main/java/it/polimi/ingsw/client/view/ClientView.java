@@ -5,7 +5,6 @@ import it.polimi.ingsw.messages.clientMessages.internal.PrintDevDecks;
 import it.polimi.ingsw.messages.clientMessages.internal.PrintHandCards;
 import it.polimi.ingsw.messages.clientMessages.internal.PrintMarket;
 import it.polimi.ingsw.server.controller.GamePhase;
-import it.polimi.ingsw.server.controller.UserAction;
 import it.polimi.ingsw.server.observer.Observable;
 
 import java.util.ArrayList;
@@ -17,10 +16,10 @@ public class ClientView extends Observable {
     private String nickname;
     private String[][] market;
     private String externalMarble;
-    private DevCardInfo[][] devDecks;
+    private final DevCardInfo[][] devDecks;
     private List<LeadCardInfo> hand;
-    private List<GameBoardInfo> otherGameBoards;
-    private GameBoardInfo ownGameBoard;
+    private final List<GameBoardInfo> otherGameBoards;
+    private final GameBoardInfo ownGameBoard;
     private boolean turnActive;
     private GamePhase gamePhase;
 

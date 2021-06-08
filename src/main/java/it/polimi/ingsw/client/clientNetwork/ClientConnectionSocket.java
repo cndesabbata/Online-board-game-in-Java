@@ -21,7 +21,7 @@ public class ClientConnectionSocket implements Runnable{
     private int serverPort;
     private ObjectOutputStream output;
     private ObjectInputStream input;
-    private MessageHandler messageHandler;
+    private final MessageHandler messageHandler;
     private Socket socket;
     private Cli cli;
     private Gui gui;
@@ -78,7 +78,7 @@ public class ClientConnectionSocket implements Runnable{
 
     @Override
     public void run() {
-        Message message = null;
+        Message message;
         while (true){
             try {
                 message = (Message) input.readObject();

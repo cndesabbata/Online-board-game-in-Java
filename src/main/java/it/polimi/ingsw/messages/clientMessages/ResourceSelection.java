@@ -7,7 +7,7 @@ import it.polimi.ingsw.server.model.ResourcePosition;
 import java.util.List;
 
 public class ResourceSelection implements Message {
-    private List<ResourcePosition> resources;
+    private final List<ResourcePosition> resources;
 
     public ResourceSelection(List<ResourcePosition> resources) {
         this.resources = resources;

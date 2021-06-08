@@ -13,7 +13,7 @@ public class MasterOfRenaissance {
         System.out.print("Hi! Welcome to Master Of Renaissance!\nWhat would you like to do?\n");
         System.out.print("0. Launch Server\n1. Launch GUI\n2. Launch CLI\n3. Exit game\n>");
         Scanner scanner = new Scanner(System.in);
-        int input = 0;
+        int input;
         boolean request = true;
         while (request){
             try {

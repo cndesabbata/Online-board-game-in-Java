@@ -1,18 +1,16 @@
 package it.polimi.ingsw.messages.actions;
+
 import it.polimi.ingsw.server.controller.UserAction;
-import it.polimi.ingsw.server.controller.leaders.LeaderEffect;
 import it.polimi.ingsw.server.exceptions.WrongActionException;
 import it.polimi.ingsw.server.model.*;
 import it.polimi.ingsw.server.model.gameboard.NumOfShelf;
 import it.polimi.ingsw.server.model.gameboard.Warehouse;
 
-import java.util.List;
-
 public class MoveResources implements Action {
-    private NumOfShelf srcShelf;
-    private NumOfShelf destShelf;
-    private int quantity;
-    private UserAction type;
+    private final NumOfShelf srcShelf;
+    private final NumOfShelf destShelf;
+    private final int quantity;
+    private final UserAction type;
 
     public MoveResources(NumOfShelf srcShelf, NumOfShelf destShelf, int quantity) {
         this.srcShelf = srcShelf;

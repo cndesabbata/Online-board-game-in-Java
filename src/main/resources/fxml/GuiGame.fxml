@@ -31,9 +31,9 @@
          <ImageView fitHeight="310.0" fitWidth="286.0" layoutX="760.0" layoutY="540.0">
             <Image url="@../graphics/market.png" />
          </ImageView>
-         <Label alignment="CENTER" layoutX="150.0" layoutY="21.0" prefHeight="10.0" prefWidth="380.0" text="Your Gameboard" />
-         <Button fx:id="right_gameboard" layoutX="500.0" layoutY="17.0" mnemonicParsing="false" prefHeight="20.0" prefWidth="30.0" styleClass="rightButton, clickable" />
-         <Button fx:id="left_gameboard" layoutX="150.0" layoutY="17.0" mnemonicParsing="false" prefHeight="20.0" prefWidth="30.0" styleClass="leftButton, clickable" />
+         <Label fx:id="board_label" alignment="CENTER" layoutX="150.0" layoutY="21.0" prefHeight="10.0" prefWidth="380.0" text="Your Gameboard" />
+         <Button fx:id="right_gameboard" layoutX="500.0" layoutY="17.0" mnemonicParsing="false" prefHeight="20.0"  prefWidth="30.0" onAction="#select_right_gameboard" styleClass="rightButton, clickable" />
+         <Button fx:id="left_gameboard" layoutX="150.0" layoutY="17.0" mnemonicParsing="false" prefHeight="20.0" prefWidth="30.0" onAction="#select_left_gameboard" styleClass="leftButton, clickable" />
          <Label alignment="CENTER" layoutX="523.0" layoutY="535.0" text="Played Leader Cards" />
          <Label alignment="CENTER" layoutX="523.0" layoutY="710.0" text="Hand Leader Cards" />
          <ImageView fx:id="first_green" fitHeight="110.0" fitWidth="88.0" layoutX="760.0" layoutY="38.0">

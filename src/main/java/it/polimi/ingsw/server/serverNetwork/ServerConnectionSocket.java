@@ -2,12 +2,10 @@ package it.polimi.ingsw.server.serverNetwork;
 
 import java.io.IOException;
 import java.net.ServerSocket;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class ServerConnectionSocket implements Runnable {
-    private int port;
-    private Server server;
+    private final int port;
+    private final Server server;
     private boolean active;
     private ServerSocket serverSocket;
 

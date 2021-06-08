@@ -10,7 +10,7 @@ import java.util.List;
 public class DiscardLeadCard implements Action {
     private final int index;
     List<LeaderCard> hand;
-    private UserAction type;
+    private final UserAction type;
 
     public DiscardLeadCard(int index) {
         this.index = index;

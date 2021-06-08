@@ -8,7 +8,7 @@ import java.util.List;
 
 public class PlayLeadCard implements Action {
     private final int index;
-    private UserAction type;
+    private final UserAction type;
 
     public PlayLeadCard(int index) {
         this.index = index;

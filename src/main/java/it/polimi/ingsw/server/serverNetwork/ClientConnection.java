@@ -23,7 +23,7 @@ import java.net.Socket;
 
 public class ClientConnection implements Runnable {
     private final Server server;
-    private Socket socket;
+    private final Socket socket;
     private boolean active;
     private ObjectInputStream input;
     private ObjectOutputStream output;

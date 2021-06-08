@@ -3,8 +3,8 @@ package it.polimi.ingsw.messages.serverMessages.newElement;
 import it.polimi.ingsw.server.model.Marble;
 
 public class NewMarket implements ChangeMessage{
-    private  Marble[][] disposition;
-    private Marble external;
+    private final Marble[][] disposition;
+    private final Marble external;
 
     public NewMarket(Marble[][] disposition, Marble external) {
         this.disposition = disposition;

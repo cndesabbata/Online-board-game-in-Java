@@ -3,10 +3,10 @@ package it.polimi.ingsw.messages.serverMessages.newElement;
 import it.polimi.ingsw.server.model.gameboard.CardStatus;
 
 public class NewItinerary implements ChangeMessage{
-    private int position;
+    private final int position;
     private final CardStatus[] cardStatus;
-    private Integer blackCrossPosition;
-    private String owner;
+    private final Integer blackCrossPosition;
+    private final String owner;
 
     public NewItinerary(int position, CardStatus[] cardStatus, Integer blackCrossPosition, String owner) {
         this.position = position;
