@@ -4,7 +4,6 @@ import it.polimi.ingsw.client.view.ClientView;
 import it.polimi.ingsw.client.view.DevCardInfo;
 import it.polimi.ingsw.client.view.GameBoardInfo;
 import it.polimi.ingsw.client.view.LeadCardInfo;
-import it.polimi.ingsw.constants.Constants;
 import it.polimi.ingsw.messages.Message;
 import it.polimi.ingsw.messages.clientMessages.internal.*;
 import it.polimi.ingsw.messages.serverMessages.newElement.*;
@@ -66,14 +65,14 @@ public class MessageHandler {
             else if (m.getType() == UserAction.SELECT_LEADCARD) {
                 view.setClientMessage(new DisplayMessage("These are the cards you chose."));
                 String string = switch (view.getOwnGameBoard().getIndex()) {
-                    case 1 -> "You are the second player; this gives you access to an additional resource" +
-                            " of your choice; please write your choice below:" +
+                    case 1 -> "You are the second player. This gives you access to an additional resource" +
+                            " of your choice, please write your choice below:" +
                             " [Coin/Stone/Servant/Shield]";
-                    case 2 -> "You are the third player; this gives you access to an additional faith point and" +
-                            " a resource of your choice; please write your choice below:" +
+                    case 2 -> "You are the third player. This gives you access to an additional faith point and" +
+                            " a resource of your choice, please write your choice below:" +
                             " [Coin/Stone/Servant/Shield]";
-                    case 3 -> "You are the fourth player; this gives you access to an additional faith point and" +
-                            " two resource of your choice; please write your choices below:" +
+                    case 3 -> "You are the fourth player. This gives you access to an additional faith point and" +
+                            " two resource of your choice, please write your choices below:" +
                             " [Coin/Stone/Servant/Shield]";
                     default -> "";
                 };

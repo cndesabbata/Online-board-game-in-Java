@@ -297,12 +297,12 @@ public class ActionFactory {
             out.add(new ResourcePosition(Resource.valueOf(boardOutput.toUpperCase()), Place.CHEST, null));
         }
         if (cli.getClientView().getOwnGameBoard().getPlayedCards().stream().anyMatch(l -> l.getType().equals("Product"))) {                                          //productLeader
-            Boolean b4 = askYesNo("Would you like to use a product leader card?\n>");
+            Boolean b4 = askYesNo("Would you like to use a product leader card? [yes/no]\n>");
             if (b4 == null) return null;
             if (b4) {
                 List<Integer> indexLead = new ArrayList<>();
                 List<String> resOut = new ArrayList<>();
-                String s = "";
+                String s;
                 for (int i = 0; i < cli.getClientView().getOwnGameBoard().getPlayedCards().size(); i++) {
                     Integer n;
                     output.print("Select the index of the product leader card on your game board: [1 / 2]\n>");

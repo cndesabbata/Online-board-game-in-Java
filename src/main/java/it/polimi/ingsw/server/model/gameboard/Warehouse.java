@@ -13,7 +13,7 @@ import java.util.*;
 public class Warehouse extends Observable {
     private final List<ResourceQuantity> warehouse = new ArrayList<>();
     private final int initialDim;
-    private String owner;
+    private final String owner;
 
     public Warehouse(int warehouseDim, String nickname){
         owner = nickname;

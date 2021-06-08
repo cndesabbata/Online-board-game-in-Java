@@ -5,8 +5,6 @@ import it.polimi.ingsw.server.exceptions.WrongActionException;
 import it.polimi.ingsw.messages.actions.Action;
 import it.polimi.ingsw.server.model.*;
 
-import java.util.List;
-
 public class ProductionEffect implements LeaderEffect {
     private final ResourcePosition inputRes;
     private final ResourcePosition outputRes;

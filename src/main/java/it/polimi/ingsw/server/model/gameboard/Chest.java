@@ -13,7 +13,7 @@ import java.util.List;
 
 public class Chest extends Observable {
     private final List<ResourceQuantity> chest;
-    private String owner;
+    private final String owner;
 
     public Chest(String nickname){
         owner = nickname;

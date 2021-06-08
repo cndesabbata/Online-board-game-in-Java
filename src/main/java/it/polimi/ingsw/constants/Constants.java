@@ -9,6 +9,7 @@ public class Constants {
                                                "3.  Discard leader card            " + "7.  Show other player game board  " + "11. End Turn\n";
 
     public static final String devCardBorder = "***********************************";
+    public static final String leadCardBorder = "***************************************";
     public static final String emptyDevCardBorder = "*                                 * ";
 
     public static String getAddress() {

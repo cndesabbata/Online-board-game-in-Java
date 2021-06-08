@@ -1,7 +1,6 @@
 package it.polimi.ingsw.client.view;
 
 import it.polimi.ingsw.messages.clientMessages.internal.*;
-import it.polimi.ingsw.server.model.Resource;
 import it.polimi.ingsw.server.observer.Observable;
 
 import java.util.ArrayList;

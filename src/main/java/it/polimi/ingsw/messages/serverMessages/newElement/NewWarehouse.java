@@ -7,7 +7,7 @@ import java.util.List;
 public class NewWarehouse implements ChangeMessage{
     private final List<ResourceQuantity> warehouse;
     private final int initialDim;
-    private String owner;
+    private final String owner;
 
     public NewWarehouse(List<ResourceQuantity> warehouse, int initialDim, String owner) {
         this.warehouse = warehouse;

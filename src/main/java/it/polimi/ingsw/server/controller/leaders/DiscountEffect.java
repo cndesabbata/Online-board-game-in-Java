@@ -5,8 +5,6 @@ import it.polimi.ingsw.messages.actions.Action;
 import it.polimi.ingsw.messages.actions.BuyDevCard;
 import it.polimi.ingsw.server.model.*;
 
-import java.util.List;
-
 public class DiscountEffect implements LeaderEffect {
     private final Resource resource;
 

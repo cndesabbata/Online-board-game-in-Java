@@ -145,7 +145,7 @@ public class Cli implements Observer {
                     }
                 } else if (answer.equalsIgnoreCase("start")) {
                     Integer number = 0;
-                    output.print("Please choose a number of players:\n>");
+                    output.print("Please choose a number of players : [1/2/3/4]\n>");
                     while (request) {
                         number = readInputInt(false);
                         if (number >= 1 && number <= 4) request = false;
@@ -157,7 +157,7 @@ public class Cli implements Observer {
                     if (r.getInfoLobbies().isEmpty())
                         output.print("Invalid input. There is no lobby available at the moment, please type start.\n>");
                     else
-                        output.print("Invalid input. Please type the number of the lobby you want to join:\n>");
+                        output.print("Invalid input. Please select a valid option: [start/join]\n>");
                 }
             }
         } else if (m instanceof SetupDiscard) {
@@ -514,11 +514,11 @@ public class Cli implements Observer {
         if (isDevCard) {
             for (int i = 0; i < 34 - s.length(); i++)
                 output.print(" ");
-            output.print("* ");
         } else {
-            for (int i = 0; i < 126 - s.length(); i++)
+            for (int i = 0; i < 38 - s.length(); i++)
                 output.print(" ");
         }
+        output.print("* ");
     }
 
     protected String buildResourceString(List<String> list) {
@@ -683,30 +683,30 @@ public class Cli implements Observer {
     private void printLeadCards(List<LeadCardInfo> cards) {
         if (!(cards.isEmpty())) {
             for (int i = 0; i < cards.size(); i++) {
-                output.print(Constants.devCardBorder + " ");
+                output.print(Constants.leadCardBorder + " ");
             }
             output.print("\n");
             for (LeadCardInfo card : cards) {
-                printCardElement("* VP: " + card.getVictoryPoints(), true);
+                printCardElement("* VP: " + card.getVictoryPoints(), false);
             }
             output.print("\n");
             for (LeadCardInfo card : cards) {
                 if (card.getCardRequirements() == null)
-                    printCardElement("* RES REQ: " + buildResourceString(card.getResourceRequirements()), true);
+                    printCardElement("* RES REQ: " + buildResourceString(card.getResourceRequirements()), false);
                 else
-                    printCardElement("* CARD REQ: " + buildDevCardString(card.getCardRequirements()), true);
+                    printCardElement("* CARD REQ: " + buildDevCardString(card.getCardRequirements()), false);
             }
             output.print("\n");
             for (LeadCardInfo card : cards) {
-                printCardElement("* TYPE: " + card.getType(), true);
+                printCardElement("* TYPE: " + card.getType(), false);
             }
             output.print("\n");
             for (LeadCardInfo card : cards) {
-                printCardElement("* RES: " + card.getResource(), true);
+                printCardElement("* RES: " + card.getResource(), false);
             }
             output.print("\n");
             for (int i = 0; i < cards.size(); i++) {
-                output.print(Constants.devCardBorder + " ");
+                output.print(Constants.leadCardBorder + " ");
             }
             output.print("\n\n");
         }

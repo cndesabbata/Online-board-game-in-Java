@@ -1,7 +1,7 @@
 package it.polimi.ingsw.messages.serverMessages;
 
 public class ErrorMessage extends CustomMessage {
-    private ErrorType errorType;
+    private final ErrorType errorType;
 
     public ErrorMessage(String message, ErrorType errorType){
         super(message);

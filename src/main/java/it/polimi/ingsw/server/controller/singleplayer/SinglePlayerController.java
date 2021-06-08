@@ -1,6 +1,5 @@
 package it.polimi.ingsw.server.controller.singleplayer;
 
-import it.polimi.ingsw.messages.serverMessages.ChangesDone;
 import it.polimi.ingsw.messages.serverMessages.CloseMessage;
 import it.polimi.ingsw.server.controller.GameController;
 import it.polimi.ingsw.messages.actions.Action;

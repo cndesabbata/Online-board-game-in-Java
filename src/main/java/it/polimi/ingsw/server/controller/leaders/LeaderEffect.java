@@ -8,6 +8,6 @@ import java.io.Serializable;
 
 public interface LeaderEffect extends Serializable {
 
-    public void doLeaderEffect (Player player, Action action) throws WrongActionException;
+    void doLeaderEffect(Player player, Action action) throws WrongActionException;
 }
 
