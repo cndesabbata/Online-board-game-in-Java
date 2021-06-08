@@ -368,7 +368,10 @@ public class ActionFactory {
     private Action buildDiscardLeadCard() {
         output.print("Which leader card do you want do discard? [1/2]\n>");
         Integer index = leadCardSelection();
-        return new DiscardLeadCard(index);
+        if(index != null)
+            return new DiscardLeadCard(index);
+        else
+            return null;
     }
 
     private Integer leadCardSelection(){
