@@ -1,9 +1,7 @@
 package it.polimi.ingsw.client.view;
 
 import it.polimi.ingsw.client.clientNetwork.ClientConnectionSocket;
-import it.polimi.ingsw.messages.actions.BuyDevCard;
-import it.polimi.ingsw.messages.actions.BuyResources;
-import it.polimi.ingsw.messages.actions.MoveResources;
+import it.polimi.ingsw.messages.actions.*;
 import it.polimi.ingsw.messages.clientMessages.EndTurn;
 import it.polimi.ingsw.messages.clientMessages.LeaderCardSelection;
 import it.polimi.ingsw.messages.clientMessages.ResourceSelection;
@@ -92,6 +90,8 @@ public class GuiGameController implements GuiController{
     @FXML private Button played_2;
     @FXML private ImageView first_played;
     @FXML private ImageView second_played;
+    private int playedIndex;
+    private final List<ImageView> playedCards = new ArrayList<>();
     private final List<Button> playedCardsButtons = new ArrayList<>();
 
 
@@ -100,7 +100,8 @@ public class GuiGameController implements GuiController{
     @FXML private Button hand_2;
     @FXML private ImageView second_hand;
     @FXML private ImageView first_hand;
-    private List<ImageView> hand;
+    private int handIndex;
+    private List<ImageView> hand = new ArrayList<>();
     private final List<Button> handButtons = new ArrayList<>();
 
 
@@ -272,6 +273,8 @@ public class GuiGameController implements GuiController{
     private void initializePlayedCards() {
         first_played.imageProperty().set(null);
         second_played.imageProperty().set(null);
+        playedCards.add(first_played);
+        playedCards.add(second_played);
         playedCardsButtons.add(played_1);
         playedCardsButtons.add(played_2);
         handleButtons(playedCardsButtons, true);
@@ -280,6 +283,8 @@ public class GuiGameController implements GuiController{
     private void initializeHandCards() {
         first_hand.imageProperty().set(null);
         second_hand.imageProperty().set(null);
+        hand.add(first_hand);
+        hand.add(second_hand);
         handButtons.add(hand_1);
         handButtons.add(hand_2);
         handleButtons(handButtons, true);
@@ -713,19 +718,6 @@ public class GuiGameController implements GuiController{
         }
     }
 
-    private void checkHandButtons(){
-        for(int i = 0; i < handButtons.size(); i++) {
-            if (view.getHand().get(i) != null) {
-                if (view.getHand().get(i).getResourceRequirements() != null) {
-                    handButtons.get(i).setDisable(
-                            !view.getOwnGameBoard().totalResourceCheck(view.getHand().get(i).getResourceRequirements()));
-                } else
-                    handButtons.get(i).setDisable(!view.getOwnGameBoard().devCardsCheck(view.getHand().get(i).getCardRequirements()));
-            } else
-                handButtons.get(i).setDisable(true);
-        }
-    }
-
     public void enableAction(String s) {
         updateGUI(view.getNickname());
         message.setText(s);
@@ -737,11 +729,10 @@ public class GuiGameController implements GuiController{
         for(int i = 0; i < 3; i++){
             devSpaceButtons.get(i).setDisable(view.getOwnGameBoard().getDevSpace().get(i).isEmpty());
         }
-        checkHandButtons();
         checkDevDeckButtons();
-        handleButtons(playedCardsButtons, false);
         for(int i = 0; i < 2; i++){
             playedCardsButtons.get(i).setDisable(view.getOwnGameBoard().getPlayedCards().size() <= i);
+            handButtons.get(i).setDisable(view.getHand().size() <= i);
         }
         checkWarehouseButtons(false);
         handleButtons(chestButtons, true);
@@ -757,6 +748,8 @@ public class GuiGameController implements GuiController{
         selectedSlot = -1;
         trashcan.setImage(null);
         trashcan_button.setDisable(true);
+        handIndex = -1;
+        playedIndex = -1;
     }
 
     public void selectSetupResources() {
@@ -1078,14 +1071,20 @@ public class GuiGameController implements GuiController{
         if(currentAction == UserAction.BUY_RESOURCES){
             connectionSocket.send(new BuyResources(new ArrayList<>(), position, selection, resourcesForAction));
         }
-        if(currentAction == UserAction.MOVE_RESOURCES){
+        else if(currentAction == UserAction.MOVE_RESOURCES){
             connectionSocket.send(new MoveResources(NumOfShelf.values()[sourceShelf],
                     NumOfShelf.values()[destinationShelf], view.getOwnGameBoard().getWarehouse().get(sourceShelf).size()));
         }
-        if(currentAction == UserAction.BUY_DEVCARD){
+        else if(currentAction == UserAction.BUY_DEVCARD){
             DevCardInfo d = view.getDevDecks()[column][row];
             connectionSocket.send(new BuyDevCard(d.getLevel(), Colour.valueOf(d.getColour().toUpperCase()),
                     DevSpaceSlot.values()[selectedSlot], resourcesForAction, new ArrayList<>()));
+        }
+        else if(currentAction == UserAction.DISCARD_LEADCARD){
+            connectionSocket.send(new DiscardLeadCard(handIndex + 1));
+        }
+        else if(currentAction == UserAction.PLAY_LEADCARD){
+            connectionSocket.send(new PlayLeadCard(handIndex + 1));
         }
     }
 
@@ -1212,6 +1211,78 @@ public class GuiGameController implements GuiController{
                     Place.TRASH_CAN, null));
             updateMessageResources();
         }
+        else{
+            currentAction = UserAction.DISCARD_LEADCARD;
+            trashcan_button.setDisable(true);
+            trashcan.setImage(null);
+            handleButtons(playedCardsButtons, true);
+            hand.get(handIndex).setImage(null);
+            message.setText("Click on the check button below to confirm your choice");
+            confirm_button.setDisable(false);
+        }
     }
 
+    private boolean checkHand(int index){
+        if (view.getHand().get(index).getResourceRequirements() != null) {
+            return view.getOwnGameBoard().totalResourceCheck(view.getHand().get(index).getResourceRequirements());
+        } else
+            return view.getOwnGameBoard().devCardsCheck(view.getHand().get(index).getCardRequirements());
+    }
+
+
+    private void selectHand(int index){
+        handleButtons(handButtons, true);
+        handleButtons(devSpaceButtons, true);
+        handleButtons(devDeckButtons, true);
+        handleButtons(marketButtons, true);
+        handleButtons(warehouseButtons, true);
+        back_button.setDisable(false);
+        handIndex = index;
+        String s = "You have selected a leader card, ";
+        trashcan_button.setDisable(false);
+        trashcan.setImage(new Image("/graphics/trashcan.png"));
+        if(checkHand(index)){
+            message.setText(s+ "please click on the trashcan to discard it\nor on the played leader card panel to play it");
+            for(int i = 0; i < 2; i++)
+                playedCardsButtons.get(i).setDisable(view.getOwnGameBoard().getPlayedCards().size() > i);
+            }
+        else
+            message.setText(s+ "since you do not meet the requirements\n to play it, you can only discard it");
+    }
+
+    public void selectFirstHand() {
+        selectHand(0);
+    }
+
+    public void selectSecondHand() {
+        selectHand(1);
+    }
+
+    private void selectPlayedLeadCard(int index){
+        if(currentAction == UserAction.START_PRODUCTION){
+
+        }
+        else{
+            currentAction = UserAction.PLAY_LEADCARD;
+            if(view.getOwnGameBoard().getPlayedCards().size() == 0)
+                playedIndex = 0;
+            else
+                playedIndex = index;
+            handleButtons(playedCardsButtons, true);
+            trashcan.setImage(null);
+            trashcan_button.setDisable(true);
+            playedCards.get(playedIndex).setImage(hand.get(handIndex).getImage());
+            hand.get(handIndex).setImage(null);
+            message.setText("Click on the check button below to confirm your choice");
+            confirm_button.setDisable(false);
+        }
+    }
+
+    public void selectFirstPlayed() {
+        selectPlayedLeadCard(0);
+    }
+
+    public void selectSecondPlayed() {
+        selectPlayedLeadCard(1);
+    }
 }

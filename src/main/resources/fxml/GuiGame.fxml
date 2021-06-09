@@ -222,10 +222,10 @@
          <Button fx:id="devdeck_00" layoutX="764.0" layoutY="43.0" mnemonicParsing="false" onAction="#selectDev00" opacity="0.0" prefHeight="100.0" prefWidth="80.0" styleClass="clickable" />
          <Button fx:id="devdeck_01" layoutX="862.0" layoutY="43.0" mnemonicParsing="false" onAction="#selectDev01" opacity="0.0" prefHeight="100.0" prefWidth="80.0" styleClass="clickable" />
          <Button fx:id="devdeck_02" layoutX="960.0" layoutY="43.0" mnemonicParsing="false" onAction="#selectDev02" opacity="0.0" prefHeight="100.0" prefWidth="80.0" styleClass="clickable" />
-         <Button fx:id="played_1" layoutX="488.0" layoutY="571.0" mnemonicParsing="false" opacity="0.0" prefHeight="100.0" prefWidth="80.0" styleClass="clickable" />
-         <Button fx:id="played_2" layoutX="586.0" layoutY="571.0" mnemonicParsing="false" opacity="0.0" prefHeight="100.0" prefWidth="80.0" styleClass="clickable" />
-         <Button fx:id="hand_1" layoutX="488.0" layoutY="744.0" mnemonicParsing="false" opacity="0.0" prefHeight="100.0" prefWidth="80.0" styleClass="clickable" />
-         <Button fx:id="hand_2" layoutX="586.0" layoutY="744.0" mnemonicParsing="false" opacity="0.0" prefHeight="100.0" prefWidth="80.0" styleClass="clickable" />
+         <Button fx:id="played_1" layoutX="488.0" layoutY="571.0" mnemonicParsing="false" onAction="#selectFirstPlayed" opacity="0.0" prefHeight="100.0" prefWidth="80.0" styleClass="clickable" />
+         <Button fx:id="played_2" layoutX="586.0" layoutY="571.0" mnemonicParsing="false" onAction="#selectSecondPlayed" opacity="0.0" prefHeight="100.0" prefWidth="80.0" styleClass="clickable" />
+         <Button fx:id="hand_1" layoutX="488.0" layoutY="744.0" mnemonicParsing="false" onAction="#selectFirstHand" opacity="0.0" prefHeight="100.0" prefWidth="80.0" styleClass="clickable" />
+         <Button fx:id="hand_2" layoutX="586.0" layoutY="744.0" mnemonicParsing="false" onAction="#selectSecondHand" opacity="0.0" prefHeight="100.0" prefWidth="80.0" styleClass="clickable" />
          <Button fx:id="slot_1" layoutX="302.0" layoutY="450.0" mnemonicParsing="false" onAction="#selectSlot1" opacity="0.0" prefHeight="40.0" prefWidth="40.0" styleClass="clickable" />
          <Button fx:id="slot_3" layoutX="565.0" layoutY="450.0" mnemonicParsing="false" onAction="#selectSlot3" opacity="0.0" prefHeight="40.0" prefWidth="40.0" styleClass="clickable" />
          <Button fx:id="slot_2" layoutX="430.0" layoutY="450.0" mnemonicParsing="false" onAction="#selectSlot2" opacity="0.0" prefHeight="40.0" prefWidth="40.0" styleClass="clickable" />
