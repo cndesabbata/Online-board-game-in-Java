@@ -181,8 +181,8 @@ public class ClientConnection implements Runnable {
                 ((SinglePlayerController) getGameController()).makeTokenAction();
             }
             else sendSocketMessage(new ErrorMessage(
-                        "You must do an action before ending your turn. "
-                                + "Please choose an action (select a number between 0 and 11):\n", ErrorType.INVALID_END_TURN));
+                        "You must do an action before ending your turn.\n"
+                                + "Please choose an action", ErrorType.INVALID_END_TURN));
         }
 
         else if (clientMessage instanceof Action){

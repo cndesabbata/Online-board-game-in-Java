@@ -1,10 +1,12 @@
 package it.polimi.ingsw.server.controller.multiplayer;
 
+import it.polimi.ingsw.messages.serverMessages.CloseMessage;
 import it.polimi.ingsw.server.controller.GameController;
 import it.polimi.ingsw.messages.actions.Action;
 import it.polimi.ingsw.server.controller.GamePhase;
 import it.polimi.ingsw.server.controller.UserAction;
 import it.polimi.ingsw.server.model.*;
+import it.polimi.ingsw.server.serverNetwork.ClientConnection;
 import it.polimi.ingsw.server.serverNetwork.Server;
 
 import java.util.*;
@@ -150,5 +152,11 @@ public class MultiPlayerController extends GameController {
             winners.add(game.getPlayerByNickname(winnerNickname));
         }
         game.setWinners(winners);
+        for(ClientConnection connection : getActiveConnections()) {
+            if(winners.contains(getGame().getPlayerByNickname(connection.getPlayerNickname())))
+                connection.sendSocketMessage(new CloseMessage("You won the game! Your score is " + playersPoints.get(connection.getPlayerNickname())));
+            else
+                connection.sendSocketMessage(new CloseMessage("You lost the game! Your score is " + playersPoints.get(connection.getPlayerNickname())));
+        }
     }
 }
