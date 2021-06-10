@@ -5,6 +5,7 @@ import it.polimi.ingsw.messages.actions.Action;
 import it.polimi.ingsw.messages.actions.BuyResources;
 import it.polimi.ingsw.server.model.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MarbleEffect implements LeaderEffect {
@@ -16,6 +17,14 @@ public class MarbleEffect implements LeaderEffect {
         this.whiteMarbles = whiteMarbles;
         this.resource = resource;
         this.extraResources = extraResources;
+    }
+
+    public Resource getResource() {
+        return resource;
+    }
+
+    public int getWhiteMarbles() {
+        return whiteMarbles;
     }
 
     @Override
