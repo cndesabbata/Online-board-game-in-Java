@@ -229,7 +229,7 @@
          <Button fx:id="slot_1" layoutX="302.0" layoutY="450.0" mnemonicParsing="false" onAction="#selectSlot1" opacity="0.0" prefHeight="40.0" prefWidth="40.0" styleClass="clickable" />
          <Button fx:id="slot_3" layoutX="565.0" layoutY="450.0" mnemonicParsing="false" onAction="#selectSlot3" opacity="0.0" prefHeight="40.0" prefWidth="40.0" styleClass="clickable" />
          <Button fx:id="slot_2" layoutX="430.0" layoutY="450.0" mnemonicParsing="false" onAction="#selectSlot2" opacity="0.0" prefHeight="40.0" prefWidth="40.0" styleClass="clickable" />
-         <Button fx:id="board_production" layoutX="200.0" layoutY="450.0" mnemonicParsing="false" opacity="0.0" prefHeight="40.0" prefWidth="40.0" styleClass="clickable" />
+         <Button fx:id="board_production" layoutX="200.0" layoutY="450.0" mnemonicParsing="false" onAction="#selectBoardProduction" opacity="0.0" prefHeight="40.0" prefWidth="40.0" styleClass="clickable" />
          <Button fx:id="chest" layoutX="31.0" layoutY="392.0" mnemonicParsing="false" opacity="0.0" prefHeight="80.0" prefWidth="110.0" styleClass="clickable">
             <font>
                <Font size="1.0" />

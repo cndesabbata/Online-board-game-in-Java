@@ -49,7 +49,7 @@ public class GuiGameController implements GuiController{
     @FXML private ImageView market_21;
     @FXML private ImageView market_22;
     @FXML private ImageView market_23;
-    private int position = -1;
+    private int marketPosition = -1;
     private MarketSelection selection;
     private final List<ImageView> marbles = new ArrayList<>();
     private final List<Button> marketButtons = new ArrayList<>();
@@ -79,8 +79,8 @@ public class GuiGameController implements GuiController{
     @FXML private ImageView third_blue;
     @FXML private ImageView third_yellow;
     @FXML private ImageView third_purple;
-    private int row;
-    private int column;
+    private int devDeckRow;
+    private int devDeckColumn;
     private final List<String> resourceRequirements = new ArrayList<>();
     private final List<ImageView> devDecks = new ArrayList<>();
     private final List<Button> devDeckButtons = new ArrayList<>();
@@ -111,7 +111,7 @@ public class GuiGameController implements GuiController{
     @FXML private ImageView papal3;
     @FXML private ImageView blackcross;
     @FXML private ImageView cross;
-    private List<Integer[]> coordinates;
+    private List<Integer[]> coordinates = new ArrayList<>();
 
     //Chest and Warehouse
     @FXML private Label chest_coin;
@@ -162,6 +162,7 @@ public class GuiGameController implements GuiController{
     private final List<List<ImageView>> devSpace = new ArrayList<>();
     private final List<Button> devSpaceButtons = new ArrayList<>();                                                           //also contains board_production
     private int selectedSlot;
+    private boolean selectProductionCards;
 
     //Message & Board
     @FXML private Group group;
@@ -232,6 +233,7 @@ public class GuiGameController implements GuiController{
         initializeHandCards();
         initializePlayedCards();
         initializeMessagePanel();
+        updateItinerary(view.getNickname());
         disableButtons();
         if (view.getOtherGameBoards().isEmpty()){
             group.getChildren().remove(left_gameboard);
@@ -373,8 +375,8 @@ public class GuiGameController implements GuiController{
         devDeckButtons.add(devdeck_30);
         devDeckButtons.add(devdeck_31);
         devDeckButtons.add(devdeck_32);
-        row = -1;                                                                                                       //these are row and columns according to the disposition of devCards in the GUI, for the view one must invert them
-        column = -1;
+        devDeckRow = -1;                                                                                                       //these are row and columns according to the disposition of devCards in the GUI, for the view one must invert them
+        devDeckColumn = -1;
         updateDevDecks();
     }
 
@@ -395,40 +397,71 @@ public class GuiGameController implements GuiController{
         devSpaceButtons.add(slot_2);
         devSpaceButtons.add(slot_3);
         devSpaceButtons.add(board_production);
+        selectProductionCards = false;
     }
 
     private void initializeCoordinates(){
-        this.coordinates = new ArrayList<>();
-        coordinates.add( new Integer[]{33, 153});
-        coordinates.add( new Integer[]{65, 153});
-        coordinates.add( new Integer[]{97, 153});
-        coordinates.add( new Integer[]{97, 121});
-        coordinates.add( new Integer[]{97, 89});
-        coordinates.add( new Integer[]{129, 89});
-        coordinates.add( new Integer[]{161, 89});
-        coordinates.add( new Integer[]{193, 89});
-        coordinates.add( new Integer[]{225, 89});
-        coordinates.add( new Integer[]{257, 89});
-        coordinates.add( new Integer[]{257, 121});
-        coordinates.add( new Integer[]{257, 153});
-        coordinates.add( new Integer[]{289, 153});
-        coordinates.add( new Integer[]{321, 153});
-        coordinates.add( new Integer[]{353, 153});
-        coordinates.add( new Integer[]{385, 153});
-        coordinates.add( new Integer[]{417, 153});
-        coordinates.add( new Integer[]{417, 121});
-        coordinates.add( new Integer[]{417, 89});
-        coordinates.add( new Integer[]{449, 89});
-        coordinates.add( new Integer[]{481, 89});
-        coordinates.add( new Integer[]{513, 89});
-        coordinates.add( new Integer[]{545, 89});
-        coordinates.add( new Integer[]{577, 89});
-        coordinates.add( new Integer[]{601, 89});
+        if(view.getOwnGameBoard().getBlackCrossPosition() != null) {
+            coordinates.add(new Integer[]{33, 153});
+            coordinates.add(new Integer[]{65, 153});
+            coordinates.add(new Integer[]{97, 153});
+            coordinates.add(new Integer[]{97, 121});
+            coordinates.add(new Integer[]{97, 89});
+            coordinates.add(new Integer[]{129, 89});
+            coordinates.add(new Integer[]{161, 89});
+            coordinates.add(new Integer[]{193, 89});
+            coordinates.add(new Integer[]{225, 89});
+            coordinates.add(new Integer[]{257, 89});
+            coordinates.add(new Integer[]{257, 121});
+            coordinates.add(new Integer[]{257, 153});
+            coordinates.add(new Integer[]{289, 153});
+            coordinates.add(new Integer[]{321, 153});
+            coordinates.add(new Integer[]{353, 153});
+            coordinates.add(new Integer[]{385, 153});
+            coordinates.add(new Integer[]{418, 153});
+            coordinates.add(new Integer[]{418, 121});
+            coordinates.add(new Integer[]{418, 89});
+            coordinates.add(new Integer[]{450, 89});
+            coordinates.add(new Integer[]{482, 89});
+            coordinates.add(new Integer[]{514, 89});
+            coordinates.add(new Integer[]{546, 89});
+            coordinates.add(new Integer[]{578, 89});
+            coordinates.add(new Integer[]{610, 89});
+        }
+        else {
+            coordinates.add(new Integer[]{37, 156});
+            coordinates.add(new Integer[]{69, 156});
+            coordinates.add(new Integer[]{101, 156});
+            coordinates.add(new Integer[]{101, 124});
+            coordinates.add(new Integer[]{101, 92});
+            coordinates.add(new Integer[]{133, 92});
+            coordinates.add(new Integer[]{165, 92});
+            coordinates.add(new Integer[]{197, 92});
+            coordinates.add(new Integer[]{229, 92});
+            coordinates.add(new Integer[]{261, 92});
+            coordinates.add(new Integer[]{261, 124});
+            coordinates.add(new Integer[]{261, 156});
+            coordinates.add(new Integer[]{293, 156});
+            coordinates.add(new Integer[]{325, 156});
+            coordinates.add(new Integer[]{357, 156});
+            coordinates.add(new Integer[]{389, 156});
+            coordinates.add(new Integer[]{422, 156});
+            coordinates.add(new Integer[]{422, 124});
+            coordinates.add(new Integer[]{422, 92});
+            coordinates.add(new Integer[]{454, 92});
+            coordinates.add(new Integer[]{486, 92});
+            coordinates.add(new Integer[]{518, 92});
+            coordinates.add(new Integer[]{550, 92});
+            coordinates.add(new Integer[]{582, 92});
+            coordinates.add(new Integer[]{614, 92});
+        }
     }
 
 
 
     public void updateDevDecks() {
+        devDeckRow = -1;
+        devDeckColumn = -1;
         for (int i = 0; i < 3; i++){
             for (int j = 0; j < 4; j++){
                 String url = "/graphics/devcards/" + view.getDevDecks()[i][j].getUrl();
@@ -439,6 +472,7 @@ public class GuiGameController implements GuiController{
     }
 
     public void updateMarket() {
+        marketPosition = -1;
         for (int i = 0; i < 3; i++){
             for (int j = 0; j < 4; j++){
                 String url = "/graphics/marbles/" + view.getMarket()[i][j] + ".png";
@@ -518,6 +552,7 @@ public class GuiGameController implements GuiController{
     }
 
     public void updateHandCards() {
+        handIndex = -1;
         if (view.getGamePhase() != GamePhase.SETUP || (view.getGamePhase() == GamePhase.SETUP && view.getHand().size() <= 2)){
             String url;
             Image m;
@@ -551,6 +586,8 @@ public class GuiGameController implements GuiController{
     }
 
     public void updateDevSpace(String owner) {
+        selectedSlot = -1;
+        selectProductionCards = false;
         if (currentGameboard.getOwner().equalsIgnoreCase(owner)){
             List<DevCardInfo> slot1 = currentGameboard.getDevSpace().get(0);
             for (int i = 0; i < 3; i++){
@@ -586,7 +623,8 @@ public class GuiGameController implements GuiController{
         if (currentGameboard.getOwner().equalsIgnoreCase(owner)){
             if(currentGameboard.getBlackCrossPosition()!= null){
                 if (blackcross.getImage() == null){
-                    Image m = new Image(getClass().getResourceAsStream("/graphics/itinerary/black_cross.png"));
+                    Image m = new Image(Objects.requireNonNull(
+                            getClass().getResourceAsStream("/graphics/itinerary/black_cross.png")));
                     blackcross.setImage(m);
                 }
                 Integer[] loc = coordinates.get(currentGameboard.getBlackCrossPosition());
@@ -599,6 +637,7 @@ public class GuiGameController implements GuiController{
     }
 
     public void updatePlayedCards(String owner) {
+        playedIndex = -1;
         if (currentGameboard.getOwner().equalsIgnoreCase(owner)){
             String url;
             Image m;
@@ -618,6 +657,8 @@ public class GuiGameController implements GuiController{
     }
 
     public void updateWarehouse(String owner) {
+        sourceShelf = -1;
+        destinationShelf = -1;
         if (currentGameboard.getOwner().equalsIgnoreCase(owner)){
             String url;
             Image m;
@@ -718,6 +759,13 @@ public class GuiGameController implements GuiController{
         }
     }
 
+    private void checkDevSpaceButtons(){
+        for(int i = 0; i < 3; i++){
+            devSpaceButtons.get(i).setDisable(view.getOwnGameBoard().getDevSpace().get(i).isEmpty());
+        }
+        board_production.setDisable(!view.getOwnGameBoard().totalQuantityCheck(2));
+    }
+
     public void enableAction(String s) {
         updateGUI(view.getNickname());
         message.setText(s);
@@ -726,9 +774,7 @@ public class GuiGameController implements GuiController{
         back_button.setDisable(true);
         confirm_button.setDisable(true);
         end_turn.setDisable(false);
-        for(int i = 0; i < 3; i++){
-            devSpaceButtons.get(i).setDisable(view.getOwnGameBoard().getDevSpace().get(i).isEmpty());
-        }
+        checkDevSpaceButtons();
         checkDevDeckButtons();
         for(int i = 0; i < 2; i++){
             playedCardsButtons.get(i).setDisable(view.getOwnGameBoard().getPlayedCards().size() <= i);
@@ -737,19 +783,11 @@ public class GuiGameController implements GuiController{
         checkWarehouseButtons(false);
         handleButtons(chestButtons, true);
         currentAction = null;
-        position = -1;
         resourcesForAction.clear();
         selectedResource = null;
-        sourceShelf = -1;
-        destinationShelf = -1;
-        row = -1;
-        column = -1;
         resourceRequirements.clear();
-        selectedSlot = -1;
         trashcan.setImage(null);
         trashcan_button.setDisable(true);
-        handIndex = -1;
-        playedIndex = -1;
     }
 
     public void selectSetupResources() {
@@ -855,6 +893,8 @@ public class GuiGameController implements GuiController{
                     String max = String.valueOf(messageResourcesNumbers.get(Resource.valueOf(s.toUpperCase()).ordinal())
                             .getText().charAt(2));
                     messageResourcesNumbers.get(Resource.valueOf(s.toUpperCase()).ordinal()).setText(newQuantity + "/" +max);
+                    if(Integer.parseInt(max) == newQuantity)
+                        warehouseButtons.get(NumOfShelf.valueOf(shelf).ordinal()).setDisable(true);                     //case of depots should be add
                     break;
                 }
             }
@@ -901,6 +941,8 @@ public class GuiGameController implements GuiController{
             handleButtons(chestButtons, true);
             handleButtons(messageResourcesButtons, true);
             back_button.setDisable(false);
+            right_gameboard.setDisable(true);
+            left_gameboard.setDisable(true);
             message.setText("You have chosen to move resources, select the shelf\nwhere you want to move the resources");
         }
     }
@@ -978,6 +1020,8 @@ public class GuiGameController implements GuiController{
         handleButtons(playedCardsButtons, true);
         handleButtons(chestButtons, true);
         handleButtons(warehouseButtons, true);
+        right_gameboard.setDisable(true);
+        left_gameboard.setDisable(true);
         back_button.setDisable(false);
         List <String> colours;
         List <String> resToReceive = new ArrayList<>();
@@ -1027,56 +1071,56 @@ public class GuiGameController implements GuiController{
 
     public void selectMarketC1() {
         selectMarket(false, 0);
-        position = 1;
+        marketPosition = 1;
         selection = MarketSelection.COLUMN;
     }
 
     public void selectMarketC2() {
         selectMarket(false, 1);
-        position = 2;
+        marketPosition = 2;
         selection = MarketSelection.COLUMN;
     }
 
     public void selectMarketC3() {
         selectMarket(false, 2);
-        position = 3;
+        marketPosition = 3;
         selection = MarketSelection.COLUMN;
     }
 
     public void selectMarketC4() {
         selectMarket(false, 3);
-        position = 4;
+        marketPosition = 4;
         selection = MarketSelection.COLUMN;
     }
 
     public void selectMarketR1() {
         selectMarket(true, 0);
-        position = 1;
+        marketPosition = 1;
         selection = MarketSelection.ROW;
     }
 
     public void selectMarketR2() {
         selectMarket(true, 1);
-        position = 2;
+        marketPosition = 2;
         selection = MarketSelection.ROW;
     }
 
     public void selectMarketR3() {
         selectMarket(true, 2);
-        position = 3;
+        marketPosition = 3;
         selection = MarketSelection.ROW;
     }
 
     public void selectConfirmButton(){
         if(currentAction == UserAction.BUY_RESOURCES){
-            connectionSocket.send(new BuyResources(new ArrayList<>(), position, selection, resourcesForAction));
+            connectionSocket.send(new BuyResources(new ArrayList<>(), marketPosition, selection, resourcesForAction));
         }
         else if(currentAction == UserAction.MOVE_RESOURCES){
             connectionSocket.send(new MoveResources(NumOfShelf.values()[sourceShelf],
                     NumOfShelf.values()[destinationShelf], view.getOwnGameBoard().getWarehouse().get(sourceShelf).size()));
         }
         else if(currentAction == UserAction.BUY_DEVCARD){
-            DevCardInfo d = view.getDevDecks()[column][row];
+            DevCardInfo d = view.getDevDecks()[devDeckColumn][devDeckRow];
             connectionSocket.send(new BuyDevCard(d.getLevel(), Colour.valueOf(d.getColour().toUpperCase()),
                     DevSpaceSlot.values()[selectedSlot], resourcesForAction, new ArrayList<>()));
         }
@@ -1100,9 +1144,9 @@ public class GuiGameController implements GuiController{
     private void selectDevDeck(int i, int j){
         currentAction = UserAction.BUY_DEVCARD;
         message.setText("You have chosen to buy a development card, please select\nthe slot where you want to place it");
-        row = i;
-        column = j;
-        DevCardInfo d = view.getDevDecks()[column][row];
+        devDeckRow = i;
+        devDeckColumn = j;
+        DevCardInfo d = view.getDevDecks()[devDeckColumn][devDeckRow];
         resourceRequirements.addAll(d.getResourceRequirements());
         handleButtons(warehouseButtons, true);
         handleButtons(chestButtons, true);
@@ -1114,6 +1158,8 @@ public class GuiGameController implements GuiController{
         handleButtons(devSpaceButtons, false);
         board_production.setDisable(true);
         back_button.setDisable(false);
+        right_gameboard.setDisable(true);
+        left_gameboard.setDisable(true);
     }
 
     public void selectDev30() {
@@ -1166,7 +1212,7 @@ public class GuiGameController implements GuiController{
 
     private void selectDevSpace(int slot){
         if(currentAction == UserAction.BUY_DEVCARD){
-            DevCardInfo d = view.getDevDecks()[column][row];
+            DevCardInfo d = view.getDevDecks()[devDeckColumn][devDeckRow];
             selectedSlot = slot;
             if(!((view.getOwnGameBoard().getDevSpace().get(slot).isEmpty() && d.getLevel() == 1) ||
                     (!view.getOwnGameBoard().getDevSpace().get(slot).isEmpty() &&
@@ -1175,8 +1221,8 @@ public class GuiGameController implements GuiController{
             }
             else{
                 devSpace.get(slot).get(view.getOwnGameBoard().getDevSpace().get(slot).size()).
-                        setImage(devDecks.get(row + column * 4).getImage());
-                devDecks.get(row + column * 4).setImage(null);
+                        setImage(devDecks.get(devDeckRow + devDeckColumn * 4).getImage());
+                devDecks.get(devDeckRow + devDeckColumn * 4).setImage(null);
                 handleButtons(devSpaceButtons, true);
                 checkWarehouseButtons(false);
                 chest.setDisable(false);
@@ -1190,6 +1236,32 @@ public class GuiGameController implements GuiController{
                         "\nto select where you want to take the needed resources from");
             }
         }
+        else{
+            currentAction = UserAction.START_PRODUCTION;
+            selectProductionCards = true;
+            String s = "You have chosen to start the production, using the ";
+            if(slot != 3)
+                s = s + "development card number " +(slot +1)+ ".\n";
+            else
+                s = s + " board production.\n";
+            message.setText(s + "Please click on other production sources and when you have " +
+                    "finished\nclick on the check button below.");
+            right_gameboard.setDisable(true);
+            left_gameboard.setDisable(true);
+            confirm_button.setDisable(false);
+            devSpaceButtons.get(slot).setDisable(true);
+            handleButtons(marketButtons, true);
+            handleButtons(devDeckButtons, true);
+            handleButtons(warehouseButtons, true);
+            handleButtons(handButtons, true);
+            for(int i = 0; i < 2; i++) {
+                playedCardsButtons.get(i).setDisable(view.getOwnGameBoard().getPlayedCards().size() <= i);
+                if(!view.getOwnGameBoard().getPlayedCards().isEmpty())
+                    playedCardsButtons.get(i).setDisable(
+                            !view.getOwnGameBoard().getPlayedCards().get(i).getType().equalsIgnoreCase("Product"));
+            }
+        }
+
     }
 
 
@@ -1203,6 +1275,10 @@ public class GuiGameController implements GuiController{
 
     public void selectSlot3() {
         selectDevSpace(2);
+    }
+
+    public void selectBoardProduction() {
+        selectDevSpace(3);
     }
 
     public void selectTrashcan() {
@@ -1237,6 +1313,8 @@ public class GuiGameController implements GuiController{
         handleButtons(marketButtons, true);
         handleButtons(warehouseButtons, true);
         back_button.setDisable(false);
+        right_gameboard.setDisable(true);
+        left_gameboard.setDisable(true);
         handIndex = index;
         String s = "You have selected a leader card, ";
         trashcan_button.setDisable(false);
@@ -1285,4 +1363,5 @@ public class GuiGameController implements GuiController{
     public void selectSecondPlayed() {
         selectPlayedLeadCard(1);
     }
+
 }
