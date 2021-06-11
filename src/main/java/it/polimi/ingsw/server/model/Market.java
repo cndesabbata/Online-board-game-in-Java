@@ -5,11 +5,20 @@ import it.polimi.ingsw.server.observer.Observable;
 
 import java.util.*;
 
+/**
+ * Market class represents the market. It contains information
+ * about the current disposition and the external marble.
+ *
+ */
 public class Market extends Observable {
-    private  Marble[][] disposition;
+    private Marble[][] disposition;
     private Marble external;
 
-    /* constructor Market creates a new Market instance setting a random disposition and an external marble */
+    /**
+     * Constructor Market creates a new Market instance with a
+     * random disposition.
+     *
+     */
     public Market() {
         disposition = new Marble[3][4];
         List<Marble> temp = new ArrayList<>();
