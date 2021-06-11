@@ -494,9 +494,13 @@ public class GuiGameController implements GuiController{
         devDeckColumn = -1;
         for (int i = 0; i < 3; i++){
             for (int j = 0; j < 4; j++){
-                String url = "/graphics/devcards/" + view.getDevDecks()[i][j].getUrl();
-                Image m = new Image(getClass().getResourceAsStream(url));
-                devDecks.get(i*4+j).setImage(m);
+                if(view.getDevDecks()[i][j] != null) {
+                    String url = "/graphics/devcards/" + view.getDevDecks()[i][j].getUrl();
+                    Image m = new Image(getClass().getResourceAsStream(url));
+                    devDecks.get(i*4+j).setImage(m);
+                }
+                else
+                    devDecks.get(i*4+j).setImage(null);
             }
         }
     }
