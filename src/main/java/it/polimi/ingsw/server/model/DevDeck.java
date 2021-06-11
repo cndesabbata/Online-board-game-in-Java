@@ -11,7 +11,7 @@ import java.util.*;
 public class DevDeck extends Observable {
     private final List<DevCard> cards = new ArrayList<>();
     private final Colour colour;
-    private  final int level;
+    private final int level;
 
     public DevDeck (int level, Colour colour){
         this.level = level;
@@ -55,7 +55,7 @@ public class DevDeck extends Observable {
     }
 
     public void notifyNew (String nickname){
-        notifySingleObserver(new NewDevDeck(colour, level, cards.get(0)), nickname);
+        notifySingleObserver(new NewDevDeck(colour, level, cards.isEmpty() ? null : cards.get(0)), nickname);
     }
 
     /*used only only in tests*/
