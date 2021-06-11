@@ -173,4 +173,13 @@ public class GameBoardInfo extends Observable {
         return false;
     }
 
+    public boolean totalQuantityCheck(int quantity){
+        for(String s : chest.keySet()){
+           quantity -= chest.get(s);
+        }
+        for(int n = 0; n < warehouse.size(); n++){
+            quantity -= warehouse.get(n).size();
+        }
+        return quantity <= 0;
+    }
 }

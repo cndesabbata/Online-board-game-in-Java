@@ -32,8 +32,8 @@
             <Image url="@../graphics/market.png" />
          </ImageView>
          <Label fx:id="board_label" alignment="CENTER" layoutX="150.0" layoutY="21.0" prefHeight="10.0" prefWidth="380.0" text="Your Gameboard" />
-         <Button fx:id="right_gameboard" layoutX="500.0" layoutY="17.0" mnemonicParsing="false" prefHeight="20.0"  prefWidth="30.0" onAction="#select_right_gameboard" styleClass="rightButton, clickable" />
-         <Button fx:id="left_gameboard" layoutX="150.0" layoutY="17.0" mnemonicParsing="false" prefHeight="20.0" prefWidth="30.0" onAction="#select_left_gameboard" styleClass="leftButton, clickable" />
+         <Button fx:id="right_gameboard" layoutX="500.0" layoutY="17.0" mnemonicParsing="false" onAction="#select_right_gameboard" prefHeight="20.0" prefWidth="30.0" styleClass="rightButton, clickable" />
+         <Button fx:id="left_gameboard" layoutX="150.0" layoutY="17.0" mnemonicParsing="false" onAction="#select_left_gameboard" prefHeight="20.0" prefWidth="30.0" styleClass="leftButton, clickable" />
          <Label alignment="CENTER" layoutX="523.0" layoutY="535.0" text="Played Leader Cards" />
          <Label alignment="CENTER" layoutX="523.0" layoutY="710.0" text="Hand Leader Cards" />
          <ImageView fx:id="first_green" fitHeight="110.0" fitWidth="88.0" layoutX="760.0" layoutY="38.0">
@@ -229,12 +229,7 @@
          <Button fx:id="slot_1" layoutX="302.0" layoutY="450.0" mnemonicParsing="false" onAction="#selectSlot1" opacity="0.0" prefHeight="40.0" prefWidth="40.0" styleClass="clickable" />
          <Button fx:id="slot_3" layoutX="565.0" layoutY="450.0" mnemonicParsing="false" onAction="#selectSlot3" opacity="0.0" prefHeight="40.0" prefWidth="40.0" styleClass="clickable" />
          <Button fx:id="slot_2" layoutX="430.0" layoutY="450.0" mnemonicParsing="false" onAction="#selectSlot2" opacity="0.0" prefHeight="40.0" prefWidth="40.0" styleClass="clickable" />
-         <Button fx:id="board_production" layoutX="200.0" layoutY="450.0" mnemonicParsing="false" opacity="0.0" prefHeight="40.0" prefWidth="40.0" styleClass="clickable" />
-         <Button fx:id="chest" layoutX="31.0" layoutY="392.0" mnemonicParsing="false" opacity="0.0" prefHeight="80.0" prefWidth="110.0" styleClass="clickable">
-            <font>
-               <Font size="1.0" />
-            </font>
-         </Button>
+         <Button fx:id="board_production" layoutX="200.0" layoutY="450.0" mnemonicParsing="false" onAction="#selectBoardProduction" opacity="0.0" prefHeight="40.0" prefWidth="40.0" styleClass="clickable" />
          <Button fx:id="shelf3" layoutX="53.0" layoutY="335.0" mnemonicParsing="false" onAction="#selectThirdShelf" opacity="0.0" prefHeight="25.0" prefWidth="90.0" styleClass="clickable">
             <font>
                <Font size="1.0" />
@@ -312,8 +307,12 @@
                <Image url="@../graphics/trashcan.png" />
             </image>
          </ImageView>
-         <Button fx:id="trashcan_button" layoutX="208.0" layoutY="678.0" mnemonicParsing="false" onAction="#selectTrashcan" opacity="0.0" prefHeight="53.0" prefWidth="50.0" styleClass="clickable"/>
+         <Button fx:id="trashcan_button" layoutX="208.0" layoutY="678.0" mnemonicParsing="false" onAction="#selectTrashcan" opacity="0.0" prefHeight="53.0" prefWidth="50.0" styleClass="clickable" />
          <Button fx:id="setupdraw_button3" layoutX="239.0" layoutY="640.0" mnemonicParsing="false" onAction="#select_sd3" opacity="0.0" prefHeight="100.0" prefWidth="80.0" styleClass="clickable" />
-         <Button fx:id="setupdraw_button2" layoutX="131.0" layoutY="640.0" mnemonicParsing="false" onAction="#select_sd2" opacity="0.0" prefHeight="100.0" prefWidth="80.0" styleClass="clickable"/>
+         <Button fx:id="setupdraw_button2" layoutX="131.0" layoutY="640.0" mnemonicParsing="false" onAction="#select_sd2" opacity="0.0" prefHeight="100.0" prefWidth="80.0" styleClass="clickable" />
+         <Button fx:id="chest_coin_button" layoutX="48.0" layoutY="405.0" mnemonicParsing="false" onAction="#select_chest_coin" opacity="0.0" prefHeight="28.0" prefWidth="28.0" styleClass="clickable" />
+         <Button fx:id="chest_stone_button" layoutX="96.0" layoutY="406.0" mnemonicParsing="false" onAction="#select_chest_stone" opacity="0.0" prefHeight="28.0" prefWidth="28.0" styleClass="clickable"/>
+         <Button fx:id="chest_servant_button" layoutX="47.0" layoutY="439.0" mnemonicParsing="false" onAction="#select_chest_servant" opacity="0.0" prefHeight="28.0" prefWidth="28.0" styleClass="clickable"/>
+         <Button fx:id="chest_shield_button" layoutX="96.0" layoutY="439.0" mnemonicParsing="false" onAction="#select_chest_shield" opacity="0.0" prefHeight="28.0" prefWidth="28.0" styleClass="clickable"/>
       </children></Group>
 </StackPane>
