@@ -27,7 +27,7 @@ public class PlayLeadCard implements Action {
             player.getBoard().getWarehouse().addDepot(l.getResource());
         }
         player.playLeadCard(index - 1);
-        return true;
+        return false;
     }
 
     @Override

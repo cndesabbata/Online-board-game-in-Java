@@ -101,7 +101,7 @@ public class GuiMenuController implements GuiController{
         int players;
         try{
             players = Integer.parseInt(playersNumber.getValue());
-        } catch (InputMismatchException e){
+        } catch (InputMismatchException | NumberFormatException e){
             lobbyMessage.setText("Error: missing parameters.");
             return;
         }

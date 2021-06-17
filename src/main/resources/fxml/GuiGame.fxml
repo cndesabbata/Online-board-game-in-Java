@@ -76,10 +76,10 @@
             <Image url="@../graphics/devcards/devcard1.png" />
          </ImageView>
          <ImageView fx:id="first_played" fitHeight="110.0" fitWidth="88.0" layoutX="484.0" layoutY="566.0">
-            <Image url="@../graphics/devcards/devcard1.png" />
+            <Image url="@../graphics/leadcards/leadcard6.png" />
          </ImageView>
          <ImageView fx:id="second_played" fitHeight="110.0" fitWidth="88.0" layoutX="582.0" layoutY="566.0">
-            <Image url="@../graphics/devcards/devcard1.png" />
+            <Image url="@../graphics/leadcards/leadcard6.png" />
          </ImageView>
          <ImageView fx:id="first_hand" fitHeight="110.0" fitWidth="88.0" layoutX="484.0" layoutY="740.0">
             <Image url="@../graphics/devcards/devcard1.png" />
@@ -311,8 +311,28 @@
          <Button fx:id="setupdraw_button3" layoutX="239.0" layoutY="640.0" mnemonicParsing="false" onAction="#select_sd3" opacity="0.0" prefHeight="100.0" prefWidth="80.0" styleClass="clickable" />
          <Button fx:id="setupdraw_button2" layoutX="131.0" layoutY="640.0" mnemonicParsing="false" onAction="#select_sd2" opacity="0.0" prefHeight="100.0" prefWidth="80.0" styleClass="clickable" />
          <Button fx:id="chest_coin_button" layoutX="48.0" layoutY="405.0" mnemonicParsing="false" onAction="#select_chest_coin" opacity="0.0" prefHeight="28.0" prefWidth="28.0" styleClass="clickable" />
-         <Button fx:id="chest_stone_button" layoutX="96.0" layoutY="406.0" mnemonicParsing="false" onAction="#select_chest_stone" opacity="0.0" prefHeight="28.0" prefWidth="28.0" styleClass="clickable"/>
-         <Button fx:id="chest_servant_button" layoutX="47.0" layoutY="439.0" mnemonicParsing="false" onAction="#select_chest_servant" opacity="0.0" prefHeight="28.0" prefWidth="28.0" styleClass="clickable"/>
-         <Button fx:id="chest_shield_button" layoutX="96.0" layoutY="439.0" mnemonicParsing="false" onAction="#select_chest_shield" opacity="0.0" prefHeight="28.0" prefWidth="28.0" styleClass="clickable"/>
+         <Button fx:id="chest_stone_button" layoutX="96.0" layoutY="406.0" mnemonicParsing="false" onAction="#select_chest_stone" opacity="0.0" prefHeight="28.0" prefWidth="28.0" styleClass="clickable" />
+         <Button fx:id="chest_servant_button" layoutX="47.0" layoutY="439.0" mnemonicParsing="false" onAction="#select_chest_servant" opacity="0.0" prefHeight="28.0" prefWidth="28.0" styleClass="clickable" />
+         <Button fx:id="chest_shield_button" layoutX="96.0" layoutY="439.0" mnemonicParsing="false" onAction="#select_chest_shield" opacity="0.0" prefHeight="28.0" prefWidth="28.0" styleClass="clickable" />
+         <ImageView fx:id="first_depot_1" fitHeight="28.0" fitWidth="28.0" layoutX="498.0" layoutY="643.0">
+            <image>
+               <Image url="@../graphics/resources/stone.png" />
+            </image>
+         </ImageView>
+         <ImageView fx:id="first_depot_2" fitHeight="28.0" fitWidth="28.0" layoutX="530.0" layoutY="643.0">
+            <image>
+               <Image url="@../graphics/resources/stone.png" />
+            </image>
+         </ImageView>
+         <ImageView fx:id="second_depot_1" fitHeight="28.0" fitWidth="28.0" layoutX="596.0" layoutY="643.0">
+            <image>
+               <Image url="@../graphics/resources/stone.png" />
+            </image>
+         </ImageView>
+         <ImageView fx:id="second_depot_2" fitHeight="28.0" fitWidth="28.0" layoutX="629.0" layoutY="644.0">
+            <image>
+               <Image url="@../graphics/resources/stone.png" />
+            </image>
+         </ImageView>
       </children></Group>
 </StackPane>
