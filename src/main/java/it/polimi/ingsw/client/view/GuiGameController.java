@@ -816,15 +816,15 @@ public class GuiGameController implements GuiController {
         if (currentGameboard.getOwner().equalsIgnoreCase(owner)) {
             String url;
             Image m;
-            int numOfDepots = view.getOwnGameBoard().getWarehouse().size()-3;
+            int numOfDepots = view.getOwnGameBoard().getWarehouse().size() - 3;
             if (currentGameboard.getPlayedCards().size() > 0) {
                 url = "/graphics/leadcards/" + currentGameboard.getPlayedCards().get(0).getUrl();
                 m = new Image(Objects.requireNonNull(getClass().getResourceAsStream(url)));
                 first_played.setImage(m);
                 LeadCardInfo l = currentGameboard.getPlayedCards().get(0);
-                if (l.getType().equalsIgnoreCase("Depot") && numOfDepots>0) {
+                if (l.getType().equalsIgnoreCase("Depot") && numOfDepots > 0) {
                     for (int i = 0; i < 2; i++) {
-                        if (view.getOwnGameBoard().getWarehouse().get(3).size()>i) {
+                        if (view.getOwnGameBoard().getWarehouse().get(3).size() > i) {
                             first_depot.get(i).setImage(
                                     new Image("/graphics/resources/" + l.getResource().toLowerCase() + ".png"));
                         } else first_depot.get(i).setImage(null);
@@ -836,9 +836,9 @@ public class GuiGameController implements GuiController {
                 m = new Image(Objects.requireNonNull(getClass().getResourceAsStream(url)));
                 second_played.setImage(m);
                 LeadCardInfo l = currentGameboard.getPlayedCards().get(1);
-                if (l.getType().equalsIgnoreCase("Depot") && numOfDepots>0) {
+                if (l.getType().equalsIgnoreCase("Depot") && numOfDepots > 0) {
                     for (int i = 0; i < 2; i++) {
-                        if (view.getOwnGameBoard().getWarehouse().get(2+numOfDepots).size()>i) {
+                        if (view.getOwnGameBoard().getWarehouse().get(2 + numOfDepots).size() > i) {
                             second_depot.get(i).setImage(
                                     new Image("/graphics/resources/" + l.getResource().toLowerCase() + ".png"));
                         } else second_depot.get(i).setImage(null);
@@ -1079,7 +1079,7 @@ public class GuiGameController implements GuiController {
             handleButtons(messageResourcesButtons, false);
             handleButtons(warehouseButtons, true);
             handleButtons(playedCardsButtons, true);
-            if(resourcesToSelect == 0) {
+            if (resourcesToSelect == 0) {
                 messageResourcesButtons.forEach(b -> b.setDisable(true));
                 message.setText("Click on the check button below to confirm your choice");
                 confirm_button.setDisable(false);
@@ -1096,9 +1096,9 @@ public class GuiGameController implements GuiController {
             if (l.getType().equalsIgnoreCase("Depot")) {
                 if (view.getOwnGameBoard().getWarehouse().size() > 3 + i) {
                     playedCardsButtons.get(i).setDisable(
-                            ((toStore && (view.getOwnGameBoard().getWarehouse().get(3 + i).size()==2
-                            || !selectedResource.equalsIgnoreCase(l.getResource())))
-                                    || (!toStore && view.getOwnGameBoard().getWarehouse().get(3 + i).size()==0)));
+                            ((toStore && (view.getOwnGameBoard().getWarehouse().get(3 + i).size() == 2
+                                    || !selectedResource.equalsIgnoreCase(l.getResource())))
+                                    || (!toStore && view.getOwnGameBoard().getWarehouse().get(3 + i).size() == 0)));
                 }
             } else playedCardsButtons.get(i).setDisable(true);
         }
@@ -1187,7 +1187,7 @@ public class GuiGameController implements GuiController {
         }
     }
 
-    private void takeResFromWarehouse(String shelf){
+    private void takeResFromWarehouse(String shelf) {
         String resStored = view.getOwnGameBoard().getWarehouse().get(NumOfShelf.valueOf(shelf).ordinal()).get(0);
         int quantity = (int) warehouse.get(NumOfShelf.valueOf(shelf).ordinal()).stream().filter(i -> i.getImage() != null).count();
         for (String s : resourceRequirements) {
@@ -1202,10 +1202,10 @@ public class GuiGameController implements GuiController {
                 String max = String.valueOf(messageResourcesNumbers.get(Resource.valueOf(s.toUpperCase()).ordinal())
                         .getText().charAt(2));
                 messageResourcesNumbers.get(Resource.valueOf(s.toUpperCase()).ordinal()).setText(newQuantity + "/" + max);
-                if (Integer.parseInt(max) == newQuantity){
+                if (Integer.parseInt(max) == newQuantity) {
                     int shelfNumber = NumOfShelf.valueOf(shelf).ordinal();
                     if (shelfNumber < 3) warehouseButtons.get(shelfNumber).setDisable(true);
-                    else playedCardsButtons.get(shelfNumber-3).setDisable(true);
+                    else playedCardsButtons.get(shelfNumber - 3).setDisable(true);
                 }
                 break;
             }
@@ -1231,13 +1231,12 @@ public class GuiGameController implements GuiController {
                     Place.WAREHOUSE, NumOfShelf.valueOf(shelf.toUpperCase())));
             warehouse.get(NumOfShelf.valueOf(shelf).ordinal()).get(quantity - 1).setImage(null);
             if (resourcesToSelect == 0) {
-                if(resourceRequirements.isEmpty()) {                                                                    //the player only activated the board production
+                if (resourceRequirements.isEmpty()) {                                                                    //the player only activated the board production
                     confirm_button.setDisable(false);
                     message.setText("Click on the check button below to confirm your choice");
                     handleButtons(warehouseButtons, true);
                     handleButtons(chestButtons, true);
-                }
-                else {
+                } else {
                     showResourceRequirements();
                     message.setText("These are the resources requested by the cards you chose\n" +
                             "Please click on the warehouse or the chest to indicate\nwhere you want to take these resources from");
@@ -1335,13 +1334,12 @@ public class GuiGameController implements GuiController {
             resourcesToSelect--;
             checkChestButtons();
             if (resourcesToSelect == 0) {
-                if(resourceRequirements.isEmpty()) {                                                                    //the player only activated the board production
+                if (resourceRequirements.isEmpty()) {                                                                    //the player only activated the board production
                     confirm_button.setDisable(false);
                     message.setText("Click on the check button below to confirm your choice");
                     handleButtons(warehouseButtons, true);
                     handleButtons(chestButtons, true);
-                }
-                else {
+                } else {
                     showResourceRequirements();
                     message.setText("These are the resources requested by the development and leader cards you chose\n" +
                             "Please click on the warehouse or the chest to indicate\nwhere you want to take these resources from");
@@ -1381,11 +1379,9 @@ public class GuiGameController implements GuiController {
         whitemarbles = 0;
         List<String> colours = new ArrayList<>();
         if (isRow)
-            colours.addAll(Arrays.stream(view.getMarket()[n])
-                    .filter(s -> !s.equalsIgnoreCase("WHITE")).collect(Collectors.toList()));
+            colours.addAll(Arrays.stream(view.getMarket()[n]).collect(Collectors.toList()));
         else
-            colours.addAll(Arrays.stream(getColumn(view.getMarket(), n))
-                    .filter(s -> !s.equalsIgnoreCase("WHITE")).collect(Collectors.toList()));
+            colours.addAll(Arrays.stream(getColumn(view.getMarket(), n)).collect(Collectors.toList()));
         for (String s : colours) {
             switch (s.toUpperCase()) {
                 case "GREY" -> resToReceive.add("STONE");
@@ -1398,33 +1394,37 @@ public class GuiGameController implements GuiController {
         }
         if (colours.stream().anyMatch(s -> s.equalsIgnoreCase("red")))
             resourcesForAction.add(new ResourcePosition(Resource.FAITHPOINT, null, null));
-        if (colours.size() == 1 && colours.get(0).equalsIgnoreCase("red"))
-            confirm_button.setDisable(false);
-        if (selectingLeadCard && view.getOwnGameBoard().getPlayedCards().size() > 1) {
-            message.setText("You have chosen to buy resources from the market, please choose\n" +
-                    "the leader effect you would like to apply");
-        } else if (selectingLeadCard) {
-            message.setText("Your marble leader gives you access to these additional resources,\n" +
-                    "please place them in the warehouse or in the trashcan.");
-            String res = "";
-            for (LeadCardInfo l : view.getOwnGameBoard().getPlayedCards()) {
-                if (l.getType().equalsIgnoreCase("Marble")) {
-                    res = l.getResource();
-                    break;
+        if (selectingLeadCard && whitemarbles > 0) {
+            if (view.getOwnGameBoard().getWarehouse().size() > 4) {
+                message.setText("You have chosen to buy resources from the market, please choose\n" +
+                        "the leader effect you would like to apply");
+                for (int i = 0; i < view.getOwnGameBoard().getPlayedCards().size(); i++){
+                    if (view.getOwnGameBoard().getPlayedCards().get(i).getType().equalsIgnoreCase("marble"))
+                        playedCardsButtons.get(i).setDisable(false);
                 }
+            } else {
+                message.setText("Your marble leader gives you access to these additional resources,\n" +
+                        "please place them in the warehouse or in the trashcan.");
+                String res = "";
+                for (LeadCardInfo l : view.getOwnGameBoard().getPlayedCards()) {
+                    if (l.getType().equalsIgnoreCase("Marble")) {
+                        res = l.getResource();
+                        break;
+                    }
+                }
+                for (int i = 0; i < whitemarbles; i++) {
+                    resToReceive.add(res.toUpperCase());
+                    marbleResources.add(res);
+                }
+                marketResPlacement();
             }
-            for (int i = 0; i < whitemarbles; i++) {
-                resToReceive.add(res);
-                marbleResources.add(res);
-                resourcesToSelect++;
-            }
-            marketResPlacement();
+        } else if (whitemarbles + colours.stream().filter(c -> c.equalsIgnoreCase("red")).count() == colours.size()) {
+            connectionSocket.send(new BuyResources(leaderEffects, marketPosition, selection, resourcesForAction));
         } else {
             message.setText("You have chosen to buy resources from the market," +
                     " please choose\n the gained resources in the warehouse or in the trashcan");
             marketResPlacement();
         }
-
     }
 
     private void marketResPlacement() {
@@ -1457,45 +1457,45 @@ public class GuiGameController implements GuiController {
     }
 
     public void selectMarketC1() {
-        selectMarket(false, 0);
         marketPosition = 1;
         selection = MarketSelection.COLUMN;
+        selectMarket(false, 0);
     }
 
     public void selectMarketC2() {
-        selectMarket(false, 1);
         marketPosition = 2;
         selection = MarketSelection.COLUMN;
+        selectMarket(false, 1);
     }
 
     public void selectMarketC3() {
-        selectMarket(false, 2);
         marketPosition = 3;
         selection = MarketSelection.COLUMN;
+        selectMarket(false, 2);
     }
 
     public void selectMarketC4() {
-        selectMarket(false, 3);
         marketPosition = 4;
         selection = MarketSelection.COLUMN;
+        selectMarket(false, 3);
     }
 
     public void selectMarketR1() {
-        selectMarket(true, 0);
         marketPosition = 1;
         selection = MarketSelection.ROW;
+        selectMarket(true, 0);
     }
 
     public void selectMarketR2() {
-        selectMarket(true, 1);
         marketPosition = 2;
         selection = MarketSelection.ROW;
+        selectMarket(true, 1);
     }
 
     public void selectMarketR3() {
-        selectMarket(true, 2);
         marketPosition = 3;
         selection = MarketSelection.ROW;
+        selectMarket(true, 2);
     }
 
     public void selectConfirmButton() {
@@ -1507,8 +1507,9 @@ public class GuiGameController implements GuiController {
                         "you want to take the needed resources from");
                 showResourceRequirements();
             } else if (currentAction == UserAction.BUY_RESOURCES) {
-                message.setText("You have chosen to buy resources from the market," +
-                        " please choose\n the gained resources in the warehouse or in the trashcan");
+                message.setText("You have chosen to buy resources from the market,\n" +
+                        "please place the gained resources in the warehouse\n" +
+                        "or in the trashcan");
                 marketResPlacement();
             }
         } else {
@@ -1555,34 +1556,34 @@ public class GuiGameController implements GuiController {
                         showBoardProductionInput();
                     else {
                         showResourceRequirements();
-                        message.setText("These are the resources requested by the development and leader cards you chose\n" +
-                                "Please click on the warehouse or the chest to indicate\nwhere you want to take these resources from");
+                        message.setText("These are the resources requested by the cards you chose\n" +
+                                "Please click on the warehouse or the chest to indicate\n" +
+                                "where you want to take these resources from");
                     }
-                } else if(selectProductionInput){
+                } else if (selectProductionInput) {
                     selectProductionInput = false;
-                    if(chosenDevCards.stream().noneMatch(i -> i >= 3))                                                  //the player has not chosen board production or lead card
+                    if (chosenDevCards.stream().noneMatch(i -> i >= 3))                                                  //the player has not chosen board production or lead card
                         sendStartProduction();
-                    else{
+                    else {
                         String s = "";
-                        if(chosenDevCards.stream().anyMatch(i -> i.equals(3)))
+                        if (chosenDevCards.stream().anyMatch(i -> i.equals(3)))
                             s = s + "the board production";
-                        if(chosenDevCards.stream().anyMatch(i -> i > 3)){
-                            if(s.isEmpty())
-                            s = "the leader cards";
+                        if (chosenDevCards.stream().anyMatch(i -> i > 3)) {
+                            if (s.isEmpty())
+                                s = "the leader cards";
                             else
-                                s = s + " and the leader cards";
+                                s = s + "\nand the leader cards";
                         }
-                        for(int i = 0; i < Resource.values().length - 2; i++){
+                        for (int i = 0; i < Resource.values().length - 2; i++) {
                             messageResources.get(i).setImage(new Image(resourcesUrl.get(i)));
                             messageResourcesButtons.get(i).setDisable(false);
                             messageResourcesNumbers.get(i).setText("0");
                         }
                         resourcesToSelect = (int) chosenDevCards.stream().filter(i -> i >= 3).count();
                         confirm_button.setDisable(true);
-                        message.setText("Please select the output resources for\n" +s);
+                        message.setText("Please select the output resources for" + s);
                     }
-                }
-                else {
+                } else {
                     messageResources.forEach(i -> i.setImage(null));
                     messageResourcesNumbers.forEach(s -> s.setText(""));
                     sendStartProduction();
@@ -1591,7 +1592,7 @@ public class GuiGameController implements GuiController {
         }
     }
 
-    private void sendStartProduction(){
+    private void sendStartProduction() {
         chosenDevCards.removeIf(i -> i > 2);
         for (int i = 0; i < leadersSelected.size(); i++) {
             for (int j = 0; j < resourcesForAction.size(); j++) {
@@ -1623,7 +1624,8 @@ public class GuiGameController implements GuiController {
 
     private void selectDevDeck(int i, int j) {
         currentAction = UserAction.BUY_DEVCARD;
-        message.setText("You have chosen to buy a development card, please select\nthe slot where you want to place it");
+        message.setText("You have chosen to buy a development card, please select\n" +
+                "the slot where you want to place it");
         devDeckRow = i;
         devDeckColumn = j;
         DevCardInfo d = view.getDevDecks()[devDeckColumn][devDeckRow];
@@ -1720,14 +1722,14 @@ public class GuiGameController implements GuiController {
             String s = "";
             if (chosenDevCards.isEmpty())
                 s = "You started the production. ";
-            if(slot != 3)
+            if (slot != 3)
                 s = s + "You chose the development card " + (slot + 1) + ".\n";
             else
                 s = s + "You chose the board production.\n";
-            message.setText(s + "Please click on other production sources and when you have " +
-                    "finished\nclick on the check button below.");
+            message.setText(s + "Please click on other production sources and when you have finished\n" +
+                    "click on the check button below.");
             chosenDevCards.add(slot);
-            if(slot < 3)
+            if (slot < 3)
                 resourceRequirements.addAll(view.getOwnGameBoard().getDevSpace().get(slot).get(0).getProductionInput());
             right_gameboard.setDisable(true);
             left_gameboard.setDisable(true);
@@ -1757,7 +1759,7 @@ public class GuiGameController implements GuiController {
         }
     }
 
-    private void showBoardProductionInput(){
+    private void showBoardProductionInput() {
         checkWarehouseButtons(false);
         checkChestButtons();
         resourcesToSelect = 2;
@@ -1839,8 +1841,8 @@ public class GuiGameController implements GuiController {
         trashcan.setImage(new Image("/graphics/trashcan.png"));
         if (checkHand(index)) {
             message.setText(s + "please click on the trashcan to discard it\nor on the played leader card panel to play it");
-            for (int i = 0; i < 2-view.getOwnGameBoard().getPlayedCards().size(); i++)
-                playedCardsButtons.get(1-i).setDisable(false);
+            for (int i = 0; i < 2 - view.getOwnGameBoard().getPlayedCards().size(); i++)
+                playedCardsButtons.get(1 - i).setDisable(false);
         } else
             message.setText(s + "since you do not meet the requirements\n to play it, you can only discard it");
     }
@@ -1854,7 +1856,7 @@ public class GuiGameController implements GuiController {
     }
 
     private void selectPlayedLeadCard(int index) {
-        if (view.getOwnGameBoard().getPlayedCards().size()<=index){
+        if (view.getOwnGameBoard().getPlayedCards().size() <= index) {
             currentAction = UserAction.PLAY_LEADCARD;
             if (view.getOwnGameBoard().getPlayedCards().size() == 0)
                 playedIndex = 0;
@@ -1867,8 +1869,7 @@ public class GuiGameController implements GuiController {
             hand.get(handIndex).setImage(null);
             message.setText("Click on the check button below to confirm your choice");
             confirm_button.setDisable(false);
-        }
-        else if (view.getOwnGameBoard().getPlayedCards().get(index).getType().equalsIgnoreCase("Depot")) {
+        } else if (view.getOwnGameBoard().getPlayedCards().get(index).getType().equalsIgnoreCase("Depot")) {
             int depotIndex = (view.getOwnGameBoard().getWarehouse().size() > 4 ? index : 0);
             String depot = (depotIndex == 0 ? "DEPOT_ONE" : "DEPOT_TWO");
             selectWarehouse(depot);
@@ -1876,7 +1877,7 @@ public class GuiGameController implements GuiController {
             resourceRequirements.add(view.getOwnGameBoard().getPlayedCards().get(index).getResource());
             chosenDevCards.add(4 + index);
             leadersSelected.add(view.getOwnGameBoard().getPlayedCards().get(index));
-            message.setText("You have chosen product leader card " +(index + 1)+ "\nPlease click on other production " +
+            message.setText("You have chosen product leader card " + (index + 1) + "\nPlease click on other production " +
                     "sources and when you have finished\nclick on the check button below.");
             playedCardsButtons.get(index).setDisable(true);
         } else if (selectingLeadCard) {
