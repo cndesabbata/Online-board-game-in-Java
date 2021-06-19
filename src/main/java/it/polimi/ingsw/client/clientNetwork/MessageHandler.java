@@ -81,7 +81,7 @@ public class MessageHandler {
             } else {
                 String toPrint = "";
                 if (!m.getNickname().equals(view.getNickname()))
-                    toPrint = m.getNickname().toUpperCase()+ " " + m.getType().toString() + " ";
+                    toPrint = m.getNickname().toUpperCase()+ " " + m.getType().toString() + "\n";
                 view.setClientMessage(new DisplayMessage(toPrint + "This is the new state of the game."));
                 if (m.getType() != UserAction.RESOURCE_SELECTION && m.getNickname().equalsIgnoreCase(view.getNickname())
                         || view.getOwnGameBoard().getBlackCrossPosition() != null)
