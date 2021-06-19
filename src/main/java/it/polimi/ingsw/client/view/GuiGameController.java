@@ -1581,7 +1581,7 @@ public class GuiGameController implements GuiController {
                         }
                         resourcesToSelect = (int) chosenDevCards.stream().filter(i -> i >= 3).count();
                         confirm_button.setDisable(true);
-                        message.setText("Please select the output resources for" + s);
+                        message.setText("Please select the output resources for " + s);
                     }
                 } else {
                     messageResources.forEach(i -> i.setImage(null));
