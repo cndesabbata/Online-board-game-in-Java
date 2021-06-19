@@ -379,9 +379,9 @@ public class GuiGameController implements GuiController {
         initializeDevDecks();
         initializeDevSpaceSlots();
         initializeCoordinates();
-        initializeChestWarehouse();
         initializeHandCards();
         initializePlayedCards();
+        initializeChestWarehouse();
         initializeMessagePanel();
         updateItinerary(view.getNickname());
         disableButtons();
@@ -1012,6 +1012,7 @@ public class GuiGameController implements GuiController {
         selectedResource = "";
         resourceRequirements.clear();
         resToReceive.clear();
+        marbleResources.clear();
         whitemarbles = -1;
         selectedSlot = -1;
         trashcan.setImage(null);
@@ -1091,16 +1092,20 @@ public class GuiGameController implements GuiController {
     }
 
     private void checkDepot(boolean toStore) {
-        for (int i = 0; i < view.getOwnGameBoard().getPlayedCards().size(); i++) {
+        for (int i = 0, depotIndex = 0; i < view.getOwnGameBoard().getPlayedCards().size(); i++) {
             LeadCardInfo l = view.getOwnGameBoard().getPlayedCards().get(i);
+            depotIndex += i;
             if (l.getType().equalsIgnoreCase("Depot")) {
-                if (view.getOwnGameBoard().getWarehouse().size() > 3 + i) {
+                if (view.getOwnGameBoard().getWarehouse().size() > 3 + depotIndex) {
                     playedCardsButtons.get(i).setDisable(
-                            ((toStore && (view.getOwnGameBoard().getWarehouse().get(3 + i).size() == 2
+                            ((toStore && (view.getOwnGameBoard().getWarehouse().get(3 + depotIndex).size() == 2
                                     || !selectedResource.equalsIgnoreCase(l.getResource())))
-                                    || (!toStore && view.getOwnGameBoard().getWarehouse().get(3 + i).size() == 0)));
+                                    || (!toStore && view.getOwnGameBoard().getWarehouse().get(3 + depotIndex).size() == 0)));
                 }
-            } else playedCardsButtons.get(i).setDisable(true);
+            } else {
+                playedCardsButtons.get(i).setDisable(true);
+                depotIndex--;
+            }
         }
     }
 
@@ -1135,14 +1140,14 @@ public class GuiGameController implements GuiController {
                     messageResources.get(i).imageProperty().set(null);
                     message.setText("");
                 }
+                handleButtons(warehouseButtons, true);
             } else
                 handleButtons(messageResourcesButtons, false);
-            handleButtons(warehouseButtons, true);
         } else if (currentAction == UserAction.BUY_RESOURCES) {
             updateWarehouseInAction(shelf);
             updateMessageResources();
         } else if (currentAction == UserAction.BUY_DEVCARD) {
-            takeResFromWarehouse(shelf);
+            takeResFromWarehouse(shelf.toUpperCase());
         } else if (currentAction == UserAction.START_PRODUCTION) {
             productionWarehouse(shelf);
         } else if (currentAction == UserAction.MOVE_RESOURCES) {
@@ -1222,7 +1227,7 @@ public class GuiGameController implements GuiController {
 
     private void productionWarehouse(String shelf) {
         if (messageResources.stream().anyMatch(i -> i.getImage() != null))                                              //the user is selecting the input resources for dev and leader cards
-            takeResFromWarehouse(shelf);
+            takeResFromWarehouse(shelf.toUpperCase());
         else {
             String resStored = view.getOwnGameBoard().getWarehouse().get(NumOfShelf.valueOf(shelf).ordinal()).get(0);
             int quantity = (int) warehouse.get(NumOfShelf.valueOf(shelf).ordinal()).stream().filter(i -> i.getImage() != null).count();
@@ -1259,6 +1264,7 @@ public class GuiGameController implements GuiController {
             message.setText("Click on the check button below to confirm your choice");
         } else message.setText("Select the next resource to place");
         handleButtons(warehouseButtons, true);
+        handleButtons(playedCardsButtons, true);
         enableMessageResourceButtons();
         trashcan_button.setDisable(true);
         trashcan.setImage(null);
@@ -1284,6 +1290,36 @@ public class GuiGameController implements GuiController {
             }
             case "THREE" -> {
                 for (ImageView i : third_shelf) {
+                    if (i.getImage() == null) {
+                        Image image = new Image("/graphics/resources/" + selectedResource.toLowerCase() + ".png");
+                        i.setImage(image);
+                        break;
+                    }
+                }
+            }
+            case "DEPOT_ONE" -> {
+                if (view.getOwnGameBoard().getPlayedCards().size() == 2 &&
+                        !view.getOwnGameBoard().getPlayedCards().get(0).getType().equalsIgnoreCase("Depot")){
+                    for (ImageView i : second_depot) {
+                        if (i.getImage() == null) {
+                            Image image = new Image("/graphics/resources/" + selectedResource.toLowerCase() + ".png");
+                            i.setImage(image);
+                            break;
+                        }
+                    }
+                }
+                else {
+                    for (ImageView i : first_depot) {
+                        if (i.getImage() == null) {
+                            Image image = new Image("/graphics/resources/" + selectedResource.toLowerCase() + ".png");
+                            i.setImage(image);
+                            break;
+                        }
+                    }
+                }
+            }
+            case "DEPOT_TWO" -> {
+                for (ImageView i : second_depot) {
                     if (i.getImage() == null) {
                         Image image = new Image("/graphics/resources/" + selectedResource.toLowerCase() + ".png");
                         i.setImage(image);
@@ -1414,7 +1450,7 @@ public class GuiGameController implements GuiController {
                 }
                 for (int i = 0; i < whitemarbles; i++) {
                     resToReceive.add(res.toUpperCase());
-                    marbleResources.add(res);
+                    marbleResources.add(res.toUpperCase());
                 }
                 marketResPlacement();
             }
@@ -1517,13 +1553,18 @@ public class GuiGameController implements GuiController {
                 if (!marbleResources.isEmpty()) {
                     List<ResourcePosition> extraRes1 = new ArrayList<>();
                     List<ResourcePosition> extraRes2 = new ArrayList<>();
+                    int j = resourcesForAction.size() - marbleResources.size();
                     for (String s : marbleResources) {
-                        for (int i = 0; i < resourcesForAction.size(); i++) {
+                        for (int i = 0; i < j; i++) {
                             if (resourcesForAction.get(i).getResource().toString().equalsIgnoreCase(s)) {
                                 if (extraRes1.isEmpty() || extraRes1.get(0).getResource().toString().equalsIgnoreCase(s)) {
                                     extraRes1.add(resourcesForAction.remove(i));
+                                    i--;
+                                    break;
                                 } else {
                                     extraRes2.add(resourcesForAction.remove(i));
+                                    i--;
+                                    break;
                                 }
                             }
                         }
@@ -1885,7 +1926,7 @@ public class GuiGameController implements GuiController {
                 playedCardsButtons.get(index).setDisable(true);
                 String res = view.getOwnGameBoard().getPlayedCards().get(index).getResource();
                 resourceRequirements.remove(res);
-                leaderEffects.add(index, new DiscountEffect(Resource.valueOf(res.toUpperCase())));
+                leaderEffects.add(new DiscountEffect(Resource.valueOf(res.toUpperCase())));
             } else if (currentAction == UserAction.BUY_RESOURCES) {
                 String res = view.getOwnGameBoard().getPlayedCards().get(index).getResource();
                 int i = Arrays.asList(Resource.values()).indexOf(Resource.valueOf(res.toUpperCase()));
