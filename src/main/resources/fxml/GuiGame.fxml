@@ -15,324 +15,365 @@
         <URL value="@../css/global.css" />
         <URL value="@../css/game.css" />
     </stylesheets>
-    <Group fx:id="group" StackPane.alignment="CENTER">
-      <children>
-         <Region layoutY="58.0" prefHeight="460.0" prefWidth="680.0" styleClass="imagePane" />
-         <Region layoutX="150.0" layoutY="16.0" prefHeight="30.0" prefWidth="380.0" styleClass="imagePane" />
-         <Region layoutX="750.0" layoutY="28.0" prefHeight="490.0" prefWidth="304.0" styleClass="imagePane" />
-         <Region layoutX="750.0" layoutY="530.0" prefHeight="330.0" prefWidth="304.0" styleClass="imagePane" />
-         <Region layoutX="790.0" layoutY="550.0" prefHeight="180.0" prefWidth="224.0" styleClass="marketBackground" />
-         <Region layoutY="530.0" prefHeight="330.0" prefWidth="450.0" styleClass="imagePane" />
-         <Region layoutX="474.0" layoutY="704.0" prefHeight="156.0" prefWidth="206.0" styleClass="imagePane" />
-         <Region layoutX="474.0" layoutY="530.0" prefHeight="156.0" prefWidth="206.0" styleClass="imagePane" />
-         <ImageView fitHeight="440.0" fitWidth="660.0" layoutX="10.0" layoutY="68.0">
-            <Image url="@../graphics/gameboard.png" />
-         </ImageView>
-         <ImageView fitHeight="310.0" fitWidth="286.0" layoutX="760.0" layoutY="540.0">
-            <Image url="@../graphics/market.png" />
-         </ImageView>
-         <Label fx:id="board_label" alignment="CENTER" layoutX="150.0" layoutY="21.0" prefHeight="10.0" prefWidth="380.0" text="Your Gameboard" />
-         <Button fx:id="right_gameboard" layoutX="500.0" layoutY="17.0" mnemonicParsing="false" onAction="#select_right_gameboard" prefHeight="20.0" prefWidth="30.0" styleClass="rightButton, clickable" />
-         <Button fx:id="left_gameboard" layoutX="150.0" layoutY="17.0" mnemonicParsing="false" onAction="#select_left_gameboard" prefHeight="20.0" prefWidth="30.0" styleClass="leftButton, clickable" />
-         <Label alignment="CENTER" layoutX="523.0" layoutY="535.0" text="Played Leader Cards" />
-         <Label alignment="CENTER" layoutX="523.0" layoutY="710.0" text="Hand Leader Cards" />
-         <ImageView fx:id="first_green" fitHeight="110.0" fitWidth="88.0" layoutX="760.0" layoutY="38.0">
-            <Image url="@../graphics/devcards/devcard1.png" />
-         </ImageView>
-         <ImageView fx:id="first_blue" fitHeight="110.0" fitWidth="88.0" layoutX="760.0" layoutY="158.0">
-            <Image url="@../graphics/devcards/devcard1.png" />
-         </ImageView>
-         <ImageView fx:id="second_green" fitHeight="110.0" fitWidth="88.0" layoutX="858.0" layoutY="38.0">
-            <Image url="@../graphics/devcards/devcard1.png" />
-         </ImageView>
-         <ImageView fx:id="first_yellow" fitHeight="110.0" fitWidth="88.0" layoutX="760.0" layoutY="278.0">
-            <Image url="@../graphics/devcards/devcard1.png" />
-         </ImageView>
-         <ImageView fx:id="first_purple" fitHeight="110.0" fitWidth="88.0" layoutX="760.0" layoutY="398.0">
-            <Image url="@../graphics/devcards/devcard1.png" />
-         </ImageView>
-         <ImageView fx:id="second_blue" fitHeight="110.0" fitWidth="88.0" layoutX="858.0" layoutY="158.0">
-            <Image url="@../graphics/devcards/devcard1.png" />
-         </ImageView>
-         <ImageView fx:id="third_green" fitHeight="110.0" fitWidth="88.0" layoutX="956.0" layoutY="38.0">
-            <Image url="@../graphics/devcards/devcard1.png" />
-         </ImageView>
-         <ImageView fx:id="second_yellow" fitHeight="110.0" fitWidth="88.0" layoutX="858.0" layoutY="278.0">
-            <Image url="@../graphics/devcards/devcard1.png" />
-         </ImageView>
-         <ImageView fx:id="second_purple" fitHeight="110.0" fitWidth="88.0" layoutX="858.0" layoutY="398.0">
-            <Image url="@../graphics/devcards/devcard1.png" />
-         </ImageView>
-         <ImageView fx:id="third_blue" fitHeight="110.0" fitWidth="88.0" layoutX="956.0" layoutY="158.0">
-            <Image url="@../graphics/devcards/devcard1.png" />
-         </ImageView>
-         <ImageView fx:id="third_yellow" fitHeight="110.0" fitWidth="88.0" layoutX="956.0" layoutY="278.0">
-            <Image url="@../graphics/devcards/devcard1.png" />
-         </ImageView>
-         <ImageView fx:id="third_purple" fitHeight="110.0" fitWidth="88.0" layoutX="956.0" layoutY="398.0">
-            <Image url="@../graphics/devcards/devcard1.png" />
-         </ImageView>
-         <ImageView fx:id="second_hand" fitHeight="110.0" fitWidth="88.0" layoutX="582.0" layoutY="740.0">
-            <Image url="@../graphics/devcards/devcard1.png" />
-         </ImageView>
-         <ImageView fx:id="first_played" fitHeight="110.0" fitWidth="88.0" layoutX="484.0" layoutY="566.0">
-            <Image url="@../graphics/leadcards/leadcard6.png" />
-         </ImageView>
-         <ImageView fx:id="second_played" fitHeight="110.0" fitWidth="88.0" layoutX="582.0" layoutY="566.0">
-            <Image url="@../graphics/leadcards/leadcard6.png" />
-         </ImageView>
-         <ImageView fx:id="first_hand" fitHeight="110.0" fitWidth="88.0" layoutX="484.0" layoutY="740.0">
-            <Image url="@../graphics/devcards/devcard1.png" />
-         </ImageView>
-         <ImageView fx:id="market_20" fitHeight="28.0" fitWidth="28.0" layoutX="845.0" layoutY="665.0">
-            <Image url="@../graphics/marbles/Blue.png" />
-         </ImageView>
-         <ImageView fx:id="external" fitHeight="28.0" fitWidth="28.0" layoutX="806.0" layoutY="579.0">
-            <Image url="@../graphics/marbles/Blue.png" />
-         </ImageView>
-         <ImageView fx:id="market_03" fitHeight="28.0" fitWidth="28.0" layoutX="944.0" layoutY="609.0">
-            <Image url="@../graphics/marbles/Blue.png" />
-         </ImageView>
-         <ImageView fx:id="market_02" fitHeight="28.0" fitWidth="28.0" layoutX="911.0" layoutY="609.0">
-            <Image url="@../graphics/marbles/Blue.png" />
-         </ImageView>
-         <ImageView fx:id="market_01" fitHeight="28.0" fitWidth="28.0" layoutX="878.0" layoutY="609.0">
-            <Image url="@../graphics/marbles/Blue.png" />
-         </ImageView>
-         <ImageView fx:id="market_00" fitHeight="28.0" fitWidth="28.0" layoutX="845.0" layoutY="609.0">
-            <Image url="@../graphics/marbles/Blue.png" />
-         </ImageView>
-         <ImageView fx:id="market_10" fitHeight="28.0" fitWidth="28.0" layoutX="845.0" layoutY="637.0">
-            <Image url="@../graphics/marbles/Blue.png" />
-         </ImageView>
-         <ImageView fx:id="market_11" fitHeight="28.0" fitWidth="28.0" layoutX="878.0" layoutY="637.0">
-            <Image url="@../graphics/marbles/Blue.png" />
-         </ImageView>
-         <ImageView fx:id="market_12" fitHeight="28.0" fitWidth="28.0" layoutX="911.0" layoutY="637.0">
-            <Image url="@../graphics/marbles/Blue.png" />
-         </ImageView>
-         <ImageView fx:id="market_13" fitHeight="28.0" fitWidth="28.0" layoutX="944.0" layoutY="637.0">
-            <Image url="@../graphics/marbles/Blue.png" />
-         </ImageView>
-         <ImageView fx:id="market_23" fitHeight="28.0" fitWidth="28.0" layoutX="944.0" layoutY="665.0">
-            <Image url="@../graphics/marbles/Blue.png" />
-         </ImageView>
-         <ImageView fx:id="market_22" fitHeight="28.0" fitWidth="28.0" layoutX="911.0" layoutY="665.0">
-            <Image url="@../graphics/marbles/Blue.png" />
-         </ImageView>
-         <ImageView fx:id="market_21" fitHeight="28.0" fitWidth="28.0" layoutX="878.0" layoutY="665.0">
-            <Image url="@../graphics/marbles/Blue.png" />
-         </ImageView>
-         <Label fx:id="message" alignment="TOP_LEFT" graphicTextGap="0.0" layoutX="10.0" layoutY="540.0" prefHeight="65.0" prefWidth="428.0" />
-         <ImageView fx:id="second_shelf_1" fitHeight="28.0" fitWidth="28.0" layoutX="95.0" layoutY="295.0">
-         </ImageView>
-         <ImageView fx:id="second_shelf_0" fitHeight="28.0" fitWidth="28.0" layoutX="68.0" layoutY="295.0">
-         </ImageView>
-         <ImageView fx:id="first_shelf" fitHeight="28.0" fitWidth="28.0" layoutX="82.0" layoutY="255.0">
-         </ImageView>
-         <ImageView fx:id="third_shelf_1" fitHeight="28.0" fitWidth="28.0" layoutX="82.0" layoutY="334.0">
-         </ImageView>
-         <ImageView fx:id="third_shelf_0" fitHeight="28.0" fitWidth="28.0" layoutX="55.0" layoutY="334.0">
-         </ImageView>
-         <ImageView fx:id="third_shelf_2" fitHeight="28.0" fitWidth="28.0" layoutX="109.0" layoutY="334.0">
-         </ImageView>
-         <ImageView fitHeight="28.0" fitWidth="28.0" layoutX="48.0" layoutY="408.0">
-            <Image url="@../graphics/resources/coin.png" />
-         </ImageView>
-         <ImageView fitHeight="28.0" fitWidth="28.0" layoutX="48.0" layoutY="439.0">
-            <Image url="@../graphics/resources/servant.png" />
-         </ImageView>
-         <ImageView fitHeight="28.0" fitWidth="28.0" layoutX="96.0" layoutY="406.0">
-            <Image url="@../graphics/resources/stone.png" />
-         </ImageView>
-         <ImageView fitHeight="28.0" fitWidth="28.0" layoutX="96.0" layoutY="439.0">
-            <Image url="@../graphics/resources/shield.png" />
-         </ImageView>
-         <Label fx:id="chest_coin" alignment="CENTER" layoutX="52.0" layoutY="409.0" prefHeight="20.0" prefWidth="20.0" text="0" />
-         <Label fx:id="chest_stone" alignment="CENTER" layoutX="98.0" layoutY="409.0" prefHeight="20.0" prefWidth="20.0" text="0" />
-         <Label fx:id="chest_shield" alignment="CENTER" layoutX="98.0" layoutY="441.0" prefHeight="20.0" prefWidth="20.0" text="0" />
-         <Label fx:id="chest_servant" alignment="CENTER" layoutX="51.0" layoutY="441.0" prefHeight="20.0" prefWidth="20.0" text="0" textFill="#050505">
-            <font>
-               <Font name="System Bold" size="13.0" />
-            </font>
-         </Label>
-         <ImageView fx:id="first_slot_0" fitHeight="110.0" fitWidth="88.0" layoutX="278.0" layoutY="325.0">
-         </ImageView>
-         <ImageView fx:id="second_slot_0" fitHeight="110.0" fitWidth="88.0" layoutX="405.0" layoutY="325.0">
-         </ImageView>
-         <ImageView fx:id="third_slot_0" fitHeight="110.0" fitWidth="88.0" layoutX="534.0" layoutY="325.0">
-         </ImageView>
-         <ImageView fx:id="first_slot_1" fitHeight="110.0" fitWidth="88.0" layoutX="278.0" layoutY="305.0">
-         </ImageView>
-         <ImageView fx:id="first_slot_2" fitHeight="110.0" fitWidth="88.0" layoutX="278.0" layoutY="285.0">
-         </ImageView>
-         <ImageView fx:id="second_slot_1" fitHeight="110.0" fitWidth="88.0" layoutX="405.0" layoutY="305.0">
-         </ImageView>
-         <ImageView fx:id="second_slot_2" fitHeight="110.0" fitWidth="88.0" layoutX="405.0" layoutY="285.0">
-         </ImageView>
-         <ImageView fx:id="third_slot_1" fitHeight="110.0" fitWidth="88.0" layoutX="534.0" layoutY="305.0">
-         </ImageView>
-         <ImageView fx:id="third_slot_2" fitHeight="110.0" fitWidth="88.0" layoutX="534.0" layoutY="285.0">
-         </ImageView>
-         <ImageView fx:id="papal2" fitHeight="50.0" fitWidth="50.0" layoutX="332.0" layoutY="98.0">
-            <Image url="@../graphics/itinerary/papal2.png" />
-         </ImageView>
-         <ImageView fx:id="papal1" fitHeight="50.0" fitWidth="50.0" layoutX="170.0" layoutY="127.0">
-            <Image url="@../graphics/itinerary/papal1.png" />
-         </ImageView>
-         <ImageView fx:id="papal3" fitHeight="50.0" fitWidth="50.0" layoutX="526.0" layoutY="127.0">
-            <Image url="@../graphics/itinerary/papal3.png" />
-         </ImageView>
-         <ImageView fx:id="blackcross" fitHeight="24.0" fitWidth="24.0" layoutX="40.0" layoutY="160.0">
-         </ImageView>
-         <ImageView fx:id="cross" fitHeight="24.0" fitWidth="24.0" layoutX="33.0" layoutY="153.0">
-            <Image url="@../graphics/itinerary/Cross.png" />
-         </ImageView>
-         <ImageView fx:id="inkwell" fitHeight="40.0" fitWidth="40.0" layoutX="560.0" layoutY="10.0">
-            <Image url="@../graphics/calamaio.png" />
-         </ImageView>
-         <Button fx:id="market_c1" layoutX="850.0" layoutY="720.0" mnemonicParsing="false" onAction="#selectMarketC1" opacity="0.0" prefHeight="40.0" prefWidth="20.0" styleClass="clickable" />
-         <Button fx:id="market_c2" layoutX="882.0" layoutY="720.0" mnemonicParsing="false" onAction="#selectMarketC2" opacity="0.0" prefHeight="40.0" prefWidth="20.0" styleClass="clickable" />
-         <Button fx:id="market_c3" layoutX="915.0" layoutY="720.0" mnemonicParsing="false" onAction="#selectMarketC3" opacity="0.0" prefHeight="40.0" prefWidth="20.0" styleClass="clickable" />
-         <Button fx:id="market_c4" layoutX="948.0" layoutY="720.0" mnemonicParsing="false" onAction="#selectMarketC4" opacity="0.0" prefHeight="40.0" prefWidth="20.0" styleClass="clickable" />
-         <Button fx:id="market_r3" layoutX="1010.0" layoutY="670.0" mnemonicParsing="false" onAction="#selectMarketR3" opacity="0.0" prefHeight="15.0" prefWidth="30.0" styleClass="clickable">
-            <font>
-               <Font size="1.0" />
-            </font>
-         </Button>
-         <Button fx:id="market_r2" layoutX="1010.0" layoutY="643.0" mnemonicParsing="false" onAction="#selectMarketR2" opacity="0.0" prefHeight="15.0" prefWidth="30.0" styleClass="clickable">
-            <font>
-               <Font size="1.0" />
-            </font>
-         </Button>
-         <Button fx:id="market_r1" layoutX="1010.0" layoutY="615.0" mnemonicParsing="false" onAction="#selectMarketR1" opacity="0.0" prefHeight="15.0" prefWidth="30.0" styleClass="clickable">
-            <font>
-               <Font size="1.0" />
-            </font>
-         </Button>
-         <Button fx:id="devdeck_30" layoutX="764.0" layoutY="402.0" mnemonicParsing="false" onAction="#selectDev30" opacity="0.0" prefHeight="100.0" prefWidth="80.0" styleClass="clickable" />
-         <Button fx:id="devdeck_31" layoutX="862.0" layoutY="402.0" mnemonicParsing="false" onAction="#selectDev31" opacity="0.0" prefHeight="100.0" prefWidth="80.0" styleClass="clickable" />
-         <Button fx:id="devdeck_32" layoutX="960.0" layoutY="402.0" mnemonicParsing="false" onAction="#selectDev32" opacity="0.0" prefHeight="100.0" prefWidth="80.0" styleClass="clickable" />
-         <Button fx:id="devdeck_20" layoutX="764.0" layoutY="283.0" mnemonicParsing="false" onAction="#selectDev20" opacity="0.0" prefHeight="100.0" prefWidth="80.0" styleClass="clickable" />
-         <Button fx:id="devdeck_21" layoutX="862.0" layoutY="283.0" mnemonicParsing="false" onAction="#selectDev21" opacity="0.0" prefHeight="100.0" prefWidth="80.0" styleClass="clickable" />
-         <Button fx:id="devdeck_22" layoutX="960.0" layoutY="283.0" mnemonicParsing="false" onAction="#selectDev22" opacity="0.0" prefHeight="100.0" prefWidth="80.0" styleClass="clickable" />
-         <Button fx:id="devdeck_12" layoutX="960.0" layoutY="163.0" mnemonicParsing="false" onAction="#selectDev12" opacity="0.0" prefHeight="100.0" prefWidth="80.0" styleClass="clickable" />
-         <Button fx:id="devdeck_11" layoutX="862.0" layoutY="163.0" mnemonicParsing="false" onAction="#selectDev11" opacity="0.0" prefHeight="100.0" prefWidth="80.0" styleClass="clickable" />
-         <Button fx:id="devdeck_10" layoutX="764.0" layoutY="163.0" mnemonicParsing="false" onAction="#selectDev10" opacity="0.0" prefHeight="100.0" prefWidth="80.0" styleClass="clickable" />
-         <Button fx:id="devdeck_00" layoutX="764.0" layoutY="43.0" mnemonicParsing="false" onAction="#selectDev00" opacity="0.0" prefHeight="100.0" prefWidth="80.0" styleClass="clickable" />
-         <Button fx:id="devdeck_01" layoutX="862.0" layoutY="43.0" mnemonicParsing="false" onAction="#selectDev01" opacity="0.0" prefHeight="100.0" prefWidth="80.0" styleClass="clickable" />
-         <Button fx:id="devdeck_02" layoutX="960.0" layoutY="43.0" mnemonicParsing="false" onAction="#selectDev02" opacity="0.0" prefHeight="100.0" prefWidth="80.0" styleClass="clickable" />
-         <Button fx:id="played_1" layoutX="488.0" layoutY="571.0" mnemonicParsing="false" onAction="#selectFirstPlayed" opacity="0.0" prefHeight="100.0" prefWidth="80.0" styleClass="clickable" />
-         <Button fx:id="played_2" layoutX="586.0" layoutY="571.0" mnemonicParsing="false" onAction="#selectSecondPlayed" opacity="0.0" prefHeight="100.0" prefWidth="80.0" styleClass="clickable" />
-         <Button fx:id="hand_1" layoutX="488.0" layoutY="744.0" mnemonicParsing="false" onAction="#selectFirstHand" opacity="0.0" prefHeight="100.0" prefWidth="80.0" styleClass="clickable" />
-         <Button fx:id="hand_2" layoutX="586.0" layoutY="744.0" mnemonicParsing="false" onAction="#selectSecondHand" opacity="0.0" prefHeight="100.0" prefWidth="80.0" styleClass="clickable" />
-         <Button fx:id="slot_1" layoutX="302.0" layoutY="450.0" mnemonicParsing="false" onAction="#selectSlot1" opacity="0.0" prefHeight="40.0" prefWidth="40.0" styleClass="clickable" />
-         <Button fx:id="slot_3" layoutX="565.0" layoutY="450.0" mnemonicParsing="false" onAction="#selectSlot3" opacity="0.0" prefHeight="40.0" prefWidth="40.0" styleClass="clickable" />
-         <Button fx:id="slot_2" layoutX="430.0" layoutY="450.0" mnemonicParsing="false" onAction="#selectSlot2" opacity="0.0" prefHeight="40.0" prefWidth="40.0" styleClass="clickable" />
-         <Button fx:id="board_production" layoutX="200.0" layoutY="450.0" mnemonicParsing="false" onAction="#selectBoardProduction" opacity="0.0" prefHeight="40.0" prefWidth="40.0" styleClass="clickable" />
-         <Button fx:id="shelf3" layoutX="53.0" layoutY="335.0" mnemonicParsing="false" onAction="#selectThirdShelf" opacity="0.0" prefHeight="25.0" prefWidth="90.0" styleClass="clickable">
-            <font>
-               <Font size="1.0" />
-            </font>
-         </Button>
-         <Button fx:id="shelf2" layoutX="68.0" layoutY="297.0" mnemonicParsing="false" onAction="#selectSecondShelf" opacity="0.0" prefHeight="25.0" prefWidth="60.0" styleClass="clickable">
-            <font>
-               <Font size="1.0" />
-            </font>
-         </Button>
-         <Button fx:id="shelf1" layoutX="84.0" layoutY="257.0" mnemonicParsing="false" onAction="#selectFirstShelf" opacity="0.0" prefHeight="25.0" prefWidth="25.0" styleClass="clickable">
-            <font>
-               <Font size="1.0" />
-            </font>
-         </Button>
-         <Button fx:id="back_button" layoutX="10.0" layoutY="815.0" mnemonicParsing="false" onAction="#quitAction" prefHeight="30.0" prefWidth="30.0" styleClass="backButton, clickable" />
-         <Button fx:id="confirm_button" layoutX="210.0" layoutY="810.0" mnemonicParsing="false" onAction="#selectConfirmButton" prefHeight="40.0" prefWidth="40.0" styleClass="confirmButton, clickable" />
-         <Button fx:id="end_turn" layoutX="410.0" layoutY="815.0" mnemonicParsing="false" onAction="#endTurn" prefHeight="30.0" prefWidth="30.0" styleClass="turnButton, clickable" />
-         <ImageView fx:id="setupdraw1" fitHeight="110.0" fitWidth="88.0" layoutX="19.0" layoutY="635.0">
-         </ImageView>
-         <ImageView fx:id="setupdraw2" fitHeight="110.0" fitWidth="88.0" layoutX="127.0" layoutY="635.0">
-         </ImageView>
-         <ImageView fx:id="setupdraw3" fitHeight="110.0" fitWidth="88.0" layoutX="235.0" layoutY="635.0">
-         </ImageView>
-         <ImageView fx:id="setupdraw4" fitHeight="110.0" fitWidth="88.0" layoutX="343.0" layoutY="635.0">
-         </ImageView>
-         <Button fx:id="setupdraw_button1" layoutX="23.0" layoutY="640.0" mnemonicParsing="false" onAction="#select_sd1" opacity="0.0" prefHeight="100.0" prefWidth="80.0"  />
-         <Button fx:id="setupdraw_button4" layoutX="347.0" layoutY="640.0" mnemonicParsing="false" onAction="#select_sd4" opacity="0.0" prefHeight="100.0" prefWidth="80.0"  />
-         <ImageView fx:id="message_stone" fitHeight="28.0" fitWidth="28.0" layoutX="157.0" layoutY="605.0">
-            <image>
-               <Image url="@../graphics/resources/stone.png" />
-            </image>
-         </ImageView>
-         <ImageView fx:id="message_servant" fitHeight="28.0" fitWidth="28.0" layoutX="265.0" layoutY="605.0">
-            <image>
-               <Image url="@../graphics/resources/servant.png" />
-            </image>
-         </ImageView>
-         <ImageView fx:id="message_shield" fitHeight="28.0" fitWidth="28.0" layoutX="373.0" layoutY="605.0">
-            <image>
-               <Image url="@../graphics/resources/shield.png" />
-            </image>
-         </ImageView>
-         <ImageView fx:id="message_coin" fitHeight="28.0" fitWidth="28.0" layoutX="49.0" layoutY="605.0">
-            <image>
-               <Image url="@../graphics/resources/coin.png" />
-            </image>
-         </ImageView>
-         <Button fx:id="coin_button" layoutX="49.0" layoutY="605.0" mnemonicParsing="false" onAction="#select_coin" opacity="0.0" prefHeight="26.0" prefWidth="26.0" styleClass="clickable" />
-         <Button fx:id="stone_button" layoutX="158.0" layoutY="605.0" mnemonicParsing="false" onAction="#select_stone" opacity="0.0" prefHeight="26.0" prefWidth="26.0" styleClass="clickable" />
-         <Button fx:id="servant_button" layoutX="266.0" layoutY="605.0" mnemonicParsing="false" onAction="#select_servant" opacity="0.0" prefHeight="26.0" prefWidth="26.0" styleClass="clickable" />
-         <Button fx:id="shield_button" layoutX="375.0" layoutY="605.0" mnemonicParsing="false" onAction="#select_shield" opacity="0.0" prefHeight="26.0" prefWidth="26.0" styleClass="clickable" />
-         <Label fx:id="message_coin_number" alignment="CENTER" layoutX="52.0" layoutY="630.0" prefHeight="20.0" prefWidth="20.0">
-            <font>
-               <Font size="13.0" />
-            </font>
-         </Label>
-         <Label fx:id="message_stone_number" alignment="CENTER" layoutX="159.0" layoutY="630.0" prefHeight="20.0" prefWidth="20.0">
-            <font>
-               <Font size="13.0" />
-            </font>
-         </Label>
-         <Label fx:id="message_servant_number" alignment="CENTER" layoutX="268.0" layoutY="630.0" prefHeight="20.0" prefWidth="20.0" textFill="#050505">
-            <font>
-               <Font size="13.0" />
-            </font>
-         </Label>
-         <Label fx:id="message_shield_number" alignment="CENTER" layoutX="375.0" layoutY="630.0" prefHeight="20.0" prefWidth="20.0">
-            <font>
-               <Font size="13.0" />
-            </font>
-         </Label>
-         <ImageView fx:id="trashcan" fitHeight="53.0" fitWidth="50.0" layoutX="208.0" layoutY="678.0">
-            <image>
-               <Image url="@../graphics/trashcan.png" />
-            </image>
-         </ImageView>
-         <Button fx:id="trashcan_button" layoutX="208.0" layoutY="678.0" mnemonicParsing="false" onAction="#selectTrashcan" opacity="0.0" prefHeight="53.0" prefWidth="50.0" styleClass="clickable" />
-         <Button fx:id="setupdraw_button3" layoutX="239.0" layoutY="640.0" mnemonicParsing="false" onAction="#select_sd3" opacity="0.0" prefHeight="100.0" prefWidth="80.0"  />
-         <Button fx:id="setupdraw_button2" layoutX="131.0" layoutY="640.0" mnemonicParsing="false" onAction="#select_sd2" opacity="0.0" prefHeight="100.0" prefWidth="80.0"  />
-         <Button fx:id="chest_coin_button" layoutX="48.0" layoutY="405.0" mnemonicParsing="false" onAction="#select_chest_coin" opacity="0.0" prefHeight="28.0" prefWidth="28.0" styleClass="clickable" />
-         <Button fx:id="chest_stone_button" layoutX="96.0" layoutY="406.0" mnemonicParsing="false" onAction="#select_chest_stone" opacity="0.0" prefHeight="28.0" prefWidth="28.0" styleClass="clickable" />
-         <Button fx:id="chest_servant_button" layoutX="47.0" layoutY="439.0" mnemonicParsing="false" onAction="#select_chest_servant" opacity="0.0" prefHeight="28.0" prefWidth="28.0" styleClass="clickable" />
-         <Button fx:id="chest_shield_button" layoutX="96.0" layoutY="439.0" mnemonicParsing="false" onAction="#select_chest_shield" opacity="0.0" prefHeight="28.0" prefWidth="28.0" styleClass="clickable" />
-         <ImageView fx:id="first_depot_1" fitHeight="28.0" fitWidth="28.0" layoutX="498.0" layoutY="643.0">
-            <image>
-               <Image url="@../graphics/resources/stone.png" />
-            </image>
-         </ImageView>
-         <ImageView fx:id="first_depot_2" fitHeight="28.0" fitWidth="28.0" layoutX="530.0" layoutY="643.0">
-            <image>
-               <Image url="@../graphics/resources/stone.png" />
-            </image>
-         </ImageView>
-         <ImageView fx:id="second_depot_1" fitHeight="28.0" fitWidth="28.0" layoutX="596.0" layoutY="643.0">
-            <image>
-               <Image url="@../graphics/resources/stone.png" />
-            </image>
-         </ImageView>
-         <ImageView fx:id="second_depot_2" fitHeight="28.0" fitWidth="28.0" layoutX="629.0" layoutY="644.0">
-            <image>
-               <Image url="@../graphics/resources/stone.png" />
-            </image>
-         </ImageView>
-      </children></Group>
+   <Group fx:id="group" StackPane.alignment="CENTER">
+      <Region layoutY="58.0" prefHeight="460.0" prefWidth="680.0" styleClass="imagePane"/>
+      <Region layoutX="150.0" layoutY="16.0" prefHeight="30.0" prefWidth="380.0" styleClass="imagePane"/>
+      <Region layoutX="750.0" layoutY="28.0" prefHeight="490.0" prefWidth="304.0" styleClass="imagePane"/>
+      <Region layoutX="750.0" layoutY="530.0" prefHeight="330.0" prefWidth="304.0" styleClass="imagePane"/>
+      <Region layoutX="790.0" layoutY="550.0" prefHeight="180.0" prefWidth="224.0" styleClass="marketBackground"/>
+      <Region layoutY="530.0" prefHeight="330.0" prefWidth="450.0" styleClass="imagePane"/>
+      <Region layoutX="474.0" layoutY="704.0" prefHeight="156.0" prefWidth="206.0" styleClass="imagePane"/>
+      <Region layoutX="474.0" layoutY="530.0" prefHeight="156.0" prefWidth="206.0" styleClass="imagePane"/>
+      <ImageView fitHeight="440.0" fitWidth="660.0" layoutX="10.0" layoutY="68.0">
+         <Image url="@../graphics/gameboard.png"/>
+      </ImageView>
+      <ImageView fitHeight="310.0" fitWidth="286.0" layoutX="760.0" layoutY="540.0">
+         <Image url="@../graphics/market.png"/>
+      </ImageView>
+      <Label fx:id="board_label" alignment="CENTER" layoutX="150.0" layoutY="21.0" prefHeight="10.0" prefWidth="380.0"
+             text="Your Gameboard"/>
+      <Button fx:id="right_gameboard" layoutX="500.0" layoutY="17.0" mnemonicParsing="false"
+              onAction="#select_right_gameboard" prefHeight="20.0" prefWidth="30.0"
+              styleClass="rightButton, clickable"/>
+      <Button fx:id="left_gameboard" layoutX="150.0" layoutY="17.0" mnemonicParsing="false"
+              onAction="#select_left_gameboard" prefHeight="20.0" prefWidth="30.0" styleClass="leftButton, clickable"/>
+      <Label alignment="CENTER" layoutX="523.0" layoutY="535.0" text="Played Leader Cards"/>
+      <Label alignment="CENTER" layoutX="523.0" layoutY="710.0" text="Hand Leader Cards"/>
+      <ImageView fx:id="first_green" fitHeight="110.0" fitWidth="88.0" layoutX="760.0" layoutY="38.0">
+         <Image url="@../graphics/devcards/devcard1.png"/>
+      </ImageView>
+      <ImageView fx:id="first_blue" fitHeight="110.0" fitWidth="88.0" layoutX="760.0" layoutY="158.0">
+         <Image url="@../graphics/devcards/devcard1.png"/>
+      </ImageView>
+      <ImageView fx:id="second_green" fitHeight="110.0" fitWidth="88.0" layoutX="858.0" layoutY="38.0">
+         <Image url="@../graphics/devcards/devcard1.png"/>
+      </ImageView>
+      <ImageView fx:id="first_yellow" fitHeight="110.0" fitWidth="88.0" layoutX="760.0" layoutY="278.0">
+         <Image url="@../graphics/devcards/devcard1.png"/>
+      </ImageView>
+      <ImageView fx:id="first_purple" fitHeight="110.0" fitWidth="88.0" layoutX="760.0" layoutY="398.0">
+         <Image url="@../graphics/devcards/devcard1.png"/>
+      </ImageView>
+      <ImageView fx:id="second_blue" fitHeight="110.0" fitWidth="88.0" layoutX="858.0" layoutY="158.0">
+         <Image url="@../graphics/devcards/devcard1.png"/>
+      </ImageView>
+      <ImageView fx:id="third_green" fitHeight="110.0" fitWidth="88.0" layoutX="956.0" layoutY="38.0">
+         <Image url="@../graphics/devcards/devcard1.png"/>
+      </ImageView>
+      <ImageView fx:id="second_yellow" fitHeight="110.0" fitWidth="88.0" layoutX="858.0" layoutY="278.0">
+         <Image url="@../graphics/devcards/devcard1.png"/>
+      </ImageView>
+      <ImageView fx:id="second_purple" fitHeight="110.0" fitWidth="88.0" layoutX="858.0" layoutY="398.0">
+         <Image url="@../graphics/devcards/devcard1.png"/>
+      </ImageView>
+      <ImageView fx:id="third_blue" fitHeight="110.0" fitWidth="88.0" layoutX="956.0" layoutY="158.0">
+         <Image url="@../graphics/devcards/devcard1.png"/>
+      </ImageView>
+      <ImageView fx:id="third_yellow" fitHeight="110.0" fitWidth="88.0" layoutX="956.0" layoutY="278.0">
+         <Image url="@../graphics/devcards/devcard1.png"/>
+      </ImageView>
+      <ImageView fx:id="third_purple" fitHeight="110.0" fitWidth="88.0" layoutX="956.0" layoutY="398.0">
+         <Image url="@../graphics/devcards/devcard1.png"/>
+      </ImageView>
+      <ImageView fx:id="second_hand" fitHeight="110.0" fitWidth="88.0" layoutX="582.0" layoutY="740.0">
+         <Image url="@../graphics/devcards/devcard1.png"/>
+      </ImageView>
+      <ImageView fx:id="first_played" fitHeight="110.0" fitWidth="88.0" layoutX="484.0" layoutY="566.0">
+         <Image url="@../graphics/leadcards/leadcard6.png"/>
+      </ImageView>
+      <ImageView fx:id="second_played" fitHeight="110.0" fitWidth="88.0" layoutX="582.0" layoutY="566.0">
+         <Image url="@../graphics/leadcards/leadcard6.png"/>
+      </ImageView>
+      <ImageView fx:id="first_hand" fitHeight="110.0" fitWidth="88.0" layoutX="484.0" layoutY="740.0">
+         <Image url="@../graphics/devcards/devcard1.png"/>
+      </ImageView>
+      <ImageView fx:id="market_20" fitHeight="28.0" fitWidth="28.0" layoutX="845.0" layoutY="665.0">
+         <Image url="@../graphics/marbles/Blue.png"/>
+      </ImageView>
+      <ImageView fx:id="external" fitHeight="28.0" fitWidth="28.0" layoutX="806.0" layoutY="579.0">
+         <Image url="@../graphics/marbles/Blue.png"/>
+      </ImageView>
+      <ImageView fx:id="market_03" fitHeight="28.0" fitWidth="28.0" layoutX="944.0" layoutY="609.0">
+         <Image url="@../graphics/marbles/Blue.png"/>
+      </ImageView>
+      <ImageView fx:id="market_02" fitHeight="28.0" fitWidth="28.0" layoutX="911.0" layoutY="609.0">
+         <Image url="@../graphics/marbles/Blue.png"/>
+      </ImageView>
+      <ImageView fx:id="market_01" fitHeight="28.0" fitWidth="28.0" layoutX="878.0" layoutY="609.0">
+         <Image url="@../graphics/marbles/Blue.png"/>
+      </ImageView>
+      <ImageView fx:id="market_00" fitHeight="28.0" fitWidth="28.0" layoutX="845.0" layoutY="609.0">
+         <Image url="@../graphics/marbles/Blue.png"/>
+      </ImageView>
+      <ImageView fx:id="market_10" fitHeight="28.0" fitWidth="28.0" layoutX="845.0" layoutY="637.0">
+         <Image url="@../graphics/marbles/Blue.png"/>
+      </ImageView>
+      <ImageView fx:id="market_11" fitHeight="28.0" fitWidth="28.0" layoutX="878.0" layoutY="637.0">
+         <Image url="@../graphics/marbles/Blue.png"/>
+      </ImageView>
+      <ImageView fx:id="market_12" fitHeight="28.0" fitWidth="28.0" layoutX="911.0" layoutY="637.0">
+         <Image url="@../graphics/marbles/Blue.png"/>
+      </ImageView>
+      <ImageView fx:id="market_13" fitHeight="28.0" fitWidth="28.0" layoutX="944.0" layoutY="637.0">
+         <Image url="@../graphics/marbles/Blue.png"/>
+      </ImageView>
+      <ImageView fx:id="market_23" fitHeight="28.0" fitWidth="28.0" layoutX="944.0" layoutY="665.0">
+         <Image url="@../graphics/marbles/Blue.png"/>
+      </ImageView>
+      <ImageView fx:id="market_22" fitHeight="28.0" fitWidth="28.0" layoutX="911.0" layoutY="665.0">
+         <Image url="@../graphics/marbles/Blue.png"/>
+      </ImageView>
+      <ImageView fx:id="market_21" fitHeight="28.0" fitWidth="28.0" layoutX="878.0" layoutY="665.0">
+         <Image url="@../graphics/marbles/Blue.png"/>
+      </ImageView>
+      <Label fx:id="message" alignment="TOP_LEFT" graphicTextGap="0.0" layoutX="10.0" layoutY="540.0" prefHeight="65.0"
+             prefWidth="428.0"/>
+      <ImageView fx:id="second_shelf_1" fitHeight="28.0" fitWidth="28.0" layoutX="95.0" layoutY="295.0">
+      </ImageView>
+      <ImageView fx:id="second_shelf_0" fitHeight="28.0" fitWidth="28.0" layoutX="68.0" layoutY="295.0">
+      </ImageView>
+      <ImageView fx:id="first_shelf" fitHeight="28.0" fitWidth="28.0" layoutX="82.0" layoutY="255.0">
+      </ImageView>
+      <ImageView fx:id="third_shelf_1" fitHeight="28.0" fitWidth="28.0" layoutX="82.0" layoutY="334.0">
+      </ImageView>
+      <ImageView fx:id="third_shelf_0" fitHeight="28.0" fitWidth="28.0" layoutX="55.0" layoutY="334.0">
+      </ImageView>
+      <ImageView fx:id="third_shelf_2" fitHeight="28.0" fitWidth="28.0" layoutX="109.0" layoutY="334.0">
+      </ImageView>
+      <ImageView fitHeight="28.0" fitWidth="28.0" layoutX="48.0" layoutY="408.0">
+         <Image url="@../graphics/resources/coin.png"/>
+      </ImageView>
+      <ImageView fitHeight="28.0" fitWidth="28.0" layoutX="48.0" layoutY="439.0">
+         <Image url="@../graphics/resources/servant.png"/>
+      </ImageView>
+      <ImageView fitHeight="28.0" fitWidth="28.0" layoutX="96.0" layoutY="406.0">
+         <Image url="@../graphics/resources/stone.png"/>
+      </ImageView>
+      <ImageView fitHeight="28.0" fitWidth="28.0" layoutX="96.0" layoutY="439.0">
+         <Image url="@../graphics/resources/shield.png"/>
+      </ImageView>
+      <Label fx:id="chest_coin" alignment="CENTER" layoutX="52.0" layoutY="409.0" prefHeight="20.0" prefWidth="20.0"
+             text="0"/>
+      <Label fx:id="chest_stone" alignment="CENTER" layoutX="98.0" layoutY="409.0" prefHeight="20.0" prefWidth="20.0"
+             text="0"/>
+      <Label fx:id="chest_shield" alignment="CENTER" layoutX="98.0" layoutY="441.0" prefHeight="20.0" prefWidth="20.0"
+             text="0"/>
+      <Label fx:id="chest_servant" alignment="CENTER" layoutX="51.0" layoutY="441.0" prefHeight="20.0" prefWidth="20.0"
+             text="0" textFill="#050505">
+         <font>
+            <Font name="System Bold" size="13.0"/>
+         </font>
+      </Label>
+      <ImageView fx:id="first_slot_0" fitHeight="110.0" fitWidth="88.0" layoutX="278.0" layoutY="325.0">
+      </ImageView>
+      <ImageView fx:id="second_slot_0" fitHeight="110.0" fitWidth="88.0" layoutX="405.0" layoutY="325.0">
+      </ImageView>
+      <ImageView fx:id="third_slot_0" fitHeight="110.0" fitWidth="88.0" layoutX="534.0" layoutY="325.0">
+      </ImageView>
+      <ImageView fx:id="first_slot_1" fitHeight="110.0" fitWidth="88.0" layoutX="278.0" layoutY="305.0">
+      </ImageView>
+      <ImageView fx:id="first_slot_2" fitHeight="110.0" fitWidth="88.0" layoutX="278.0" layoutY="285.0">
+      </ImageView>
+      <ImageView fx:id="second_slot_1" fitHeight="110.0" fitWidth="88.0" layoutX="405.0" layoutY="305.0">
+      </ImageView>
+      <ImageView fx:id="second_slot_2" fitHeight="110.0" fitWidth="88.0" layoutX="405.0" layoutY="285.0">
+      </ImageView>
+      <ImageView fx:id="third_slot_1" fitHeight="110.0" fitWidth="88.0" layoutX="534.0" layoutY="305.0">
+      </ImageView>
+      <ImageView fx:id="third_slot_2" fitHeight="110.0" fitWidth="88.0" layoutX="534.0" layoutY="285.0">
+      </ImageView>
+      <ImageView fx:id="papal2" fitHeight="50.0" fitWidth="50.0" layoutX="332.0" layoutY="98.0">
+         <Image url="@../graphics/itinerary/papal2.png"/>
+      </ImageView>
+      <ImageView fx:id="papal1" fitHeight="50.0" fitWidth="50.0" layoutX="170.0" layoutY="127.0">
+         <Image url="@../graphics/itinerary/papal1.png"/>
+      </ImageView>
+      <ImageView fx:id="papal3" fitHeight="50.0" fitWidth="50.0" layoutX="526.0" layoutY="127.0">
+         <Image url="@../graphics/itinerary/papal3.png"/>
+      </ImageView>
+      <ImageView fx:id="blackcross" fitHeight="24.0" fitWidth="24.0" layoutX="40.0" layoutY="160.0">
+      </ImageView>
+      <ImageView fx:id="cross" fitHeight="24.0" fitWidth="24.0" layoutX="33.0" layoutY="153.0">
+         <Image url="@../graphics/itinerary/Cross.png"/>
+      </ImageView>
+      <ImageView fx:id="inkwell" fitHeight="40.0" fitWidth="40.0" layoutX="560.0" layoutY="10.0">
+         <Image url="@../graphics/calamaio.png"/>
+      </ImageView>
+      <Button fx:id="market_c1" layoutX="850.0" layoutY="720.0" mnemonicParsing="false" onAction="#selectMarketC1"
+              opacity="0.0" prefHeight="40.0" prefWidth="20.0" styleClass="clickable"/>
+      <Button fx:id="market_c2" layoutX="882.0" layoutY="720.0" mnemonicParsing="false" onAction="#selectMarketC2"
+              opacity="0.0" prefHeight="40.0" prefWidth="20.0" styleClass="clickable"/>
+      <Button fx:id="market_c3" layoutX="915.0" layoutY="720.0" mnemonicParsing="false" onAction="#selectMarketC3"
+              opacity="0.0" prefHeight="40.0" prefWidth="20.0" styleClass="clickable"/>
+      <Button fx:id="market_c4" layoutX="948.0" layoutY="720.0" mnemonicParsing="false" onAction="#selectMarketC4"
+              opacity="0.0" prefHeight="40.0" prefWidth="20.0" styleClass="clickable"/>
+      <Button fx:id="market_r3" layoutX="1010.0" layoutY="670.0" mnemonicParsing="false" onAction="#selectMarketR3"
+              opacity="0.0" prefHeight="15.0" prefWidth="30.0" styleClass="clickable">
+         <font>
+            <Font size="1.0"/>
+         </font>
+      </Button>
+      <Button fx:id="market_r2" layoutX="1010.0" layoutY="643.0" mnemonicParsing="false" onAction="#selectMarketR2"
+              opacity="0.0" prefHeight="15.0" prefWidth="30.0" styleClass="clickable">
+         <font>
+            <Font size="1.0"/>
+         </font>
+      </Button>
+      <Button fx:id="market_r1" layoutX="1010.0" layoutY="615.0" mnemonicParsing="false" onAction="#selectMarketR1"
+              opacity="0.0" prefHeight="15.0" prefWidth="30.0" styleClass="clickable">
+         <font>
+            <Font size="1.0"/>
+         </font>
+      </Button>
+      <Button fx:id="devdeck_30" layoutX="764.0" layoutY="402.0" mnemonicParsing="false" onAction="#selectDev30"
+              opacity="0.0" prefHeight="100.0" prefWidth="80.0" styleClass="clickable"/>
+      <Button fx:id="devdeck_31" layoutX="862.0" layoutY="402.0" mnemonicParsing="false" onAction="#selectDev31"
+              opacity="0.0" prefHeight="100.0" prefWidth="80.0" styleClass="clickable"/>
+      <Button fx:id="devdeck_32" layoutX="960.0" layoutY="402.0" mnemonicParsing="false" onAction="#selectDev32"
+              opacity="0.0" prefHeight="100.0" prefWidth="80.0" styleClass="clickable"/>
+      <Button fx:id="devdeck_20" layoutX="764.0" layoutY="283.0" mnemonicParsing="false" onAction="#selectDev20"
+              opacity="0.0" prefHeight="100.0" prefWidth="80.0" styleClass="clickable"/>
+      <Button fx:id="devdeck_21" layoutX="862.0" layoutY="283.0" mnemonicParsing="false" onAction="#selectDev21"
+              opacity="0.0" prefHeight="100.0" prefWidth="80.0" styleClass="clickable"/>
+      <Button fx:id="devdeck_22" layoutX="960.0" layoutY="283.0" mnemonicParsing="false" onAction="#selectDev22"
+              opacity="0.0" prefHeight="100.0" prefWidth="80.0" styleClass="clickable"/>
+      <Button fx:id="devdeck_12" layoutX="960.0" layoutY="163.0" mnemonicParsing="false" onAction="#selectDev12"
+              opacity="0.0" prefHeight="100.0" prefWidth="80.0" styleClass="clickable"/>
+      <Button fx:id="devdeck_11" layoutX="862.0" layoutY="163.0" mnemonicParsing="false" onAction="#selectDev11"
+              opacity="0.0" prefHeight="100.0" prefWidth="80.0" styleClass="clickable"/>
+      <Button fx:id="devdeck_10" layoutX="764.0" layoutY="163.0" mnemonicParsing="false" onAction="#selectDev10"
+              opacity="0.0" prefHeight="100.0" prefWidth="80.0" styleClass="clickable"/>
+      <Button fx:id="devdeck_00" layoutX="764.0" layoutY="43.0" mnemonicParsing="false" onAction="#selectDev00"
+              opacity="0.0" prefHeight="100.0" prefWidth="80.0" styleClass="clickable"/>
+      <Button fx:id="devdeck_01" layoutX="862.0" layoutY="43.0" mnemonicParsing="false" onAction="#selectDev01"
+              opacity="0.0" prefHeight="100.0" prefWidth="80.0" styleClass="clickable"/>
+      <Button fx:id="devdeck_02" layoutX="960.0" layoutY="43.0" mnemonicParsing="false" onAction="#selectDev02"
+              opacity="0.0" prefHeight="100.0" prefWidth="80.0" styleClass="clickable"/>
+      <ImageView fx:id="first_depot_1" fitHeight="28.0" fitWidth="28.0" layoutX="498.0" layoutY="643.0">
+         <Image url="@../graphics/resources/stone.png"/>
+      </ImageView>
+      <ImageView fx:id="first_depot_2" fitHeight="28.0" fitWidth="28.0" layoutX="530.0" layoutY="643.0">
+         <Image url="@../graphics/resources/stone.png"/>
+      </ImageView>
+      <ImageView fx:id="second_depot_1" fitHeight="28.0" fitWidth="28.0" layoutX="596.0" layoutY="643.0">
+         <Image url="@../graphics/resources/stone.png"/>
+      </ImageView>
+      <ImageView fx:id="second_depot_2" fitHeight="28.0" fitWidth="28.0" layoutX="629.0" layoutY="644.0">
+         <Image url="@../graphics/resources/stone.png"/>
+      </ImageView>
+      <Button fx:id="played_1" layoutX="488.0" layoutY="571.0" mnemonicParsing="false" onAction="#selectFirstPlayed"
+              opacity="0.0" prefHeight="100.0" prefWidth="80.0" styleClass="clickable"/>
+      <Button fx:id="played_2" layoutX="586.0" layoutY="571.0" mnemonicParsing="false" onAction="#selectSecondPlayed"
+              opacity="0.0" prefHeight="100.0" prefWidth="80.0" styleClass="clickable"/>
+      <Button fx:id="hand_1" layoutX="488.0" layoutY="744.0" mnemonicParsing="false" onAction="#selectFirstHand"
+              opacity="0.0" prefHeight="100.0" prefWidth="80.0" styleClass="clickable"/>
+      <Button fx:id="hand_2" layoutX="586.0" layoutY="744.0" mnemonicParsing="false" onAction="#selectSecondHand"
+              opacity="0.0" prefHeight="100.0" prefWidth="80.0" styleClass="clickable"/>
+      <Button fx:id="slot_1" layoutX="302.0" layoutY="450.0" mnemonicParsing="false" onAction="#selectSlot1"
+              opacity="0.0" prefHeight="40.0" prefWidth="40.0" styleClass="clickable"/>
+      <Button fx:id="slot_3" layoutX="565.0" layoutY="450.0" mnemonicParsing="false" onAction="#selectSlot3"
+              opacity="0.0" prefHeight="40.0" prefWidth="40.0" styleClass="clickable"/>
+      <Button fx:id="slot_2" layoutX="430.0" layoutY="450.0" mnemonicParsing="false" onAction="#selectSlot2"
+              opacity="0.0" prefHeight="40.0" prefWidth="40.0" styleClass="clickable"/>
+      <Button fx:id="board_production" layoutX="200.0" layoutY="450.0" mnemonicParsing="false"
+              onAction="#selectBoardProduction" opacity="0.0" prefHeight="40.0" prefWidth="40.0"
+              styleClass="clickable"/>
+      <Button fx:id="shelf3" layoutX="53.0" layoutY="335.0" mnemonicParsing="false" onAction="#selectThirdShelf"
+              opacity="0.0" prefHeight="25.0" prefWidth="90.0" styleClass="clickable">
+         <font>
+            <Font size="1.0"/>
+         </font>
+      </Button>
+      <Button fx:id="shelf2" layoutX="68.0" layoutY="297.0" mnemonicParsing="false" onAction="#selectSecondShelf"
+              opacity="0.0" prefHeight="25.0" prefWidth="60.0" styleClass="clickable">
+         <font>
+            <Font size="1.0"/>
+         </font>
+      </Button>
+      <Button fx:id="shelf1" layoutX="84.0" layoutY="257.0" mnemonicParsing="false" onAction="#selectFirstShelf"
+              opacity="0.0" prefHeight="25.0" prefWidth="25.0" styleClass="clickable">
+         <font>
+            <Font size="1.0"/>
+         </font>
+      </Button>
+      <Button fx:id="back_button" layoutX="10.0" layoutY="815.0" mnemonicParsing="false" onAction="#quitAction"
+              prefHeight="30.0" prefWidth="30.0" styleClass="backButton, clickable"/>
+      <Button fx:id="confirm_button" layoutX="210.0" layoutY="810.0" mnemonicParsing="false"
+              onAction="#selectConfirmButton" prefHeight="40.0" prefWidth="40.0" styleClass="confirmButton, clickable"/>
+      <Button fx:id="end_turn" layoutX="410.0" layoutY="815.0" mnemonicParsing="false" onAction="#endTurn"
+              prefHeight="30.0" prefWidth="30.0" styleClass="turnButton, clickable"/>
+      <ImageView fx:id="setupdraw1" fitHeight="110.0" fitWidth="88.0" layoutX="19.0" layoutY="635.0">
+      </ImageView>
+      <ImageView fx:id="setupdraw2" fitHeight="110.0" fitWidth="88.0" layoutX="127.0" layoutY="635.0">
+      </ImageView>
+      <ImageView fx:id="setupdraw3" fitHeight="110.0" fitWidth="88.0" layoutX="235.0" layoutY="635.0">
+      </ImageView>
+      <ImageView fx:id="setupdraw4" fitHeight="110.0" fitWidth="88.0" layoutX="343.0" layoutY="635.0">
+      </ImageView>
+      <Button fx:id="setupdraw_button1" layoutX="23.0" layoutY="640.0" mnemonicParsing="false" onAction="#select_sd1"
+              opacity="0.0" prefHeight="100.0" prefWidth="80.0"/>
+      <Button fx:id="setupdraw_button4" layoutX="347.0" layoutY="640.0" mnemonicParsing="false" onAction="#select_sd4"
+              opacity="0.0" prefHeight="100.0" prefWidth="80.0"/>
+      <ImageView fx:id="message_stone" fitHeight="28.0" fitWidth="28.0" layoutX="157.0" layoutY="605.0">
+         <Image url="@../graphics/resources/stone.png"/>
+      </ImageView>
+      <ImageView fx:id="message_servant" fitHeight="28.0" fitWidth="28.0" layoutX="265.0" layoutY="605.0">
+         <Image url="@../graphics/resources/servant.png"/>
+      </ImageView>
+      <ImageView fx:id="message_shield" fitHeight="28.0" fitWidth="28.0" layoutX="373.0" layoutY="605.0">
+         <Image url="@../graphics/resources/shield.png"/>
+      </ImageView>
+      <ImageView fx:id="message_coin" fitHeight="28.0" fitWidth="28.0" layoutX="49.0" layoutY="605.0">
+         <Image url="@../graphics/resources/coin.png"/>
+      </ImageView>
+      <Button fx:id="coin_button" layoutX="49.0" layoutY="605.0" mnemonicParsing="false" onAction="#select_coin"
+              opacity="0.0" prefHeight="26.0" prefWidth="26.0" styleClass="clickable"/>
+      <Button fx:id="stone_button" layoutX="158.0" layoutY="605.0" mnemonicParsing="false" onAction="#select_stone"
+              opacity="0.0" prefHeight="26.0" prefWidth="26.0" styleClass="clickable"/>
+      <Button fx:id="servant_button" layoutX="266.0" layoutY="605.0" mnemonicParsing="false" onAction="#select_servant"
+              opacity="0.0" prefHeight="26.0" prefWidth="26.0" styleClass="clickable"/>
+      <Button fx:id="shield_button" layoutX="375.0" layoutY="605.0" mnemonicParsing="false" onAction="#select_shield"
+              opacity="0.0" prefHeight="26.0" prefWidth="26.0" styleClass="clickable"/>
+      <Label fx:id="message_coin_number" alignment="CENTER" layoutX="52.0" layoutY="630.0" prefHeight="20.0"
+             prefWidth="20.0">
+         <font>
+            <Font size="13.0"/>
+         </font>
+      </Label>
+      <Label fx:id="message_stone_number" alignment="CENTER" layoutX="159.0" layoutY="630.0" prefHeight="20.0"
+             prefWidth="20.0">
+         <font>
+            <Font size="13.0"/>
+         </font>
+      </Label>
+      <Label fx:id="message_servant_number" alignment="CENTER" layoutX="268.0" layoutY="630.0" prefHeight="20.0"
+             prefWidth="20.0" textFill="#050505">
+         <font>
+            <Font size="13.0"/>
+         </font>
+      </Label>
+      <Label fx:id="message_shield_number" alignment="CENTER" layoutX="375.0" layoutY="630.0" prefHeight="20.0"
+             prefWidth="20.0">
+         <font>
+            <Font size="13.0"/>
+         </font>
+      </Label>
+      <ImageView fx:id="trashcan" fitHeight="53.0" fitWidth="50.0" layoutX="208.0" layoutY="678.0">
+         <Image url="@../graphics/trashcan.png"/>
+      </ImageView>
+      <Button fx:id="trashcan_button" layoutX="208.0" layoutY="678.0" mnemonicParsing="false" onAction="#selectTrashcan"
+              opacity="0.0" prefHeight="53.0" prefWidth="50.0" styleClass="clickable"/>
+      <Button fx:id="setupdraw_button3" layoutX="239.0" layoutY="640.0" mnemonicParsing="false" onAction="#select_sd3"
+              opacity="0.0" prefHeight="100.0" prefWidth="80.0"/>
+      <Button fx:id="setupdraw_button2" layoutX="131.0" layoutY="640.0" mnemonicParsing="false" onAction="#select_sd2"
+              opacity="0.0" prefHeight="100.0" prefWidth="80.0"/>
+      <Button fx:id="chest_coin_button" layoutX="48.0" layoutY="405.0" mnemonicParsing="false"
+              onAction="#select_chest_coin" opacity="0.0" prefHeight="28.0" prefWidth="28.0" styleClass="clickable"/>
+      <Button fx:id="chest_stone_button" layoutX="96.0" layoutY="406.0" mnemonicParsing="false"
+              onAction="#select_chest_stone" opacity="0.0" prefHeight="28.0" prefWidth="28.0" styleClass="clickable"/>
+      <Button fx:id="chest_servant_button" layoutX="47.0" layoutY="439.0" mnemonicParsing="false"
+              onAction="#select_chest_servant" opacity="0.0" prefHeight="28.0" prefWidth="28.0" styleClass="clickable"/>
+      <Button fx:id="chest_shield_button" layoutX="96.0" layoutY="439.0" mnemonicParsing="false"
+              onAction="#select_chest_shield" opacity="0.0" prefHeight="28.0" prefWidth="28.0" styleClass="clickable"/>
+   </Group>
 </StackPane>

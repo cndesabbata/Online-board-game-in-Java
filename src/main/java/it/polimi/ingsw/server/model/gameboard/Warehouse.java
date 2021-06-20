@@ -90,7 +90,7 @@ public class Warehouse extends Observable {
                 shelf = warehouse.get(numOfShelf.ordinal());
                 if (shelf.getResource() != Resource.EMPTY && shelf.getResource() != Rp.getResource())
                     throw new WrongActionException("Shelf " +numOfShelf+ " contains " +shelf.getResource()+ "s, not " +Rp.getResource()+ "s. ");
-                else if (!checkOtherShelves(Rp.getResource(), numOfShelf))                                              //example: if I want to add two coins in the third shelf, but there is already one coin in the second shelf, then I have to discard two coins.
+                else if (checkOtherShelves(Rp.getResource(), numOfShelf))                                              //example: if I want to add two coins in the third shelf, but there is already one coin in the second shelf, then I have to discard two coins.
                     throw new WrongActionException("There is already another shelf storing " +Rp.getResource().toString()+ "s and it is not shelf " +Rp.getShelf()+ ". ");
                 else if (calculateQuantity(storableRes, Rp) > dimShelf - shelf.getQuantity())
                     throw new WrongActionException("Shelf " +numOfShelf+ " does not have enough space to store the indicated " +Rp.getResource()+ "s. ");
@@ -173,34 +173,43 @@ public class Warehouse extends Observable {
                 dimShelfDest = destShelf.ordinal() + 1;                                                                 //dimension of a "normal" shelf
             else dimShelfDest = 2;                                                                                      //dimension of a "depot"
             if (shelfSrc.getResource() == Resource.EMPTY)
-                throw new WrongActionException("Moving resources from shelf " +srcShelf+ " to " +destShelf+ " is not possible because shelf " +srcShelf+ " is empty. ");
+                throw new WrongActionException(srcShelf+ " is empty. ");
             else if (shelfSrc.getQuantity() < quantity)
-                throw new WrongActionException("Moving resources from shelf " +srcShelf+ " to " +destShelf+ " is not possible because " +
-                                                "the specified quantity is greater than the actual number of " +shelfSrc.getResource()+ "s in shelf " +srcShelf+ ". ");
+                throw new WrongActionException("The specified quantity is greater than the actual number of " +shelfSrc.getResource()+ "s in shelf " +srcShelf+ ". ");
             else if (srcShelf.ordinal() < initialDim && destShelf.ordinal() < initialDim && quantity != shelfSrc.getQuantity())
-                throw new WrongActionException("Moving resources from shelf " +srcShelf+ " to " +destShelf+ " is not possible because when moving resources between the first " +initialDim+
+                throw new WrongActionException("When moving resources between the first " +initialDim+
                         " shelves, all the resources from the source shelf must be moved. ");
             else if (shelfDest.getResource() != Resource.EMPTY && shelfDest.getResource() != shelfSrc.getResource())                                                 //rule of same resource in the same shelf.
-                throw new WrongActionException("Moving resources from shelf " +srcShelf+ " to " +destShelf+ " is not possible because shelves " +srcShelf+ " and " +destShelf+ " store different resources. ");
+                throw new WrongActionException("Shelves " +srcShelf+ " and " +destShelf+ " store different resources. ");
+            else if(srcShelf.ordinal() >= initialDim && checkMoveDepot(shelfSrc.getResource(), destShelf))
+                throw new WrongActionException("There is already another shelf storing " +shelfSrc.getResource()+ "s. ");
             else if (dimShelfDest - shelfDest.getQuantity() < quantity)
-                throw new WrongActionException("Moving resources from shelf " +srcShelf+ " to " +destShelf+ " is not possible because there is not enough space in shelf " +destShelf+ ". ");
+                throw new WrongActionException("There is not enough space in shelf " +destShelf+ ". ");
         }
     }
+
+    /*controls if there is a "normal" shelf storing res apart from shelf*/
+    private boolean checkMoveDepot(Resource resource, NumOfShelf shelf){
+        for(int i = 0; i < initialDim; i++){
+            if(i != shelf.ordinal() && warehouse.get(i).getResource() == resource)
+                return true;
+        }
+        return false;
+    }
+
     /*controls if there are some "normal" shelves storing resources of type resource, apart from numOfShelf*/
     private boolean checkOtherShelves(Resource resource, NumOfShelf numOfShelf){                                        //only used in addResource
-        boolean check = true;
         if(numOfShelf.ordinal() < initialDim){
             for(int i = 0; i < initialDim; i++) {
                 if (i != numOfShelf.ordinal()) {
-                    if (warehouse.get(i).getResource() == resource) {
-                        check = false;
-                        break;
-                    }
+                    if (warehouse.get(i).getResource() == resource)
+                        return true;
                 }
             }
         }
-        return check;
+        return false;
     }
+
     /*adds a "depot" shelf*/
     public void addDepot(Resource resource){
         warehouse.add(new ResourceQuantity(0, resource));
