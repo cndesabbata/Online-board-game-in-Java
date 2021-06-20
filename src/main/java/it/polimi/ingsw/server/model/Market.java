@@ -42,7 +42,11 @@ public class Market extends Observable {
         notifyObservers(new NewMarket(disposition, external));
     }
 
-    /* returns a copy of the current market disposition */
+    /**
+     * Method getDisposition returns a copy of the marble disposition.
+     *
+     * @return a copy (type Marble[][]) of the marble disposition.
+     */
     public Marble[][] getDisposition() {
         Marble[][] dispositionCopy;
 
@@ -50,20 +54,39 @@ public class Market extends Observable {
         return dispositionCopy;
     }
 
+    /**
+     * Method notifyNew notifies all the observers of the new marble disposition
+     * and the new external marble.
+     */
     public void notifyNew (){
         notifyObservers(new NewMarket(disposition, external));
     }
 
+    /**
+     * Method notifyNew notifies the VirtualView object associated with a player
+     * of the new marble disposition and the new external marble.
+     *
+     * @param nickname of type String - the player's nickname.
+     */
     public void notifyNew (String nickname){
         notifySingleObserver(new NewMarket(disposition, external), nickname);
     }
 
-    /* return the external marble */
+    /**
+     * Method getExternal returns the external marble.
+     *
+     * @return of type Marble - the external marble.
+     */
     public Marble getExternal() {
         return external;
     }
 
-    /* sets the new market disposition depending on user selection */
+    /**
+     * Method setDisposition updates the market disposition and the external marble.
+     *
+     * @param selection of type MarketSelection - the player's choice.
+     * @param position of type int - the number of the row/column selected by the player.
+     */
     public void setDisposition(MarketSelection selection, int position) {
         Marble tempLast;
 
@@ -86,12 +109,22 @@ public class Market extends Observable {
         notifyObservers(new NewMarket(disposition, external));
     }
 
-    /* method used in testing */
+    /**
+     * Method setFakeDisposition updates the market disposition with a desired one.
+     * Used in unit tests only.
+     *
+     * @param disposition of type Marble[][] - the desired disposition.
+     */
     public void setFakeDisposition(Marble[][] disposition) {
         this.disposition = disposition;
     }
 
-    /* method used in testing*/
+    /**
+     * Method setFakeExternal updates the external marble with a desired one.
+     * Used in unit tests only.
+     *
+     * @param marble of type Marble - the desired marble.
+     */
     public void setFakeExternal(Marble marble) {
         this.external = marble;
     }
