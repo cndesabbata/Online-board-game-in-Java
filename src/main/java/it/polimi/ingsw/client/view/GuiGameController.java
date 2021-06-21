@@ -184,6 +184,9 @@ public class GuiGameController implements GuiController {
     private ImageView blackcross;
     @FXML
     private ImageView cross;
+    private final List<ImageView> papalCards = new ArrayList<>();
+    private final List<String> papalDownUrl = new ArrayList<>();
+    private final List<String> papalUpUrl = new ArrayList<>();
     private final List<Integer[]> coordinates = new ArrayList<>();
 
     //Chest and Warehouse
@@ -381,6 +384,7 @@ public class GuiGameController implements GuiController {
         initializeDevDecks();
         initializeDevSpaceSlots();
         initializeCoordinates();
+        initializePapalCards();
         initializeHandCards();
         initializePlayedCards();
         initializeChestWarehouse();
@@ -570,6 +574,18 @@ public class GuiGameController implements GuiController {
         devSpaceButtons.add(board_production);
         selectProductionCards = false;
         selectProductionInput = false;
+    }
+
+    private void initializePapalCards() {
+        papalCards.add(papal1);
+        papalCards.add(papal2);
+        papalCards.add(papal3);
+        papalDownUrl.add("/graphics/itinerary/papal1.png");
+        papalDownUrl.add("/graphics/itinerary/papal2.png");
+        papalDownUrl.add("/graphics/itinerary/papal3.png");
+        papalUpUrl.add("/graphics/itinerary/papal1_front.png");
+        papalUpUrl.add("/graphics/itinerary/papal2_front.png");
+        papalUpUrl.add("/graphics/itinerary/papal3_front.png");
     }
 
     private void initializeCoordinates() {
@@ -812,6 +828,19 @@ public class GuiGameController implements GuiController {
             }
             cross.setLayoutX(coordinates.get(currentGameboard.getPosition())[0]);
             cross.setLayoutY(coordinates.get(currentGameboard.getPosition())[1]);
+            Map<Integer, String> papalStatus = currentGameboard.getPapalCards();
+            for(int i = 0; i < papalStatus.size(); i++) {
+                if(papalStatus.get(i).equalsIgnoreCase("Face down")) {
+                    Image m = new Image(Objects.requireNonNull(getClass().getResourceAsStream(papalDownUrl.get(i))));
+                    papalCards.get(i).setImage(m);
+                }
+                else if(papalStatus.get(i).equalsIgnoreCase("Face up")) {
+                    Image m = new Image(Objects.requireNonNull(getClass().getResourceAsStream(papalUpUrl.get(i))));
+                    papalCards.get(i).setImage(m);
+                }
+                else
+                    papalCards.get(i).setImage(null);
+            }
         }
     }
 
