@@ -64,7 +64,8 @@ public class Market extends Observable {
 
     /**
      * Notifies the player's virtual view of the new marble disposition
-     * and the new external marble.
+     * and the new external marble. Used when a player is reconnecting
+     * to the game.
      *
      * @param nickname the player's nickname
      */
