@@ -32,8 +32,7 @@ public class Player extends Observable {
 
     public void setActionDone(UserAction actionDone) {
         this.actionDone = actionDone;
-        if (actionDone == UserAction.SETUP_DRAW || actionDone == UserAction.SELECT_LEADCARD
-                || actionDone == UserAction.RECONNECT_DISPOSITION)
+        if (actionDone == UserAction.SETUP_DRAW || actionDone == UserAction.SELECT_LEADCARD)
             notifySingleObserver(new ChangesDone(nickname, actionDone), nickname);
         else notifyObservers(new ChangesDone(nickname, actionDone));
     }

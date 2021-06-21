@@ -32,6 +32,7 @@ public abstract class GameController {
             d.notifyNew(nickname);
         }
         for (Player p : activePlayers){
+            getGame().notifyNewPlayers(getActivePlayers(), p.getNickname());
             p.notifyNew(nickname);
             p.getBoard().getChest().notifyNew(nickname);
             p.getBoard().getDevSpace().notifyNew(nickname);
