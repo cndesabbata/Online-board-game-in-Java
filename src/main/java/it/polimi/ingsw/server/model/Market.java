@@ -15,8 +15,7 @@ public class Market extends Observable {
     private Marble external;
 
     /**
-     * Constructor Market creates a new Market instance with a
-     * random disposition.
+     * Creates a new Market instance with a random disposition.
      *
      */
     public Market() {
@@ -43,9 +42,9 @@ public class Market extends Observable {
     }
 
     /**
-     * Method getDisposition returns a copy of the marble disposition.
+     * Returns a copy of the marble disposition.
      *
-     * @return a copy (type Marble[][]) of the marble disposition.
+     * @return a copy of the marble disposition
      */
     public Marble[][] getDisposition() {
         Marble[][] dispositionCopy;
@@ -55,37 +54,38 @@ public class Market extends Observable {
     }
 
     /**
-     * Method notifyNew notifies all the observers of the new marble disposition
+     * Notifies all the virtual views of the new marble disposition
      * and the new external marble.
+     *
      */
     public void notifyNew (){
         notifyObservers(new NewMarket(disposition, external));
     }
 
     /**
-     * Method notifyNew notifies the VirtualView object associated with a player
-     * of the new marble disposition and the new external marble.
+     * Notifies the player's virtual view of the new marble disposition
+     * and the new external marble.
      *
-     * @param nickname of type String - the player's nickname.
+     * @param nickname the player's nickname
      */
     public void notifyNew (String nickname){
         notifySingleObserver(new NewMarket(disposition, external), nickname);
     }
 
     /**
-     * Method getExternal returns the external marble.
+     * Returns the external marble.
      *
-     * @return of type Marble - the external marble.
+     * @return the external marble
      */
     public Marble getExternal() {
         return external;
     }
 
     /**
-     * Method setDisposition updates the market disposition and the external marble.
+     * Updates the market disposition and the external marble.
      *
-     * @param selection of type MarketSelection - the player's choice.
-     * @param position of type int - the number of the row/column selected by the player.
+     * @param selection the player's choice (row or column)
+     * @param position  the number of the row/column selected by the player
      */
     public void setDisposition(MarketSelection selection, int position) {
         Marble tempLast;
@@ -110,20 +110,18 @@ public class Market extends Observable {
     }
 
     /**
-     * Method setFakeDisposition updates the market disposition with a desired one.
-     * Used in unit tests only.
+     * Updates the market disposition with a desired one. Used in unit tests only.
      *
-     * @param disposition of type Marble[][] - the desired disposition.
+     * @param disposition the desired disposition
      */
     public void setFakeDisposition(Marble[][] disposition) {
         this.disposition = disposition;
     }
 
     /**
-     * Method setFakeExternal updates the external marble with a desired one.
-     * Used in unit tests only.
+     * Updates the external marble with a desired one. Used in unit tests only.
      *
-     * @param marble of type Marble - the desired marble.
+     * @param marble the desired external marble
      */
     public void setFakeExternal(Marble marble) {
         this.external = marble;
