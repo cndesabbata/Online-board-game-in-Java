@@ -164,6 +164,7 @@ public class Server {
                 gc.addActiveConnection(connection);
                 connection.setGameController(gc);
                 VirtualView virtualView = new VirtualView(nickname, connection);
+                virtualView.sendAllExcept(new Disconnection(nickname + " reconnected. "), nickname);
                 clientToConnection.put(virtualView, connection);
                 gc.addObserver(find(connection, clientToConnection));
                 connection.sendSocketMessage(new SetupMessage("Connection was successfully set-up!" +

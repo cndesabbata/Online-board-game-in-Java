@@ -33,7 +33,7 @@ public class SinglePlayerController extends GameController {
     public void sendReloadedView(String nickname){
         reloadView(nickname);
         Player p = getGame().getPlayerByNickname(nickname);
-        p.setActionDone(p.getActionDone());
+        p.setActionDone(UserAction.RECONNECT_DISPOSITION);
     }
 
     public List<SoloActionToken> getTokens() {

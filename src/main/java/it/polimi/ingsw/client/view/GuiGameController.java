@@ -379,6 +379,7 @@ public class GuiGameController implements GuiController {
     }
 
     public void initializeGame() {
+        currentAction = UserAction.INITIAL_DISPOSITION;
         initializeMarket();
         initializeDevDecks();
         initializeDevSpaceSlots();
@@ -394,6 +395,7 @@ public class GuiGameController implements GuiController {
             group.getChildren().remove(left_gameboard);
             group.getChildren().remove(right_gameboard);
         }
+        updateGUI(view.getNickname());
     }
 
     public void initializeMessagePanel() {
@@ -705,15 +707,19 @@ public class GuiGameController implements GuiController {
             handleButtons(setupDrawButtons, true);
             connectionSocket.send(new LeaderCardSelection(leadCardIndexes));
             message.setText("");
-            group.getChildren().remove(setupdraw1);
-            group.getChildren().remove(setupdraw2);
-            group.getChildren().remove(setupdraw3);
-            group.getChildren().remove(setupdraw4);
-            group.getChildren().remove(setupdraw_button1);
-            group.getChildren().remove(setupdraw_button2);
-            group.getChildren().remove(setupdraw_button3);
-            group.getChildren().remove(setupdraw_button4);
+            removeSetupButtons();
         }
+    }
+
+    private void removeSetupButtons(){
+        group.getChildren().remove(setupdraw1);
+        group.getChildren().remove(setupdraw2);
+        group.getChildren().remove(setupdraw3);
+        group.getChildren().remove(setupdraw4);
+        group.getChildren().remove(setupdraw_button1);
+        group.getChildren().remove(setupdraw_button2);
+        group.getChildren().remove(setupdraw_button3);
+        group.getChildren().remove(setupdraw_button4);
     }
 
     @FXML
@@ -916,15 +922,17 @@ public class GuiGameController implements GuiController {
     }
 
     private void updateGUI(String owner) {
-        updateDevDecks();
-        updateMarket();
-        updateChest(owner);
-        updateWarehouse(owner);
-        updateDevSpace(owner);
-        updateItinerary(owner);
-        updateHandCards();
-        updatePlayedCards(owner);
-        clearMessageBoard();
+        synchronized(view){
+            updateDevDecks();
+            updateMarket();
+            updateChest(owner);
+            updateWarehouse(owner);
+            updateDevSpace(owner);
+            updateItinerary(owner);
+            updateHandCards();
+            updatePlayedCards(owner);
+            clearMessageBoard();
+        }
     }
 
     private void clearMessageBoard() {
@@ -941,7 +949,7 @@ public class GuiGameController implements GuiController {
         else if (newIndex < 0) newIndex = view.getOtherGameBoards().size();
         currentGameboard = findGameboardById(newIndex);
         updateGUI(currentGameboard.getOwner());
-        if (currentGameboard.getOwner().equalsIgnoreCase(view.getNickname())) {
+        if (currentGameboard.getOwner().equalsIgnoreCase(view.getNickname()) && view.isTurnActive()) {
             enableAction("Please choose an action.");
         } else disableButtons();
     }
@@ -1012,6 +1020,8 @@ public class GuiGameController implements GuiController {
     }
 
     public void enableAction(String s) {
+        if (currentAction == UserAction.INITIAL_DISPOSITION)
+            removeSetupButtons();
         updateGUI(view.getNickname());
         message.setText(s);
         handleButtons(marketButtons, false);
@@ -1475,7 +1485,7 @@ public class GuiGameController implements GuiController {
         if (colours.stream().anyMatch(s -> s.equalsIgnoreCase("red")))
             resourcesForAction.add(new ResourcePosition(Resource.FAITHPOINT, null, null));
         if (selectingLeadCard && whitemarbles > 0) {
-            if (view.getOwnGameBoard().getWarehouse().size() > 4) {
+            if (view.getOwnGameBoard().getPlayedCards().stream().filter(c -> c.getType().equalsIgnoreCase("Marble")).count()==2) {
                 message.setText("You have chosen to buy resources from the market, please choose\n" +
                         "the leader effect you would like to apply");
                 for (int i = 0; i < view.getOwnGameBoard().getPlayedCards().size(); i++){
@@ -1597,17 +1607,15 @@ public class GuiGameController implements GuiController {
                 if (!marbleResources.isEmpty()) {
                     List<ResourcePosition> extraRes1 = new ArrayList<>();
                     List<ResourcePosition> extraRes2 = new ArrayList<>();
-                    int j = resourcesForAction.size() - marbleResources.size();
                     for (String s : marbleResources) {
+                        int j = resourcesForAction.size();
                         for (int i = 0; i < j; i++) {
                             if (resourcesForAction.get(i).getResource().toString().equalsIgnoreCase(s)) {
                                 if (extraRes1.isEmpty() || extraRes1.get(0).getResource().toString().equalsIgnoreCase(s)) {
                                     extraRes1.add(resourcesForAction.remove(i));
-                                    i--;
                                     break;
                                 } else {
                                     extraRes2.add(resourcesForAction.remove(i));
-                                    i--;
                                     break;
                                 }
                             }
@@ -1976,7 +1984,6 @@ public class GuiGameController implements GuiController {
                 int i = Arrays.asList(Resource.values()).indexOf(Resource.valueOf(res.toUpperCase()));
                 marbleResources.add(res);
                 resToReceive.add(res);
-                resourcesToSelect++;
                 messageResourcesNumbers.get(i).setText((messageResourcesNumbers.get(i).getText().isEmpty() ? "1" : messageResourcesNumbers.get(i).getText() + 1));
                 messageResources.get(i).setImage(new Image(resourcesUrl.get(i)));
                 messageResourcesButtons.get(i).setDisable(false);
