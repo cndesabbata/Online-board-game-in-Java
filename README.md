@@ -16,7 +16,7 @@ of Renaissance, made by Cranio Creations.
     - Resilience to disconnections
 
 ## Test cases
-All tests in model and controller has a classes' coverage at 100%.
+Class coverage for model and controller packages is 100%.
 
 **Coverage criteria: code lines.**
 
