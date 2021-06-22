@@ -7,8 +7,16 @@ import it.polimi.ingsw.server.serverNetwork.Server;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+/**
+ * Class MasterOfRenaissance is the main class of the whole project.
+ */
 public class MasterOfRenaissance {
 
+    /**
+     * Allows the user to select GUI, CLI or Server based on the input provided.
+     *
+     * @param args the arguments provided
+     */
     public static void main(String[] args){
         System.out.print("Hi! Welcome to Master Of Renaissance!\nWhat would you like to do?\n");
         System.out.print("0. Launch Server\n1. Launch GUI\n2. Launch CLI\n3. Exit game\n>");
