@@ -9,6 +9,7 @@ import java.util.Scanner;
 
 /**
  * Class MasterOfRenaissance is the main class of the whole project.
+ *
  */
 public class MasterOfRenaissance {
 
