@@ -46,7 +46,11 @@ public class MessageHandler {
             view.setGamePhase(GamePhase.SETUP);
             view.setClientMessage(new DisplayMessage(((CustomMessage) message).getMessage()));
         } else if (message instanceof Disconnection){
-            view.setClientMessage(new DisplayMessage(((CustomMessage) message).getMessage() + (view.isTurnActive()? "Please choose an action." : "")));
+            view.setClientMessage(new DisplayMessage(((CustomMessage) message).getMessage() +
+                    (view.isTurnActive()? "Please choose an action." : "")));
+            if (view.getGamePhase() == GamePhase.SETUP){
+                view.getOtherGameBoards().removeIf(g -> g.getOwner().equalsIgnoreCase(((Disconnection) message).getNickname()));
+            }
         } else if (message instanceof PlayersNumberMessage) {
             PlayersNumberMessage p = (PlayersNumberMessage) message;
             view.setClientMessage(new RequestPlayersNumber(p.getMessage(), p.getInfoLobbies(), p.getOwners()));

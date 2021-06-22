@@ -41,6 +41,10 @@ public abstract class GameController {
         }
     }
 
+    public Server getServer() {
+        return server;
+    }
+
     public void setUpPlayer(ClientConnection connection){
         Player newPlayer = new Player(connection.getPlayerNickname(), game);
         addActivePlayer(newPlayer);

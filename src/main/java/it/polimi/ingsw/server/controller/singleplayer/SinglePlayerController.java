@@ -117,6 +117,9 @@ public class SinglePlayerController extends GameController {
             getActiveConnections().get(0).sendSocketMessage(new CloseMessage("You won the game! Your score is " + score));
         }
         setPhase(GamePhase.ENDED);
+        synchronized (getServer()) {
+            getServer().removeGame(this);
+        }
     }
 
     private int calculateScore(Player player) {
