@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Class DevCardBlueprint is an auxiliary class used to build development
+ * Class DevCardBlueprint is an auxiliary class used to build a development
  * card from the json files.
  *
  */
@@ -22,7 +22,7 @@ public class DevCardBlueprint {
      * @param requiredResources the array of required resources of the card
      * @param inputResources    the array of input resources of the card
      * @param outputResources   the array of output resources of the card
-     * @param url
+     * @param url               the url of the image corresponding to the card
      */
     public DevCardBlueprint(int victoryPoints, int[] requiredResources, int[] inputResources, int[] outputResources, String url) {
         this.victoryPoints = victoryPoints;
