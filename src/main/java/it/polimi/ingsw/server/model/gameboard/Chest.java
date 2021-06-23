@@ -24,7 +24,7 @@ public class Chest extends Observable {
     /**
      * Default constructor.
      *
-     * @param nickname the nickname of the player associated with the chest
+     * @param nickname the nickname of the player who owns this Chest object
      */
     public Chest(String nickname){
         owner = nickname;
