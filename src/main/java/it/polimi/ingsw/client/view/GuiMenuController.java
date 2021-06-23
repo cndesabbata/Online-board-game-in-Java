@@ -117,7 +117,9 @@ public class GuiMenuController implements GuiController{
     }
 
     public void initializeLobby(List<String> lobbyList){
+        playersNumber.getItems().clear();
         playersNumber.getItems().addAll(numberOptions);
+        lobbies.getItems().clear();
         lobbies.getItems().addAll(lobbyList);
     }
 }

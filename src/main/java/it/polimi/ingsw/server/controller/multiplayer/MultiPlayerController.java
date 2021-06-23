@@ -160,5 +160,8 @@ public class MultiPlayerController extends GameController {
             else
                 connection.sendSocketMessage(new CloseMessage("You lost the game! Your score is " + playersPoints.get(connection.getPlayerNickname())));
         }
+        synchronized (getServer()) {
+            getServer().removeGame(this);
+        }
     }
 }
