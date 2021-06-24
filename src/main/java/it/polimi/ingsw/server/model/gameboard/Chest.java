@@ -55,8 +55,8 @@ public class Chest extends Observable {
     }
 
     /**
-     * Removes resources from the chest. Safety is guaranteed because
-     * this method is only called after {@link #checkDecrement(List)}
+     * Removes resources from the chest. Safety is guaranteed if
+     * this method is called after {@link #checkDecrement(List)}
      * if the latter does not throw an exception.
      *
      * @param inputRes the list of resources that need to be removed
@@ -95,9 +95,9 @@ public class Chest extends Observable {
     }
 
     /**
-     * Adds resources to the chest. Safety is guaranteed because
-     * this method is only called after {@link #checkIncrement(List)}
-     * if the latter does not throw an exception.
+     * Adds resources to the chest. Safety is guaranteed if this
+     * method is called after {@link #checkIncrement(List)} if
+     * the latter does not throw an exception.
      *
      * @param inputRes the list of resources that need to be added
      */
@@ -132,10 +132,10 @@ public class Chest extends Observable {
     }*/
 
     /**
-     * Returns the amount of resources of the type provided.
+     * Returns the amount of resources of the type provided stored in the chest.
      *
      * @param resource the type of resource
-     * @return the amount of resources of the desired type
+     * @return the amount of resources of the desired type stored in the chest
      */
     public int getAvailability(Resource resource){
         int supply = 0;
