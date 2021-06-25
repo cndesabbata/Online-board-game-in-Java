@@ -1,6 +1,8 @@
 package it.polimi.ingsw.server.controller;
 
 import it.polimi.ingsw.messages.actions.Action;
+import it.polimi.ingsw.server.controller.multiplayer.MultiPlayerController;
+import it.polimi.ingsw.server.controller.singleplayer.SinglePlayerController;
 import it.polimi.ingsw.server.model.*;
 import it.polimi.ingsw.server.model.gameboard.CardStatus;
 import it.polimi.ingsw.server.observer.Observer;
@@ -10,6 +12,12 @@ import it.polimi.ingsw.server.serverNetwork.Server;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Abstract class GameController represents a generic game controller.
+ * It contains method that are equal in both {@link SinglePlayerController}
+ * and {@link MultiPlayerController}.
+ *
+ */
 public abstract class GameController {
     private final Game game;
     private final Server server;
@@ -17,7 +25,11 @@ public abstract class GameController {
     private final List<Player> activePlayers;
     private final List<ClientConnection> activeConnections;
 
-
+    /**
+     * Default constructor.
+     *
+     * @param server the server that is hosting the game
+     */
     public GameController(Server server) {
         this.server = server;
         this.game = new Game();
@@ -26,6 +38,12 @@ public abstract class GameController {
         phase = GamePhase.NOT_STARTED;
     }
 
+    /**
+     * Notifies a player's virtual view with a set of messages containing all
+     * the view elements. Used when a player is reconnecting to the game.
+     *
+     * @param nickname the nickname of the player to notify
+     */
     public void reloadView(String nickname){
         game.getMarket().notifyNew(nickname);
         for (DevDeck d : game.getDevDecks()){
@@ -41,10 +59,22 @@ public abstract class GameController {
         }
     }
 
+    /**
+     * Returns the server that is hosting the game.
+     *
+     * @return the server that is hosting the game
+     */
     public Server getServer() {
         return server;
     }
 
+    /**
+     * Creates a new Player object associated with a {@link ClientConnection} object and adds
+     * it to the list of players in the game, the list of active players and the list of active
+     * connections.
+     *
+     * @param connection the ClientConnection object associated with the player
+     */
     public void setUpPlayer(ClientConnection connection){
         Player newPlayer = new Player(connection.getPlayerNickname(), game);
         addActivePlayer(newPlayer);
@@ -52,22 +82,47 @@ public abstract class GameController {
         game.addPlayer(newPlayer);
     }
 
+    /**
+     * Returns the list of active connections.
+     *
+     * @return the list of active connections.
+     */
     public List<ClientConnection> getActiveConnections() {
         return activeConnections;
     }
 
+    /**
+     * Returns the game managed by this game controller.
+     *
+     * @return the game managed by this game controller
+     */
     public Game getGame() {
         return game;
     }
 
+    /**
+     * Returns the list of active players.
+     *
+     * @return the list of active players
+     */
     public List<Player> getActivePlayers() {
         return activePlayers;
     }
 
+    /**
+     * Adds a Connection object to the list of active connections.
+     *
+     * @param connection the connection to add
+     */
     public void addActiveConnection(ClientConnection connection){
         activeConnections.add(connection);
     }
 
+    /**
+     * Adds a player to the list of active players.
+     *
+     * @param player the player to add
+     */
     public void addActivePlayer(Player player){
         activePlayers.add(player);
     }
@@ -76,22 +131,44 @@ public abstract class GameController {
 
     public abstract void makeAction(Action action);
 
+    /**
+     * Returns the phase of the game.
+     *
+     * @return the phase of the game
+     */
     public GamePhase getPhase() {
         return phase;
     }
 
+    /**
+     * Sets the phase of the game.
+     *
+     * @param phase the new phase of the game
+     */
     public void setPhase(GamePhase phase) {
         this.phase = phase;
     }
 
-    /* checks if any papalReport needs to be triggered */
+    /**
+     * Checks if any papal report needs to be triggered. If one of them is
+     * triggered it updates the status of papal cards for all the players.
+     *
+     */
     public void checkAllPapalReports() {
         checkPapalReport(8, 5, 0);
         checkPapalReport(16, 12, 1);
         checkPapalReport(24, 19, 2);
     }
 
-    /* checks if a specified papalReport needs to be triggered */
+    /**
+     * Checks if a specified papal report needs to be triggered. If the papal report
+     * is triggered it updates the status of the corresponding papal cards for all
+     * the players.
+     *
+     * @param vaticanReportTrigger the index of the cell on the itinerary triggering the report
+     * @param vaticanReportStart   the first cell on the itinerary that allows a player to turn is card up if the report is triggered
+     * @param cardStatusIndex      the index of the papal cards that needs to be updated
+     */
     private void checkPapalReport(int vaticanReportTrigger, int vaticanReportStart, int cardStatusIndex) {
         List<Player> players = game.getPlayers();
 
@@ -123,6 +200,13 @@ public abstract class GameController {
         }
     }
 
+    /**
+     * Returns the amount of victory points given to a specified player for
+     * his position on the itinerary.
+     *
+     * @param player the specified player
+     * @return the amount of victory points given for the player's position on the itinerary
+     */
     protected int addItineraryVP(Player player) {
         int result = 0;
         int[] itineraryVP = {1,2,4,6,9,12,16,20};
@@ -135,6 +219,13 @@ public abstract class GameController {
         return result;
     }
 
+    /**
+     * Returns the amount of victory points given to a specified player by
+     * his papal cards.
+     *
+     * @param player the specified player
+     * @return the amount of victory points given by the player's papal cards
+     */
     public int addPapalVP(Player player) {
         int result = 0;
         CardStatus[] papalCardStatus = player.getBoard().getItinerary().getCardStatus();
@@ -144,6 +235,13 @@ public abstract class GameController {
         return result;
     }
 
+    /**
+     * Returns the amount of victory points given to a specified player by
+     * the developments cards on his development space.
+     *
+     * @param player the specified player
+     * @return the amount of victory points given by his development cards
+     */
     public int addDevCardVP(Player player) {
         int result = 0;
         List<List<DevCard>> playerDevCards = player.getBoard().getDevSpace().getCards();
@@ -155,6 +253,13 @@ public abstract class GameController {
         return result;
     }
 
+    /**
+     * Returns the amount of victory points given to a specified player by
+     * his leader cards.
+     *
+     * @param player the specified player
+     * @return the amount of victory points given by his leader cards
+     */
     public int addLeaderVP(Player player) {
         int result = 0;
         for (LeaderCard leaderCard : player.getPlayedLeaderCards())
@@ -162,6 +267,11 @@ public abstract class GameController {
         return result;
     }
 
+    /**
+     * Adds an observer to all the view elements that need to be observed.
+     *
+     * @param observer the observer to add
+     */
     public void addObserver(Observer observer){
         game.addObserver(observer);
         for (DevDeck d : game.getDevDecks()){
@@ -177,6 +287,11 @@ public abstract class GameController {
         }
     }
 
+    /**
+     * Removes an observer from all the view elements that it was observing.
+     *
+     * @param observer the observer to remove
+     */
     public void removeObserver (Observer observer){
         for (DevDeck d : game.getDevDecks()){
             d.removeObserver(observer);
@@ -194,8 +309,7 @@ public abstract class GameController {
     public abstract void checkEndGame();
 
     public abstract void setup();
-
-    /* computes victory points for every player and sets the game winner */
+    
     public abstract void endGame();
 
 }
