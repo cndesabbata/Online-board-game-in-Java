@@ -152,7 +152,7 @@ public class Player extends Observable {
     }
 
     /**
-     * It notifies the virtual view of the player with a ChangesDone message.
+     * It notifies the virtual view of the player with a {@link ChangesDone} message.
      * Used in single player mode only.
      *
      * @param action the last action performed by Lorenzo De Medici

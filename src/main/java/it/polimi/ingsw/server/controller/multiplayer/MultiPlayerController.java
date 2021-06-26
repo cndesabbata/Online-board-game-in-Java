@@ -25,7 +25,7 @@ public class MultiPlayerController extends GameController {
     /**
      * Default constructor.
      *
-     * @param server
+     * @param server the server that is hosting the game
      */
     public MultiPlayerController(Server server) {
         super(server);
@@ -136,9 +136,9 @@ public class MultiPlayerController extends GameController {
     }
 
     /**
-     * Picks a random player as sets him as first. Notifies each
-     * player of the development decks and send them a {@link NewPlayers}
-     * message. Then it starts the draw setup phase.
+     * Sets the game phase to SETUP, picks a random player as sets him as first. Notifies each
+     * player of the development decks and send them a {@link NewPlayers} message.
+     * It then starts the draw setup phase.
      *
      */
     public void setup() {
@@ -159,7 +159,7 @@ public class MultiPlayerController extends GameController {
 
     /**
      * Draws four leader cards for the current player and calls the
-     * {@link Player#setActionDone(UserAction)} method on him
+     * {@link Player#setActionDone(UserAction)} method on him.
      *
      */
     private void initialDraw() {
@@ -185,7 +185,7 @@ public class MultiPlayerController extends GameController {
     /**
      * Add the initial resources the player has chosen in the setup phase.
      *
-     * @param rps
+     * @param rps the resources chosen by the player
      */
     public void addInitialResources(List<ResourcePosition> rps) {
         currentPlayer.getBoard().getWarehouse().incrementResource(rps);
@@ -198,7 +198,8 @@ public class MultiPlayerController extends GameController {
 
     /**
      * Computes victory points for every player and sets the game winner,
-     * sending a {@link CloseMessage} to all players.
+     * sending a {@link CloseMessage} to all players. It then removes this
+     * controller from the server.
      *
      */
     @Override
