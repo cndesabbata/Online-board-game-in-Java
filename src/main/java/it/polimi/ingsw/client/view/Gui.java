@@ -30,10 +30,9 @@ public class Gui extends Application implements Observer {
     private final HashMap<String, Parent> nameToRoot = new HashMap<>();
     private final HashMap<String, GuiController> nameToController = new HashMap<>();
     private final ClientView view;
-    private final MessageHandler messageHandler;
     private final ClientConnectionSocket connectionSocket;
-    private boolean active;
     private Scene currentScene;
+    private String currentStatus;
     private MediaPlayer mediaPlayer;                                                                                    //this attribute is needed to keep the music going after the end of method start
 
     public static void main(String[] args){
@@ -42,8 +41,7 @@ public class Gui extends Application implements Observer {
 
     public Gui() {
         this.view = new ClientView(this);
-        this.messageHandler = new MessageHandler(view);
-        this.active = true;
+        MessageHandler messageHandler = new MessageHandler(view);
         this.connectionSocket = new ClientConnectionSocket(this, messageHandler);
     }
 
@@ -95,18 +93,18 @@ public class Gui extends Application implements Observer {
             e.printStackTrace();
         }
         currentScene = new Scene(nameToRoot.get(CONNECTION_MENU));
+        currentStatus = CONNECTION_MENU;
     }
 
-    public MessageHandler getMessageHandler() {
-        return messageHandler;
-    }
 
     public void changeRoot(String newScene) {
        currentScene.setRoot(nameToRoot.get(newScene));
+       currentStatus = newScene;
     }
 
     public void changeScene(String newScene) {
         currentScene = new Scene(nameToRoot.get(newScene));
+        currentStatus = newScene;
         stage.setScene(currentScene);
         stage.setResizable(false);
         stage.setMaximized(true);
@@ -115,32 +113,15 @@ public class Gui extends Application implements Observer {
         stage.show();
     }
 
-    public void initializeGame(){
-        ((GuiGameController) nameToController.get(GUI_GAME)).initializeGame();
-    }
-
     @Override
     public void update(Message message) {
         if (message instanceof DisplayMessage){
             DisplayMessage m = (DisplayMessage) message;
-            if (currentScene.getRoot().equals(nameToRoot.get(MAIN_MENU))){
-                Platform.runLater(() -> {
-                    ((GuiMenuController) nameToController.get(MAIN_MENU)).setMainMessage(m.getMessage());
-                });
-            }
-            else if (currentScene.getRoot().equals(nameToRoot.get(LOBBY_MENU))){
-                Platform.runLater(() -> {
-                    changeRoot(WAIT_PLAYERS);
-                });
-            }
-            else if (currentScene.getRoot().equals(nameToRoot.get(WAIT_PLAYERS)))
-                Platform.runLater(() -> {
-                    ((GuiMenuController) nameToController.get(WAIT_PLAYERS)).setWaitingMessage(m.getMessage());
-                });
-            else{
-                Platform.runLater(() -> {
-                    ((GuiGameController) nameToController.get(GUI_GAME)).setMessage(m.getMessage());
-                });
+            switch (currentStatus) {
+                case MAIN_MENU -> Platform.runLater(() -> ((GuiMenuController) nameToController.get(MAIN_MENU)).setMainMessage(m.getMessage()));
+                case LOBBY_MENU -> Platform.runLater(() -> changeRoot(WAIT_PLAYERS));
+                case WAIT_PLAYERS -> Platform.runLater(() -> ((GuiMenuController) nameToController.get(WAIT_PLAYERS)).setWaitingMessage(m.getMessage()));
+                default -> Platform.runLater(() -> ((GuiGameController) nameToController.get(GUI_GAME)).setMessage(m.getMessage()));
             }
         }
         else if (message instanceof RequestPlayersNumber){
@@ -151,65 +132,44 @@ public class Gui extends Application implements Observer {
             });
         }
         else if (message instanceof NewView){
+            currentStatus = GUI_GAME;
             Platform.runLater(() -> {
                 ((GuiGameController) nameToController.get(GUI_GAME)).initializeGame();
                 changeScene(GUI_GAME);
             });
         }
         else if (message instanceof SetupDiscard){
-            Platform.runLater(() -> {
-                ((GuiGameController) nameToController.get(GUI_GAME)).showSetupCards();
-            });
+            Platform.runLater(() -> ((GuiGameController) nameToController.get(GUI_GAME)).showSetupCards());
         }
         else if (message instanceof SetupResources){
-            Platform.runLater(() -> {
-                ((GuiGameController) nameToController.get(GUI_GAME)).selectSetupResources();
-            });
+            Platform.runLater(() -> ((GuiGameController) nameToController.get(GUI_GAME)).selectSetupResources());
         }
-        else if (message instanceof PrintHandCards){
-            Platform.runLater(() -> {
-                ((GuiGameController) nameToController.get(GUI_GAME)).updateHandCards();
-            });
+        else if (message instanceof PrintHandCards && currentStatus.equals(GUI_GAME)){
+            Platform.runLater(() -> ((GuiGameController) nameToController.get(GUI_GAME)).updateHandCards());
         }
-        else if (message instanceof PrintChest){
-            Platform.runLater(() -> {
-                ((GuiGameController) nameToController.get(GUI_GAME)).updateChest(((PrintChest) message).getMessage());
-            });
+        else if (message instanceof PrintChest && currentStatus.equals(GUI_GAME)){
+            Platform.runLater(() -> ((GuiGameController) nameToController.get(GUI_GAME)).updateChest(((PrintChest) message).getMessage()));
         }
-        else if (message instanceof PrintDevDecks){
-            Platform.runLater(() -> {
-                ((GuiGameController) nameToController.get(GUI_GAME)).updateDevDecks();
-            });
+        else if (message instanceof PrintDevDecks  && currentStatus.equals(GUI_GAME)){
+            Platform.runLater(() -> ((GuiGameController) nameToController.get(GUI_GAME)).updateDevDecks());
         }
-        else if (message instanceof PrintDevSpace){
-            Platform.runLater(() -> {
-                ((GuiGameController) nameToController.get(GUI_GAME)).updateDevSpace(((PrintDevSpace) message).getMessage());
-            });
+        else if (message instanceof PrintDevSpace  && currentStatus.equals(GUI_GAME)){
+            Platform.runLater(() -> ((GuiGameController) nameToController.get(GUI_GAME)).updateDevSpace(((PrintDevSpace) message).getMessage()));
         }
-        else if (message instanceof PrintItinerary){
-            Platform.runLater(() -> {
-                ((GuiGameController) nameToController.get(GUI_GAME)).updateItinerary(((PrintItinerary) message).getMessage());
-            });
+        else if (message instanceof PrintItinerary && currentStatus.equals(GUI_GAME)){
+            Platform.runLater(() -> ((GuiGameController) nameToController.get(GUI_GAME)).updateItinerary(((PrintItinerary) message).getMessage()));
         }
-        else if (message instanceof PrintMarket){
-            Platform.runLater(() -> {
-                ((GuiGameController) nameToController.get(GUI_GAME)).updateMarket();
-            });
+        else if (message instanceof PrintMarket && currentStatus.equals(GUI_GAME)){
+            Platform.runLater(() -> ((GuiGameController) nameToController.get(GUI_GAME)).updateMarket());
         }
-        else if (message instanceof PrintPlayedCards){
-            Platform.runLater(() -> {
-                ((GuiGameController) nameToController.get(GUI_GAME)).updatePlayedCards(((PrintPlayedCards) message).getMessage());
-            });
+        else if (message instanceof PrintPlayedCards && currentStatus.equals(GUI_GAME)){
+            Platform.runLater(() -> ((GuiGameController) nameToController.get(GUI_GAME)).updatePlayedCards(((PrintPlayedCards) message).getMessage()));
         }
-        else if (message instanceof PrintWarehouse){
-            Platform.runLater(() -> {
-                ((GuiGameController) nameToController.get(GUI_GAME)).updateWarehouse(((PrintWarehouse) message).getMessage());
-            });
+        else if (message instanceof PrintWarehouse && currentStatus.equals(GUI_GAME)){
+            Platform.runLater(() -> ((GuiGameController) nameToController.get(GUI_GAME)).updateWarehouse(((PrintWarehouse) message).getMessage()));
         }
         else if (message instanceof ChooseAction){
-            Platform.runLater(() -> {
-                ((GuiGameController) nameToController.get(GUI_GAME)).enableAction(((ChooseAction) message).getMessage());
-            });
+            Platform.runLater(() -> ((GuiGameController) nameToController.get(GUI_GAME)).enableAction(((ChooseAction) message).getMessage()));
         }
     }
 }

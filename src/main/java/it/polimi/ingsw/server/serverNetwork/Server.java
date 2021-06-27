@@ -59,7 +59,7 @@ public class Server {
                 for(ClientConnection c : l.getWaitingList()){
                     if(c != connection)
                         c.sendSocketMessage(new PlayersNumberMessage("The host of the selected lobby " +
-                                "has disconnected, please select another one", lobbies));
+                                "has disconnected, please select another one.", lobbies));
                 }
                 break;
             }
@@ -76,6 +76,13 @@ public class Server {
                 }
             }
         }
+        GameController gc = connection.getGameController();
+        if (gc instanceof MultiPlayerController && gc.getActiveConnections().size() == 1){
+            for (Player p : gc.getGame().getPlayers()){
+                totalNicknames.removeIf(n -> n.equalsIgnoreCase(p.getNickname()));
+            }
+            gameControllers.remove(gc);
+        }
         unregisterClient(connection);
     }
 
@@ -85,7 +92,7 @@ public class Server {
         connection.close();
         if (connection.getGameController() != null) {
             GameController gc = connection.getGameController();
-            view.sendAllExcept(new Disconnection("Player " + nickname + " disconnected."), nickname);
+            view.sendAllExcept(new Disconnection("Player " + nickname + " disconnected.", nickname), nickname);
             gc.getActiveConnections().removeIf(c -> c == connection);
             gc.removeObserver(find(connection, clientToConnection));
             List<Player> unregistered = gc.getActivePlayers().stream().filter(p ->
@@ -164,6 +171,7 @@ public class Server {
                 gc.addActiveConnection(connection);
                 connection.setGameController(gc);
                 VirtualView virtualView = new VirtualView(nickname, connection);
+                virtualView.sendAllExcept(new Disconnection(nickname + " reconnected. ", nickname), nickname);
                 clientToConnection.put(virtualView, connection);
                 gc.addObserver(find(connection, clientToConnection));
                 connection.sendSocketMessage(new SetupMessage("Connection was successfully set-up!" +
@@ -226,5 +234,12 @@ public class Server {
         Server server = new Server();
         Thread thread = new Thread(server.serverConnectionSocket);
         thread.start();
+    }
+
+    public void removeGame(GameController gc){
+        for (ClientConnection c: gc.getActiveConnections()){
+            removeClient(c);
+        }
+        gameControllers.remove(gc);
     }
 }

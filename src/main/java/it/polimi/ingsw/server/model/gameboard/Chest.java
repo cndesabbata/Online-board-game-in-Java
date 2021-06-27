@@ -11,10 +11,21 @@ import it.polimi.ingsw.server.observer.Observable;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Class Chest represents the player's chest on the game board.
+ * Resource stored in the chest are represented as a list of
+ * {@link ResourceQuantity} objects.
+ *
+ */
 public class Chest extends Observable {
     private final List<ResourceQuantity> chest;
     private final String owner;
 
+    /**
+     * Default constructor.
+     *
+     * @param nickname the nickname of the player who owns this Chest object
+     */
     public Chest(String nickname){
         owner = nickname;
         chest = new ArrayList<>();
@@ -24,16 +35,32 @@ public class Chest extends Observable {
         notifyObservers(new NewChest(chest, owner));
     }
 
+    /**
+     * Notifies a player's virtual view with a {@link NewChest} message. Used when a
+     * player is reconnecting to a game.
+     *
+     * @param nickname the nickname of the player to notify
+     */
     public void notifyNew(String nickname){
         notifySingleObserver(new NewChest(chest, owner), nickname);
     }
 
-    /*returns a copy of the chest*/
+    /**
+     * Returns a copy of the chest.
+     *
+     * @return a copy of the chest
+     */
     public List<ResourceQuantity> getChest() {
         return new ArrayList<>(chest);
     }
 
-    /*removes resources from the chest*/
+    /**
+     * Removes resources from the chest. Safety is guaranteed if
+     * this method is called after {@link #checkDecrement(List)}
+     * if the latter does not throw an exception.
+     *
+     * @param inputRes the list of resources that need to be removed
+     */
     public void decrementResource(List <ResourcePosition> inputRes) {
         List <ResourcePosition> removableRes = new ArrayList<>(inputRes);
         removableRes.removeIf(Rp -> Rp.getPlace() != Place.CHEST);
@@ -45,7 +72,14 @@ public class Chest extends Observable {
         notifyObservers(new NewChest(chest, owner));
     }
 
-    /*controls if the resources can be removed*/
+    /**
+     * Checks if the resources contained in the provided list can be removed
+     * from the chest.
+     *
+     * @param inputRes the list of resources to remove from the chest
+     * @throws WrongActionException when the chest does not have enough resources to remove or when the provided list
+     * contains an empty resource
+     */
     public void checkDecrement(List <ResourcePosition> inputRes) throws WrongActionException {
         if(inputRes.stream().anyMatch(Rp -> Rp.getResource() == Resource.EMPTY))
             throw new WrongActionException("EMPTY resource is not removable. ");
@@ -60,7 +94,13 @@ public class Chest extends Observable {
         }
     }
 
-    /*add resources from the chest*/
+    /**
+     * Adds resources to the chest. Safety is guaranteed if this
+     * method is called after {@link #checkIncrement(List)} if
+     * the latter does not throw an exception.
+     *
+     * @param inputRes the list of resources that need to be added
+     */
     public void incrementResource(List <ResourcePosition> inputRes) {
         inputRes.removeIf(Rp -> Rp.getResource() == Resource.FAITHPOINT);
         for(ResourcePosition Rp : inputRes){
@@ -71,7 +111,13 @@ public class Chest extends Observable {
         notifyObservers(new NewChest(chest, owner));
     }
 
-    /*controls if the resources can be stored*/
+    /**
+     * Checks if the resources contained in the provided list can be added to the chest.
+     *
+     * @param outputRes the list of resources to add to the chest
+     * @throws WrongActionException when the list of {@link ResourcePosition} contains an object which is not meant to
+     * be stored in the chest or when trying to add an empty resource
+     */
     public void checkIncrement(List <ResourcePosition> outputRes) throws WrongActionException{                          //it is used only by the checkAction in StartProduction
         for(ResourcePosition Rp : outputRes){
             if(Rp.getResource() == Resource.EMPTY) throw new WrongActionException("EMPTY resource cannot be stored. ");
@@ -85,7 +131,12 @@ public class Chest extends Observable {
         return  chest.get(index).getQuantity() >= quantity;
     }*/
 
-    /*returns the number of resources of the same type of resource*/
+    /**
+     * Returns the amount of resources of the type provided stored in the chest.
+     *
+     * @param resource the type of resource
+     * @return the amount of resources of the desired type stored in the chest
+     */
     public int getAvailability(Resource resource){
         int supply = 0;
         for (ResourceQuantity res : chest){
@@ -94,7 +145,12 @@ public class Chest extends Observable {
         return supply;
     }
 
-    /*returns the index of the node of chest which stores resource*/
+    /**
+     * Returns the index of the node in the which stores a certain resource.
+     *
+     * @param resource the type of resource
+     * @return the index of the node in the list
+     */
     private int getIndexResource(Resource resource){
         int index;
         for(index = 0; index < chest.size(); index++){

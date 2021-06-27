@@ -8,11 +8,23 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.*;
 
+/**
+ * Class DevDeck represents a deck of development cards.
+ *
+ */
 public class DevDeck extends Observable {
     private final List<DevCard> cards = new ArrayList<>();
     private final Colour colour;
     private final int level;
 
+    /**
+     * Creates a DevDeck object of the specified level and colour. It retrieves
+     * all the necessary information from the json files. After the cards have been
+     * created, the deck is shuffled.
+     *
+     * @param level  the level of the cards in the deck
+     * @param colour the colour of the cards in the deck
+     */
     public DevDeck (int level, Colour colour){
         this.level = level;
         this.colour = colour;
@@ -43,34 +55,73 @@ public class DevDeck extends Observable {
         }
         Collections.shuffle(cards);
     }
-    public boolean isEmpty(){ return (cards.size()==0); }
+
+    /**
+     * Checks id the deck is empty.
+     *
+     * @return {@code true} if the deck is empty, {@code false} otherwise
+     */
+    public boolean isEmpty(){
+        return (cards.size()==0);
+    }
 
     public DevCard getFirstCard(){
         if (cards.isEmpty()) return null;
         else return cards.get(0);
     }
 
+    /**
+     * Notifies all the players' virtual views with a NewDevDeck message.
+     * Used in the setup phase.
+     */
     public void notifyNew(){
         notifyObservers(new NewDevDeck(colour, level, cards.get(0)));
     }
 
+    /**
+     * Notifies the player's virtual view with a NewDevDeck message.
+     * Used when a player is reconnecting to the game.
+     *
+     * @param nickname the player's nickname
+     */
     public void notifyNew (String nickname){
         notifySingleObserver(new NewDevDeck(colour, level, cards.isEmpty() ? null : cards.get(0)), nickname);
     }
 
-    /*used only only in tests*/
+    /**
+     * Returns the cards in the deck. Used in unit tests only.
+     *
+     * @return the list of cards in the deck
+     */
     public List<DevCard> getCards() {
         return cards;
     }
 
+    /**
+     * Returns the colour of the deck.
+     *
+     * @return the colour of the deck
+     */
     public Colour getColour() {
         return colour;
     }
 
+    /**
+     * Returns the level of the deck.
+     *
+     * @return the level of the deck
+     */
     public int getLevel() {
         return level;
     }
 
+    /**
+     * Draws the first card from the deck and notifies all the players'
+     * virtual views with a NewDevDeck message containing the new first card
+     * of the deck.
+     *
+     * @return the drawn development card if the deck is not empty, {@code null} otherwise
+     */
     public DevCard drawCard() {
         if (cards.isEmpty()) return null;
         else {
@@ -80,6 +131,13 @@ public class DevDeck extends Observable {
         }
     }
 
+    /**
+     * Returns a copy of the requirements list of the first card of the deck.
+     * Used in the checkAction method in BuyDevCard class.
+     *
+     * @return a copy of the requirements list of the first card or an empty list
+     * if the deck is empty
+     */
     public List<ResourceQuantity> peepRequirements(){
         if (cards.isEmpty()) return new ArrayList<>();
         List<ResourceQuantity> result = new ArrayList<>();

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server.model.gameboard;
 
+import it.polimi.ingsw.messages.serverMessages.newElement.NewDevSpace;
 import it.polimi.ingsw.messages.serverMessages.newElement.NewWarehouse;
 import it.polimi.ingsw.server.controller.Place;
 import it.polimi.ingsw.server.exceptions.WrongActionException;
@@ -10,11 +11,24 @@ import it.polimi.ingsw.server.observer.Observable;
 
 import java.util.*;
 
+/**
+ * Class Warehouse represents the warehouse on the game board. Its shelves
+ * are represented as a list of {@link ResourceQuantity} objects.
+ * Note that a depot leader is considered a shelf of the warehouse.
+ *
+ */
 public class Warehouse extends Observable {
     private final List<ResourceQuantity> warehouse = new ArrayList<>();
     private final int initialDim;
     private final String owner;
 
+    /**
+     * Default constructor. Creates a warehouse object with a specified amount of
+     * initial shelves.
+     *
+     * @param warehouseDim the initial number of shelves
+     * @param nickname     the nickname of the player who owns this warehouse object
+     */
     public Warehouse(int warehouseDim, String nickname){
         owner = nickname;
         for(int i = 0; i < warehouseDim; i++){
@@ -24,21 +38,44 @@ public class Warehouse extends Observable {
         notifyObservers(new NewWarehouse(warehouse, initialDim, owner));
     }
 
+    /**
+     * Notifies a player's virtual view with a {@link NewWarehouse} message. Used when a
+     * player is reconnecting to a game.
+     *
+     * @param nickname the nickname of the player to notify
+     */
     public void notifyNew(String nickname){
         notifySingleObserver(new NewWarehouse(warehouse, initialDim, owner), nickname);
     }
 
-    /*returns a copy of the warehouse*/
+    /**
+     * Returns a copy of the warehouse.
+     *
+     * @return the list of ResourceQuantity objects representing the shelves of the warehouse
+     */
     public List<ResourceQuantity> getWarehouse(){
         return new ArrayList<>(warehouse);
     }
 
-    /*returns a copy of a shelf of the warehouse (considering also depots)*/
+    /**
+     * Returns the copy of a shelf of the warehouse, also considering depot leaders.
+     *
+     * @param numOfShelf the shelf to copy
+     * @return the copy of the specified shelf
+     */
     public ResourceQuantity getShelf(NumOfShelf numOfShelf) {
         ResourceQuantity shelf = warehouse.get(numOfShelf.ordinal());
         return new ResourceQuantity(shelf.getQuantity(), shelf.getResource());
     }
-    /*store the resources in the shelves*/
+
+    /**
+     * Adds resources in the shelves from a specified list of ResourcePosition objects.
+     * Safety is guaranteed if this method is called after {@link #checkIncrement(List)},
+     * if the latter does not throw an exception. It also notifies all the players'
+     * virtual views with a {@link NewWarehouse} message.
+     *
+     * @param outputRes that list of resources that need to be added to the warehouse
+     */
     public void incrementResource (List <ResourcePosition> outputRes) {
         List<ResourcePosition> storableRes = new ArrayList<>(outputRes);
         storableRes.removeIf(Rp -> Rp.getResource() == Resource.FAITHPOINT);                                            //faithpoints are not involved in this entire check
@@ -54,7 +91,13 @@ public class Warehouse extends Observable {
         }
         notifyObservers(new NewWarehouse(warehouse, initialDim, owner));
     }
-    /*controls if the resources can be stored*/
+
+    /**
+     * Checks if the resources contained in the provided list can be added to the warehouse.
+     *
+     * @param outputRes the list of resources to add to the chest
+     * @throws WrongActionException when one of the game rules of the warehouse is broken
+     */
     public void checkIncrement(List <ResourcePosition> outputRes) throws WrongActionException {                         //used in the checkAction of BuyResources                                  //this method will be called only be the checkAction in BuyResources
         List<ResourcePosition> storableRes = new ArrayList<>(outputRes);
         storableRes.removeIf(Rp -> Rp.getResource() == Resource.FAITHPOINT);                                            //faithPoints are not interested by this entire check
@@ -97,7 +140,16 @@ public class Warehouse extends Observable {
             }
         }
     }
-    /*returns the number of resources, contained in inputRes, of the same type of Rp and from / to the same shelf of Rp*/
+
+    /**
+     * Returns the number of resources contained in the provided list of the same
+     * type as the ResourcePosition object provided that have the same NumOfShelf
+     * attribute.
+     *
+     * @param inputRes the list of ResourcePosition objects
+     * @param Rp       the ResourcePosition object the list will be compared to
+     * @return the number of resources computed
+     */
     private int calculateQuantity(List <ResourcePosition> inputRes, ResourcePosition Rp){                          //it computes the number of nodes in a given list of ResourcePosition that have the same Resource and numOfShelf
         int quantity = 0;
         for(ResourcePosition r : inputRes){
@@ -105,12 +157,27 @@ public class Warehouse extends Observable {
         }
         return quantity;
     }
-    /*remove the resources from the shelves*/
+
+    /**
+     * Removes resources from the shelves. Safety is guaranteed if this
+     * method is called after {@link #checkDecrement(List)} if the
+     * latter does not throw an exception. It also notifies all the
+     * players' virtual views with a {@link NewWarehouse} message.
+     *
+     * @param inputRes the list of resources that need to be removed
+     */
     public void decrementResource (List <ResourcePosition> inputRes) {
         decrementWithoutNotify(inputRes);
         notifyObservers(new NewWarehouse(warehouse, initialDim, owner));
     }
-    /*controls if the resources can be removed*/
+
+    /**
+     * Checks if the resources contained in the provided list can be removed
+     * from the warehouse.
+     *
+     * @param inputRes the list of resources to remove from the warehouse
+     * @throws WrongActionException when one of the game rules of the warehouse is broken
+     */
     public void checkDecrement(List<ResourcePosition> inputRes) throws WrongActionException {                                                   //used in checkAction of BuyDevCard, StartProduction.
         List <ResourcePosition> removableRes = new ArrayList<>(inputRes);
         removableRes.removeIf(Rp -> Rp.getPlace() != Place.WAREHOUSE);
@@ -135,7 +202,14 @@ public class Warehouse extends Observable {
             }
         }
     }
-    /*moves a certain number of resources (quantity) from srcShelf to destShelf*/
+
+    /**
+     * Moves a certain number of resources from one shelf to another.
+     *
+     * @param srcShelf  the source shelf
+     * @param destShelf the destination shelf
+     * @param quantity  the amount of resources to move
+     */
     public void moveResource (NumOfShelf srcShelf, NumOfShelf destShelf, int quantity){
         ResourceQuantity shelfSrc = warehouse.get(srcShelf.ordinal());
         List <ResourcePosition> inputRes = new ArrayList<>();
@@ -148,6 +222,11 @@ public class Warehouse extends Observable {
         incrementResource(outputRes);
     }
 
+    /**
+     * Removes resources from the shelves.
+     *
+     * @param inputRes the list of resources that need to be removed
+     */
     private void decrementWithoutNotify(List <ResourcePosition> inputRes) {
         List<ResourcePosition> removableRes = new ArrayList<>(inputRes);
         removableRes.removeIf(Rp -> Rp.getPlace() != Place.WAREHOUSE);                                                 //Resources that should be discarded are not interested in this method.
@@ -161,7 +240,15 @@ public class Warehouse extends Observable {
             shelf.setQuantity(shelf.getQuantity() - Rp.getQuantity());                                                  //Rp.getQuantity() = 1
         }
     }
-    /*controls if the resources can be moved*/
+
+    /**
+     * Checks if a certain amount of resources can be moved from one shelf to another.
+     *
+     * @param srcShelf  the source shelf
+     * @param destShelf the destination shelf
+     * @param quantity  the amount of resources to move
+     * @throws WrongActionException when one of the game rules of the warehouse is broken
+     */
     public void checkMove (NumOfShelf srcShelf, NumOfShelf destShelf, int quantity) throws WrongActionException{
         if (srcShelf.ordinal() >= warehouse.size() || destShelf.ordinal() >= warehouse.size())
             throw new WrongActionException("One of the specified shelves does not exist.");
@@ -188,7 +275,14 @@ public class Warehouse extends Observable {
         }
     }
 
-    /*controls if there is a "normal" shelf storing res apart from shelf*/
+    /**
+     * Checks if there is another shelf storing a specified resource that is not a depot leader
+     * and it's different from the shelf provided.
+     *
+     * @param resource the specified resource
+     * @param shelf    the provided shelf
+     * @return {@code true} if the condition is met, {@code false} otherwise
+     */
     private boolean checkMoveDepot(Resource resource, NumOfShelf shelf){
         for(int i = 0; i < initialDim; i++){
             if(i != shelf.ordinal() && warehouse.get(i).getResource() == resource)
@@ -197,6 +291,14 @@ public class Warehouse extends Observable {
         return false;
     }
 
+    /**
+     * Checks if there is another shelf storing a specified resource that is not a depot leader
+     * and it's different from the shelf provided.
+     *
+     * @param resource   the specified resource
+     * @param numOfShelf the provided shelf
+     * @return {@code true} if the condition is met, {@code false} otherwise
+     */
     /*controls if there are some "normal" shelves storing resources of type resource, apart from numOfShelf*/
     private boolean checkOtherShelves(Resource resource, NumOfShelf numOfShelf){                                        //only used in addResource
         if(numOfShelf.ordinal() < initialDim){
@@ -210,13 +312,23 @@ public class Warehouse extends Observable {
         return false;
     }
 
-    /*adds a "depot" shelf*/
+    /**
+     * Adds a shelf derived from the depot leader card. It also notifies all
+     * the players' virtual views with a {@link NewWarehouse} message.
+     *
+     * @param resource the resource stored by the leader card
+     */
     public void addDepot(Resource resource){
         warehouse.add(new ResourceQuantity(0, resource));
         notifyObservers(new NewWarehouse(warehouse, initialDim, owner));
     }
 
-    /*controls if there is already a depot storing the same resource*/
+    /**
+     * Checks if there is already a depot storing the same resource as the one provided.
+     *
+     * @param resource the provided resource
+     * @return {@code true} if there is a depot storing the provided resource, {@code false} otherwise
+     */
     public boolean checkDepot(Resource resource){
         boolean check = true;
         for(int i = initialDim; i < warehouse.size(); i++){
@@ -227,7 +339,13 @@ public class Warehouse extends Observable {
         }
         return check;
     }
-    /*returns the number of resources of the same type of resource*/
+
+    /**
+     * Returns the amount of resources of the type provided stored in the warehouse.
+     *
+     * @param resource the type of resource
+     * @return the amount of resources of the desired type stored in the warehouse
+     */
     public int getAvailability(Resource resource){
         int supply = 0;
         for (ResourceQuantity shelf : warehouse){
