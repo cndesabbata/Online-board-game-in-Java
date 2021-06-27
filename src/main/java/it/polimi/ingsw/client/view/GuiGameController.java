@@ -462,8 +462,7 @@ public class GuiGameController implements GuiController {
         warehouse.add(first);
         warehouse.add(second_shelf);
         warehouse.add(third_shelf);
-        warehouse.add(first_depot);
-        warehouse.add(second_depot);
+
         warehouseButtons.add(shelf1);
         warehouseButtons.add(shelf2);
         warehouseButtons.add(shelf3);
@@ -816,9 +815,13 @@ public class GuiGameController implements GuiController {
         leadersSelected.clear();
         outputProductLeaders.clear();
         if (currentGameboard.getOwner().equalsIgnoreCase(owner)) {
+            for(int i = 0; i < 2; i++){
+                first_depot.get(i).setImage(null);
+                second_depot.get(i).setImage(null);
+            }
             String url;
             Image m;
-            int numOfDepots = view.getOwnGameBoard().getWarehouse().size() - 3;
+            int numOfDepots = currentGameboard.getWarehouse().size() - 3;
             if (currentGameboard.getPlayedCards().size() > 0) {
                 url = "/graphics/leadcards/" + currentGameboard.getPlayedCards().get(0).getUrl();
                 m = new Image(Objects.requireNonNull(getClass().getResourceAsStream(url)));
@@ -826,7 +829,7 @@ public class GuiGameController implements GuiController {
                 LeadCardInfo l = currentGameboard.getPlayedCards().get(0);
                 if (l.getType().equalsIgnoreCase("Depot") && numOfDepots > 0) {
                     for (int i = 0; i < 2; i++) {
-                        if (view.getOwnGameBoard().getWarehouse().get(3).size() > i) {
+                        if (currentGameboard.getWarehouse().get(3).size() > i) {
                             first_depot.get(i).setImage(
                                     new Image("/graphics/resources/" + l.getResource().toLowerCase() + ".png"));
                         } else first_depot.get(i).setImage(null);
@@ -840,7 +843,7 @@ public class GuiGameController implements GuiController {
                 LeadCardInfo l = currentGameboard.getPlayedCards().get(1);
                 if (l.getType().equalsIgnoreCase("Depot") && numOfDepots > 0) {
                     for (int i = 0; i < 2; i++) {
-                        if (view.getOwnGameBoard().getWarehouse().get(2 + numOfDepots).size() > i) {
+                        if (currentGameboard.getWarehouse().get(2 + numOfDepots).size() > i) {
                             second_depot.get(i).setImage(
                                     new Image("/graphics/resources/" + l.getResource().toLowerCase() + ".png"));
                         } else second_depot.get(i).setImage(null);
@@ -855,6 +858,8 @@ public class GuiGameController implements GuiController {
         destinationShelf = -1;
         srcQuantity = 0;
         if (currentGameboard.getOwner().equalsIgnoreCase(owner)) {
+            if(currentGameboard.getPlayedCards().stream().anyMatch(lc -> lc.getType().equalsIgnoreCase("Depot")))
+                updatePlayedCards(owner);                                                                               //needed to updates possible depots
             String url;
             Image m;
             if (!currentGameboard.getWarehouse().get(0).isEmpty()
@@ -1084,13 +1089,13 @@ public class GuiGameController implements GuiController {
     private void checkDepot(boolean toStore) {
         for (int i = 0, depotIndex = 0; i < view.getOwnGameBoard().getPlayedCards().size(); i++) {
             LeadCardInfo l = view.getOwnGameBoard().getPlayedCards().get(i);
-            if(i == 1 && view.getOwnGameBoard().getPlayedCards().get(0).getType().equalsIgnoreCase("Depot"))
-                depotIndex = 1;
-            if (l.getType().equalsIgnoreCase("Depot"))
+            if (l.getType().equalsIgnoreCase("Depot")) {
                 playedCardsButtons.get(i).setDisable(
                         ((toStore && (warehouse.get(3 + depotIndex).stream().filter(I -> I.getImage() != null).count() == 2
                                 || !selectedResource.equalsIgnoreCase(l.getResource())))
                                 || (!toStore && warehouse.get(3 + depotIndex).stream().noneMatch(I -> I.getImage() != null))));
+                depotIndex++;
+            }
         }
     }
 
@@ -1189,6 +1194,7 @@ public class GuiGameController implements GuiController {
             back_button.setDisable(false);
             right_gameboard.setDisable(true);
             left_gameboard.setDisable(true);
+            end_turn.setDisable(true);
             message.setText("You have chosen to move resources, select the shelf\nwhere you want to move the resources to");
         }
     }
@@ -1427,6 +1433,7 @@ public class GuiGameController implements GuiController {
         right_gameboard.setDisable(true);
         left_gameboard.setDisable(true);
         back_button.setDisable(false);
+        end_turn.setDisable(true);
         whitemarbles = 0;
         List<String> colours = new ArrayList<>();
         if (isRow)
@@ -1698,6 +1705,7 @@ public class GuiGameController implements GuiController {
         back_button.setDisable(false);
         right_gameboard.setDisable(true);
         left_gameboard.setDisable(true);
+        end_turn.setDisable(true);
     }
 
     public void selectDev30() {
@@ -1791,6 +1799,7 @@ public class GuiGameController implements GuiController {
             left_gameboard.setDisable(true);
             confirm_button.setDisable(false);
             back_button.setDisable(false);
+            end_turn.setDisable(true);
             devSpaceButtons.get(slot).setDisable(true);
             handleButtons(marketButtons, true);
             handleButtons(devDeckButtons, true);
@@ -1890,6 +1899,7 @@ public class GuiGameController implements GuiController {
         back_button.setDisable(false);
         right_gameboard.setDisable(true);
         left_gameboard.setDisable(true);
+        end_turn.setDisable(true);
         handIndex = index;
         String s = "You have selected a leader card, ";
         trashcan_button.setDisable(false);
@@ -1910,6 +1920,11 @@ public class GuiGameController implements GuiController {
         selectHand(1);
     }
 
+    private void addDepot(int playedDepot){
+        if(playedDepot == 0) warehouse.add(first_depot);
+        else warehouse.add(second_depot);
+    }
+
     private void selectPlayedLeadCard(int index) {
         if (view.getOwnGameBoard().getPlayedCards().size() <= index) {
             currentAction = UserAction.PLAY_LEADCARD;
@@ -1924,6 +1939,8 @@ public class GuiGameController implements GuiController {
             hand.get(handIndex).setImage(null);
             message.setText("Click on the check button below to confirm your choice");
             confirm_button.setDisable(false);
+            if(view.getHand().get(handIndex).getType().equalsIgnoreCase("Depot"))
+                addDepot(playedIndex);
         } else if (view.getOwnGameBoard().getPlayedCards().get(index).getType().equalsIgnoreCase("Depot")) {
             int depotIndex = (view.getOwnGameBoard().getWarehouse().size() > 4 ? index : 0);
             String depot = (depotIndex == 0 ? "DEPOT_ONE" : "DEPOT_TWO");

@@ -67,12 +67,12 @@ public class Gui extends Application implements Observer {
             stage.setMaximized(true);
             stage.setFullScreen(true);
             stage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
-//            Media audio = new Media(Objects.requireNonNull(getClass().getClassLoader()
-//                    .getResource("audio/Intro.mp3")).toExternalForm());
-//            mediaPlayer = new MediaPlayer(audio);
-//            mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
-//            mediaPlayer.setVolume(0.15);
-//            mediaPlayer.setAutoPlay(true);
+            Media audio = new Media(Objects.requireNonNull(getClass().getClassLoader()
+                    .getResource("audio/Intro.mp3")).toExternalForm());
+            mediaPlayer = new MediaPlayer(audio);
+            mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
+            mediaPlayer.setVolume(0.15);
+            mediaPlayer.setAutoPlay(true);
             stage.show();
         } catch (NullPointerException e){
             System.out.println("Null pointer exception");
