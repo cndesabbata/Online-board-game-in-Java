@@ -1842,7 +1842,7 @@ public class GuiGameController implements GuiController {
             handleButtons(devDeckButtons, true);
             handleButtons(warehouseButtons, true);
             handleButtons(handButtons, true);
-            handleButtons(playedCardsButtons, true);                                                                 //do not delete this
+            handleButtons(playedCardsButtons, true);                                                                 //do not delete
             for (int i = 0; i < view.getOwnGameBoard().getPlayedCards().size(); i++) {
                 playedCardsButtons.get(i).setDisable(!isPlayable(view.getOwnGameBoard().getPlayedCards().get(i)));
             }
