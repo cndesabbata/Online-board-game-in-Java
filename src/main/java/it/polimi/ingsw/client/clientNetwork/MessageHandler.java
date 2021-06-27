@@ -87,7 +87,7 @@ public class MessageHandler {
                 };
                 if (view.getOwnGameBoard().getIndex() != 0)
                     view.setClientMessage(new SetupResources(string + "\n>"));
-            } else if (m.getType() != UserAction.RECONNECT_DISPOSITION) {
+            } else if (m.getType() != UserAction.RECONNECT_DISPOSITION && m.getType() != UserAction.LAST_ACTION) {
                 String toPrint = "";
                 if (view.getOwnGameBoard().getBlackCrossPosition() != null && !m.getNickname().equals(view.getNickname()))
                     view.setClientMessage(new ChooseAction("Lorenzo De Medici " + m.getType().toString() + "\n Please choose an action"));

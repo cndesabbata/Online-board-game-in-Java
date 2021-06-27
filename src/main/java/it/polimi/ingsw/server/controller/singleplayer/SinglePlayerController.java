@@ -17,9 +17,11 @@ import java.util.List;
 public class SinglePlayerController extends GameController {
     List<SoloActionToken> tokens;
     boolean win;
+    boolean lastAction;
 
     public SinglePlayerController(Server server) {
         super(server);
+        lastAction = false;
         tokens = new ArrayList<>();
         tokens.add(new UpdateAndShuffle(this));
         tokens.add(new UpdateItinerary(this));
@@ -45,7 +47,8 @@ public class SinglePlayerController extends GameController {
         UserAction actionType = tokens.get(tokens.size() - 1).doSoloAction();
         checkAllPapalReports();
         checkEndGame();
-        getActivePlayers().get(0).setLorenzoActionDone(actionType);
+        if (getPhase()!= GamePhase.ENDED)
+            getActivePlayers().get(0).setLorenzoActionDone(actionType);
         getGame().getPlayers().get(0).setExclusiveActionDone(false);
     }
 
@@ -55,7 +58,8 @@ public class SinglePlayerController extends GameController {
         if (actionDone) getActivePlayers().get(0).setExclusiveActionDone(true);
         checkAllPapalReports();
         checkEndGame();
-        getActivePlayers().get(0).setActionDone(action.getType());
+        if (getPhase()!= GamePhase.ENDED)
+            getActivePlayers().get(0).setActionDone(action.getType());
     }
 
     @Override
@@ -65,16 +69,19 @@ public class SinglePlayerController extends GameController {
             d = new ArrayList<>(Arrays.asList(getGame().getDevDecks()));
             d.removeIf(DevDeck -> (DevDeck.isEmpty() || DevDeck.getColour() != c));
             if (d.isEmpty()) {
+                lastAction = true;
                 win = false;
                 endGame();
             }
         }
         GameBoard board = getActivePlayers().get(0).getBoard();
         if (board.getItinerary().getBlackCrossPosition() == 24) {
+            lastAction = true;
             win = false;
             endGame();
         }
         if (board.getItinerary().getPosition() == 24 || board.getDevSpace().countCards() == 7) {
+            lastAction = true;
             win = true;
             endGame();
         }
@@ -110,6 +117,7 @@ public class SinglePlayerController extends GameController {
 
     @Override
     public void endGame() {
+        getActivePlayers().get(0).setActionDone(UserAction.LAST_ACTION);
         if (!win) {
             getActiveConnections().get(0).sendSocketMessage(new CloseMessage("You lost the game: Lorenzo has won!"));
         } else {

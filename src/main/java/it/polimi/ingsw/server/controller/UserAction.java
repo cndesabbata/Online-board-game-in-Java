@@ -15,6 +15,7 @@ public enum UserAction {
     SELECT_LEADCARD(""),
     INITIAL_DISPOSITION(""),
     RECONNECT_DISPOSITION(""),
+    LAST_ACTION(""),
     RESOURCE_SELECTION("has chosen his initial resources."),
     DISCARD_DEV_CARD("has discarded development cards."),
     UPDATE_AND_SHUFFLE("has advanced on the itinerary."),
