@@ -8,17 +8,33 @@ import it.polimi.ingsw.server.model.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Class MarbleEffect represents the effect of the marble leader card.
+ *
+ */
 public class MarbleEffect implements LeaderEffect {
     private final int whiteMarbles;
     private final Resource resource;
     private final List<ResourcePosition> extraResources;
 
+    /**
+     * Default constructor.
+     *
+     * @param whiteMarbles   the number of white marbles to convert
+     * @param resource       the type of the resource the white marbles will be converted to
+     * @param extraResources the list of ResourcePosition objects representing the extra resources gained
+     */
     public MarbleEffect(int whiteMarbles, Resource resource, List<ResourcePosition> extraResources) {
         this.whiteMarbles = whiteMarbles;
         this.resource = resource;
         this.extraResources = extraResources;
     }
 
+    /**
+     * Returns the type of resource this effect converts white marbles to.
+     *
+     * @return the type of resource
+     */
     public Resource getResource() {
         return resource;
     }
@@ -27,6 +43,16 @@ public class MarbleEffect implements LeaderEffect {
         return whiteMarbles;
     }
 
+    /**
+     * Adds the extra resources gained from the leader to the one regularly gained from the market when
+     * performing a {@link BuyResources} action.
+     *
+     * @param player the player performing the action
+     * @param action the action performed by the player
+     * @throws WrongActionException when the player does not have the corresponding leader card, when the extra
+     * resources do not match the number of white marbles or when the extra resources do not match the resource
+     * type of the leader
+     */
     @Override
     public void doLeaderEffect(Player player, Action action) throws WrongActionException {
         if(action instanceof BuyResources) {
