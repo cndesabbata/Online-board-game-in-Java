@@ -16,7 +16,7 @@ public class MasterOfRenaissance {
     /**
      * Allows the user to select GUI, CLI or Server based on the input provided.
      *
-     * @param args the arguments provided
+     * @param args the main args
      */
     public static void main(String[] args){
         System.out.print("Hi! Welcome to Master Of Renaissance!\nWhat would you like to do?\n");

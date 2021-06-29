@@ -109,9 +109,9 @@ public class Player extends Observable {
      * @param nickname the notified player's nickname
      */
     public void notifyNew (String nickname){
-        notifySingleObserver(new NewPlayedLeadCards(playedLeaderCards, nickname), nickname);
+        notifySingleObserver(new NewPlayedLeadCards(playedLeaderCards, this.nickname), nickname);
         if(nickname.equalsIgnoreCase(this.nickname))
-            notifySingleObserver(new NewHandCards(handLeaderCards, nickname, false), nickname);
+            notifySingleObserver(new NewHandCards(handLeaderCards, this.nickname, false), nickname);
     }
 
     /**

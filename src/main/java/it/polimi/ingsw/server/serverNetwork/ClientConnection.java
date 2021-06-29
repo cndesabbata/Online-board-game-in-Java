@@ -21,6 +21,12 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
+/**
+ * Class ClientConnection handles the connection between a client and the server.
+ * It contains methods to receive and send messages through the socket and other
+ * utility methods.
+ *
+ */
 public class ClientConnection implements Runnable {
     private final Server server;
     private final Socket socket;
@@ -30,7 +36,13 @@ public class ClientConnection implements Runnable {
     private String playerNickname;
     private GameController gameController;
 
-    public ClientConnection(Socket socket, Server server ) {
+    /**
+     * Creates a new ClientConnection object and instantiates the input and output streams.
+     *
+     * @param socket the socket which accepted the client connection
+     * @param server the main server object
+     */
+    public ClientConnection(Socket socket, Server server) {
         this.server = server;
         this.socket = socket;
         active = true;
@@ -44,6 +56,10 @@ public class ClientConnection implements Runnable {
         this.gameController = null;
     }
 
+    /**
+     * Terminates the connection with the client by closing the socket.
+     *
+     */
     public void close(){
         try {
             socket.close();
@@ -52,20 +68,45 @@ public class ClientConnection implements Runnable {
         }
     }
 
+    /**
+     * Returns the game controller associated with this ClientConnection object.
+     *
+     * @return the associated game controller
+     */
     public GameController getGameController() {
         return gameController;
     }
 
+    /**
+     * Sets the game controller associated with this ClientConnection object.
+     *
+     * @param gameController the new game controller
+     */
     public void setGameController(GameController gameController) {
         this.gameController = gameController;
     }
 
+    /**
+     * Reads a message from the client and calls {@link #messageHandler(Message)}
+     * method to handle it.
+     *
+     * @throws IOException when the client is not online anymore
+     * @throws ClassNotFoundException when the class of the serializable object cannot be found
+     */
     public void readInput() throws IOException, ClassNotFoundException {
         Message inputClientMessage = (Message) input.readObject();
         if (inputClientMessage != null)
             messageHandler(inputClientMessage);
     }
 
+    /**
+     * Reads messages from the socket. When the client disconnects, if the game phase is set to
+     * STARTED it calls the {@link Server#unregisterClient(ClientConnection)} and changes the
+     * if the player was the current player. All the other disconnections are handled by calling
+     * the {@link Server#removeClient(ClientConnection)} method.
+     *
+     * @see Runnable#run()
+     */
     @Override
     public void run(){
         try {
@@ -75,7 +116,7 @@ public class ClientConnection implements Runnable {
             server.removeClient(this);
         } catch (IOException e) {
             if (playerNickname != null){
-                if (gameController!=null && gameController.getPhase() == GamePhase.STARTED ){
+                if (gameController!=null && gameController.getPhase() == GamePhase.STARTED){
                     if (gameController instanceof MultiPlayerController &&
                             ((MultiPlayerController) getGameController()).getCurrentPlayer().getNickname().equalsIgnoreCase(playerNickname))
                         ((MultiPlayerController) getGameController()).changeTurn();
@@ -92,6 +133,12 @@ public class ClientConnection implements Runnable {
         }
     }
 
+    /**
+     * Handles a message received from the client by calling different methods and sending different
+     * server messages depending on the input provided.
+     *
+     * @param clientMessage the message received from the client
+     */
     public void messageHandler(Message clientMessage){
         if (clientMessage instanceof SetNickname){
             if (gameController == null){
@@ -202,26 +249,59 @@ public class ClientConnection implements Runnable {
         }
     }
 
+    /**
+     * Checks if the the game controller is a multiplayer one, if the game phase
+     * is equal to the one provided and if the player is the current player.
+     *
+     * @param phase the game phase
+     * @return {@code true} if the condition is verified, {@code false} otherwise
+     */
     private boolean checkMessageMultiplayer (GamePhase phase){
         return getGameController() instanceof MultiPlayerController
                 && getGameController().getPhase() == phase
                 && isPlayerTurn();
     }
 
+    /**
+     * Checks if the the game controller is a single player one and if the game phase
+     * is equal to the one provided.
+     *
+     * @param phase the game phase
+     * @return {@code true} if the condition is verified, {@code false} otherwise
+     */
     private boolean checkMessageSinglePlayer (GamePhase phase){
         return getGameController() instanceof SinglePlayerController
                 && getGameController().getPhase() == phase;
     }
 
+
+    /**
+     * Checks if the current player of the game is the one associated with this ClientConnection object.
+     *
+     * @return {@code true} if the condition is verified, {@code false} otherwise
+     */
     private boolean isPlayerTurn(){
         return playerNickname.equals(((MultiPlayerController) getGameController()).getCurrentPlayer().getNickname());
     }
 
+    /**
+     * Checks if the index provided in the leader card selection message are valid.
+     *
+     * @param message the leader card selection message
+     * @return {@code true} if the condition is verified, {@code false} otherwise
+     */
     private boolean checkLeadCardSelection (LeaderCardSelection message){
         return message.getIndexes()[0] > 0 && message.getIndexes()[0] < 5
                 && message.getIndexes()[1] > 0 && message.getIndexes()[1] < 5;
     }
 
+    /**
+     * Checks if the resources provided in the resource selection message are not of type FAITHPOINT
+     * and if their amount is the one specified by the game rule.
+     *
+     * @param message the resource selection message
+     * @return {@code true} if the condition is verified, {@code false} otherwise
+     */
     private boolean checkResourceSelection(ResourceSelection message){
         for (ResourcePosition r : message.getResources()){
             if (r.getResource() == Resource.FAITHPOINT)
@@ -239,6 +319,11 @@ public class ClientConnection implements Runnable {
         };
     }
 
+    /**
+     * Sends a message to client through the socket.
+     *
+     * @param message to message to send to the client
+     */
     public void sendSocketMessage(Message message){
         try {
             output.reset();
@@ -249,6 +334,11 @@ public class ClientConnection implements Runnable {
         }
     }
 
+    /**
+     * Returns the nickname of the player associated with this ClientConnection object.
+     *
+     * @return the player's nickname
+     */
     public String getPlayerNickname() {
         return playerNickname;
     }
