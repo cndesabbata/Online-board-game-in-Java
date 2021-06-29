@@ -87,8 +87,8 @@ public class VirtualView implements Observer {
     /**
      * Called when the virtual view is notified. If the message is a {@link ChangeMessage},
      * it adds it to the list of new elements. If the message is a {@link ChangesDone} message,
-     * it sends it to the client and clears the list of new elements. If the message is a
-     * {@link TurnChange} one, it sends it to the client.
+     * it passes it the list of changed elements, sends the message to the client and clears the
+     * list of new elements. If the message is a {@link TurnChange} one, it sends it to the client.
      *
      * @param message the notification message
      */
