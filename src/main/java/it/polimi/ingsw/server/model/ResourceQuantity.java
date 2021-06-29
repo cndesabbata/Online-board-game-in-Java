@@ -10,7 +10,7 @@ import java.util.List;
  */
 public class ResourceQuantity implements Serializable {
     private int quantity;
-    private  Resource resource;
+    private Resource resource;
 
     /**
      * Default constructor.
