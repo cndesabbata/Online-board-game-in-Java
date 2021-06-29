@@ -311,9 +311,9 @@
       <ImageView fx:id="setupdraw4" fitHeight="110.0" fitWidth="88.0" layoutX="343.0" layoutY="635.0">
       </ImageView>
       <Button fx:id="setupdraw_button1" layoutX="23.0" layoutY="640.0" mnemonicParsing="false" onAction="#select_sd1"
-              opacity="0.0" prefHeight="100.0" prefWidth="80.0"/>
+              opacity="0.0" prefHeight="100.0" prefWidth="80.0" styleClass="clickable"/>
       <Button fx:id="setupdraw_button4" layoutX="347.0" layoutY="640.0" mnemonicParsing="false" onAction="#select_sd4"
-              opacity="0.0" prefHeight="100.0" prefWidth="80.0"/>
+              opacity="0.0" prefHeight="100.0" prefWidth="80.0" styleClass="clickable"/>
       <ImageView fx:id="message_stone" fitHeight="28.0" fitWidth="28.0" layoutX="157.0" layoutY="605.0">
          <Image url="@../graphics/resources/stone.png"/>
       </ImageView>
@@ -364,9 +364,9 @@
       <Button fx:id="trashcan_button" layoutX="208.0" layoutY="678.0" mnemonicParsing="false" onAction="#selectTrashcan"
               opacity="0.0" prefHeight="53.0" prefWidth="50.0" styleClass="clickable"/>
       <Button fx:id="setupdraw_button3" layoutX="239.0" layoutY="640.0" mnemonicParsing="false" onAction="#select_sd3"
-              opacity="0.0" prefHeight="100.0" prefWidth="80.0"/>
+              opacity="0.0" prefHeight="100.0" prefWidth="80.0" styleClass="clickable"/>
       <Button fx:id="setupdraw_button2" layoutX="131.0" layoutY="640.0" mnemonicParsing="false" onAction="#select_sd2"
-              opacity="0.0" prefHeight="100.0" prefWidth="80.0"/>
+              opacity="0.0" prefHeight="100.0" prefWidth="80.0" styleClass="clickable"/>
       <Button fx:id="chest_coin_button" layoutX="48.0" layoutY="405.0" mnemonicParsing="false"
               onAction="#select_chest_coin" opacity="0.0" prefHeight="28.0" prefWidth="28.0" styleClass="clickable"/>
       <Button fx:id="chest_stone_button" layoutX="96.0" layoutY="406.0" mnemonicParsing="false"

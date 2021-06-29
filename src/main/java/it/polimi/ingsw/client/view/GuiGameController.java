@@ -395,7 +395,12 @@ public class GuiGameController implements GuiController {
             group.getChildren().remove(left_gameboard);
             group.getChildren().remove(right_gameboard);
         }
+        setupdraw_button1.setDisable(true);
+        setupdraw_button2.setDisable(true);
+        setupdraw_button3.setDisable(true);
+        setupdraw_button4.setDisable(true);
         updateGUI(view.getNickname());
+
     }
 
     public void initializeMessagePanel() {
@@ -691,10 +696,10 @@ public class GuiGameController implements GuiController {
         url = "/graphics/leadcards/" + view.getHand().get(3).getUrl();
         m = new Image(Objects.requireNonNull(getClass().getResourceAsStream(url)));
         setupdraw4.setImage(m);
-        setupdraw_button1.getStyleClass().add("clickable");
-        setupdraw_button2.getStyleClass().add("clickable");
-        setupdraw_button3.getStyleClass().add("clickable");
-        setupdraw_button4.getStyleClass().add("clickable");
+        setupdraw_button1.setDisable(false);
+        setupdraw_button2.setDisable(false);
+        setupdraw_button3.setDisable(false);
+        setupdraw_button4.setDisable(false);
     }
 
     private void select_sd(int i) {
