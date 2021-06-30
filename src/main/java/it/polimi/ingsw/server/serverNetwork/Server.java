@@ -222,6 +222,7 @@ public class Server {
      * @return the VirtualView object found
      */
     private VirtualView find(ClientConnection connection, Map<VirtualView, ClientConnection> map) {
+        if (map.isEmpty()) return null;
         return map.entrySet()
                 .stream()
                 .filter(entry -> Objects.equals(entry.getValue(), connection))
