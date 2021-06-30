@@ -80,10 +80,6 @@ public class VirtualView implements Observer {
         this.clientConnection = clientConnection;
     }
 
-    public void win(Message message){
-
-    }
-
     /**
      * Called when the virtual view is notified. If the message is a {@link ChangeMessage},
      * it adds it to the list of new elements. If the message is a {@link ChangesDone} message,

@@ -36,8 +36,7 @@ You can read it here: [Javadoc]
 ### UML
 The following UML diagrams represent a high level description of the project, and a detailed one that contains all
 classes with their attributes and methods.
--
--
+
 
 ## Jar and Execution
 The project jar can be downloaded here: [Jar]. To execute it, you will need at least Java 14.

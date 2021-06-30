@@ -53,10 +53,6 @@ public class Server {
         }
     }
 
-    public synchronized ArrayList<String> getTotalNicknames() {
-        return totalNicknames;
-    }
-
     /**
      * Returns the list of lobbies.
      *

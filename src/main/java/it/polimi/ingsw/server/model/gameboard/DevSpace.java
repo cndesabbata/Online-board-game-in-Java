@@ -78,18 +78,6 @@ public class DevSpace extends Observable {
        return (deck.size() < 3 && level == deck.size() + 1);                                                            //equivalent to: if(deck.size() >= 3) return false; else if(deck.size() + 1 = level) return true;
     }
 
-    /*checks if the player has a DevCard that can activate (it must be "on top")*/
-    public boolean checkUpperCard (DevCard devCard){
-        boolean check = false;
-        for(List <DevCard> deck : devSpace){
-            if(deck.size()>0 && deck.get(0).equals(devCard)) {
-                check = true;
-                break;
-            }
-        }
-        return check;
-    }
-
     /**
      * Returns the list of lists of development cards contained in the development space.
      *
