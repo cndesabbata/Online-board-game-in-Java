@@ -2,6 +2,7 @@ package it.polimi.ingsw.messages.actions;
 
 import it.polimi.ingsw.server.controller.UserAction;
 import it.polimi.ingsw.server.controller.leaders.LeaderEffect;
+import it.polimi.ingsw.server.controller.leaders.ProductionEffect;
 import it.polimi.ingsw.server.exceptions.WrongActionException;
 import it.polimi.ingsw.server.model.*;
 import it.polimi.ingsw.server.model.gameboard.Chest;
@@ -11,6 +12,11 @@ import it.polimi.ingsw.server.model.gameboard.Warehouse;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Class StartProduction is an {@link Action}. It's created and sent to the server when the player
+ * wants to start the production.
+ *
+ */
 public class StartProduction implements Action {
     private final List<Integer> chosenCards;
     private final List<ResourcePosition> outputRes;
@@ -19,7 +25,14 @@ public class StartProduction implements Action {
     private UserAction type;
     private List <DevCard> devCards;
 
-
+    /**
+     * Default constructor. Creates a new StartProduction instance.
+     *
+     * @param chosenCards   the development slots the player wants to activate
+     * @param inputRes      the resources to pay to start the production
+     * @param outputRes     the resources generated from the production
+     * @param leaderEffects the list of leader effects that can modify the action
+     */
     public StartProduction(List<Integer> chosenCards, List<ResourcePosition> inputRes,
                            List<ResourcePosition> outputRes, List<LeaderEffect> leaderEffects) {
         this.chosenCards = new ArrayList<>(chosenCards);
@@ -30,6 +43,13 @@ public class StartProduction implements Action {
         this.devCards = null;
     }
 
+    /**
+     * Reduced constructor. Used in unit tests to test the board production.
+     *
+     * @param inputRes      the resources to pay to start the production
+     * @param outputRes     the resources generated from the production
+     * @param leaderEffects the list of leader effects that can modify the action
+     */
     public StartProduction(List<ResourcePosition> inputRes, List<ResourcePosition> outputRes,
                            List<LeaderEffect> leaderEffects) {
         this.chosenCards = null;
@@ -44,7 +64,13 @@ public class StartProduction implements Action {
         return type;
     }
 
-    /*execute the action, knowing that is correct and feasible*/
+    /**
+     * Expends the resources to activate the production and stores the generated resource in his
+     * chest. If the players obtains faithpoint it increments his position on the itinerary.
+     *
+     * @param player the player performing the action
+     * @return {@code true}
+     */
     @Override
     public boolean doAction(Player player) {
         if(outputRes.stream().anyMatch(Rp -> Rp.getResource() == Resource.FAITHPOINT)){
@@ -58,6 +84,12 @@ public class StartProduction implements Action {
         return true;
     }
 
+    /**
+     * Constructs the list of played development cards from the selected development space.
+     *
+     * @param player the player performing the action
+     * @throws WrongActionException if one of the development slot is not valid, is empty or is selected twice
+     */
     private void devCardsConstructor(Player player) throws WrongActionException{
         DevSpace devSpace = player.getBoard().getDevSpace();
         devCards = new ArrayList<>();
@@ -77,7 +109,12 @@ public class StartProduction implements Action {
         }
     }
 
-    /*controls if the Action is correct and also resolve any leaderEffect*/
+    /**
+     * Checks if the action can be performed and resolves the leader effects.
+     *
+     * @param player the player who wants to perform the action
+     * @throws WrongActionException if the action cannot be performed
+     */
     @Override
     public void checkAction(Player player) throws WrongActionException {
         if (player.isExclusiveActionDone())
@@ -95,17 +132,33 @@ public class StartProduction implements Action {
         chest.checkIncrement(outputRes);
     }
 
-    /*used by ProductionEffect to add an extra ResourcePosition in output*/
+    /**
+     * Adds a ResourcePosition object to the list of output resources. Used by
+     * the {@link ProductionEffect}.
+     *
+     * @param extra the resource produced by the production effect
+     */
     public void addOutputRes(ResourcePosition extra) {
         outputRes.add(new ResourcePosition(extra.getResource(), extra.getPlace(), extra.getShelf()));
     }
 
-    /*used by ProductionEffect to add an extra ResourcePosition in input*/
+    /**
+     * Adds a ResourcePosition object to the list of input resources. Used by
+     * the {@link ProductionEffect}.
+     *
+     * @param extra the resource required by the production effect
+     */
     public void addInputRes(ResourcePosition extra) {                                                                   //set a shallow copy
         inputRes.add(new ResourcePosition(extra.getResource(), extra.getPlace(), extra.getShelf()));
     }
 
-    /*controls if input and output correspond to the input and output of the devCard or of the boardProduction (or both)*/
+    /**
+     * Checks if the input and output lists provided when creating this StartProduction object
+     * correspond to the input and output resources of the development cards and board production.
+     *
+     * @param devCards the development cards actived
+     * @throws WrongActionException when one of the check fails
+     */
     private void checkInputOutput(List<DevCard> devCards) throws WrongActionException {
         if(devCards != null) {
             List <ResourceQuantity> totalDevInput = new ArrayList<>();                                                  //represents the total input resources required by all the devCards
@@ -138,7 +191,12 @@ public class StartProduction implements Action {
                 throw new WrongActionException("The number of input / output resources for the board production is incorrect. ");
     }
 
-    /*modify totalDev, adding the nodes of production, or updating the nodes of totalDev if they already exist*/
+    /**
+     * Modifies the first list, adding the resources contained in the second list.
+     *
+     * @param totalDev   the list to modify
+     * @param production the source list
+     */
     private void totalDevCardResources(List <ResourceQuantity> totalDev, List<ResourceQuantity> production){
         for (ResourceQuantity rqi : production) {
             int j;
