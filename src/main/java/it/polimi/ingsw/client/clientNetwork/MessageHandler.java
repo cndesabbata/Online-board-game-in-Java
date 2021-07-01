@@ -37,7 +37,7 @@ public class MessageHandler {
      * Process messages received from the server, calling different methods on the
      * and setting different {@link ViewMessage} that will be observed by CLI and GUI.
      *
-     * @param message
+     * @param message the message received from the server
      */
     public void process(Message message) {
         if (message instanceof ErrorMessage) {
