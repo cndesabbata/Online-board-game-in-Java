@@ -29,6 +29,10 @@ import javafx.scene.image.ImageView;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * Class GuiGameController manages the GuiGame.fxml by executing commands from the GUI.
+ *
+ */
 public class GuiGameController implements GuiController {
 
 
@@ -370,12 +374,23 @@ public class GuiGameController implements GuiController {
         this.currentGameboard = view.getOwnGameBoard();
     }
 
+    /**
+     * Handles a list of buttons, activating or deactivating them based on the
+     * provided parameter.
+     *
+     * @param buttons the list of buttons
+     * @param b       {@code true} to deactivate the buttons, {@code false} to activate them
+     */
     private void handleButtons(List<Button> buttons, boolean b) {
         for (Button button : buttons) {
             button.setDisable(b);
         }
     }
 
+    /**
+     * Initializes view elements and updates the gui.
+     *
+     */
     public void initializeGame() {
         currentAction = UserAction.INITIAL_DISPOSITION;
         initializeMarket();
@@ -398,9 +413,12 @@ public class GuiGameController implements GuiController {
         setupdraw_button3.setDisable(true);
         setupdraw_button4.setDisable(true);
         updateGUI(view.getNickname());
-
     }
 
+    /**
+     * Initializes the message panel lists of image views and buttons.
+     *
+     */
     public void initializeMessagePanel() {
         messageResources.add(message_coin);
         messageResources.add(message_stone);
@@ -432,6 +450,10 @@ public class GuiGameController implements GuiController {
         back_button.setDisable(true);
     }
 
+    /**
+     * Initializes the played leader cards lists of image views and buttons.
+     *
+     */
     private void initializePlayedCards() {
         first_played.imageProperty().set(null);
         second_played.imageProperty().set(null);
@@ -450,6 +472,10 @@ public class GuiGameController implements GuiController {
         handleButtons(playedCardsButtons, true);
     }
 
+    /**
+     * Initializes the hand leader cards lists of image views and buttons.
+     *
+     */
     private void initializeHandCards() {
         first_hand.imageProperty().set(null);
         second_hand.imageProperty().set(null);
@@ -460,6 +486,10 @@ public class GuiGameController implements GuiController {
         handleButtons(handButtons, true);
     }
 
+    /**
+     * Initializes the chest and the warehouse lists of image views and buttons.
+     *
+     */
     private void initializeChestWarehouse() {
         second_shelf.add(second_shelf_0);
         second_shelf.add(second_shelf_1);
@@ -490,6 +520,11 @@ public class GuiGameController implements GuiController {
         chestNumbers.add(chest_shield);
     }
 
+    /**
+     * Disables all buttons besides the one used too show the game boards
+     * of other players.
+     *
+     */
     private void disableButtons() {
         back_button.setDisable(true);
         confirm_button.setDisable(true);
@@ -504,6 +539,11 @@ public class GuiGameController implements GuiController {
         handleButtons(warehouseButtons, true);
     }
 
+    /**
+     * Initializes the market lists of image views and buttons and calls the
+     * {@link #updateMarket()} method to show the market in the gui.
+     *
+     */
     private void initializeMarket() {
         marbles.add(market_00);
         marbles.add(market_01);
@@ -527,6 +567,11 @@ public class GuiGameController implements GuiController {
         updateMarket();
     }
 
+    /**
+     * Initializes the decks of development cards lists of image views and buttons
+     * and calls the {@link #updateDevDecks()} to decks in the gui.
+     *
+     */
     private void initializeDevDecks() {
         devDecks.add(first_green);
         devDecks.add(first_blue);
@@ -557,6 +602,10 @@ public class GuiGameController implements GuiController {
         updateDevDecks();
     }
 
+    /**
+     * Initializes the lists of image views and buttons of the slots in the development space.
+     *
+     */
     private void initializeDevSpaceSlots() {
         firstSlot.add(first_slot_0);
         firstSlot.add(first_slot_1);
@@ -578,6 +627,10 @@ public class GuiGameController implements GuiController {
         selectProductionInput = false;
     }
 
+    /**
+     * Initializes the papal cards lists of image views.
+     *
+     */
     private void initializePapalCards() {
         papalCards.add(papal1);
         papalCards.add(papal2);
@@ -590,6 +643,12 @@ public class GuiGameController implements GuiController {
         papalUpUrl.add("/graphics/itinerary/papal3_front.png");
     }
 
+    /**
+     * Initializes the coordinates for the cross used in the itinerary. If the
+     * player is playing a single player game, different coordinates are used
+     * to avoid having the red cross and the black cross one over the other.
+     *
+     */
     private void initializeCoordinates() {
         if (view.getOwnGameBoard().getBlackCrossPosition() != null) {
             coordinates.add(new Integer[]{33, 153});
@@ -646,7 +705,10 @@ public class GuiGameController implements GuiController {
         }
     }
 
-
+    /**
+     * Shows the updated development decks in the gui.
+     *
+     */
     public void updateDevDecks() {
         devDeckRow = -1;
         devDeckColumn = -1;
@@ -662,6 +724,10 @@ public class GuiGameController implements GuiController {
         }
     }
 
+    /**
+     * Shows the updated market in the gui.
+     *
+     */
     public void updateMarket() {
         marketPosition = -1;
         resourcesToSelect = 0;
@@ -677,6 +743,10 @@ public class GuiGameController implements GuiController {
         external.setImage(m);
     }
 
+    /**
+     * Shows the leader cards gained in the set up phase and activates buttons to discard them.
+     *
+     */
     public void showSetupCards() {
         currentAction = UserAction.SELECT_LEADCARD;
         message.setText("These are your new hand cards.\nPlease select the two you want to discard.");
@@ -700,6 +770,12 @@ public class GuiGameController implements GuiController {
         setupdraw_button4.setDisable(false);
     }
 
+    /**
+     * Selects a leader card to discard in the setup phase. If the player has already chosen a card,
+     * sends a {@link LeaderCardSelection} message to the server.
+     *
+     * @param i the index of the leader card
+     */
     private void select_sd(int i) {
         if (leadCardIndexes[0] == -1) {
             leadCardIndexes[0] = i;
@@ -713,6 +789,11 @@ public class GuiGameController implements GuiController {
         }
     }
 
+    /**
+     * Removes the buttons and the image views used in the leader card selection in
+     * the setup phase.
+     *
+     */
     private void removeSetupButtons(){
         group.getChildren().remove(setupdraw1);
         group.getChildren().remove(setupdraw2);
@@ -724,30 +805,54 @@ public class GuiGameController implements GuiController {
         group.getChildren().remove(setupdraw_button4);
     }
 
+    /**
+     * Calls the {@link #select_sd(int)} method with {@code 1} as parameter.
+     *
+     * @param actionEvent the action event
+     */
     @FXML
     public void select_sd1(ActionEvent actionEvent) {
         select_sd(1);
         setupdraw_button1.setDisable(true);
     }
 
+    /**
+     * Calls the {@link #select_sd(int)} method with {@code 2} as parameter.
+     *
+     * @param actionEvent the action event
+     */
     @FXML
     public void select_sd2(ActionEvent actionEvent) {
         select_sd(2);
         setupdraw_button2.setDisable(true);
     }
 
+    /**
+     * Calls the {@link #select_sd(int)} method with {@code 3} as parameter.
+     *
+     * @param actionEvent the action event
+     */
     @FXML
     public void select_sd3(ActionEvent actionEvent) {
         select_sd(3);
         setupdraw_button3.setDisable(true);
     }
 
+    /**
+     * Calls the {@link #select_sd(int)} method with {@code 4} card as parameter.
+     *
+     * @param actionEvent the action event
+     */
     @FXML
     public void select_sd4(ActionEvent actionEvent) {
         select_sd(4);
         setupdraw_button4.setDisable(true);
     }
 
+    /**
+     * Shows the updated hand leader cards in the gui.
+     *
+     */
     public void updateHandCards() {
         handIndex = -1;
         if (view.getGamePhase() != GamePhase.SETUP || (view.getGamePhase() == GamePhase.SETUP && view.getHand().size() <= 2)) {
@@ -766,6 +871,11 @@ public class GuiGameController implements GuiController {
         }
     }
 
+    /**
+     * Shows the updated chest.
+     *
+     * @param owner the owner of the chest
+     */
     public void updateChest(String owner) {
         if (currentGameboard.getOwner().equalsIgnoreCase(owner)) {
             Integer quantity;
@@ -780,6 +890,11 @@ public class GuiGameController implements GuiController {
         }
     }
 
+    /**
+     * Shows the updated development space.
+     *
+     * @param owner the owner of the development space
+     */
     public void updateDevSpace(String owner) {
         selectedSlot = -1;
         selectProductionCards = false;
@@ -816,6 +931,11 @@ public class GuiGameController implements GuiController {
         }
     }
 
+    /**
+     * Shows the updated itinerary.
+     *
+     * @param owner the owner of the itinerary
+     */
     public void updateItinerary(String owner) {
         if (currentGameboard.getOwner().equalsIgnoreCase(owner)) {
             if (currentGameboard.getBlackCrossPosition() != null) {
@@ -846,6 +966,11 @@ public class GuiGameController implements GuiController {
         }
     }
 
+    /**
+     * Shows the updated played leader cards.
+     *
+     * @param owner the owner of the leader cards
+     */
     public void updatePlayedCards(String owner) {
         playedIndex = -1;
         leaderEffects.clear();
@@ -891,6 +1016,11 @@ public class GuiGameController implements GuiController {
         }
     }
 
+    /**
+     * Shows the updated warehouse.
+     *
+     * @param owner the owner of the warehouse
+     */
     public void updateWarehouse(String owner) {
         sourceShelf = -1;
         destinationShelf = -1;
@@ -925,10 +1055,20 @@ public class GuiGameController implements GuiController {
         }
     }
 
+    /**
+     * Sets a message in the message label.
+     *
+     * @param s the message
+     */
     public void setMessage(String s) {
         message.setText(s);
     }
 
+    /**
+     * Updates all the view elements.
+     *
+     * @param owner the owner of the game board
+     */
     private void updateGUI(String owner) {
         synchronized(view){
             updateDevDecks();
@@ -943,6 +1083,10 @@ public class GuiGameController implements GuiController {
         }
     }
 
+    /**
+     * Clears the message board removing the icons, buttons and numbers of the resources.
+     *
+     */
     private void clearMessageBoard() {
         for (int i = 0; i < 4; i++) {
             messageResources.get(i).setImage(null);
@@ -951,6 +1095,11 @@ public class GuiGameController implements GuiController {
         }
     }
 
+    /**
+     * Changes the current game board showed in the gui.
+     *
+     * @param d {@code 1} if the player has pressed the right button, {@code -1} if he has pressed the left button
+     */
     private void changeGameboard(int d) {
         int newIndex = currentGameboard.getIndex() + d;
         if (newIndex > view.getOtherGameBoards().size()) newIndex = 0;
@@ -962,6 +1111,12 @@ public class GuiGameController implements GuiController {
         } else disableButtons();
     }
 
+    /**
+     * Finds a player's game board based on his index.
+     *
+     * @param id the index of the player
+     * @return the found game board
+     */
     private GameBoardInfo findGameboardById(int id) {
         for (GameBoardInfo g : view.getOtherGameBoards()) {
             if (g.getIndex() == id) {
@@ -973,14 +1128,27 @@ public class GuiGameController implements GuiController {
         return view.getOwnGameBoard();
     }
 
+    /**
+     * Calls the {@link #changeGameboard(int)} method {@code 1} as parameter.
+     *
+     */
     public void select_right_gameboard() {
         changeGameboard(1);
     }
 
+    /**
+     * Calls the {@link #changeGameboard(int)} method {@code -1} as parameter.
+     *
+     */
     public void select_left_gameboard() {
         changeGameboard(-1);
     }
 
+    /**
+     * Checks if warehouse buttons and depot leader buttons need to be activated or not.
+     *
+     * @param toStore {@code true} if resources are meant to be stored when this method is called, {@code false} otherwise
+     */
     private void checkWarehouseButtons(boolean toStore) {
         shelf1.setDisable((toStore && first_shelf.getImage() != null)
                 || (!toStore && first_shelf.getImage() == null));
@@ -991,6 +1159,12 @@ public class GuiGameController implements GuiController {
         checkDepot(toStore);
     }
 
+    /**
+     * When choosing an action, manages the development deck buttons. If a deck is not empty and
+     * the player has enough resources to buy the card, the deck button is activated, otherwise
+     * is deactivated.
+     *
+     */
     private void checkDevDeckButtons() {
         for (int j = 0; j < 4; j++) {
             for (int i = 0; i < 3; i++) {
@@ -1013,6 +1187,12 @@ public class GuiGameController implements GuiController {
         }
     }
 
+    /**
+     * When choosing an action, manages the development space buttons. If a slot is not empty and the
+     * player has enough resources to start the production of stored card, its button is activated,
+     * otherwise is deactivated.
+     *
+     */
     private void checkDevSpaceButtons() {
         for (int i = 0; i < 3; i++) {
             devSpaceButtons.get(i).setDisable(view.getOwnGameBoard().getDevSpace().get(i).isEmpty()
@@ -1021,12 +1201,22 @@ public class GuiGameController implements GuiController {
         board_production.setDisable(!view.getOwnGameBoard().totalQuantityCheck(2));
     }
 
+    /**
+     * Disables chest buttons if the amount of resources stored of the corresponding type is {@code 0}.
+     *
+     */
     private void checkChestButtons() {
         for (int i = 0; i < chestButtons.size(); i++) {
             chestButtons.get(i).setDisable(chestNumbers.get(i).getText().equalsIgnoreCase("0"));
         }
     }
 
+    /**
+     * When the player has to choose an action, activates or deactivates buttons based on what
+     * the user can do.
+     *
+     * @param s the message to show in the message box
+     */
     public void enableAction(String s) {
         if (currentAction == UserAction.INITIAL_DISPOSITION)
             removeSetupButtons();
@@ -1059,6 +1249,10 @@ public class GuiGameController implements GuiController {
         left_gameboard.setDisable(false);
     }
 
+    /**
+     * Asks the player to select the resources granted in the setup phase.
+     *
+     */
     public void selectSetupResources() {
         currentAction = UserAction.RESOURCE_SELECTION;
         handleButtons(messageResourcesButtons, false);
@@ -1091,7 +1285,11 @@ public class GuiGameController implements GuiController {
         }
     }
 
-    /*used when some resources are needed*/
+    /**
+     * Invoked when the player clicks on one of the resource buttons. It allows the player
+     * to decide where he wants to put the selected resource.
+     *
+     */
     private void selectResourcesPosition() {
         checkWarehouseButtons(true);
         handleButtons(devSpaceButtons, true);
@@ -1128,6 +1326,11 @@ public class GuiGameController implements GuiController {
         }
     }
 
+    /**
+     * Checks whether depot leaders buttons need to be activated or deactivated.
+     *
+     * @param toStore {@code true} if resources are meant to be stored when this method is called, {@code false} otherwise
+     */
     private void checkDepot(boolean toStore) {
         for (int i = 0, depotIndex = 0; i < view.getOwnGameBoard().getPlayedCards().size(); i++) {
             LeadCardInfo l = view.getOwnGameBoard().getPlayedCards().get(i);
@@ -1141,26 +1344,52 @@ public class GuiGameController implements GuiController {
         }
     }
 
+    /**
+     * Called when the player selects a coin from the message box.
+     * It invokes the {@link #selectResourcesPosition()} method.
+     *
+     */
     public void select_coin() {
         selectedResource = "Coin";
         selectResourcesPosition();
     }
 
+    /**
+     * Called when the player selects a stone from the message box.
+     * It invokes the {@link #selectResourcesPosition()} method.
+     *
+     */
     public void select_stone() {
         selectedResource = "Stone";
         selectResourcesPosition();
     }
 
+    /**
+     * Called when the player selects a servant from the message box.
+     * It invokes the {@link #selectResourcesPosition()} method.
+     *
+     */
     public void select_servant() {
         selectedResource = "Servant";
         selectResourcesPosition();
     }
 
+    /**
+     * Called when the player selects a shield from the message box.
+     * It invokes the {@link #selectResourcesPosition()} method.
+     *
+     */
     public void select_shield() {
         selectedResource = "Shield";
         selectResourcesPosition();
     }
 
+    /**
+     * Invoked when the player clicks on one of the warehouse buttons. Acts accordingly to the game phase
+     * and the current selected action.
+     *
+     * @param shelf the selected shelf
+     */
     private void selectWarehouse(String shelf) {
         if (view.getGamePhase() == GamePhase.SETUP) {
             updateWarehouseInAction(shelf);
@@ -1241,6 +1470,11 @@ public class GuiGameController implements GuiController {
         }
     }
 
+    /**
+     * Disables the buttons of depot leaders accordingly to the game rules.
+     *
+     * @param numOfShelf the index of the shelf represented by the depot leader
+     */
     private void depotDisable(int numOfShelf){
         if(numOfShelf == 4)
             playedCardsButtons.get(1).setDisable(true);
@@ -1252,6 +1486,12 @@ public class GuiGameController implements GuiController {
         }
     }
 
+    /**
+     * Used when taking resources from the warehouse, handles the resource
+     * numbers in the message box.
+     *
+     * @param shelf the selected shelf where the player wants to take resources from
+     */
     private void takeResFromWarehouse(String shelf) {
         String resStored = view.getOwnGameBoard().getWarehouse().get(NumOfShelf.valueOf(shelf).ordinal()).get(0);
         int shelfNumber = NumOfShelf.valueOf(shelf).ordinal();
@@ -1286,6 +1526,11 @@ public class GuiGameController implements GuiController {
         }
     }
 
+    /**
+     * Used to take resources from the warehouse when the player decides to start the production.
+     *
+     * @param shelf the selected shelf where the player wants to take resources from
+     */
     private void productionWarehouse(String shelf) {
         if (messageResources.stream().anyMatch(i -> i.getImage() != null))                                              //the user is selecting the input resources for dev and leader cards
             takeResFromWarehouse(shelf.toUpperCase());
@@ -1313,6 +1558,10 @@ public class GuiGameController implements GuiController {
         }
     }
 
+    /**
+     * Updates resources numbers in the message box.
+     *
+     */
     private void updateMessageResources() {
         resourcesToSelect--;
         int index = Arrays.asList(Resource.values()).indexOf(Resource.valueOf(selectedResource.toUpperCase()));
@@ -1333,7 +1582,11 @@ public class GuiGameController implements GuiController {
         trashcan.setImage(null);
     }
 
-
+    /**
+     * Shows the updated warehouse shelves while performing an action.
+     *
+     * @param shelf the shelf to update
+     */
     private void updateWarehouseInAction(String shelf) {
         resourcesForAction.add(new ResourcePosition(Resource.valueOf(selectedResource.toUpperCase()),
                 Place.WAREHOUSE, NumOfShelf.valueOf(shelf)));
@@ -1393,18 +1646,39 @@ public class GuiGameController implements GuiController {
         }
     }
 
+    /**
+     * Called when selecting the first shelf of the warehouse. It
+     * invokes the {@link #selectWarehouse(String)}.
+     *
+     */
     public void selectFirstShelf() {
         selectWarehouse("ONE");
     }
 
+    /**
+     * Called when selecting the second shelf of the warehouse. It
+     * invokes the {@link #selectWarehouse(String)}.
+     *
+     */
     public void selectSecondShelf() {
         selectWarehouse("TWO");
     }
 
+    /**
+     * Called when selecting the third shelf of the warehouse. It
+     * invokes the {@link #selectWarehouse(String)}.
+     *
+     */
     public void selectThirdShelf() {
         selectWarehouse("THREE");
     }
 
+    /**
+     * Invoked when the player clicks on one of the chest buttons. Acts accordingly
+     * to the current selected action.
+     *
+     * @param s the selected resource
+     */
     private void selectChest(String s) {
         int index = Resource.valueOf(s.toUpperCase()).ordinal();
         int oldQuantity = Integer.parseInt(chestNumbers.get(index).getText());
@@ -1447,22 +1721,49 @@ public class GuiGameController implements GuiController {
         }
     }
 
+    /**
+     * Called when selecting the coin button of the chest. It
+     * invokes the {@link #selectChest(String)} method.
+     *
+     */
     public void select_chest_coin() {
         selectChest("Coin");
     }
 
+    /**
+     * Called when selecting the stone button of the chest. It
+     * invokes the {@link #selectChest(String)} method.
+     *
+     */
     public void select_chest_stone() {
         selectChest("Stone");
     }
 
+    /**
+     * Called when selecting the servant button of the chest. It
+     * invokes the {@link #selectChest(String)} method.
+     *
+     */
     public void select_chest_servant() {
         selectChest("Servant");
     }
 
+    /**
+     * Called when selecting the shield button of the chest. It
+     * invokes the {@link #selectChest(String)} method.
+     *
+     */
     public void select_chest_shield() {
         selectChest("Shield");
     }
 
+    /**
+     * Invoked when selecting a row or column to buy resources from the market. Acts accordingly
+     * to the game rules.
+     *
+     * @param isRow {@code true} if the players selects a row, {@code false} if he selects a column
+     * @param n     the index of the row or column
+     */
     private void selectMarket(boolean isRow, int n) {
         currentAction = UserAction.BUY_RESOURCES;
         selectingLeadCard = checkPlayedCards();
@@ -1527,6 +1828,11 @@ public class GuiGameController implements GuiController {
         }
     }
 
+    /**
+     * Sets the resource icons and the resource numbers in the message box when
+     * buying resources from the market.
+     *
+     */
     private void marketResPlacement() {
         selectingLeadCard = false;
         for (int i = 0; i < Resource.values().length - 2; i++) {
@@ -1543,11 +1849,22 @@ public class GuiGameController implements GuiController {
         }
     }
 
+    /**
+     * Enables the resource buttons in the message box.
+     *
+     */
     private void enableMessageResourceButtons() {
         for (int i = 0; i < Resource.values().length - 2; i++)
             messageResourcesButtons.get(i).setDisable(messageResourcesNumbers.get(i).getText().isEmpty());
     }
 
+    /**
+     * Returns a specified column of the provided matrix.
+     *
+     * @param array the matrix
+     * @param index the index of the column
+     * @return the column of the matrix
+     */
     public String[] getColumn(String[][] array, int index) {
         String[] column = new String[3];
         for (int i = 0; i < column.length; i++) {
@@ -1556,48 +1873,88 @@ public class GuiGameController implements GuiController {
         return column;
     }
 
+    /**
+     * Called when selecting the first column of the market. It
+     * invokes the {@link #selectMarket(boolean, int)} method.
+     *
+     */
     public void selectMarketC1() {
         marketPosition = 1;
         selection = MarketSelection.COLUMN;
         selectMarket(false, 0);
     }
 
+    /**
+     * Called when selecting the second column of the market. It
+     * invokes the {@link #selectMarket(boolean, int)} method.
+     *
+     */
     public void selectMarketC2() {
         marketPosition = 2;
         selection = MarketSelection.COLUMN;
         selectMarket(false, 1);
     }
 
+    /**
+     * Called when selecting the third column of the market. It
+     * invokes the {@link #selectMarket(boolean, int)} method.
+     *
+     */
     public void selectMarketC3() {
         marketPosition = 3;
         selection = MarketSelection.COLUMN;
         selectMarket(false, 2);
     }
 
+    /**
+     * Called when selecting the fourth column of the market. It
+     * invokes the {@link #selectMarket(boolean, int)} method.
+     *
+     */
     public void selectMarketC4() {
         marketPosition = 4;
         selection = MarketSelection.COLUMN;
         selectMarket(false, 3);
     }
 
+    /**
+     * Called when selecting the first row of the market. It
+     * invokes the {@link #selectMarket(boolean, int)} method.
+     *
+     */
     public void selectMarketR1() {
         marketPosition = 1;
         selection = MarketSelection.ROW;
         selectMarket(true, 0);
     }
 
+    /**
+     * Called when selecting the second row of the market. It
+     * invokes the {@link #selectMarket(boolean, int)} method.
+     *
+     */
     public void selectMarketR2() {
         marketPosition = 2;
         selection = MarketSelection.ROW;
         selectMarket(true, 1);
     }
 
+    /**
+     * Called when selecting the third row of the market. It
+     * invokes the {@link #selectMarket(boolean, int)} method.
+     *
+     */
     public void selectMarketR3() {
         marketPosition = 3;
         selection = MarketSelection.ROW;
         selectMarket(true, 2);
     }
 
+    /**
+     * Invoked when the player presses the confirm button. Acts accordingly to the current action
+     * selected by the player, sending different {@link Action} messages to the server.
+     *
+     */
     public void selectConfirmButton() {
         if (selectingLeadCard) {
             confirm_button.setDisable(true);
@@ -1695,6 +2052,10 @@ public class GuiGameController implements GuiController {
         }
     }
 
+    /**
+     * Sends a {@link StartProduction} message to the server.
+     *
+     */
     private void sendStartProduction() {
         chosenDevCards.removeIf(i -> i > 2);
         for (int i = 0; i < leadersSelected.size(); i++) {
@@ -1716,15 +2077,30 @@ public class GuiGameController implements GuiController {
         connectionSocket.send(new StartProduction(chosenDevCards, resourcesForAction, prodOutput, leaderEffects));
     }
 
+    /**
+     * Cancels the current action, allowing the player to choose a new one.
+     *
+     */
     public void quitAction() {
         enableAction("Please choose an action.");
     }
 
+    /**
+     * Ends the player's turn, sending a {@link EndTurn} message to the server.
+     *
+     */
     public void endTurn() {
         disableButtons();
         connectionSocket.send(new EndTurn());
     }
 
+    /**
+     * Invoked when the player presses a development deck button. Acts accordingly to the
+     * game rules.
+     *
+     * @param i the row index of the deck
+     * @param j the column index of the deck
+     */
     private void selectDevDeck(int i, int j) {
         currentAction = UserAction.BUY_DEVCARD;
         message.setText("You have chosen to buy a development card, please select\n" +
@@ -1748,54 +2124,120 @@ public class GuiGameController implements GuiController {
         end_turn.setDisable(true);
     }
 
+    /**
+     * Called when selecting the first card of the fourth row of development decks. It
+     * invokes the {@link #selectDevDeck(int, int)} method.
+     *
+     */
     public void selectDev30() {
         selectDevDeck(3, 0);
     }
 
+    /**
+     * Called when selecting the second card of the fourth row of development decks. It
+     * invokes the {@link #selectDevDeck(int, int)} method.
+     *
+     */
     public void selectDev31() {
         selectDevDeck(3, 1);
     }
 
+    /**
+     * Called when selecting the third card of the fourth row of development decks. It
+     * invokes the {@link #selectDevDeck(int, int)} method.
+     *
+     */
     public void selectDev32() {
         selectDevDeck(3, 2);
     }
 
+    /**
+     * Called when selecting the first card of the third row of development decks. It
+     * invokes the {@link #selectDevDeck(int, int)} method.
+     *
+     */
     public void selectDev20() {
         selectDevDeck(2, 0);
     }
 
+    /**
+     * Called when selecting the second card of the third row of development decks. It
+     * invokes the {@link #selectDevDeck(int, int)} method.
+     *
+     */
     public void selectDev21() {
         selectDevDeck(2, 1);
     }
 
+    /**
+     * Called when selecting the third card of the third row of development decks. It
+     * invokes the {@link #selectDevDeck(int, int)} method.
+     *
+     */
     public void selectDev22() {
         selectDevDeck(2, 2);
     }
 
+    /**
+     * Called when selecting the third card of the second row of development decks. It
+     * invokes the {@link #selectDevDeck(int, int)} method.
+     *
+     */
     public void selectDev12() {
         selectDevDeck(1, 2);
     }
 
+    /**
+     * Called when selecting the second card of the second row of development decks. It
+     * invokes the {@link #selectDevDeck(int, int)} method.
+     *
+     */
     public void selectDev11() {
         selectDevDeck(1, 1);
     }
 
+    /**
+     * Called when selecting the first card of the second row of development decks. It
+     * invokes the {@link #selectDevDeck(int, int)} method.
+     *
+     */
     public void selectDev10() {
         selectDevDeck(1, 0);
     }
 
+    /**
+     * Called when selecting the first card of the first row of development decks. It
+     * invokes the {@link #selectDevDeck(int, int)} method.
+     *
+     */
     public void selectDev00() {
         selectDevDeck(0, 0);
     }
 
+    /**
+     * Called when selecting the second card of the first row of development decks. It
+     * invokes the {@link #selectDevDeck(int, int)} method.
+     *
+     */
     public void selectDev01() {
         selectDevDeck(0, 1);
     }
 
+    /**
+     * Called when selecting the third card of the first row of development decks. It
+     * invokes the {@link #selectDevDeck(int, int)} method.
+     *
+     */
     public void selectDev02() {
         selectDevDeck(0, 2);
     }
 
+    /**
+     * Invoked when the player presses on one of the development slots buttons. Acts accordingly to the game
+     * rules, based on the action selected by the player.
+     *
+     * @param slot the slot index
+     */
     private void selectDevSpace(int slot) {
         if (currentAction == UserAction.BUY_DEVCARD) {
             DevCardInfo d = view.getDevDecks()[devDeckColumn][devDeckRow];
@@ -1852,6 +2294,11 @@ public class GuiGameController implements GuiController {
         }
     }
 
+    /**
+     * Shows the resource requirements attribute using the resource icons
+     * and the resource numbers in the message box.
+     *
+     */
     private void showResourceRequirements() {
         checkWarehouseButtons(false);
         checkChestButtons();
@@ -1863,6 +2310,11 @@ public class GuiGameController implements GuiController {
         }
     }
 
+    /**
+     * Sets a message in the message box asking the player to indicate which resources
+     * he wants to use as input for the board production.
+     *
+     */
     private void showBoardProductionInput() {
         checkWarehouseButtons(false);
         checkChestButtons();
@@ -1871,23 +2323,47 @@ public class GuiGameController implements GuiController {
                 "you want to use as input for the board production");
     }
 
-
+    /**
+     * Called when selecting the first slot in the development space. It
+     * invokes the {@link #selectDevSpace(int)} method.
+     *
+     */
     public void selectSlot1() {
         selectDevSpace(0);
     }
 
+    /**
+     * Called when selecting the second slot in the development space. It
+     * invokes the {@link #selectDevSpace(int)} method.
+     *
+     */
     public void selectSlot2() {
         selectDevSpace(1);
     }
 
+    /**
+     * Called when selecting the third slot in the development space. It
+     * invokes the {@link #selectDevSpace(int)} method.
+     *
+     */
     public void selectSlot3() {
         selectDevSpace(2);
     }
 
+    /**
+     * Called when selecting the board production. It invokes
+     * the {@link #selectDevSpace(int)} method.
+     *
+     */
     public void selectBoardProduction() {
         selectDevSpace(3);
     }
 
+    /**
+     * Checks if there is a leader card effect that can be activated.
+     *
+     * @return {@code true} if there is an effect can be activated, {@code false} otherwise
+     */
     private boolean checkPlayedCards() {
         boolean cardToSelct = false;
         for (int i = 0; i < view.getOwnGameBoard().getPlayedCards().size(); i++) {
@@ -1899,6 +2375,12 @@ public class GuiGameController implements GuiController {
         return cardToSelct;
     }
 
+    /**
+     * Checks if a leader card effect can be activated.
+     *
+     * @param c the leader card
+     * @return {@code true} if the effect can be activated, {@code false} otherwise
+     */
     private boolean isPlayable(LeadCardInfo c) {
         return (c.getType().equalsIgnoreCase("Discount") && currentAction == UserAction.BUY_DEVCARD
                 && resourceRequirements.stream().anyMatch(s -> s.equalsIgnoreCase(c.getResource())))
@@ -1906,6 +2388,11 @@ public class GuiGameController implements GuiController {
                 || (c.getType().equalsIgnoreCase("Product") && currentAction == UserAction.START_PRODUCTION);
     }
 
+    /**
+     * Invoked when the player selects the trash can. Used to discard resources
+     * gained from the market or to discard a leader card.
+     *
+     */
     public void selectTrashcan() {
         if (currentAction == UserAction.BUY_RESOURCES) {
             resourcesForAction.add(new ResourcePosition(Resource.valueOf(selectedResource.toUpperCase()),
@@ -1922,6 +2409,12 @@ public class GuiGameController implements GuiController {
         }
     }
 
+    /**
+     * Checks if the player can play a hand leader card.
+     *
+     * @param index the index of the leader card
+     * @return {@code true} if the leader card can be played, {@code false} otherwise
+     */
     private boolean checkHand(int index) {
         if (view.getHand().get(index).getResourceRequirements() != null) {
             return view.getOwnGameBoard().totalResourceCheck(view.getHand().get(index).getResourceRequirements());
@@ -1929,7 +2422,12 @@ public class GuiGameController implements GuiController {
             return view.getOwnGameBoard().devCardsCheck(view.getHand().get(index).getCardRequirements());
     }
 
-
+    /**
+     * Invoked when the player selects a hand leader card. Checks if the player can play the card
+     * and asks him whether he wants to play or discard it.
+     *
+     * @param index the index of the selected hand leader card
+     */
     private void selectHand(int index) {
         handleButtons(handButtons, true);
         handleButtons(devSpaceButtons, true);
@@ -1952,19 +2450,40 @@ public class GuiGameController implements GuiController {
             message.setText(s + "since you do not meet the requirements\n to play it, you can only discard it");
     }
 
+    /**
+     * Called when selecting the first hand leader card. It
+     * invokes the {@link #selectHand(int)} method.
+     *
+     */
     public void selectFirstHand() {
         selectHand(0);
     }
 
+    /**
+     * Called when selecting the second hand leader card. It
+     * invokes the {@link #selectHand(int)} method.
+     *
+     */
     public void selectSecondHand() {
         selectHand(1);
     }
 
+    /**
+     * Adds a depot leader to the warehouse.
+     *
+     * @param playedDepot the number of played depot leaders
+     */
     private void addDepot(int playedDepot){
         if(playedDepot == 0) warehouse.add(first_depot);
         else warehouse.add(second_depot);
     }
 
+    /**
+     * Invoked when the player selects one of the buttons in the played leader cards panel.
+     * Acts accordingly to the current action.
+     *
+     * @param index the index of the button in the played leader cards panel
+     */
     private void selectPlayedLeadCard(int index) {
         if (view.getOwnGameBoard().getPlayedCards().size() <= index) {
             currentAction = UserAction.PLAY_LEADCARD;
@@ -2018,10 +2537,20 @@ public class GuiGameController implements GuiController {
         }
     }
 
+    /**
+     * Called when pressing the first button in the played leader cards panel. It
+     * invokes the {@link #selectPlayedLeadCard(int)} method.
+     *
+     */
     public void selectFirstPlayed() {
         selectPlayedLeadCard(0);
     }
 
+    /**
+     * Called when pressing the second button in the played leader cards panel. It
+     * invokes the {@link #selectPlayedLeadCard(int)} method.
+     *
+     */
     public void selectSecondPlayed() {
         selectPlayedLeadCard(1);
     }
