@@ -105,7 +105,7 @@ public class Gui extends Application implements Observer {
     }
 
     /**
-     *
+     * Builds hashmap with scenes for simpler transactions and sets current scene to the connection menu.
      */
     //setup method
     private void setup() {
@@ -126,12 +126,19 @@ public class Gui extends Application implements Observer {
         currentStatus = CONNECTION_MENU;
     }
 
-
+    /**
+     * Changes root of the current scene.
+     * @param newScene the name of the new root.
+     */
     public void changeRoot(String newScene) {
        currentScene.setRoot(nameToRoot.get(newScene));
        currentStatus = newScene;
     }
 
+    /**
+     * Creates a new scene, sets it as the current scene, and maximizes it to full screen.
+     * @param newScene the name of the new scene.
+     */
     public void changeScene(String newScene) {
         currentScene = new Scene(nameToRoot.get(newScene));
         currentStatus = newScene;
@@ -143,6 +150,10 @@ public class Gui extends Application implements Observer {
         stage.show();
     }
 
+    /**
+     * Changes root, scene, or elements of the scene according to view updates notified through observer pattern.
+     * @param message message notified by the view.
+     */
     @Override
     public void update(Message message) {
         if (message instanceof DisplayMessage){
