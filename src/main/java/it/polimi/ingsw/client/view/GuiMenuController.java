@@ -67,7 +67,8 @@ public class GuiMenuController implements GuiController{
 
     /**
      * If the provided nickname is allowed, it sets it as the player nickname
-     * and starts the thread listening on the socket
+     * and starts the thread listening on the socket.
+     *
      */
     public void start() throws InterruptedException {
         if (nicknameCheck(true)) {
@@ -80,7 +81,8 @@ public class GuiMenuController implements GuiController{
 
     /**
      * If the provided nickname is allowed, it sets it as the player nickname
-     * and starts the thread listening on the socket
+     * and starts the thread listening on the socket.
+     * 
      */
     public void resume(){
         if (nicknameCheck(false)){
