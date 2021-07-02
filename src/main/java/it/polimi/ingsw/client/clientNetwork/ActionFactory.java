@@ -18,17 +18,36 @@ import java.io.PrintStream;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * Class ActionFactory creates {@link Action} messages based on the input
+ * provided by the player. It is used when the player is playing with the CLI.
+ *
+ */
 public class ActionFactory {
     private final PrintStream output;
     private final Scanner input;
     private final Cli cli;
 
+    /**
+     * Creates a new ActionFactory instance.
+     *
+     * @param output the output stream
+     * @param input  the input stream
+     * @param cli    the Cli object associated with the action factory
+     */
     public ActionFactory(PrintStream output, Scanner input, Cli cli) {
         this.output = output;
         this.input = input;
         this.cli = cli;
     }
 
+    /**
+     * Calls different methods to build different actions based on the number selected
+     * by the player in the cli menu.
+     *
+     * @param actionNumber the number selected by the user
+     * @return the created action
+     */
     public Message createAction(int actionNumber) {
         return switch (actionNumber) {
             case 0 -> buildBuyResources();
@@ -42,6 +61,11 @@ public class ActionFactory {
         };
     }
 
+    /**
+     * Creates a {@link BuyResources} action.
+     *
+     * @return the created BuyResources action
+     */
     private Action buildBuyResources() {
         output.print("Would you like to buy resources from a column or a row? [column/row]\n>");
         String selection = readInputString();
@@ -148,6 +172,11 @@ public class ActionFactory {
         return new BuyResources(leaderEffects, source + 1, marketSelection, result);
     }
 
+    /**
+     * Creates a {@link BuyDevCard} action.
+     *
+     * @return the created BuyDevCard action
+     */
     private Action buildBuyDevCard() {
         Colour colour;
         Integer lev;
@@ -221,12 +250,25 @@ public class ActionFactory {
         return new BuyDevCard(lev + 1, colour, DevSpaceSlot.values()[slot], res, leaders);
     }
 
+    /**
+     * Checks if a development slot can host a card of the provided level.
+     * Used when building a BuyDevCard action.
+     *
+     * @param slot the development slot
+     * @param lev  the level of the card
+     * @return {@code true} if the card can be placed in the slot, {@code false} otherwise
+     */
     private boolean checkDevSpaceSlot(int slot, int lev) {
         return ((cli.getClientView().getOwnGameBoard().getDevSpace().get(slot).isEmpty() && lev == 1) ||
                 (!cli.getClientView().getOwnGameBoard().getDevSpace().get(slot).isEmpty() &&
                         cli.getClientView().getOwnGameBoard().getDevSpace().get(slot).get(0).getLevel() == lev - 1));
     }
 
+    /**
+     * Creates a {@link StartProduction} action.
+     *
+     * @return the created StartProduction action
+     */
     private Action buildStartProduction() {
         List<Integer> slots = new ArrayList<>();
         List<ResourcePosition> inp = new ArrayList<>();
@@ -355,6 +397,14 @@ public class ActionFactory {
         return new StartProduction(slots, inp, out, leaderEffects);
     }
 
+    /**
+     * Asks the player to type either 'yes' or 'no'. The player can type
+     * can type 'back' to go back and cancel the action.
+     *
+     * @param question the question asked to the player
+     * @return {@code true} if the players answers 'yes', {@code false} if he answers 'no',
+     * {@code null} if he answers 'back'
+     */
     private Boolean askYesNo(String question) {
         output.print(question);
         while (true) {
@@ -369,6 +419,11 @@ public class ActionFactory {
         }
     }
 
+    /**
+     * Creates a {@link DiscardLeadCard} action.
+     *
+     * @return the created DiscardLeadCard action
+     */
     private Action buildDiscardLeadCard() {
         output.print("Which leader card do you want do discard? [1/2]\n>");
         Integer index = leadCardSelection();
@@ -378,6 +433,12 @@ public class ActionFactory {
             return null;
     }
 
+    /**
+     * Asks the player to select a leader card, or to type 'back' if he wants to
+     * cancel the action.
+     *
+     * @return the index of the leader card
+     */
     private Integer leadCardSelection(){
         Integer index = readInputInt();
         if (index == null) return null;
@@ -394,6 +455,11 @@ public class ActionFactory {
         return index;
     }
 
+    /**
+     * Creates a {@link PlayLeadCard} action.
+     *
+     * @return the created PlayLeadCard action
+     */
     private Action buildPlayLeadCard() {
         output.print("Which leader card do you want do play? [1/2]\n>");
         Integer index = leadCardSelection();
@@ -401,6 +467,11 @@ public class ActionFactory {
         return new PlayLeadCard(index);
     }
 
+    /**
+     * Creates a {@link MoveResources} action.
+     *
+     * @return the created MoveResources action
+     */
     private Action buildMoveResources() {
         output.print("Please select the source shelf. [1/2/3/4/5] (4 and 5 represent the depot leaders)\n>");
         Integer source = readInputInt();
@@ -432,6 +503,11 @@ public class ActionFactory {
         return new MoveResources(NumOfShelf.values()[source - 1], NumOfShelf.values()[dest - 1], quantity);
     }
 
+    /**
+     * Reads input from the player, expecting a string.
+     *
+     * @return the string inserted by the player
+     */
     private String readInputString() {
         String inputString;
         do {
@@ -445,6 +521,12 @@ public class ActionFactory {
         return inputString;
     }
 
+    /**
+     * Reads input from the player, expecting an int. The player
+     * can type 'back' to cancel the action.
+     *
+     * @return the int inserted by the player, {@code null} if the player typed 'back'
+     */
     private Integer readInputInt() {
         String line;
         Integer inputInt;
@@ -461,6 +543,13 @@ public class ActionFactory {
         return inputInt;
     }
 
+    /**
+     * Returns a specified column of the provided matrix.
+     *
+     * @param array the matrix
+     * @param index the index of the column
+     * @return the column of the matrix
+     */
     private String[] getColumn(String[][] array, int index) {
         String[] column = new String[3];
         for (int i = 0; i < column.length; i++) {

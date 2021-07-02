@@ -17,13 +17,28 @@ import it.polimi.ingsw.server.model.ResourceQuantity;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Class MessageHandler is a client class used to process messages received from the server.
+ *
+ */
 public class MessageHandler {
     private final ClientView view;
 
+    /**
+     * Creates a new MessageHandler instance.
+     *
+     * @param view the player's ClientView object
+     */
     public MessageHandler(ClientView view) {
         this.view = view;
     }
 
+    /**
+     * Process messages received from the server, calling different methods on the
+     * and setting different {@link ViewMessage} that will be observed by CLI and GUI.
+     *
+     * @param message the message received from the server
+     */
     public void process(Message message) {
         if (message instanceof ErrorMessage) {
             ErrorMessage e = (ErrorMessage) message;
@@ -119,6 +134,13 @@ public class MessageHandler {
         }
     }
 
+    /**
+     * Finds a player's game board from a provided nickname. If no game board is found
+     * a new one is created and added to the lists of game boards.
+     *
+     * @param owner the nickname of the player who owns the game board
+     * @return the found game board
+     */
     private GameBoardInfo findBoardByOwner(String owner) {
         if (view.getNickname().equalsIgnoreCase(owner)) return view.getOwnGameBoard();
         for (GameBoardInfo g : view.getOtherGameBoards()) {
@@ -133,6 +155,13 @@ public class MessageHandler {
         return newBoard;
     }
 
+    /**
+     * Checks if a change message is the last in a list of {@link ChangeMessage}.
+     *
+     * @param elements the list of ChangeMessage objects
+     * @param a        the change message
+     * @return {@code true} if the message is the last in the list, {@code false} otherwise
+     */
     private boolean isLast(List<ChangeMessage> elements, ChangeMessage a) {
         if (!(a instanceof NewDevDeck)) return true;
         int lastIndex = 0;
@@ -142,6 +171,14 @@ public class MessageHandler {
         return elements.indexOf(a) == lastIndex;
     }
 
+    /**
+     * Called when receiving a {@link ChangesDone} message. It takes a change
+     * message as input and updates the player's ClientView object with the
+     * information contained in the message.
+     *
+     * @param m       the ChangeMessage object
+     * @param toPrint {@code true} if the updated elements needs to be showed to the player, {@code false} otherwise
+     */
     private void applyChanges(ChangeMessage m, boolean toPrint) {
         synchronized (view) {
             if (m instanceof NewChest) {

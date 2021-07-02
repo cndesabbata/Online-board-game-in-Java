@@ -9,6 +9,11 @@ import it.polimi.ingsw.server.model.gameboard.DevSpaceSlot;
 
 import java.util.List;
 
+/**
+ * Class BuyDevCard is an {@link Action}. It's created and sent to the server when the player
+ * wants to buy a development card.
+ *
+ */
 public class BuyDevCard implements Action {
     private final int level;
     private final Colour colour;
@@ -18,6 +23,15 @@ public class BuyDevCard implements Action {
     private final List<LeaderEffect> leaderEffects;
     private final UserAction type;
 
+    /**
+     * Creates a BuyDevCard instance.
+     *
+     * @param level  the level of the development card
+     * @param colour the colour of the development card
+     * @param slot   the slot where the player wants to place the development card
+     * @param cost   the list of {@link ResourcePosition} objects which represent the resources payed to buy the card
+     * @param leaderEffects the list of leader effects that modify the action
+     */
     public BuyDevCard(int level, Colour colour, DevSpaceSlot slot, List<ResourcePosition> cost,
                       List<LeaderEffect> leaderEffects) {
         this.leaderEffects = leaderEffects;
@@ -29,6 +43,11 @@ public class BuyDevCard implements Action {
         type = UserAction.BUY_DEVCARD;
     }
 
+    /**
+     * Returns the list of resources required to buy the card.
+     *
+     * @return the list of resources required to buy the card
+     */
     public List<ResourceQuantity> getReq() {
         return req;
     }
@@ -38,6 +57,12 @@ public class BuyDevCard implements Action {
         return type;
     }
 
+    /**
+     * Expends the player's resources to buy the card and places it in the specified slot.
+     *
+     * @param player the player performing the action
+     * @return {@code true}
+     */
     @Override
     public boolean doAction(Player player) {
         player.getBoard().expendResources(cost);
@@ -46,6 +71,13 @@ public class BuyDevCard implements Action {
         return true;
     }
 
+    /**
+     * Checks if the development card can be bought.
+     *
+     * @param player the player who wants to perform the action
+     * @throws WrongActionException if performing the action would break one of the game rules, or if the arguments provided
+     * when creating this object are not valid
+     */
     @Override
     public void checkAction(Player player) throws WrongActionException {
         if (player.isExclusiveActionDone())
@@ -61,6 +93,13 @@ public class BuyDevCard implements Action {
         player.getBoard().getChest().checkDecrement(cost);
     }
 
+    /**
+     * Applies all the leader effects and checks if the resources provided by the player can be expended
+     * to buy the development card.
+     *
+     * @param player the player performing the action
+     * @throws WrongActionException if the resources provided cannot be expended to buy the development card
+     */
     private void checkCost(Player player) throws WrongActionException {
         req = player.getGame().getDevDecks()[(level - 1) * Colour.values().length + colour.ordinal()].peepRequirements();
         for (LeaderEffect effect : leaderEffects) {

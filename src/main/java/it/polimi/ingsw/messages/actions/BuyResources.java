@@ -10,6 +10,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Class BuyResources is an {@link Action}. It's created and sent to the server when the player
+ * wants to buy resources from the market.
+ *
+ */
 public class BuyResources implements Action {
     private final int position;
     private final MarketSelection marketSelection;
@@ -19,6 +24,14 @@ public class BuyResources implements Action {
     private boolean leaderUsed;
     private final UserAction type;
 
+    /**
+     * Creates a new BuyResources instance.
+     *
+     * @param leaderEffects   the list of leader effects that can modify the action
+     * @param position        the number of the row or column selected
+     * @param marketSelection the player's choice (row or column)
+     * @param gainedRes       the resources gained from the market
+     */
     public BuyResources(List<LeaderEffect> leaderEffects, int position, MarketSelection marketSelection,
                         List<ResourcePosition> gainedRes) {
         this.leaderEffects = leaderEffects;
@@ -29,6 +42,15 @@ public class BuyResources implements Action {
         this.type = UserAction.BUY_RESOURCES;
     }
 
+    /**
+     * Adds the resources gained from the market and sets the new market disposition.
+     * If the player has decided to discard some of the resources, updates other players' position
+     * on the itinerary and checks if a papal report will be triggered in order to
+     * avoid notifying the virtual views multiple times.
+     *
+     * @param player the player performing the action
+     * @return {@code true}
+     */
     @Override
     public boolean doAction(Player player) {
         List<ResourcePosition> boughtResources = new ArrayList<>(gainedRes);
@@ -69,6 +91,14 @@ public class BuyResources implements Action {
         return type;
     }
 
+    /**
+     * Checks if the user has selected a valid row or column, if the arguments provided when creating
+     * the action match the state of the model objects and if the bought resources can be stored in the
+     * places specified by the player.
+     *
+     * @param player the player who wants to perform the action
+     * @throws WrongActionException if one of the checks fails
+     */
     @Override
     public void checkAction(Player player) throws WrongActionException {
         if (player.isExclusiveActionDone())
@@ -126,11 +156,20 @@ public class BuyResources implements Action {
         player.getBoard().getWarehouse().checkIncrement(boughtResources);
     }
 
-    /* adds the extra resources gained from marble leader card */
+    /**
+     * Adds the extra resources gained from the marble leader card.
+     *
+     * @param extraRes the extra resources gained from the marble leader card
+     */
     public void addExtraRes(List<ResourcePosition> extraRes) {
         this.extraRes.addAll(extraRes);
     }
 
+    /**
+     * Sets the leaderUsed attribute.
+     *
+     * @param leaderUsed the new leaderUsed attribute
+     */
     public void setLeaderUsed(boolean leaderUsed) {
         this.leaderUsed = leaderUsed;
     }
