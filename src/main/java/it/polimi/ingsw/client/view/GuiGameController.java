@@ -319,8 +319,6 @@ public class GuiGameController implements GuiController {
     @FXML
     private Label message_shield_number;
     @FXML
-    private ImageView inkwell;
-    @FXML
     private Label board_label;
     private final List<ImageView> messageResources = new ArrayList<>();
     private final List<Button> messageResourcesButtons = new ArrayList<>();
