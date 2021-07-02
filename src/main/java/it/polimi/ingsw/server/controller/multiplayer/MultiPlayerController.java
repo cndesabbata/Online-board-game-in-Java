@@ -204,6 +204,7 @@ public class MultiPlayerController extends GameController {
      */
     @Override
     public void endGame() {
+        setPhase(GamePhase.ENDED);
         Game game = getGame();
         Map<String, Integer> playersPoints = new HashMap<>();
         for (Player player : game.getPlayers()) {

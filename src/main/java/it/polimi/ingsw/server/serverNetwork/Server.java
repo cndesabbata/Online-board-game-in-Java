@@ -3,6 +3,7 @@ package it.polimi.ingsw.server.serverNetwork;
 import it.polimi.ingsw.constants.Constants;
 import it.polimi.ingsw.messages.serverMessages.*;
 import it.polimi.ingsw.server.controller.GameController;
+import it.polimi.ingsw.server.controller.GamePhase;
 import it.polimi.ingsw.server.controller.multiplayer.MultiPlayerController;
 import it.polimi.ingsw.server.controller.singleplayer.SinglePlayerController;
 import it.polimi.ingsw.server.model.Player;
@@ -126,19 +127,22 @@ public class Server {
         connection.close();
         if (connection.getGameController() != null) {
             GameController gc = connection.getGameController();
-            view.sendAllExcept(new Disconnection("Player " + nickname + " disconnected.", nickname), nickname);
+            if(gc.getPhase() != GamePhase.ENDED)
+                view.sendAllExcept(new Disconnection("Player " + nickname + " disconnected.", nickname), nickname);
             gc.getActiveConnections().removeIf(c -> c == connection);
             gc.removeObserver(find(connection, clientToConnection));
             List<Player> unregistered = gc.getActivePlayers().stream().filter(p ->
                     p.getNickname().equalsIgnoreCase(connection.getPlayerNickname())).collect(Collectors.toList());
-            if(gc instanceof MultiPlayerController) {                                                                   //currentPLayerIndex must be updated
+            if(gc instanceof MultiPlayerController && gc.getPhase() != GamePhase.ENDED) {                                                                   //currentPLayerIndex must be updated
                 if (((MultiPlayerController) gc).getCurrentPlayerIndex() > gc.getActivePlayers().indexOf(unregistered.get(0)))
                     ((MultiPlayerController) gc).setCurrentPlayerIndex(((MultiPlayerController) gc).getCurrentPlayerIndex() - 1);
             }
             gc.getActivePlayers().removeIf(p -> p.getNickname().equals(nickname));
         }
-        view.setClientConnection(null);
-        clientToConnection.remove(view);
+        if(connection.getGameController().getPhase() != GamePhase.ENDED) {
+            view.setClientConnection(null);
+            clientToConnection.remove(view);
+        }
     }
 
     /**
