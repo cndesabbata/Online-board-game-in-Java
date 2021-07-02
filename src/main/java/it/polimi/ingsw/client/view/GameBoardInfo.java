@@ -314,7 +314,7 @@ public class GameBoardInfo extends Observable {
      * Checks if the player a certain amount of resources.
      *
      * @param quantity the amount to check
-     * @return {@@code true} if the player has the specified amount of resources, {@code false otherwise}
+     * @return {@code true} if the player has the specified amount of resources, {@code false otherwise}
      */
     public boolean totalQuantityCheck(int quantity){
         for(String s : chest.keySet()){
