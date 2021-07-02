@@ -20,6 +20,11 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.util.*;
 
+/**
+ * Class Cli it's the main class which manages the game if the player decides to
+ * play with the command line interface.
+ *
+ */
 public class Cli implements Observer {
     private final PrintStream output;
     private final Scanner input;
@@ -29,6 +34,10 @@ public class Cli implements Observer {
     private final ActionFactory actionFactory;
     private ClientConnectionSocket connectionSocket;
 
+    /**
+     * Creates a new Cli instance.
+     *
+     */
     public Cli() {
         input = new Scanner(System.in);
         output = new PrintStream(System.out);
@@ -38,6 +47,12 @@ public class Cli implements Observer {
         actionFactory = new ActionFactory(output, input, this);
     }
 
+    /**
+     * Asks for the server ip address and port, then it creates a new Cli object and calls
+     * the {@link #setup()} method on it.
+     *
+     * @param args the main args
+     */
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Insert the server IP address\n>");
@@ -56,10 +71,22 @@ public class Cli implements Observer {
         }
     }
 
+    /**
+     * Returns the active attribute.
+     *
+     * @return the active attribute
+     */
     public boolean isActive() {
         return active;
     }
 
+    /**
+     * Sets up the connection with the server, asking if the player wants to join a new game
+     * or reconnect to a previous one. Tries to register the player with a provided nickname
+     * and start a thread that will contain the ClientConnectionSocket object used to send and
+     * receive messages from the server.
+     *
+     */
     private void setup() {
         connectionSocket = new ClientConnectionSocket(this, messageHandler);
         try {
@@ -106,6 +133,12 @@ public class Cli implements Observer {
         thread.start();
     }
 
+    /**
+     * Acts based on the {@link ViewMessage} received, asking different things to player,
+     * printing updated view elements and sending different messages to the server.
+     *
+     * @param message the ViewMessage received
+     */
     @Override
     public void update(Message message) {
         ViewMessage m = (ViewMessage) message;
@@ -243,6 +276,13 @@ public class Cli implements Observer {
         }
     }
 
+    /**
+     * Used when printing an updated game board element. Prints the nickname of the owner of the
+     * element and returns the owner of the game board.
+     *
+     * @param owner the owner of the game board
+     * @return the game board of the specified player, {@code null} if no game board is found
+     */
     private GameBoardInfo printGameBoardElem(String owner){
         if (owner.equals(clientView.getNickname())){
             output.print("YOUR ");
@@ -259,6 +299,11 @@ public class Cli implements Observer {
         return null;
     }
 
+    /**
+     * Prints some view elements based on the input provided by the player.
+     *
+     * @param n the number chosen by the player
+     */
     private void showElements(int n) {
         switch (n) {
             case 6 -> printGameBoard(clientView.getOwnGameBoard());
@@ -271,6 +316,11 @@ public class Cli implements Observer {
                 Constants.getChooseAction() + "\n>");
     }
 
+    /**
+     * Asks the player whose game board he wants to see printed in the terminal and prints it. If the player is
+     * in a single player game it prints Lorenzo de Medici's position on the itinerary.
+     *
+     */
     private void askForGameBoard() {
         if (clientView.getOwnGameBoard().getBlackCrossPosition() != null)
             output.println("Lorenzo De Medici's position: " + clientView.getOwnGameBoard().getBlackCrossPosition() + "/24\n");
@@ -295,6 +345,11 @@ public class Cli implements Observer {
         }
     }
 
+    /**
+     * Asks the player for a resource.
+     *
+     * @return the resource chosen by the player
+     */
     private Resource askForResource() {
         boolean request = true;
         Resource r = null;
@@ -310,6 +365,16 @@ public class Cli implements Observer {
         return r;
     }
 
+    /**
+     * Used when the player has to store resources or when he has to expend them. Returns the
+     * list of ResourcePosition objects needed to perform the action.
+     *
+     * @param stringList     the list of strings which represents the resources that need to be stored or expended
+     * @param deposit        {@code true} if the resources are meant to be stored, {@code false} otherwise
+     * @param canDiscard     {@code true} if the player can discard the resources, {@code false} otherwise
+     * @param setupResources {@code true} when selecting resources in the setup phase, {@code false} otherwise
+     * @return the list of ResourcePosition objects needed to perform the action
+     */
     protected List<ResourcePosition> askForLocation(List<String> stringList, boolean deposit, boolean canDiscard, boolean setupResources) {
         List<ResourceQuantity> req = new ArrayList<>();
         List<ResourcePosition> result = new ArrayList<>();
@@ -420,6 +485,14 @@ public class Cli implements Observer {
         return result;
     }
 
+    /**
+     * Returns a integer which represents the warehouse shelf that contains a
+     * specified resource.
+     *
+     * @param res the resource
+     * @return the integer representing the warehouse shelf that contains the resource, {@code null} if no shelf
+     * contains that resource
+     */
     private Integer inWarehouse (String res){
         for (int i = 0; i < 3; i++){
             List<String> l = clientView.getOwnGameBoard().getWarehouse().get(i);
@@ -428,6 +501,10 @@ public class Cli implements Observer {
         return null;
     }
 
+    /**
+     * Prints the market disposition and the external marble.
+     *
+     */
     private void printMarket() {
         String[][] market = clientView.getMarket();
         output.print("MARKET: \n\n");
@@ -455,6 +532,10 @@ public class Cli implements Observer {
         output.print("*\n\n");
     }
 
+    /**
+     * Prints the development decks.
+     *
+     */
     private void printDevDecks() {
         output.println("DEVELOPMENT DECKS:\n");
         for (DevCardInfo[] a : clientView.getDevDecks()) {
@@ -509,6 +590,12 @@ public class Cli implements Observer {
         }
     }
 
+    /**
+     * Prints an attribute of a card, used when printing cards in the terminal.
+     *
+     * @param s         the attribute to print
+     * @param isDevCard {@code true} if the card is a development card, {@code false} if the card is a leader card
+     */
     private void printCardElement(String s, boolean isDevCard) {
         output.print(s);
         if (isDevCard) {
@@ -521,6 +608,13 @@ public class Cli implements Observer {
         output.print("* ");
     }
 
+    /**
+     * Returns a string which represents a list of resources that can be either
+     * the input, output or the requirements of a card.
+     *
+     * @param list the list of resources
+     * @return the built string
+     */
     protected String buildResourceString(List<String> list) {
         int[] quantity = {0, 0, 0, 0, 0};
         StringBuilder result = new StringBuilder();
@@ -554,11 +648,22 @@ public class Cli implements Observer {
         return result.toString();
     }
 
+    /**
+     * Prints the hand leader cards.
+     *
+     */
     private void printHandCards() {
         output.println("HAND LEADER CARDS:\n");
         printLeadCards(clientView.getHand());
     }
 
+    /**
+     * Returns a string which represents a list of cards needed to play
+     * a leader card.
+     *
+     * @param list the list of development cards
+     * @return the built string
+     */
     private String buildDevCardString(List<DevCardInfo> list) {
         StringBuilder result = new StringBuilder();
         for (DevCardInfo d : list) {
@@ -571,6 +676,11 @@ public class Cli implements Observer {
         return result.toString();
     }
 
+    /**
+     * Prints all the game board elements of a player's game board.
+     *
+     * @param g the game board to print
+     */
     private void printGameBoard(GameBoardInfo g) {
         printItinerary(g);
         printChest(g);
@@ -579,6 +689,11 @@ public class Cli implements Observer {
         printPlayedLeadCards(g);
     }
 
+    /**
+     * Prints the itinerary of a player.
+     *
+     * @param g the game board that contains the itinerary
+     */
     private void printItinerary(GameBoardInfo g) {
         if (g != null){
             output.println("ITINERARY:\n\n" +
@@ -592,6 +707,11 @@ public class Cli implements Observer {
         }
     }
 
+    /**
+     * Prints a player's chest.
+     *
+     * @param g the game board that contains the chest
+     */
     private void printChest(GameBoardInfo g) {
         if (g != null){
             output.print("CHEST:\n\n| ");
@@ -603,6 +723,11 @@ public class Cli implements Observer {
         }
     }
 
+    /**
+     * Prints a player's warehouse.
+     *
+     * @param g the game board that contains the warehouse
+     */
     private void printWarehouse(GameBoardInfo g) {
         if (g != null){
             output.print("WAREHOUSE: \n\n");
@@ -619,6 +744,11 @@ public class Cli implements Observer {
         }
     }
 
+    /**
+     * Prints the development space of a player.
+     *
+     * @param g the game board that contains the development space
+     */
     private void printDevSpace(GameBoardInfo g) {
         if (g != null){
             output.print("DEVELOPMENT SPACE: \n\n");
@@ -673,6 +803,11 @@ public class Cli implements Observer {
         }
     }
 
+    /**
+     * Prints the player's played leader cards.
+     *
+     * @param g the game board that contains the played leader cards
+     */
     private void printPlayedLeadCards(GameBoardInfo g) {
         if (g != null){
             output.println("PLAYED LEADER CARDS:\n");
@@ -680,6 +815,11 @@ public class Cli implements Observer {
         }
     }
 
+    /**
+     * Prints leader cards.
+     *
+     * @param cards the list of leader cards to print
+     */
     private void printLeadCards(List<LeadCardInfo> cards) {
         if (!(cards.isEmpty())) {
             for (int i = 0; i < cards.size(); i++) {
@@ -713,6 +853,11 @@ public class Cli implements Observer {
 
     }
 
+    /**
+     * Reads input from the player, expecting a string.
+     *
+     * @return the string inserted by the player
+     */
     private String readInputString() {
         String inputString;
         do {
@@ -726,6 +871,11 @@ public class Cli implements Observer {
         return inputString;
     }
 
+    /**
+     * Reads input from the player, expecting an int.
+     *
+     * @return the int inserted by the player
+     */
     private Integer readInputInt(boolean canQuit) {
         int inputInt;
         String line;
@@ -742,6 +892,11 @@ public class Cli implements Observer {
         return inputInt;
     }
 
+    /**
+     * Returns the ClientView object associated with this cli.
+     *
+     * @return the ClientView object associated with this cli
+     */
     public ClientView getClientView() {
         return clientView;
     }
