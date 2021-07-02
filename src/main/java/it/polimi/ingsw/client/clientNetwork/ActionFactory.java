@@ -1,5 +1,9 @@
-package it.polimi.ingsw.client.view;
+package it.polimi.ingsw.client.clientNetwork;
 
+import it.polimi.ingsw.client.view.Cli;
+import it.polimi.ingsw.client.view.DevCardInfo;
+import it.polimi.ingsw.client.view.GameBoardInfo;
+import it.polimi.ingsw.client.view.LeadCardInfo;
 import it.polimi.ingsw.messages.Message;
 import it.polimi.ingsw.messages.actions.*;
 import it.polimi.ingsw.messages.clientMessages.EndTurn;
@@ -457,7 +461,7 @@ public class ActionFactory {
         return inputInt;
     }
 
-    public String[] getColumn(String[][] array, int index) {
+    private String[] getColumn(String[][] array, int index) {
         String[] column = new String[3];
         for (int i = 0; i < column.length; i++) {
             column[i] = array[i][index];
