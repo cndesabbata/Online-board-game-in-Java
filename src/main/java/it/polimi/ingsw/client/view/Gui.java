@@ -19,6 +19,11 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.*;
 
+/**
+ * Class Gui launches the graphical user interface. It observes the client view and calls
+ * different methods to update the gui when it's notified with a {@link ViewMessage}.
+ *
+ */
 public class Gui extends Application implements Observer {
 
     public static final String CONNECTION_MENU = "GuiConnectionMenu.fxml";
@@ -35,24 +40,46 @@ public class Gui extends Application implements Observer {
     private String currentStatus;
     private MediaPlayer mediaPlayer;                                                                                    //this attribute is needed to keep the music going after the end of method start
 
+    /**
+     * Launches the application.
+     *
+     * @param args the main args
+     */
     public static void main(String[] args){
         launch(args);
     }
 
+    /**
+     * Creates a new Gui instance.
+     *
+     */
     public Gui() {
         this.view = new ClientView(this);
         MessageHandler messageHandler = new MessageHandler(view);
         this.connectionSocket = new ClientConnectionSocket(this, messageHandler);
     }
 
+    /**
+     * Returns the client view associated with this Gui object.
+     *
+     * @return the associated client view
+     */
     public ClientView getView() {
         return view;
     }
 
+    /**
+     * Returns the ClientConnectionSocket object associated with this Gui object.
+     *
+     * @return the ClientConnectionSocket object
+     */
     public ClientConnectionSocket getConnectionSocket() {
         return connectionSocket;
     }
 
+    /**
+     * @see Application#start(Stage) 
+     */
     @Override
     public void start(Stage stage) throws Exception {
         setup();
@@ -77,6 +104,9 @@ public class Gui extends Application implements Observer {
         }
     }
 
+    /**
+     *
+     */
     //setup method
     private void setup() {
         List<String> fxmList = new ArrayList<>(Arrays.asList(CONNECTION_MENU, MAIN_MENU, LOBBY_MENU, GUI_GAME, WAIT_PLAYERS));
