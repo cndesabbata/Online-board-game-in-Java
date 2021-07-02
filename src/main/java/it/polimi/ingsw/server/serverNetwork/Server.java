@@ -332,8 +332,9 @@ public class Server {
      * @param gc the game controller
      */
     public void removeGame(GameController gc){
-        for (ClientConnection c: gc.getActiveConnections()){
-            removeClient(c);
+        int l = gc.getActiveConnections().size();
+        for (int i = 0; i < l; i++){
+            removeClient(gc.getActiveConnections().remove(0));
         }
         gameControllers.remove(gc);
     }

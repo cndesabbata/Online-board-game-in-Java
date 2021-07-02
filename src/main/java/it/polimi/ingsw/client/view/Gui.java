@@ -38,7 +38,6 @@ public class Gui extends Application implements Observer {
     private final ClientConnectionSocket connectionSocket;
     private Scene currentScene;
     private String currentStatus;
-    private MediaPlayer mediaPlayer;                                                                                    //this attribute is needed to keep the music going after the end of method start
 
     /**
      * Launches the application.
@@ -92,12 +91,6 @@ public class Gui extends Application implements Observer {
             stage.setMaximized(true);
             stage.setFullScreen(true);
             stage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
-            Media audio = new Media(Objects.requireNonNull(getClass().getClassLoader()
-                    .getResource("audio/Intro.mp3")).toExternalForm());
-            mediaPlayer = new MediaPlayer(audio);
-            mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
-            mediaPlayer.setVolume(0.15);
-            mediaPlayer.setAutoPlay(true);
             stage.show();
         } catch (NullPointerException e){
             System.out.println("Null pointer exception");
