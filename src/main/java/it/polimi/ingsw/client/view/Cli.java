@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client.view;
 
+import it.polimi.ingsw.client.clientNetwork.ActionFactory;
 import it.polimi.ingsw.client.clientNetwork.ClientConnectionSocket;
 import it.polimi.ingsw.constants.Constants;
 import it.polimi.ingsw.messages.clientMessages.JoinLobby;
@@ -375,7 +376,7 @@ public class Cli implements Observer {
      * @param setupResources {@code true} when selecting resources in the setup phase, {@code false} otherwise
      * @return the list of ResourcePosition objects needed to perform the action
      */
-    protected List<ResourcePosition> askForLocation(List<String> stringList, boolean deposit, boolean canDiscard, boolean setupResources) {
+    public List<ResourcePosition> askForLocation(List<String> stringList, boolean deposit, boolean canDiscard, boolean setupResources) {
         List<ResourceQuantity> req = new ArrayList<>();
         List<ResourcePosition> result = new ArrayList<>();
         for (Resource r : Resource.values())
@@ -615,7 +616,7 @@ public class Cli implements Observer {
      * @param list the list of resources
      * @return the built string
      */
-    protected String buildResourceString(List<String> list) {
+    public String buildResourceString(List<String> list) {
         int[] quantity = {0, 0, 0, 0, 0};
         StringBuilder result = new StringBuilder();
         for (String s : list) {
