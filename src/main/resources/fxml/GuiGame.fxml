@@ -196,9 +196,6 @@
       <ImageView fx:id="cross" fitHeight="24.0" fitWidth="24.0" layoutX="33.0" layoutY="153.0">
          <Image url="@../graphics/itinerary/Cross.png"/>
       </ImageView>
-      <ImageView fx:id="inkwell" fitHeight="40.0" fitWidth="40.0" layoutX="560.0" layoutY="10.0">
-         <Image url="@../graphics/calamaio.png"/>
-      </ImageView>
       <Button fx:id="market_c1" layoutX="850.0" layoutY="720.0" mnemonicParsing="false" onAction="#selectMarketC1"
               opacity="0.0" prefHeight="40.0" prefWidth="20.0" styleClass="clickable"/>
       <Button fx:id="market_c2" layoutX="882.0" layoutY="720.0" mnemonicParsing="false" onAction="#selectMarketC2"
