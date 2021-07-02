@@ -65,7 +65,10 @@ public class GuiMenuController implements GuiController{
         }
     }
 
-
+    /**
+     * If the provided nickname is allowed is sets it as the player nickname
+     * and starts the thread listening on the socket
+     */
     public void start() throws InterruptedException {
         if (nicknameCheck(true)) {
             gui.getView().setNickname(nickname.getText());
@@ -75,8 +78,11 @@ public class GuiMenuController implements GuiController{
         }
     }
 
-
-    public void resume() throws InterruptedException {
+    /**
+     * If the provided nickname is allowed is sets it as the player nickname
+     * and starts the thread listening on the socket
+     */
+    public void resume(){
         if (nicknameCheck(false)){
             gui.getView().setNickname(nickname.getText());
             gui.getView().getOwnGameBoard().setOwner(nickname.getText());
