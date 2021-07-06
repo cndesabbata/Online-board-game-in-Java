@@ -95,7 +95,7 @@ public class GuiMenuController implements GuiController{
 
     /**
      * Checks the nickname provided by the player and calls the
-     * {@link ClientConnectionSocket#setupNickname(String, boolean)}.
+     * {@link ClientConnectionSocket#setupNickname(String, boolean)} method.
      *
      * @param newPlayer {@code true} if the player is a new player, {@code false} otherwise
      * @return {@code true} if the player was registered in the server with the provided nickname,
@@ -164,7 +164,7 @@ public class GuiMenuController implements GuiController{
     /**
      * Initializes the lobbies the player can choose in the gui.
      *
-     * @param lobbyList
+     * @param lobbyList the list of lobbies
      */
     public void initializeLobby(List<String> lobbyList){
         playersNumber.getItems().clear();
