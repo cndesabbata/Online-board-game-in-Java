@@ -1,6 +1,3 @@
-# ing_sw_2021_Radi_Sanchini_De_Sabbata
-Progetto Ingegneria Del Software 2021
-
 ## Project specification
 The project consists of a Java implementation of the board game Master
 of Renaissance, made by Cranio Creations.
